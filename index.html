@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vector Fields</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="stylesheet"          href="../../nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="vfield.css" type="text/css" />
+    <script type="text/javascript"    src="js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="js/GLUtility.js"></script>
+    <script type="text/javascript"    src="js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="js/VectorField.js"></script>
+    <script type="text/javascript"    src="js/Geometry.js"></script>
+    <script type="text/javascript"    src="js/Charges.js"></script>
+    <script type="text/javascript"    src="js/Vfield.js"></script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+  </head>
+  <body>
+<!-- Copyright 2013-2014 Vizit Solutions
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License. -->
+    <div class="wrapper">
+    <div id="main">
+      <div id="header">
+        <span class="logo2 Fell drawOnResize"><a href = "http://www.vizitsolutions.com/">Vizit Solutions</a></span>
+        <ul>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/catalog/" title="Catalog">Catalog</a></li>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/" title="Portfolio">Portfolio</a></li>
+          <li class="drawOnResize"><a href="http://blog.vizitsolutions.com/" title="Blog">Blog</a></li>
+          <li class="drawOnResize"><a href="mailto:akluge@vizitsolutions.com?subject=Vector+Fields" title="akluge@vizitsolutions.com">Contact</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Vector Fields</h1>
+        <p id="nowebgl" class="error"></p>
+        <p class="abstract">
+          &nbsp;
+        </p>
+        
+        <figure class="left">
+          <!--A blank area we can draw on with JavaScript. -->
+          <canvas id="drawingSurface" width="300" height="300"></canvas>
+          <figcaption>The electric field from a point charge represented as a vector field.</figcaption>
+        </figure>
+
+        <p>
+          A vector field assignes a vector to every point in some region of space. Perhaps the
+          quintessential vector field is the electric field of an isolated charge.
+        </p>
+        <p>
+          Take a moment to play with the field to the left. The clearest feature is that there
+          are vectors everywhere, not just at a specific point. This is the difference between
+          a vector field and a vector. The electric field extends over space. But the
+          the velocity vector of a car is defined only at the location of the car.
+        </p>
+        <p>
+          Spin the field around and notice that while individual arrows move, the field as a whole
+          looks the same after any rotation in any direction. This is an example of what is called
+          spherical symmetry. Another way to visualize spherical symmetry is that the field has the
+          same strength at every point on a sphere centered at the origin of the field.[Considering
+          adding a control to show such a sphere]
+        </p>
+        <p>
+         Taking a look at the equation for the field, we see that it is dependant on <math
+         xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi mathvariant='bold'>r</mi></math>
+         so we expect the spherical symmetry.
+        </p>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mi mathvariant='bold'>E</mi>
+          <mo>=</mo>
+          <mfrac>
+            <mi>Q</mi>
+            <msup><mi>r</mi><mn>2</mn></msup>
+          </mfrac>
+          <mover> <!-- r-hat -->
+            <mi mathvariant="bold">r</mi>
+            <mo>^</mo>
+          </mover>
+        </math>
+        <p>
+          We can also write this in terms of cartesian coordinates using
+        </p>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mover> <!-- r-hat -->
+            <mi mathvariant="bold">r</mi>
+            <mo>^</mo>
+          </mover>
+          <mo>=</mo>
+          <mfrac>
+            <mrow>
+              <mi>x</mi><mover><!-- i-hat --><mi mathvariant="bold">&imath;</mi><mo>^</mo></mover>
+              <mo>+</mo><mi>y</mi><mover><!-- j-hat --><mi mathvariant="bold">&jmath;</mi><mo>^</mo></mover>
+              <mo>+</mo><mi>z</mi><mover><!-- k-hat --><mi mathvariant="bold">k</mi><mo>^</mo></mover>
+            </mrow>
+            <mrow>
+              <msup><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup>
+                                    <mo>+</mo><msup><mi>y</mi><mn>2</mn></msup>
+                                    <mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>)</mo></mrow><mfrac bevelled="true"><mn>1</mn><mn>2</mn></mfrac></msup>
+            </mrow>
+          </mfrac>
+        </math>
+        <p>
+          We substitute this into the expression for <math
+          xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi mathvariant='bold'>E</mi></math>
+          and get this longer looking expression. This is another common method for writing out vector
+          equations, using separate equations for each of the
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+            <mover><!-- i-hat --><mi mathvariant="bold">&imath;</mi><mo>^</mo></mover>
+          </math>,
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+            <mover><!-- j-hat --><mi mathvariant="bold">&jmath;</mi><mo>^</mo></mover>
+          </math>, and
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+            <mover><!-- k-hat --><mi mathvariant="bold">k</mi><mo>^</mo></mover>
+          </math> components of the field.
+        </p>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mi mathvariant='bold'>E</mi>
+          <mo>=</mo>
+          <mfrac>
+            <mi>Q</mi>
+            <mrow>
+              <msup><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup>
+                                    <mo>+</mo><msup><mi>y</mi><mn>2</mn></msup>
+                                    <mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>)</mo></mrow><mfrac bevelled="true"><mn>3</mn><mn>2</mn></mfrac></msup>
+            </mrow>
+          </mfrac>
+          <mi>x</mi><mover><!-- i-hat --><mi mathvariant="bold">&imath;</mi><mo>^</mo></mover>
+          <mo>+</mo>
+          <mfrac>
+            <mi>Q</mi>
+            <mrow>
+              <msup><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup>
+                                    <mo>+</mo><msup><mi>y</mi><mn>2</mn></msup>
+                                    <mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>)</mo></mrow><mfrac bevelled="true"><mn>3</mn><mn>2</mn></mfrac></msup>
+            </mrow>
+          </mfrac>
+          <mi>y</mi><mover><!-- j-hat --><mi mathvariant="bold">&jmath;</mi><mo>^</mo></mover>
+          <mo>+</mo>
+          <mfrac>
+            <mi>Q</mi>
+            <mrow>
+              <msup><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup>
+                                    <mo>+</mo><msup><mi>y</mi><mn>2</mn></msup>
+                                    <mo>+</mo><msup><mi>z</mi><mn>2</mn></msup><mo>)</mo></mrow><mfrac bevelled="true"><mn>3</mn><mn>2</mn></mfrac></msup>
+            </mrow>
+          </mfrac>
+          <mi>z</mi><mover><!-- k-hat --><mi mathvariant="bold">k</mi><mo>^</mo></mover>
+        </math>
+        <aside>
+          <p>
+           Symmetries will occur again and again with increasing importance in mathematics and physics.
+           Learning to recognize and expoloit them will pay high dividends in time.
+          </p>
+        </aside>
+        <p>
+          Comparing these two expressions for <math xmlns="http://www.w3.org/1998/Math/MathML" display="E">
+          <mi mathvariant='bold'>E</mi></math> reveals that math and physics can frequently be simplified
+          by choosing a representation that reflects the symmetry of the problem.
+        </p>
+
+        <br class="clear">
+        <hr>
+        <!--<span class="floatright">Next: <a href = "gaussianSurfaces.html">Gauss's Law Examples</a></span> -->
+        <br class="clear">
+        <hr>
+    </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+
+    var f;
+    var framework;
+    var drawingSurface;
+    var renderer;
+
+
+    function tryLog(string)
+    {
+      if(this.console)
+      {
+        console.log(string);
+      }
+    }
+
+    /*
+     * Create the charges and register them with the renderer. Edit this
+     * to change the charge configuration modeled in this illustration.
+     */
+    function placeCharges(fieldRenderer)
+    {
+      var charge1;
+      var charge2;
+
+      // Each charge has a charge, then x, y, z coordinates.
+      // Each of these is a floating point number.
+      charge1 = new Charge(  1.0, -30.0,  0.0, 0.0);
+      charge2 = new Charge( -1.0,  30.0,  0.0, 0.0);
+
+      fieldRenderer.addCharge(charge1)
+                   .addCharge(charge2);
+
+      return fieldRenderer;
+    }
+
+    drawingSurface = document.getElementById('drawingSurface');
+    // Charge, position, vector density in lines/unit charge.
+    f              = new Charge(5.0, 0.0, 0.0, 0.0, 5.0);
+    // Vector field, f, and scale factor.
+    renderer       = new SimpleVectorField(f, 1.0);
+    renderer.addStartPoints(f.getStartPoints(0,               2.0));
+    //renderer.addStartPoints(f.getStartPoints(    Math.PI / 4, 3.0));
+    //renderer.addStartPoints(f.getStartPoints(    Math.PI / 2, 3.0));
+    //renderer.addStartPoints(f.getStartPoints(3 * Math.PI / 4, 3.0));
+    framework      = new FieldRenderer(drawingSurface, renderer);
+
+    framework.start();
+  </script>
+  <script type="text/javascript">
+    "use strict";
+    var error;
+    var txt;
+    var canvasSupported = !!window.HTMLCanvasElement;
+    if (canvasSupported)
+    { 
+      var myCanvas       = document.createElement('canvas');
+      var gl             = myCanvas.getContext("experimental-webgl")
+                           || myCanvas.getContext("webgl");
+      if (!gl)
+      {
+        txt = "Your browser supports the HTML5 canvas, but does not support WebGL."
+      }
+    }
+    else
+    {
+      txt = "Your browser does not support the HTML5 canvas, which is required for WebGL."
+    }
+
+    if (txt != null)
+    {
+        txt += " To see the examples on this page, please get a <a href"
+            +  "= 'http://get.webgl.org/'>browser that supports WebGL</a>.";
+        error = document.getElementById("nowebgl");
+        error.innerHTML=txt;
+        error.style.display="block";
+    }
+  </script>
+    <script type="text/javascript" src="../../js/vizit.js"></script>
+</body>
+</html>

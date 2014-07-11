@@ -1,0 +1,12 @@
+aside
+{
+  padding-right: 10px;
+  float:         left;
+  width:         220px;
+}
+aside p
+{
+  font-size: larger;
+  font-style: italic;
+  color: green;
+}
