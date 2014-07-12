@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 VizIT Solutions
+ * Copyright 2013-2014 VizIT Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /**
- * Javascript object to wrap a vertex buffer and an index buffer.
+ * Javascript object to wrap Float32Arrays for vertices and the indices into the vertex array.
  *
  * @param {Integer} maxVertices_ The maximum number of verticies that can be stored.
  * @param {Integer} maxIndices_  The maximum number of indices that can be stored.
@@ -70,6 +70,11 @@ function IndexedVertices(maxVertices_, maxIndices_)
     return vertices;
   }
 
+  this.pushVertex  = function(vertex)
+  {
+    vertices[nvertices++] = vertex;
+  }
+
   this.setIndices  = function(indices)
   {
     indices = indices;
@@ -80,8 +85,15 @@ function IndexedVertices(maxVertices_, maxIndices_)
     return indices;
   }
 
+  this.pushIndex  = function(index)
+  {
+    indices[nindices++] = index;
+  }
+
   maxIndices  = maxIndices_;
   maxVertices = maxVertices_;
+  nindices    = 0;
+  nvertices   = 0;
 
   vertices    = new Float32Array(3*maxVertices);
   indices     = new Uint16Array(maxIndices);

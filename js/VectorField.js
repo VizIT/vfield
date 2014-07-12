@@ -23,27 +23,15 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
   // to generate the vectors
   var ds;
   var f;
-  // Indices into the vertices indicating the order in which they are drawn.
-  var indices;
   var maxVectors;
   var nvectors;
   /** Scale factor between the electric field and physical coordinates. */
   var scale;
   var startPoints;
-  // The Float32Array containg the vertices for each vector.
-  var vertices;
 
   this.setMaxVectors = function(maxVectors_)
   {
-    if (maxVectors_ != maxVectors)
-    {
-      maxVectors = maxVectors_;
-      if (startPoints && startPoints.length > 0)
-      {
-        vertices   = new Float32Array(6*3*maxVectors*startPoints.length);
-        indices    = new Uint16Array(10*maxVectors*startPoints.length);
-      }
-    }
+    maxVectors = maxVectors_;
     return this;
   }
 
@@ -98,7 +86,7 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
    * 
    * @param arrowSize  A scale factor for the arrow head.
    */
-  this.generateVector      = function(x0, y0, z0, field, f, arrowSize, arrowScale, narrows, vertices, indices, scale)
+  this.generateVector      = function(x0, y0, z0, field, f, arrowSize, arrowScale, narrows, scale, indexedVertices)
   {
     /** The component of the arrow head along the vector. */
     var asx, asy, asz;
@@ -182,62 +170,64 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
     y5     = y1 - asy - n2y;
     z5     = z1 - asz - n2z;
 
-    // Six vertices per vector, 3 coordinates per vertex
-    vertexIndex             = narrows*6*3;
-    indexIndex              = narrows*10;
+    // The tip of the vector
     nexusIndex              = narrows*6+1;
-        
 
+    // NOTE this is in the innermost loop of an event handler - be careful of performance.
     // The base of the vector
-    vertices[vertexIndex++] = x0;
-    vertices[vertexIndex++] = y0;
-    vertices[vertexIndex++] = z0;
-    indices[indexIndex++]   = narrows*6;
+    indexedVertices.pushVertex(x0);
+    indexedVertices.pushVertex(y0);
+    indexedVertices.pushVertex(z0);
+    indexedVertices.pushIndex(narrows*6);
     // The head of the vector
-    vertices[vertexIndex++] = x1;
-    vertices[vertexIndex++] = y1;
-    vertices[vertexIndex++] = z1;
-    indices[indexIndex++]   = nexusIndex;
-    // One pair of lines for the arrow head
-    vertices[vertexIndex++] = x2;
-    vertices[vertexIndex++] = y2;
-    vertices[vertexIndex++] = z2;
-    indices[indexIndex++]   = narrows*6+2;
-    indices[indexIndex++]   = nexusIndex;
-    vertices[vertexIndex++] = x3;
-    vertices[vertexIndex++] = y3;
-    vertices[vertexIndex++] = z3;
-    indices[indexIndex++]   = narrows*6+3;
-    indices[indexIndex++]   = nexusIndex;
-    vertices[vertexIndex++] = x4;
-    vertices[vertexIndex++] = y4;
-    vertices[vertexIndex++] = z4;
-    indices[indexIndex++]   = narrows*6+4;
-    indices[indexIndex++]   = nexusIndex;
-    vertices[vertexIndex++] = x5;
-    vertices[vertexIndex++] = y5;
-    vertices[vertexIndex++] = z5;
-    indices[indexIndex++]   = narrows*6+5;
-    indices[indexIndex++]   = nexusIndex;
+    indexedVertices.pushVertex(x1);
+    indexedVertices.pushVertex(y1);
+    indexedVertices.pushVertex(z1);
+    indexedVertices.pushIndex(nexusIndex);
+    // Two pair of lines for the arrow head
+    indexedVertices.pushVertex(x2);
+    indexedVertices.pushVertex(y2);
+    indexedVertices.pushVertex(z2);
+    indexedVertices.pushIndex(narrows*6+2);
+    indexedVertices.pushIndex(nexusIndex);
+    indexedVertices.pushVertex(x3);
+    indexedVertices.pushVertex(y3);
+    indexedVertices.pushVertex(z3);
+    indexedVertices.pushIndex(narrows*6+3);
+    indexedVertices.pushIndex(nexusIndex);
+    indexedVertices.pushVertex(x4);
+    indexedVertices.pushVertex(y4);
+    indexedVertices.pushVertex(z4);
+    indexedVertices.pushIndex(narrows*6+4);
+    indexedVertices.pushIndex(nexusIndex);
+    indexedVertices.pushVertex(x5);
+    indexedVertices.pushVertex(y5);
+    indexedVertices.pushVertex(z5);
+    indexedVertices.pushIndex(narrows*6+5);
+    indexedVertices.pushIndex(nexusIndex);
   }
 
-  /*
+  /**
    * Trace a field line starting at the given x, y, z coordinates, generating
    * vectors along the field line.
    * Each step of length ds has components ((fx/f)*ds, (fy/f)*ds, (fz/f)*ds).
    * Vertices is usually a Float32Array of size 3*6*maxVectors.
    *
-   * @param f            A vector valued function. Must implement a getField(x,y,z)
-   *                     method.
-   * @param x0, y0, z0   Start following the field line from these coordinates.
-   * @param sign         Positive if we follow along the field direction, negative if
-   *                     we run contrary to it.
-   * @param maxVectors   The maximum number of arrows to draw. Each arrow requires
-   *                     6 verticies and 10 indices. Or 6*3 + 10 = 28 floating point
-   *                     numbers.
-   * @param priorVectors The number of vectors generated on prior passes through trace.
+   * @param f             A vector valued function. Must implement a getField(x,y,z)
+   *                      method.
+   * @param x0, y0, z0    Start following the field line from these coordinates.
+   * @param sign          Positive if we follow along the field direction, negative if
+   *                      we run contrary to it.
+   * @param maxVectors    The maximum number of arrows to draw. Each arrow requires
+   *                      6 verticies and 10 indices. Or 6*3 + 10 = 28 floating point
+   *                      numbers.
+   * @param priorVectors  The number of vectors generated on prior passes through trace.
+   *
+   * @param {float} scale Scale factor between the electric field and physical coordinates.
+   *
+   * @param {IndexedVertices} An object holding a vertex list and index list.
    */
-  this.trace = function(f, x0, y0, z0, sign, maxVectors, priorVectors, scale)
+  this.trace = function(f, x0, y0, z0, sign, maxVectors, priorVectors, scale, indexedVertices)
   {
     // The distance traversed along the field line.
     var S;
@@ -270,7 +260,7 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
 
       if (S >= nextVector)
       {
-        this.generateVector(x, y, z, field, fMagnitude, arrowSize, arrowScale, priorVectors + nvectors, vertices, indices, scale);
+        this.generateVector(x, y, z, field, fMagnitude, arrowSize, arrowScale, priorVectors + nvectors, scale, indexedVertices);
         nextVector = S + Math.max(fMagnitude * 1.2 * scale, 1);
         nvectors++;
       }
@@ -293,19 +283,16 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
     nstartPoints = startPoints.length;
     nvectors     = 0;
 
+    indexedVertices = new IndexedVertices(6*maxVectors*nstartPoints, 10*maxVectors*nstartPoints);
+
     for(i=0; i<nstartPoints; i++)
     {
       startPoint    = startPoints[i];
       startPoint[4] = nvectors;
-      nvectors += this.trace(f, startPoint[0], startPoint[1], startPoint[2], startPoint[3], maxVectors, nvectors, scale);
+      // Compute the vectors from this field line, and load them into indexedVertices
+      nvectors += this.trace(f, startPoint[0], startPoint[1], startPoint[2], startPoint[3], maxVectors, nvectors, scale, indexedVertices);
     }
 
-    indexedVertices = {
-                        vertices:  vertices,
-                        indices:   indices,
-                        nindices:  nvectors * 10,
-                        nvertices: nvectors * 3 * 6
-                      };
     return indexedVertices;
   }
 
@@ -316,12 +303,6 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
   maxVectors  = maxVectors_;
   scale       = scale_;
   startPoints = startPoints_;
-
-  if (maxVectors > 0 && startPoints && startPoints.length > 0)
-  {
-    vertices   = new Float32Array(6*3*maxVectors*startPoints.length);
-    indices    = new Uint16Array(10*maxVectors*startPoints.length);
-  }
 }
 
 

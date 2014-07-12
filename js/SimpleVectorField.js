@@ -143,9 +143,9 @@ function SimpleVectorField(f_, scale_)
     // TODO IndexedBuffer here?
     indexedVertices        = generator.generateField();
 
-    indexedBuffer.vertices = glUtility.createBuffer(indexedVertices.vertices);
-    indexedBuffer.indices  = glUtility.createIndexBuffer(indexedVertices.indices);
-    indexedBuffer.nindices = indexedVertices.nindices;
+    indexedBuffer.vertices = glUtility.createBuffer(indexedVertices.getVertices());
+    indexedBuffer.indices  = glUtility.createIndexBuffer(indexedVertices.getIndices());
+    indexedBuffer.nindices = indexedVertices.getNindices();
 
     indexedBuffers[0]      = indexedBuffer;
 
