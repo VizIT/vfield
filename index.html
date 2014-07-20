@@ -198,35 +198,43 @@
     }
 
     /*
-     * Create the charges and register them with the renderer. Edit this
+     * Create the charges and package them into a charges collection. Edit this
      * to change the charge configuration modeled in this illustration.
      */
     function placeCharges(fieldRenderer)
     {
       var charge1;
       var charge2;
+      var charge3;
+      var charges;
 
       // Each charge has a charge, then x, y, z coordinates.
       // Each of these is a floating point number.
-      charge1 = new Charge(  1.0, -30.0,  0.0, 0.0);
-      charge2 = new Charge( -1.0,  30.0,  0.0, 0.0);
+      charge1 = new Charge(  20.0, -50.0,   0.0, 0.0, 1.0);
+      charge2 = new Charge(  20.0,  50.0,   0.0, 0.0, 1.0);
+      charge3 = new Charge(  20.0,   0.0,  50.0, 0.0, 1.0);
 
-      fieldRenderer.addCharge(charge1)
-                   .addCharge(charge2);
+      charges = new Charges();
+      charges.addCharge(charge1);
+      charges.addCharge(charge2);
+      charges.addCharge(charge3);
 
-      return fieldRenderer;
+      return charges;
     }
 
     drawingSurface = document.getElementById('drawingSurface');
     // Charge, position, vector density in lines/unit charge.
-    f              = new Charge(5.0, 0.0, 0.0, 0.0, 5.0);
+    f              = new Charge(+5.0, 0.0, 0.0, 0.0, 5.0);
+    //f              = placeCharges();
     // Vector field, f, and scale factor.
     renderer       = new SimpleVectorField(f, 1.0);
+    renderer.setMaxVectors(30);
     renderer.addStartPoints(f.getStartPoints(0,               2.0));
     //renderer.addStartPoints(f.getStartPoints(    Math.PI / 4, 3.0));
     //renderer.addStartPoints(f.getStartPoints(    Math.PI / 2, 3.0));
     //renderer.addStartPoints(f.getStartPoints(3 * Math.PI / 4, 3.0));
     framework      = new FieldRenderer(drawingSurface, renderer);
+    framework.setScale(5);
 
     framework.start();
   </script>

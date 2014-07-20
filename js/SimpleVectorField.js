@@ -49,6 +49,8 @@ function SimpleVectorField(f_, scale_)
   var projectionMatrix;
   var scale;
   var startPoints;
+  // Has this renderer started - do not render in response to events if not.
+  var started;
 
 
   this.setArrowScale       = function(scale)
@@ -128,7 +130,10 @@ function SimpleVectorField(f_, scale_)
 
   this.render              = function()
   {
-    renderer.drawIndexedLines(projectionMatrix, modelViewMatrix, color, indexedBuffers);
+    if (started)
+    {
+      renderer.drawIndexedLines(projectionMatrix, modelViewMatrix, color, indexedBuffers);
+    }
   }
 
   this.start               = function()
@@ -148,6 +153,7 @@ function SimpleVectorField(f_, scale_)
     indexedBuffer.nindices = indexedVertices.getNindices();
 
     indexedBuffers[0]      = indexedBuffer;
+    started                = true;
 
     this.render();
   }
@@ -158,7 +164,8 @@ function SimpleVectorField(f_, scale_)
   indexedBuffers = new Array();
   /* Default color */
   color          = new Float32Array([0.8, 0.3, 0.3, 1]);
-  maxVectors     = 3;
+  maxVectors     = 5;
   scale          = scale_;
   startPoints    = new Array();
+  started        = false;
 }

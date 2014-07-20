@@ -236,9 +236,9 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
     var i;
     // Location along the field line where we will draw the next vector.
     var nextVector;
-    // Offset into points array where we are writing the curent point.
-    // Advances by 3 for every point.
-    var offset;
+    var nvectors;
+    // The vector function thinks we are at a sink and should stop tracing a field line.
+    var shouldStop;
     var x, y, z;
 
     S          = 0;
@@ -247,8 +247,9 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
     x          = x0;
     y          = y0;
     z          = z0;
+    shouldStop = false;
 
-    while (nvectors < maxVectors)
+    while (nvectors < maxVectors && !shouldStop)
     {
       field            = f.getField(x, y, z);
       fMagnitude       = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
@@ -269,6 +270,9 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
       y += sign * field[1]/fMagnitude * ds;
       z += sign * field[2]/fMagnitude * ds;
       S += ds;
+      shouldStop = f.shouldStop(sign, x, y, z);
+      
+      console.log("S: " + S + " Next: " + nextVector + " fx: " + field[0] + " fy: " + field[1] + " fz: " + field[2] + " stop: " + shouldStop);
     }
     return nvectors;
   }

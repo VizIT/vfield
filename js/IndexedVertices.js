@@ -85,6 +85,9 @@ function IndexedVertices(maxVertices_, maxIndices_)
     return indices;
   }
 
+  /**
+   * Push an index onto the end of the list while incrementing the nindices count.
+   */
   this.pushIndex  = function(index)
   {
     indices[nindices++] = index;

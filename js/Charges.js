@@ -142,6 +142,39 @@ function Charge(Q_, x_, y_, z_, rho_)
 
       return seedPoints;
     }
+
+    this.shouldStop      = function(sgn, x, y, z)
+    {
+      var minR2;
+      var r2;
+      var should;
+      var tmp;
+
+      minR2  = 4;
+      should = false;
+
+      // If we are tracing a field line forward to a positive charge
+      // or backwards to a negative charge, skip the computation.
+      // This corresponds to tracing a field line from a negative charge
+      // to a negative charge, or from a positive charge to a positive
+      // charge - where the field line should not terminate.
+      if (sgn * Q < 0.0)
+      {
+          tmp = position[0]-x;
+          r2  = tmp*tmp;
+
+          tmp = position[1]-y;
+          r2 += tmp*tmp;
+
+          tmp = position[2]-z;
+          r2 += tmp*tmp;
+
+          should = r2 < minR2;
+      }
+
+      return should;
+    }
+
 }
 
 /**
@@ -177,7 +210,28 @@ function Charges()
         return charges;
     }
 
-    /*
+    /**
+     * Get start points using, for now, preset values of phi0 and r
+     */
+    this.getStartPoints = function()
+    {
+      var r0     = 6.0;
+      var phi    = 0.0;
+      var dphi   = 0.0;
+      var points = new Array();
+      var charge;
+
+      for(var i=0; i<n; i++)
+      {
+        charge = charges[i];
+        points = points.concat(charge.getStartPoints(phi, r0));
+        phi   += dphi;
+      }
+
+      return points;
+    }
+
+    /**
      * Comnpute the field at x, y, z resulting from our charge
      * configuration.
      */
@@ -200,316 +254,38 @@ function Charges()
       }
       return field;
     }
-}
-
-
-function FluxLine(charges_, chargeDistributions_)
-{
-    // Lines that make up the arrow are drawn with this length.
-    var arrowSize;
-    // The sum of ds along the path increments by this much between arrows.
-    var arrowSpacing;
-    // A Float32Array containing two lines (four points) for each arrow.
-    var arrows;
-    var distributions;
-    // Each point represents a distance ds along the field line.
-    var ds;
-    // The charge configuration we are drawing the field lines for.
-    var charges   = charges_
-    // The maximum number of points along the line to trace.
-    var maxPoints = 0;
-    // The number of points along the line actually computed.
-    var npoints;
-    // The number of arrows drawn along the flux line. There are twice this number of lines.
-    var narrows;
-    // The Float32Array containg the points along the line.
-    var points;
-    // Whether to trace the line along or in opposition to the electric field.
-    var sign;
-    // The starting location for the field line.
-    var startX;
-    var startY;
-    var startZ;
-
-    distributions = chargeDistributions_;
-
-    this.getArrows    = function()
-    {
-        return arrows;
-    }
-
-    this.setMaxPoints = function(maxPoints_)
-    {
-        if (maxPoints_ != maxPoints)
-        {
-            maxPoints = maxPoints_;
-            points    = new Float32Array(3*maxPoints);
-            arrows    = new Float32Array(maxPoints);
-        }
-        return this;
-    }
-
-    this.getMaxPoints = function()
-    {
-      return maxPoints;
-    }
-
-    this.setArrowSize    = function(size)
-    {
-      arrowSize = size;
-      return this;
-    }
-
-    this.getArrowSize    = function()
-    {
-      return arrowSize;
-    }
-
-    this.setArrowSpacing = function(spacing)
-    {
-      arrowSpacing = spacing;
-      return this;
-    }
-
-    this.getArrowSpacing = function()
-    {
-      return arrowSpacing;
-    }
-
-    this.getNarrows   = function()
-    {
-      return narrows;
-    }
-
-    this.getNpoints      = function()
-    {
-        return npoints;
-    }
-
-    this.getPoints       = function()
-    {
-        return points;
-    }
-
-    this.setDs           = function(ds_)
-    {
-        ds = ds_;
-        return this;
-    }
-
-    this.getDs           = function()
-    {
-        return ds;
-    }
-
-    this.setSign         = function(sign_)
-    {
-        sign   = sign_;
-        return this;
-    }
-
-    this.getSign         = function()
-    {
-        return sign;
-    }
-
-    this.setStartX       = function(startX_)
-    {
-        startX   = startX_;
-        return this;
-    }
-
-    this.getStartX       = function()
-    {
-        return startX;
-    }    
-
-    this.setStartY       = function(startY_)
-    {
-        startY   = startY_;
-        return this;
-    }
-
-    this.getStartY       = function()
-    {
-        return startY;
-    }
-
-    this.setStartZ       = function(startZ_)
-    {
-        startZ   = startZ_;
-        return this;
-    }
-
-    this.getStartZ       = function()
-    {
-        return startZ;
-    }
-
-    /*
-     * Generate two lines as an arrow head along the field line indicating the
-     * direction of the electric field.
-     */
-    this.drawArrow          = function(x0, y0, z0, field, f, arrowSize, narrows)
-    {
-        var asx;
-        var asy;
-        var asz;
-        var exnorm;
-        var eynorm;
-        var eznorm;
-        // A vector normal to the Electric field.
-        var nx;
-        var ny;
-        var nz;
-        var offset;
-        var resize;
-        var x1;
-        var y1;
-        var z1;
-        var x2;
-        var y2;
-        var z2;
-
-        exnorm = field[0]/f;
-        eynorm = field[1]/f;
-        eznorm = field[2]/f;
-
-        if (eznorm != 0)
-        {
-            // Start with nx, ny = 1, then E dot n = 0 gives
-            nx     = 1;
-            ny     = 1;
-            nz     = -(field[0]+field[1])/field[2];
-        }
-        else if (eynorm != 0)
-        {
-            // Start with nx, nz = 1, then E dot n = 0 gives
-            nx     = 1;
-            ny     = -(field[0]+field[2])/field[1];
-            nz     = 1;
-        }
-        else
-        {
-            // Start with ny, nz = 1, then E dot n = 0 gives
-            nx     = -(field[1]+field[2])/field[0];
-            ny     = 1;
-            nz     = 1;
-        }
-
-        // Normalize and multipley by the arrow size
-        resize = arrowSize/Math.sqrt(nx*nx + ny*ny + nz*nz);
-
-        nx     = nx*resize;
-        ny     = ny*resize;
-        nz     = nz*resize;
-
-        asx    = arrowSize*exnorm;
-        asy    = arrowSize*eynorm;
-        asz    = arrowSize*eznorm;
-
-        x1     = x0 - asx + nx;
-        y1     = y0 - asy + ny;
-        z1     = z0 - asz + nz;
-
-        x2     = x0 - asx - nx;
-        y2     = y0 - asy - ny;
-        z2     = z0 - asz - nz;
-
-        offset            = narrows*12;
-
-        arrows[offset]    = x1;
-        arrows[offset+1]  = y1;
-        arrows[offset+2]  = z1;
-        arrows[offset+3]  = x0;
-        arrows[offset+4]  = y0;
-        arrows[offset+5]  = z0;
-        arrows[offset+6]  = x0;
-        arrows[offset+7]  = y0;
-        arrows[offset+8]  = z0;
-        arrows[offset+9]  = x2;
-        arrows[offset+10] = y2;
-        arrows[offset+11] = z2;
-
-    }
 
     /**
-     * Add the fields from charge distributions into an existing field array.
+     * Determine if tracing a field line should stop.
+     *
+     * @param {double} x0 The initial x start point of the traced field line.
+     *
+     * @param {double} y0 The initial y start point of the traced field line.
+     *
+     * @param {double} z0 The initial z start point of the traced field line.
+     *
+     * @param {double} sgn
+     *
+     * @param {double} x
+     *
+     * @param {double} y
+     *
+     * @param {double} z
+     *
      */
-    this.addDistributionFields = function(f, distributions, x, y, z)
+    this.shouldStop    = function(sgn, x, y, z)
     {
-      var ndistributions;
-      var newfield;
+      var charge;
+      var should;
 
-      ndistributions = distributions.length;
+      should = false;
 
-      for(var i=0; i<ndistributions; i++)
+      for(var i=0; i<n & !should; i++)
       {
-        newfield = distributions[i].getField(x, y, z)
-        f[0]    += newfield[0];
-        f[1]    += newfield[1];
-        f[2]    += newfield[2];
+        charge = charges[i];
+        should = charge.shouldStop(sgn, x, y, z);
       }
-      return f;
-    }
-
-    /*
-     * Trace a field line starting at the given x, y, z coordinates.
-     * Each step of length ds has components (Ex/E*ds, Ey/E*ds, Ez/E*ds).
-     * points is usually a Float32Array of size 3*maxPoints.
-     */
-    this.trace = function()
-    {
-        // The distance traversed along the field line since the last arrow was drawn.
-        var deltaS;
-        var f;
-        var field;
-        var i;
-        // Offset into points array where we are writing the curent point.
-        // Advances by 3 for every point.
-        var offset;
-        var x;
-        var y;
-        var z;
-
-        deltaS  = 0;
-        narrows = 0;
-        x       = startX;
-        y       = startY;
-        z       = startZ;
-
-        for(i=0; i<maxPoints; i++)
-        {
-            offset           = 3*i;
-            points[offset]   = x;
-            points[offset+1] = y;
-            points[offset+2] = z;
-            field            = charges.getField(x, y, z);
-            field            = this.addDistributionFields(field, distributions, x, y, z)
-            f                = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
-
-            if (f == 0)
-            {
-                // No field here - no possible flux line
-                break;
-            }
-
-            x      += sign * field[0]/f * ds;
-            y      += sign * field[1]/f * ds;
-            z      += sign * field[2]/f * ds;
-
-            deltaS += ds;
-
-            if (deltaS > arrowSpacing)
-            {
-                deltaS = 0;
-                this.drawArrow(x, y, z, field, f, arrowSize, narrows);
-                narrows++;
-            }
-        }
-
-        // The number of points populating this array.
-        npoints = i;
+      return should;
     }
 }
 

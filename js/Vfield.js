@@ -59,9 +59,9 @@ function FieldRenderer(drawingSurface_, renderer_)
     renderer.start();
   }
 
-  this.zoomBy = function(delta)
+  this.setScale           = function(scale_)
   {
-    scale += delta;
+    scale = scale_;
     if (scale < 1)
     {
       scale = 1;
@@ -70,6 +70,11 @@ function FieldRenderer(drawingSurface_, renderer_)
     projectionMatrix     = glUtility.generateOrthographicMatrix(scale, scale, -scale, scale);
     renderer.setProjectionMatrix(projectionMatrix);
     this.render();
+  }
+
+  this.zoomBy = function(delta)
+  {
+    this.setScale(scale+delta);
   }
 
   drawingSurface = drawingSurface_;
