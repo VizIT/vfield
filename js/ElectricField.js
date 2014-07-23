@@ -17,29 +17,30 @@
  */
 
 /**
- * Wrapper for a simple vector field, rendered in the simplest way possible.
+ * Representation of charges and their associated field lines. Given a set of charges
+ * draw the field lines along with directional arrows from the given start points.
  *
- * @param f_              A vector function. It must impliment getField(x, y, z)
- * @param scale_ {Double} The length of the vector is scaled b y this factor before
- *                        drawing to the screen. It represents the comparative scale
- *                        of the electric forle to physical coordinates as drawn on
- *                        the screen.
+ * @param charges_        Set of point and distributed charges. It must impliment
+ *                        getField(x, y, z).
  *
  * @constructor
  */
-function SimpleVectorField(f_, scale_)
+function ElectricField(charges_)
 {
-  /** How the normal to the arrow shaft scales with the length of the vector. */
-  var arrowScale;
   /** General size parameter for the arrowheads. */
   var arrowSize;
+  /** The sum of ds along the path increments by this much between arrows. */
+  var arrowSpacing;
+  /** The charges generate the field. */
+  var charges;
   var color;
-  /** The vector field */
-  var f;
+  var ds;
+  var fluxLineVBOs;
   var generator;
   /** A wrapper around the WebGL context, gl. */
   var glUtility;
-  var indexedBuffers;
+  /** The max number of points while tracing out a field line. */
+  var maxPoints;
   /** The maximum number of vectors to be drawn per field line. */
   var maxVectors;
   /** Actually draws the vector field */
@@ -47,7 +48,6 @@ function SimpleVectorField(f_, scale_)
   // Model-View matrix for use in all programs.
   var modelViewMatrix;
   var projectionMatrix;
-  var scale;
   var startPoints;
   // Has this renderer started - do not render in response to events if not.
   var started;
@@ -131,40 +131,45 @@ function SimpleVectorField(f_, scale_)
   {
     if (started)
     {
-      renderer.drawIndexedLines(projectionMatrix, modelViewMatrix, color, indexedBuffers);
+      renderer.renderLines(projectionMatrix, modelViewMatrix, color, fluxLineVBOs);
     }
   }
 
+  /**
+   * Setup and render a set of flux lines. Each flux line is computed, then set as a VBO
+   * on the GPU, minimizing the client side JS storage.
+   */
   this.start               = function()
   {
-    var indexedBuffer;
-    var indexedVertices;
+    var fluxLine;
+    var nstartPoints;
+    var point;
 
-    indexedBuffer          = new Object();
-    renderer               = new LineRenderer(glUtility);
+    renderer               = new FluxLineRenderer(glUtility);
     // Introduce variables and defaults for maxVectors and arrowSize.
-    generator              = new VectorFieldGenerator(f, startPoints, maxVectors, arrowSize, arrowScale, scale);
-    // TODO IndexedBuffer here?
-    indexedVertices        = generator.generateField();
+    generator              = new FluxLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
 
-    indexedBuffer.vertices = glUtility.createBuffer(indexedVertices.getVertices());
-    indexedBuffer.indices  = glUtility.createIndexBuffer(indexedVertices.getIndices());
-    indexedBuffer.nindices = indexedVertices.getNindices();
-
-    indexedBuffers[0]      = indexedBuffer;
+    nstartPoints           = startPoints.length;
+    for (var i=nstartPoints-1; i>=0; --i)
+    {
+      point    = startPoints[i];
+      fluxLine = generator.generate(point[0], point[1], point[2], point[3]);
+      fluxLineVBOs.push(new FluxLineVBO(glUtility, fluxLine));
+    }
     started                = true;
 
     this.render();
   }
   
-  arrowScale     = 0.5;
   arrowSize      = 0.3;
-  f              = f_;
-  indexedBuffers = new Array();
+  arrowSpacing   = 1.2;
+  charges        = charges_;
+  fluxLineVBOs   = new Array();
   /* Default color */
   color          = new Float32Array([0.8, 0.3, 0.3, 1]);
+  ds             = 0.3;
+  maxPoints      = 5000;
   maxVectors     = 5;
-  scale          = scale_;
   startPoints    = new Array();
   started        = false;
 }

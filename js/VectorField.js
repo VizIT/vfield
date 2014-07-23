@@ -272,7 +272,7 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
       S += ds;
       shouldStop = f.shouldStop(sign, x, y, z);
       
-      console.log("S: " + S + " Next: " + nextVector + " fx: " + field[0] + " fy: " + field[1] + " fz: " + field[2] + " stop: " + shouldStop);
+      // console.log("S: " + S + " Next: " + nextVector + " fx: " + field[0] + " fy: " + field[1] + " fz: " + field[2] + " stop: " + shouldStop);
     }
     return nvectors;
   }

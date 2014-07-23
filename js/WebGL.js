@@ -1,16 +1,19 @@
-  /* Copyright 2013 VizIT Solutions
+/**
+ * Copyright 2013-2014 Vizit Solutions
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License. */
 /**
  * General wrapper around the WebGLRenderingContext to include a number
  * of common functions.
@@ -22,7 +25,7 @@ function GLUtility(drawingSurface)
   var gl;
 
   // Fetch a WebGL context from the identified canvas.
-  this.getGLContext   = function(drawingSurface)
+  this.createGLContext   = function(drawingSurface)
   {
       // Work with a canvas by getting a 2d or 3d context
       // Here we get a 3d context, experimental-webgl. The context
@@ -43,6 +46,11 @@ function GLUtility(drawingSurface)
       }
 
       return gl;
+  }
+
+  this.getGLContext   = function()
+  {
+    return gl;
   }
 
   // Create and compile a vertex or fragment shader as given by the shader type.
@@ -107,12 +115,14 @@ function GLUtility(drawingSurface)
       return indexBuffer;
   }
 
-  // Bind a buffer to a vertex shader attribute,
-  // Each atttribute takes size elements of the given type.
-  // There are stride bytes separating the beginning of each element.
-  // Data begins offset bytes into the array.
-  // Note that zero stride indicates also indicates values are adjacent.
-  function bindBuffer(gl, vertexBuffer, attribute, program, size, type, stride, offset)
+  /**
+   * Bind a buffer to a vertex shader attribute,
+   * Each atttribute takes size elements of the given type.
+   * There are stride bytes separating the beginning of each element.
+   * Data begins offset bytes into the array.
+   * Note that zero stride indicates also indicates values are adjacent.
+   */
+  function bindBuffer(vertexBuffer, attribute, program, size, type, stride, offset)
   {
       // Binding an object in Open GL makes it the target of subsequent operations.
       gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -345,4 +355,5 @@ function GLUtility(drawingSurface)
 
      return mat3;
  }
+ gl = createGLContext(drawingSurface);
 }
