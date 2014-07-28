@@ -71,6 +71,7 @@ function SurfaceGeometry(nvertices_, nindices_)
     return normals;
   }
 }
+
   function GeometryEngine()
   {
   }
@@ -124,11 +125,15 @@ function SurfaceGeometry(nvertices_, nindices_)
     }
   }
 
+  // Will be common prototype for each shape, allowing all instances of
+  // each shape to be drawn with the same vertices, transformed as needed.
+  GeometryEngine.vertexRegistry = new GeometryEngine.VertexRegistry();
+
   /**
    * Rebuild this as a cube with the first four indices forming a unit square
    * centered at the origin.
    */
-  GeometryEngine.square          = function()
+  GeometryEngine.Square          = function()
   {
     var bottom;
     /**
@@ -188,20 +193,21 @@ function SurfaceGeometry(nvertices_, nindices_)
 
       surfaceGeometry.setNvertices(12);
       surfaceGeometry.setNindices(6);
-      
     }
+
     /**
      * Retrieve vertex buffers from the registry if the already exist,
-     * otherwise build and register them.
+     * otherwise build and register them. Depends on the a VertexRegistry
+     * prototype.
      */
-    this.getVertexBuffers    = function(gl, vertexRegistry)
+    this.getVertexBuffers    = function(glUtility)
     {
       var geometry;
       var vertices;
 
-      if (vertexRegistry.hasVertices(shape.value))
+      if (this.hasVertices(shape.value))
       {
-        vertices = vertexRegistry.retrieveVertices(shape.value);
+        vertices = this.retrieveVertices(shape.value);
       }
       else
       {
@@ -209,21 +215,24 @@ function SurfaceGeometry(nvertices_, nindices_)
         // possibly generating each array then the vbo individually.
         // Three coordinates for each of four vertices that define a square.
         geometry  = new SurfaceGeometry(4, 6);
+        // TODO Does this effect optimization of this method?
         vertices = {};
         this.computeGeometry(geometry, boundingBox);
-        vertices.vertices = createBuffer(gl, geometry.getVertices());
-        vertices.normals  = createBuffer(gl, geometry.getNormals());
-        vertices.indices  = createIndexBuffer(gl, geometry.getIndices());
-        vertexRegistry.registerVertices(shape.value, vertices);
+        vertices.vertices = glUtility.createBuffer(geometry.getVertices());
+        vertices.normals  = glUtility.createBuffer(geometry.getNormals());
+        vertices.indices  = glUtility.createIndexBuffer(geometry.getIndices());
+        this.registerVertices(shape.value, vertices);
       }
       return vertices;
     }
   }
 
+  GeometryEngine.Square.prototype = GeometryEngine.vertexRegistry;
+
   /**
    * A unit cylinder centered about the origin, and oriented along the z-axis.
    */
-  GeometryEngine.cylinder          = function()
+  GeometryEngine.Cylinder          = function()
   {
     var baseRadius;
     var bottom;
@@ -389,7 +398,7 @@ function SurfaceGeometry(nvertices_, nindices_)
   /**
    * A fixed radius sphere. Use the model view matrix to position and scale it.
    */
-  GeometryEngine.sphere  = function()
+  GeometryEngine.Sphere  = function()
   {
     var nlatitude;
     var nlongitude;

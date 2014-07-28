@@ -178,7 +178,7 @@ function Charge(Q_, x_, y_, z_, rho_)
 }
 
 /**
- * A collection of point charges. TODO Is this still useful?
+ * A collection of charges, both point charges and charge distributions.
  */
 function Charges()
 {
@@ -187,20 +187,21 @@ function Charges()
     var ncharges;
     var ndistributions;
 
-    // Add a charge to the configuration of charges represented by
-    // this object. Defined here so we can use it in the constructor.
-    // TODO - return this
+    /**
+     * Add a charge to the configuration of charges represented by
+     * this object. Defined here so we can use it in the constructor.
+     */
     this.addCharge = function(charge)
     {
       ncharges = charges.push(charge);
-      return charges;
+      return this;
     }
 
     // If any charges are passed into the constructor, add them immediatly
     // to the set.
     for (var i=0; i<arguments.length; i++)
     {
-      ncharges = this.addCharge(arguments[i]);
+      this.addCharge(arguments[i]);
     }
 
     this.getNcharges = function()
@@ -213,22 +214,44 @@ function Charges()
       return charges;
     }
 
+    this.addDistribution = function(distribution)
+    {
+      ndistributions = distributions.push(distribution);
+      return this;
+    }
+
+    this.getNdistributions = function()
+    {
+      return ndistributions;
+    }
+
+    this.getDistributions  = function()
+    {
+      return distributions;
+    }
+
     /**
      * Get start points using, for now, preset values of phi0 and r
      */
     this.getStartPoints = function()
     {
+      var i;
       var r0     = 6.0;
       var phi    = 0.0;
       var dphi   = 0.0;
       var points = new Array();
       var charge;
 
-      for(var i=0; i<ncharges; i++)
+      for(i=0; i<ncharges; i++)
       {
         charge = charges[i];
         points = points.concat(charge.getStartPoints(phi, r0));
         phi   += dphi;
+      }
+
+      for (i=0; i<ndistributions; i++)
+      {
+        points = points.concat(distributions[i].getStartPoints());
       }
 
       return points;
@@ -255,6 +278,15 @@ function Charges()
         field[1]      += currentField[1];
         field[2]      += currentField[2];
       }
+
+      for (i=0; i<ndistributions; i++)
+      {
+        currentField   = distributions[i].getField(x, y, z);
+        field[0]      += currentField[0];
+        field[1]      += currentField[1];
+        field[2]      += currentField[2];
+      }
+
       return field;
     }
 

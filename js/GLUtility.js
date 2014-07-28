@@ -180,7 +180,7 @@ function GLUtility(drawingSurface_)
    *                                               Note that zero stride indicates also indicates values are adjacent.
    * @param offset       {integer}                 Data begins offset bytes into the array.
    */
-  this.bindBuffer        = function(vertexBuffer, attribute, program, size, type, stride, offset)
+  this.bindBuffer        = function(vertexBuffer, attribute, size, type, stride, offset)
   {
       // Binding an object in Open GL makes it the target of subsequent operations.
       gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);

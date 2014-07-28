@@ -88,9 +88,9 @@ function FieldLineRenderer(glUtility_)
     for(var i=0; i<nlines; i++)
     {
       // Bind the buffer to the positon attribute
-      glUtility.bindBuffer(fieldLineVBOs[i].fieldLineBufferHandle, 'position', program, 3, gl.FLOAT, 12, 0);
+      glUtility.bindBuffer(fieldLineVBOs[i].fieldLineBufferHandle,      positionHandle, 3, gl.FLOAT, 12, 0);
       gl.drawArrays(gl.LINE_STRIP, 0, fieldLineVBOs[i].npoints);
-      glUtility.bindBuffer(fieldLineVBOs[i].fieldDirectionBufferHandle, 'position', program, 3, gl.FLOAT, 12, 0);
+      glUtility.bindBuffer(fieldLineVBOs[i].fieldDirectionBufferHandle, positionHandle, 3, gl.FLOAT, 12, 0);
       gl.drawArrays(gl.LINES, 0, fieldLineVBOs[i].narrows);
     }
   }

@@ -140,9 +140,9 @@ function ChargeRenderer(glUtility_, callback, home)
 
     // Charge buffer positions to the position attribute
     // Stride of 16 because there is an extra float for the charge
-    glUtility.bindBuffer(chargeBuffer, positionHandle, program, 3, gl.FLOAT, 16, 0);
+    glUtility.bindBuffer(chargeBuffer, positionHandle, 3, gl.FLOAT, 16, 0);
     // First Q is after the first position, 12 bytes into the array.
-    glUtility.bindBuffer(chargeBuffer, chargeHandle, program, 1, gl.FLOAT, 16, 12);
+    glUtility.bindBuffer(chargeBuffer, chargeHandle, 1, gl.FLOAT, 16, 12);
 
     gl.drawArrays(gl.POINTS, 0, charges.getNcharges());
   }

@@ -53,6 +53,7 @@ function ElectricField(charges_, home_)
   var maxPoints;
   /** The maximum number of vectors to be drawn per field line. */
   var maxVectors;
+  var normalMatrix;
   /** Actually draws the electric field */
   var fieldLineRenderer;
   // Model-View matrix for use in all programs.
@@ -61,6 +62,7 @@ function ElectricField(charges_, home_)
   var startPoints;
   // Has this renderer started - do not render in response to events if not.
   var started;
+  var surfaceRenderer;
 
   this.setArrowScale       = function(scale)
   {
@@ -115,6 +117,12 @@ function ElectricField(charges_, home_)
   this.setModelViewMatrix  = function(modelViewMatrix_)
   {
     modelViewMatrix = modelViewMatrix_;
+    // This straight copy of the modelView matrix into the normalMatrix
+    // is only valid when we are restricted to translations and rotations.
+    // Scale can be handled by renormalizing - the introduction of shearing
+    // or non-uniform scaling would require the use of (M^-1)^T.
+    // See gl-matrix's mat3.normalFromMat4
+    normalMatrix    = glUtility.extractRotationPart(modelViewMatrix, normalMatrix);
   }
 
   this.getModelViewMatrix  = function()
@@ -141,9 +149,9 @@ function ElectricField(charges_, home_)
   {
     if (started)
     {
-      //glUtility.clear();
       fieldLineRenderer.renderLines(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
       chargeRenderer.render(projectionMatrix, modelViewMatrix, chargeBuffer, charges);
+      surfaceRenderer.render(projectionMatrix, modelViewMatrix, normalMatrix, charges.getDistributions());
     }
   }
 
@@ -193,13 +201,14 @@ function ElectricField(charges_, home_)
     this.setupFieldLines(charges, maxPoints, ds, arrowSize, arrowSpacing);
     chargeRenderer    = new ChargeRenderer(glUtility, latch.countDown, home);
     this.setupCharges(charges);
+    surfaceRenderer   = new SurfaceRenderer(glUtility);
     latch.countDown();
   }
   
   arrowSize      = 0.3;
   arrowSpacing   = 1.2;
   charges        = charges_;
-  fieldLineVBOs   = new Array();
+  fieldLineVBOs  = new Array();
   /* Default color */
   color          = new Float32Array([0.8, 0.3, 0.3, 1]);
   ds             = 0.3;
@@ -209,6 +218,9 @@ function ElectricField(charges_, home_)
   latch          = new CountdownLatch(3, this.started.bind(this));
   maxPoints      = 1000;
   maxVectors     = 5;
+  normalMatrix   = new Float32Array([1, 0, 0,
+                                     0, 1, 0,
+                                     0, 0, 1]);
   startPoints    = new Array();
   started        = false;
 }

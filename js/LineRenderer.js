@@ -107,7 +107,7 @@ function LineRenderer(glUtility_)
     {
       indexedBuffer = indexedBuffers[i];
       // Bind the buffer to the positon attribute
-      glUtility.bindBuffer(indexedBuffer.vertices, positionHandle,  program, 3, gl.FLOAT, 12, 0);
+      glUtility.bindBuffer(indexedBuffer.vertices, positionHandle,  3, gl.FLOAT, 12, 0);
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexedBuffer.indices);
       gl.drawElements(gl.LINES, indexedBuffer.nindices, gl.UNSIGNED_SHORT, 0);
     }
