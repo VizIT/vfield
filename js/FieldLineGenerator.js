@@ -1,7 +1,7 @@
 /**
- * Compute a flux line from a given starting point for a configuration
+ * Compute a field line from a given starting point for a configuration
  * of point charges and charge distributions. The expectation is that
- * the object will be reused to compute flux lines for multiple start
+ * the object will be reused to compute field lines for multiple start
  * points, which will be immediatly loaded as VBOs onto the GPU.
  *
  * @param {Charges} charges      A collection of point charges and charge
@@ -19,7 +19,7 @@
  *                               directional arrows.
  *
  */
-function FluxLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
+function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
 {
     // Lines that make up the arrow are drawn with this length.
     var arrowSize;
@@ -29,8 +29,8 @@ function FluxLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
     var ds;
     // The charge configuration we are drawing the field lines for.
     var charges;
-    // Container for generated flux line and direction indicators.
-    var fluxLine;
+    // Container for generated field line and direction indicators.
+    var fieldLine;
     // The maximum number of points along the line to trace.
     var maxPoints;
 
@@ -87,7 +87,7 @@ function FluxLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
      * Generate two lines as an arrow head along the field line indicating the
      * direction of the electric field.
      */
-    this.drawArrow          = function(x0, y0, z0, field, f, arrowSize, fluxLine)
+    this.drawArrow          = function(x0, y0, z0, field, f, arrowSize, fieldLine)
     {
       var asx;
       var asy;
@@ -152,7 +152,7 @@ function FluxLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
       y2     = y0 - asy - ny;
       z2     = z0 - asz - nz;
 
-      fluxLine.pushArrow(x1, y1, z1, x0, y0, z0, x2, y2, z2);
+      fieldLine.pushArrow(x1, y1, z1, x0, y0, z0, x2, y2, z2);
     }
 
     /**
@@ -200,18 +200,18 @@ function FluxLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
     x       = x0;
     y       = y0;
     z       = z0;
-    fluxLine.reset();
+    fieldLine.reset();
 
     for(i=0; i<maxPoints; i++)
     {
-      fluxLine.pushPoint(x, y, z);
+      fieldLine.pushPoint(x, y, z);
       field            = charges.getField(x, y, z);
       //field            = this.addDistributionFields(field, distributions, x, y, z)
       f                = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
 
       if (f == 0)
       {
-        // No field here - no possible flux line
+        // No field here - no possible field line
         break;
       }
 
@@ -224,10 +224,10 @@ function FluxLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
       if (deltaS > arrowSpacing)
       {
         deltaS = 0;
-        this.drawArrow(x, y, z, field, f, arrowSize, fluxLine);
+        this.drawArrow(x, y, z, field, f, arrowSize, fieldLine);
       }
     }
-    return fluxLine;
+    return fieldLine;
   }
 
   arrowSize     = arrowSize_;
@@ -235,6 +235,6 @@ function FluxLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
   charges       = charges_;
   ds            = ds_;
   maxPoints     = maxPoints_;
-  fluxLine      = new FluxLine(maxPoints);
+  fieldLine     = new FieldLine(maxPoints);
 }
 

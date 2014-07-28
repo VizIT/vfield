@@ -182,32 +182,35 @@ function Charge(Q_, x_, y_, z_, rho_)
  */
 function Charges()
 {
+    var charges;
+    var distributions;
+    var ncharges;
+    var ndistributions;
+
     // Add a charge to the configuration of charges represented by
     // this object. Defined here so we can use it in the constructor.
+    // TODO - return this
     this.addCharge = function(charge)
     {
-        n = charges.push(charge);
-        return n;
+      ncharges = charges.push(charge);
+      return charges;
     }
-
-    var n       = 0;
-    var charges = new Array();
 
     // If any charges are passed into the constructor, add them immediatly
     // to the set.
     for (var i=0; i<arguments.length; i++)
     {
-        n = this.addCharge(arguments[i]);
+      ncharges = this.addCharge(arguments[i]);
     }
 
-    this.getCount = function()
+    this.getNcharges = function()
     {
-        return n;
+      return ncharges;
     }
 
     this.getCharges = function()
     {
-        return charges;
+      return charges;
     }
 
     /**
@@ -221,7 +224,7 @@ function Charges()
       var points = new Array();
       var charge;
 
-      for(var i=0; i<n; i++)
+      for(var i=0; i<ncharges; i++)
       {
         charge = charges[i];
         points = points.concat(charge.getStartPoints(phi, r0));
@@ -243,7 +246,7 @@ function Charges()
       // The field vector
       var field          = new Array(0, 0, 0);
 
-      for(var i=0; i<n; i++)
+      for(var i=0; i<ncharges; i++)
       {
         charge         = charges[i];
 
@@ -257,12 +260,6 @@ function Charges()
 
     /**
      * Determine if tracing a field line should stop.
-     *
-     * @param {double} x0 The initial x start point of the traced field line.
-     *
-     * @param {double} y0 The initial y start point of the traced field line.
-     *
-     * @param {double} z0 The initial z start point of the traced field line.
      *
      * @param {double} sgn
      *
@@ -287,6 +284,10 @@ function Charges()
       }
       return should;
     }
+
+    ncharges      = 0;
+    charges       = new Array();
+    distributions = new Array();
 }
 
 

@@ -57,6 +57,16 @@ function GLUtility(drawingSurface_)
     return gl;
   }
 
+  this.clearColor        = function(r, g, b, a)
+  {
+    gl.clearColor(r, g, b, a);
+  }
+
+  this.clear             = function()
+  {
+    gl.clear(gl.COLOR_BUFFER_BIT);
+  }
+
   /**
    * Create and compile a vertex or fragment shader as given by the shader type.
    */
@@ -193,11 +203,11 @@ function GLUtility(drawingSurface_)
   this.loadTexture       = function(src, textureIndex, callback)
   {
       var texture  = gl.createTexture();
-      var image        = new Image();
+      var image    = new Image();
       image.onload = function()
                      {
                        this.onTextureLoaded(image, texture, textureIndex, callback);
-                     }
+                     }.bind(this);
       image.src    = src;
       return texture;
   }
@@ -423,27 +433,3 @@ function GLUtility(drawingSurface_)
  drawingSurface = drawingSurface_;
  gl             = this.getGLContext();
 }
-
-/**
- * Defer execution of onDone until count tasks have compleated. Especially
- * useful to delay rendering until after textures are loaded.
- *
- * @param count_  {Integer}  Wait for count invocations of countDown.
- * @param onDone_ {function} A function invoked after countdown is invoked count_ times.
- */
-function countdownLatch(count_, onDone_)
-{
-  var count  = count_;
-  var onDone = onDone_;
-
-
-  this.countDown = function()
-  {
-    count--;
-    if (count <= 0)
-    {
-      onDone();
-    }
-  }
-}
-

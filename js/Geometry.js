@@ -244,12 +244,12 @@ function SurfaceGeometry(nvertices_, nindices_)
       return baseRadius;
     }
 
-    this.getShape  = function()
+    this.getShape      = function()
     {
       return shape;;
     }
 
-    this.getNindices = function()
+    this.getNindices   = function()
     {
       return 4*nslices+6;
     }
@@ -375,7 +375,7 @@ function SurfaceGeometry(nvertices_, nindices_)
         // TODO look for more effecient ways to allocate the storage
         // possibly generating each array then the vbo individually.
         geometry  = new SurfaceGeometry(4*nslices+6, 4*nslices+6);
-        vertices = {};
+        vertices  = {};
         this.computeGeometry(geometry);
         vertices.vertices  = createBuffer(gl, geometry.getVertices());
         vertices.normals   = createBuffer(gl, geometry.getNormals());
@@ -518,8 +518,8 @@ function SurfaceGeometry(nvertices_, nindices_)
         vertices = {};
         this.computeGeometry(geometry, intrinsicRadius, nlongitude, nlatitude);
         vertices.vertices = createBuffer(gl, geometry.getVertices());
-        vertices.normals   = createBuffer(gl, geometry.getNormals());
-        vertices.indices   = createIndexBuffer(gl, geometry.getIndices());
+        vertices.normals  = createBuffer(gl, geometry.getNormals());
+        vertices.indices  = createIndexBuffer(gl, geometry.getIndices());
         vertexRegistry.registerVertices(shape.value, vertices);
       }
       return vertices;

@@ -1,8 +1,9 @@
 "use strict";
 /**
- * JavaScript object for rendering a vector field.
+ * Common functionality for the various representations of a vector field.
  *
- * @param {HTMLCanvasElement} drawingSurface_ An HTML canvas into which we will render the model.
+ * @param {HTMLCanvasElement} drawingSurface_ An HTML canvas into which
+ *                                            we will render the model.
  *
  * @constructor
  */
@@ -49,7 +50,7 @@ function FieldRenderer(drawingSurface_, renderer_)
     return modelViewMatrix;
   }
 
-  this.render = function()
+  this.render             = function()
   {
     renderer.render();
   }

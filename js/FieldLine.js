@@ -1,14 +1,14 @@
 /**
- * Reusable container for a flux line and associated quantities.
+ * Reusable container for a field line and associated quantities.
  */
-function FluxLine(maxPoints)
+function FieldLine(maxPoints)
 {
   /** A Float32Array containing two lines (four points) for each arrow. */
   var arrows;
   var maxPoints;
-  /** The number of arrows drawn along the flux line. There are twice this number of lines. */
+  /** The number of arrows drawn along the field line. There are twice this number of lines. */
   var narrows;
-  /** The number of points in the flux line so far. */
+  /** The number of points in the field line so far. */
   var npoints;
   /** The Float32Array containg the points along the line.*/
   var points;

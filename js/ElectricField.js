@@ -20,31 +20,41 @@
  * Representation of charges and their associated field lines. Given a set of charges
  * draw the field lines along with directional arrows from the given start points.
  *
- * @param charges_        Set of point and distributed charges. It must impliment
- *                        getField(x, y, z).
+ * @param {Charges} charges_        Set of point and distributed charges. It must
+ *                                  impliment getField(x, y, z).
+ *
+ * @param {string}  [home_ = .]     A string giving the path to the efield
+ *                                  home directory if not the directory the
+ *                                  page is loaded from.
  *
  * @constructor
  */
-function ElectricField(charges_)
+function ElectricField(charges_, home_)
 {
   /** General size parameter for the arrowheads. */
   var arrowSize;
   /** The sum of ds along the path increments by this much between arrows. */
   var arrowSpacing;
+  var chargeBuffer;
+  var chargeRenderer;
   /** The charges generate the field. */
   var charges;
   var color;
   var ds;
-  var fluxLineVBOs;
+  var fieldLineVBOs;
   var generator;
   /** A wrapper around the WebGL context, gl. */
   var glUtility;
+  /** Home directory for resource loading. */
+  var home;
+  /** Wait for the setup to finish before rendering the first frame. */
+  var latch;
   /** The max number of points while tracing out a field line. */
   var maxPoints;
   /** The maximum number of vectors to be drawn per field line. */
   var maxVectors;
-  /** Actually draws the vector field */
-  var renderer;
+  /** Actually draws the electric field */
+  var fieldLineRenderer;
   // Model-View matrix for use in all programs.
   var modelViewMatrix;
   var projectionMatrix;
@@ -131,44 +141,73 @@ function ElectricField(charges_)
   {
     if (started)
     {
-      renderer.renderLines(projectionMatrix, modelViewMatrix, color, fluxLineVBOs);
+      //glUtility.clear();
+      fieldLineRenderer.renderLines(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
+      chargeRenderer.render(projectionMatrix, modelViewMatrix, chargeBuffer, charges);
     }
   }
 
+  this.setupCharges        = function(charges)
+  {
+    var generator;
+    var chargesArray;
+
+    generator    = new ChargeGenerator(charges);
+    chargesArray = generator.generate();
+    chargeBuffer = glUtility.createBuffer(chargesArray);
+  }
+
   /**
-   * Setup and render a set of flux lines. Each flux line is computed, then set as a VBO
+   * Setup and render a set of field lines. Each field line is computed, then set as a VBO
    * on the GPU, minimizing the client side JS storage.
    */
-  this.start               = function()
+  this.setupFieldLines     = function()
   {
-    var fluxLine;
+    var fieldLine;
+    var generator;
     var nstartPoints;
     var point;
 
-    renderer               = new FluxLineRenderer(glUtility);
     // Introduce variables and defaults for maxVectors and arrowSize.
-    generator              = new FluxLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
+    generator    = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
 
-    nstartPoints           = startPoints.length;
+    nstartPoints = startPoints.length;
     for (var i=nstartPoints-1; i>=0; --i)
     {
-      point    = startPoints[i];
-      fluxLine = generator.generate(point[0], point[1], point[2], point[3]);
-      fluxLineVBOs.push(new FluxLineVBO(glUtility, fluxLine));
+      point     = startPoints[i];
+      fieldLine = generator.generate(point[0], point[1], point[2], point[3]);
+      fieldLineVBOs.push(new FieldLineVBO(glUtility, fieldLine));
     }
-    started                = true;
+  }
 
+  this.started             = function()
+  {
+    started           = true;
     this.render();
+  }
+
+  this.start               = function()
+  {
+    glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
+    fieldLineRenderer = new FieldLineRenderer(glUtility);
+    this.setupFieldLines(charges, maxPoints, ds, arrowSize, arrowSpacing);
+    chargeRenderer    = new ChargeRenderer(glUtility, latch.countDown, home);
+    this.setupCharges(charges);
+    latch.countDown();
   }
   
   arrowSize      = 0.3;
   arrowSpacing   = 1.2;
   charges        = charges_;
-  fluxLineVBOs   = new Array();
+  fieldLineVBOs   = new Array();
   /* Default color */
   color          = new Float32Array([0.8, 0.3, 0.3, 1]);
   ds             = 0.3;
-  maxPoints      = 5000;
+  // Use ./ if home_ is undefined
+  home           = typeof home_ == 'undefined' ? "./" : home_;
+  // Wait for two textures to load, and this renderer to be started.
+  latch          = new CountdownLatch(3, this.started.bind(this));
+  maxPoints      = 1000;
   maxVectors     = 5;
   startPoints    = new Array();
   started        = false;

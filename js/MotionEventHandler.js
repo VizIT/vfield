@@ -17,6 +17,8 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
   var lastY;
   var mouseScale;
   var pinchScale;
+  /** Track if we are rendering a frame. */
+  var rendering;
   var target;
   var utility;
 
@@ -26,6 +28,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
   lastY         = null;
   mouseScale    = mouseScale_;
   pinchScale    = pinchScale_;
+  rendering     = false;
   target        = target_;
   utility       = utility_;
 
@@ -45,6 +48,16 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     }
     // Never found a match
     return -1;
+  }
+
+  /**
+   * Invoked via requestnamiation frame to produce one OpenGL frame per browser
+   * update. Prevents flickering textures and doubling vector and field lines.
+   */
+  this.render           = function()
+  {
+    target.render();
+    rendering = false;
   }
 
 
@@ -133,7 +146,11 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
       // an theta radians about the Y axis.
       utility.rotateBy(modelViewMatrix, deltaY/150, deltaX/150);
       target.setModelViewMatrix(modelViewMatrix);
-      target.render();
+      if (!rendering)
+      {
+        rendering = true;
+        requestAnimationFrame(this.render);
+      }
 
       // Replace the old touch with the new touch, and hence new location.
       activeTouches.splice(0, 1, newTouch); 
@@ -261,7 +278,11 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     // an theta radians about the Y axis.
     utility.rotateBy(modelViewMatrix, deltaY/30, deltaX/30);
     target.setModelViewMatrix(modelViewMatrix);
-    target.render();
+    if (!rendering)
+    {
+      rendering = true;
+      requestAnimationFrame(this.render);
+    }
 
     lastX = newX
     lastY = newY;

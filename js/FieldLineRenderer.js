@@ -17,7 +17,7 @@
  */
 
 /**
- * Render flux lines described by a combination of lines and line strips. Will
+ * Render field lines described by a combination of lines and line strips. Will
  * track VBOs for the lines, load the line rendering vector and fragment shaders,
  * and map the Float32Arrays describing the vertices to the shaders. Used, for
  * example, in field line rendering.
@@ -26,7 +26,7 @@
  *
  * @constructor
  */
-function FluxLineRenderer(glUtility_)
+function FieldLineRenderer(glUtility_)
 {
   /** WebGLRenderingContext */
   var gl;
@@ -71,12 +71,12 @@ function FluxLineRenderer(glUtility_)
     return program;
   }
 
-  this.renderLines = function(projectionMatrix, modelViewMatrix, color, fluxLineVBOs)
+  this.renderLines = function(projectionMatrix, modelViewMatrix, color, fieldLineVBOs)
   {
-    var fluxLineVBO;
+    var fieldLineVBO;
     var nlines;
 
-    nlines = fluxLineVBOs.length;
+    nlines = fieldLineVBOs.length;
     // Make this the currently active program
     gl.useProgram(program);
     gl.lineWidth(1);
@@ -88,10 +88,10 @@ function FluxLineRenderer(glUtility_)
     for(var i=0; i<nlines; i++)
     {
       // Bind the buffer to the positon attribute
-      glUtility.bindBuffer(fluxLineVBOs[i].fluxLineBufferHandle, 'position', program, 3, gl.FLOAT, 12, 0);
-      gl.drawArrays(gl.LINE_STRIP, 0, fluxLineVBOs[i].npoints);
-      glUtility.bindBuffer(fluxLineVBOs[i].fluxDirectionBufferHandle, 'position', program, 3, gl.FLOAT, 12, 0);
-      gl.drawArrays(gl.LINES, 0, fluxLineVBOs[i].narrows);
+      glUtility.bindBuffer(fieldLineVBOs[i].fieldLineBufferHandle, 'position', program, 3, gl.FLOAT, 12, 0);
+      gl.drawArrays(gl.LINE_STRIP, 0, fieldLineVBOs[i].npoints);
+      glUtility.bindBuffer(fieldLineVBOs[i].fieldDirectionBufferHandle, 'position', program, 3, gl.FLOAT, 12, 0);
+      gl.drawArrays(gl.LINES, 0, fieldLineVBOs[i].narrows);
     }
   }
 
