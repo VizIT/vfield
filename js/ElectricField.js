@@ -64,14 +64,14 @@ function ElectricField(charges_, home_)
   var started;
   var surfaceRenderer;
 
-  this.setArrowScale       = function(scale)
+  this.setArrowSpacing       = function(spacing)
   {
-    arrowScale = scale;
+    arrowSpacing = spacing;
   }
 
-  this.getArrowScale       = function()
+  this.getArrowSpacing       = function()
   {
-    return arrowScale;
+    return arrowSpacing;
   }
 
   this.setArrowSize        = function(size)
@@ -149,7 +149,8 @@ function ElectricField(charges_, home_)
   {
     if (started)
     {
-      fieldLineRenderer.renderLines(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
+      glUtility.clear();
+      fieldLineRenderer.render(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
       chargeRenderer.render(projectionMatrix, modelViewMatrix, chargeBuffer, charges);
       surfaceRenderer.render(projectionMatrix, modelViewMatrix, normalMatrix, charges.getDistributions());
     }
@@ -176,15 +177,18 @@ function ElectricField(charges_, home_)
     var nstartPoints;
     var point;
 
-    // Introduce variables and defaults for maxVectors and arrowSize.
-    generator    = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
-
     nstartPoints = startPoints.length;
-    for (var i=nstartPoints-1; i>=0; --i)
+    if (nstartPoints > 0)
     {
-      point     = startPoints[i];
-      fieldLine = generator.generate(point[0], point[1], point[2], point[3]);
-      fieldLineVBOs.push(new FieldLineVBO(glUtility, fieldLine));
+      // Introduce variables and defaults for maxVectors and arrowSize.
+      generator    = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
+
+      for (var i=nstartPoints-1; i>=0; --i)
+      {
+        point     = startPoints[i];
+        fieldLine = generator.generate(point[0], point[1], point[2], point[3]);
+        fieldLineVBOs.push(new FieldLineVBO(glUtility, fieldLine));
+      }
     }
   }
 

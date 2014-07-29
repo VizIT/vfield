@@ -27,22 +27,16 @@ function FieldRenderer(drawingSurface_, renderer_)
   var scale;
   /** Start points for tracing field lines. */
   var startPoints;
-  var vertexRegistry;
 
   this.getContext          = function()
   {
-      return glUtility.getGLContext();
+    return glUtility.getGLContext();
   }
 
   this.setModelViewMatrix = function(modelViewMatrix_)
   {
     modelViewMatrix = modelViewMatrix_;
-    // This straight copy of the modelView matrix into the normalMatrix
-    // is only valid when we are restricted to translations and rotations.
-    // Scale can be handled by renormalizing - the introduction of shearing
-    // or non-uniform scaling would require the use of (M^-1)^T.
-    // See gl-matrix's mat3.normalFromMat4
-    normalMatrix    = glUtility.extractRotationPart(modelViewMatrix, normalMatrix);
+    renderer.setModelViewMatrix(modelViewMatrix);
   }
 
   this.getModelViewMatrix = function()
@@ -83,7 +77,6 @@ function FieldRenderer(drawingSurface_, renderer_)
   scale          = 5;
   renderer       = renderer_;
   renderer.setGlUtility(glUtility);
-  vertexRegistry = new GeometryEngine.VertexRegistry();
   // Initially an identity matrix, modified by movementEventHandler.
   modelViewMatrix = new Float32Array([1, 0, 0, 0,
                                       0, 1, 0, 0,
