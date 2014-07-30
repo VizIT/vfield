@@ -234,31 +234,36 @@ function SurfaceGeometry(nvertices_, nindices_)
    */
   GeometryEngine.Cylinder          = function()
   {
+    var baseHeight;
     var baseRadius;
     var bottom;
-    var height;
     var nslices;
     var shape;
     var top;
 
-    baseRadius  = .5;
-    height      = 1;
-    bottom      = -height/2;
+    baseHeight  = 1.0;
+    baseRadius  = 1.0;
+    bottom      = -baseHeight/2;
     nslices     = 30;
     shape       = GeometryEngine.Shapes.CYLINDER;
-    top         = height/2;
+    top         = baseHeight/2;
+
+    this.getBaseHeight = function()
+    {
+      return baseHeight;
+    }
 
     this.getBaseRadius = function()
     {
       return baseRadius;
     }
 
-    this.getShape      = function()
+    this.getShape  = function()
     {
       return shape;;
     }
 
-    this.getNindices   = function()
+    this.getNindices = function()
     {
       return 4*nslices+6;
     }
@@ -267,7 +272,7 @@ function SurfaceGeometry(nvertices_, nindices_)
      * Generate vertices, normals and indices for the end caps and wall of the
      * cylinder.
      *
-     * @param {SurfaceGeometry} SurfaceGeometry Holder for the vertices, normals,
+     * @param {surfaceGeometry} surfaceGeometry Holder for the vertices, normals,
      *        and indices for the surface. Expected to have 4*nslices entries for
      *        each of these.
      */
@@ -370,14 +375,14 @@ function SurfaceGeometry(nvertices_, nindices_)
      * Retrieve vertex buffers from the registry if the already exist,
      * otherwise build and register them.
      */
-    this.getVertexBuffers    = function(gl, vertexRegistry)
+    this.getVertexBuffers    = function(glUtility)
     {
       var geometry;
       var vertices;
 
-      if (vertexRegistry.hasVertices(shape.value))
+      if (this.hasVertices(shape.value))
       {
-        vertices = vertexRegistry.retrieveVertices(shape.value);
+        vertices = this.retrieveVertices(shape.value);
       }
       else
       {
@@ -386,14 +391,16 @@ function SurfaceGeometry(nvertices_, nindices_)
         geometry  = new SurfaceGeometry(4*nslices+6, 4*nslices+6);
         vertices  = {};
         this.computeGeometry(geometry);
-        vertices.vertices  = createBuffer(gl, geometry.getVertices());
-        vertices.normals   = createBuffer(gl, geometry.getNormals());
-        vertices.indices   = createIndexBuffer(gl, geometry.getIndices());
-        vertexRegistry.registerVertices(shape.value, vertices);
+        vertices.vertices  = glUtility.createBuffer(geometry.getVertices());
+        vertices.normals   = glUtility.createBuffer(geometry.getNormals());
+        vertices.indices   = glUtility.createIndexBuffer(geometry.getIndices());
+        this.registerVertices(shape.value, vertices);
       }
       return vertices;
     }
   }
+
+  GeometryEngine.Cylinder.prototype = GeometryEngine.vertexRegistry;
 
   /**
    * A fixed radius sphere. Use the model view matrix to position and scale it.
