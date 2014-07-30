@@ -172,7 +172,7 @@ function SurfaceRenderer(glUtility_)
       gl.useProgram(program);
 
       gl.uniformMatrix4fv(globalModelViewMatrixHandle, false, globalModelViewMatrix);
-      gl.uniformMatrix4fv(normalMatrixHandle,          false, normalMatrix);
+      gl.uniformMatrix3fv(normalMatrixHandle,          false, normalMatrix);
       gl.uniformMatrix4fv(projectionMatrixHandle,      false, projectionMatrix);
 
       gl.uniform3f(ambientLightingHandle,     0.3, 0.3, 0.3);
