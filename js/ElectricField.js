@@ -42,6 +42,9 @@ function ElectricField(charges_, home_)
   var color;
   var ds;
   var fieldLineVBOs;
+  // Probably not have multiple Gaussian surfaces, but allow the rendering
+  // method to take arrays of surfaces.
+  var gaussianSurfaces;
   var generator;
   /** A wrapper around the WebGL context, gl. */
   var glUtility;
@@ -94,6 +97,20 @@ function ElectricField(charges_, home_)
     return color;
   }
 
+  this.addGaussianSurface  = function(surface)
+  {
+    gaussianSurfaces.push(surface);
+  }
+
+  /**
+   * Return the set of gaussian surfaces for this electric field model.
+   * Usually 0 or 1 surfaces.
+   */
+  this.getGaussianSurfaces = function()
+  {
+    return gaussianSurfaces;
+  }
+
   this.setGlUtility        = function(glUtility_)
   {
     glUtility = glUtility_;
@@ -135,6 +152,12 @@ function ElectricField(charges_, home_)
     projectionMatrix = projectionMatrix_;
   }
 
+  this.addStartPoint  = function(x_, y_, z_, sgn_)
+  {
+    startPoints.push(new Array(x_, y_, z_, sgn_));
+    return this;
+  }
+
   this.addStartPoints = function(startPoints_)
   {
     startPoints = startPoints.concat(startPoints_)
@@ -149,10 +172,24 @@ function ElectricField(charges_, home_)
   {
     if (started)
     {
+      var gl;
+
+      gl = glUtility.getGLContext();
       glUtility.clear();
       fieldLineRenderer.render(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
       chargeRenderer.render(projectionMatrix, modelViewMatrix, chargeBuffer, charges);
+
+      // Charge distributions and Gaussian surfaces have transparent elements.
+      gl.enable(gl.BLEND);
+      gl.enable(gl.CULL_FACE);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       surfaceRenderer.render(projectionMatrix, modelViewMatrix, normalMatrix, charges.getDistributions());
+      // Gaussian surfaces may cross charge distributions, draw them regardless of existing charges.
+      gl.disable(gl.DEPTH_TEST);
+      surfaceRenderer.render(projectionMatrix, modelViewMatrix, normalMatrix, gaussianSurfaces);
+      gl.enable(gl.DEPTH_TEST);
+      gl.disable(gl.BLEND);
+      gl.disable(gl.CULL_FACE);
     }
   }
 
@@ -209,22 +246,23 @@ function ElectricField(charges_, home_)
     latch.countDown();
   }
   
-  arrowSize      = 0.3;
-  arrowSpacing   = 1.2;
-  charges        = charges_;
-  fieldLineVBOs  = new Array();
+  arrowSize        = 0.3;
+  arrowSpacing     = 1.2;
+  charges          = charges_;
   /* Default color */
-  color          = new Float32Array([0.8, 0.3, 0.3, 1]);
-  ds             = 0.3;
+  color            = new Float32Array([0.8, 0.3, 0.3, 1]);
+  ds               = 0.3;
+  fieldLineVBOs    = new Array();
+  gaussianSurfaces = new Array();
   // Use ./ if home_ is undefined
-  home           = typeof home_ == 'undefined' ? "./" : home_;
+  home             = typeof home_ == 'undefined' ? "./" : home_;
   // Wait for two textures to load, and this renderer to be started.
-  latch          = new CountdownLatch(3, this.started.bind(this));
-  maxPoints      = 1000;
-  maxVectors     = 5;
-  normalMatrix   = new Float32Array([1, 0, 0,
-                                     0, 1, 0,
-                                     0, 0, 1]);
-  startPoints    = new Array();
-  started        = false;
+  latch            = new CountdownLatch(3, this.started.bind(this));
+  maxPoints        = 1000;
+  maxVectors       = 5;
+  normalMatrix     = new Float32Array([1, 0, 0,
+                                       0, 1, 0,
+                                       0, 0, 1]);
+  startPoints      = new Array();
+  started          = false;
 }

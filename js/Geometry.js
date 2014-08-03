@@ -1,4 +1,5 @@
 "use strict";
+
 /**
  * A holder for data used to draw a surface. Provide nverticies and nindices as the
  * size of vertex, normal, and index arrays.
@@ -196,7 +197,7 @@ function SurfaceGeometry(nvertices_, nindices_)
     }
 
     /**
-     * Retrieve vertex buffers from the registry if the already exist,
+     * Retrieve vertex buffers from the registry if they already exist,
      * otherwise build and register them. Depends on the a VertexRegistry
      * prototype.
      */
@@ -372,7 +373,7 @@ function SurfaceGeometry(nvertices_, nindices_)
     }
 
     /**
-     * Retrieve vertex buffers from the registry if the already exist,
+     * Retrieve vertex buffers from the registry if they already exist,
      * otherwise build and register them.
      */
     this.getVertexBuffers    = function(glUtility)
@@ -514,17 +515,17 @@ function SurfaceGeometry(nvertices_, nindices_)
     }
 
     /**
-     * Retrieve vertex buffers from the registry if the already exist,
+     * Retrieve vertex buffers from the registry if they already exist,
      * otherwise build and register them.
      */
-    this.getVertexBuffers    = function(gl, vertexRegistry)
+    this.getVertexBuffers    = function(glUtility)
     {
       var geometry;
       var vertices;
 
-      if (vertexRegistry.hasVertices(shape.value))
+      if (this.hasVertices(shape.value))
       {
-        vertices = vertexRegistry.retrieveVertices(shape.value);
+        vertices = this.retrieveVertices(shape.value);
       }
       else
       {
@@ -533,14 +534,16 @@ function SurfaceGeometry(nvertices_, nindices_)
         geometry  = new SurfaceGeometry((nlongitude+1)*(nlatitude+1), 6*nlongitude*nlatitude);
         vertices = {};
         this.computeGeometry(geometry, intrinsicRadius, nlongitude, nlatitude);
-        vertices.vertices = createBuffer(gl, geometry.getVertices());
-        vertices.normals  = createBuffer(gl, geometry.getNormals());
-        vertices.indices  = createIndexBuffer(gl, geometry.getIndices());
-        vertexRegistry.registerVertices(shape.value, vertices);
+        vertices.vertices = glUtility.createBuffer(geometry.getVertices());
+        vertices.normals  = glUtility.createBuffer(geometry.getNormals());
+        vertices.indices  = glUtility.createIndexBuffer(geometry.getIndices());
+        this.registerVertices(shape.value, vertices);
       }
       return vertices;
     }
   }
+
+  GeometryEngine.Sphere.prototype = GeometryEngine.vertexRegistry;
 
 
 
