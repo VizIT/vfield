@@ -30,6 +30,7 @@
  */
 function ChargeRenderer(glUtility_, callback, home)
 {
+  var boundTextures;
   var chargeHandle;
   /** WebGLRenderingContext */
   var gl;
@@ -122,17 +123,21 @@ function ChargeRenderer(glUtility_, callback, home)
     positiveChargeTexture = glUtility.loadTexture(home + "images/positiveCharge.png", positiveChargeIndex, callback);
   }
 
-  // XXX Change bind texture to take a pre existing handle
   this.bindTextures = function()
   {
-    glUtility.bindTexture(program, positiveChargeTexture, positiveChargeIndex, positiveChargeHandle);
     glUtility.bindTexture(program, negativeChargeTexture, negativeChargeIndex, negativeChargeHandle);
+    glUtility.bindTexture(program, positiveChargeTexture, positiveChargeIndex, positiveChargeHandle);
   }
 
   this.render       = function(projectionMatrix, modelViewMatrix, chargeBuffer, charges)
   {
     // Make this the currently active program
     gl.useProgram(program);
+
+    if (!boundTextures)
+    {
+      this.bindTextures();
+    }
 
     // TODO These only need be set when they change
     gl.uniformMatrix4fv(modelViewMatrixHandle,  false, modelViewMatrix);
@@ -142,13 +147,14 @@ function ChargeRenderer(glUtility_, callback, home)
     // Stride of 16 because there is an extra float for the charge
     glUtility.bindBuffer(chargeBuffer, positionHandle, 3, gl.FLOAT, 16, 0);
     // First Q is after the first position, 12 bytes into the array.
-    glUtility.bindBuffer(chargeBuffer, chargeHandle, 1, gl.FLOAT, 16, 12);
+    glUtility.bindBuffer(chargeBuffer, chargeHandle,   1, gl.FLOAT, 16, 12);
 
     gl.drawArrays(gl.POINTS, 0, charges.getNcharges());
   }
 
-  glUtility = glUtility_;
-  gl        = glUtility.getGLContext();
-  program   = this.createProgram();
+  boundTextures = false;
+  glUtility     = glUtility_;
+  gl            = glUtility.getGLContext();
+  program       = this.createProgram();
   this.loadTextures(home, callback);
 }
