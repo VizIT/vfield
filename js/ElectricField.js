@@ -258,7 +258,7 @@ function ElectricField(charges_, home_)
   home             = typeof home_ == 'undefined' ? "./" : home_;
   // Wait for two textures to load, and this renderer to be started.
   latch            = new CountdownLatch(3, this.started.bind(this));
-  maxPoints        = 1000;
+  maxPoints        = 3000;
   maxVectors       = 5;
   normalMatrix     = new Float32Array([1, 0, 0,
                                        0, 1, 0,
