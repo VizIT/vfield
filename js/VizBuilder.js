@@ -228,6 +228,77 @@ function VizBuilder()
   }
 
   /**
+   * Pull out the elements from a charged clylinder configuration object, and
+   * construct the corresponding charged cylinder.
+   *
+   * @param {object} config has the type "charged cylinder" with charge density
+   *                 rhoq, field line density rhof, inner redius r0, and outer
+   *                 radius r1. The section of the cylinder between (x0, y0, z0)
+   *                 and (x1, y1, z1) is drawn.
+   */
+  this.chargedCylinderBuilder   = function(config)
+  {
+    var chargedCylinder;
+    var name;
+    // Charge density and field lines per unit charge.
+    var rhoq, rhof;
+    // Center point of one end of the rendered section of an infinite cylinder.
+    var x0, y0, z0;
+    // The other end of the rendered section of the cylinder.
+    var x1, y1, z1;
+    // Inner and outer radii of the cylinder.
+    var r0, r1;
+
+    for (name in config)
+    {
+      if (name.toLowerCase() === "rhoq")
+      {
+        rhoq = config[name];
+      }
+      else if (name.toLowerCase() === "rhof")
+      {
+        rhof = config[name];
+      }
+      else if (name.toLowerCase() === "x0")
+      {
+        x0 = config[name];
+      }
+      else if (name.toLowerCase() === "y0")
+      {
+        y0 = config[name];
+      }
+      else if (name.toLowerCase() === "z0")
+      {
+        z0 = config[name];
+      }
+      else if (name.toLowerCase() === "x1")
+      {
+        x1 = config[name];
+      }
+      else if (name.toLowerCase() === "y1")
+      {
+        y1 = config[name];
+      }
+      else if (name.toLowerCase() === "z1")
+      {
+        z1 = config[name];
+      }
+      else if (name.toLowerCase() === "r0")
+      {
+        r0 = config[name];
+      }
+      else if (name.toLowerCase() === "r1")
+      {
+        r1 = config[name];
+      }
+    }
+
+    chargedCylinder = new ChargedCylinder(x0, y0, z0, x1, y1, z1, r0, r1, rhoq, rhof);
+
+    return chargedCylinder;
+  }
+
+  /**
    * Peek at the type of charge distribution, and dispatch the
    * config to the appropriate builder.
    */
@@ -241,7 +312,8 @@ function VizBuilder()
     var name;
     var type;
 
-    chargedPlaneRE = /\s*charged\s*plane\s*/i;
+    chargedPlaneRE    = /\s*charged\s*plane\s*/i;
+    chargedCylinderRE = /\s*charged\s*cylinder\s*/i;
 
     for (name in config)
     {
@@ -255,6 +327,10 @@ function VizBuilder()
     if (type.match(chargedPlaneRE))
     {
       distribution = this.chargedPlaneBuilder(config);
+    }
+    else if (type.match(chargedCylinderRE))
+    {
+      distribution = this.chargedCylinderBuilder(config);
     }
 
     return distribution;
