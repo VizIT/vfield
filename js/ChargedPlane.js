@@ -1,15 +1,16 @@
 /**
- * A charged plane with charge density sigma, field line density rho,
- * and bounding box {(x1, y1, z1), (x2, y2, z2), (x3, y3, z3), (x4, y4, z4)}.
+ * A charged plane with charge density chargeDensity, field line density fieldLineDensity,
+ * and bounding box {(x0, y0, z0), (x1, y1, z1), (x2, y2, z2), (x3, y3, z3)}.
  * The plane is actually infinite, however, for practical reasone we are
  * only concerned with displaying the section of the plane within the
  * bounding box.
+ * The number of field lines drawn is fieldLineDensity*chargeDensity*length.
  */
-function ChargedPlane(sigma_, rho_,
+function ChargedPlane(chargeDensity_, fieldLineDensity_,
+                      x0, y0, z0,
                       x1, y1, z1,
                       x2, y2, z2,
-                      x3, y3, z3,
-                      x4, y4, z4)
+                      x3, y3, z3)
 {
   /**
    * a: angle about the y axis
@@ -33,7 +34,7 @@ function ChargedPlane(sigma_, rho_,
   /** Unit normal to the plane */
   var normal;
   /** The density of field lines - lines per unit charge. */
-  var rho;
+  var fieldLineDensity;
   /**
    * Sa: Sin[a]
    * Sb: Sin[b]
@@ -41,7 +42,7 @@ function ChargedPlane(sigma_, rho_,
    */
   var sa, sb, sg;
   /** The charge density for the plane */
-  var sigma;
+  var chargeDensity;
   /**
    * Scale factors to transform the now flat rectangle into a unit rectangle.
    * sx: scale in the x direction
@@ -142,7 +143,7 @@ function ChargedPlane(sigma_, rho_,
     var top;
     var xpoint, ypoint;
 
-    d           = Math.abs(sigma*rho);
+    d           = Math.abs(chargeDensity*fieldLineDensity);
     startPoints = new Array();
 
     if (d>0)
@@ -152,7 +153,7 @@ function ChargedPlane(sigma_, rho_,
       ax          = a/Math.abs(sx);
       ay          = a/Math.abs(sy);
       done        = false;
-      sgn         = sigma > 0 ? 1 : -1;
+      sgn         = chargeDensity > 0 ? 1 : -1;
       top         =  0.5;
       bottom      = -0.5;
       left        = -0.5;
@@ -201,7 +202,7 @@ function ChargedPlane(sigma_, rho_,
         + (y-boundingBox[1])*normal[1]
         + (z-boundingBox[2])*normal[2]
 
-     E = twoPi*sigma;
+     E = twoPi*chargeDensity;
      if (d == 0)
      {
         EField[0] = 0;
@@ -228,9 +229,9 @@ function ChargedPlane(sigma_, rho_,
    */
   this.translateBoundingBox = function(boundingBox)
   {
-    tx = (x1 + x3) / 2;
-    ty = (y1 + y3) / 2;
-    tz = (z1 + z3) / 2;
+    tx = (x0 + x2) / 2;
+    ty = (y0 + y2) / 2;
+    tz = (z0 + z2) / 2;
   
     boundingBox[0]  -= tx;
     boundingBox[1]  -= ty;
@@ -250,25 +251,25 @@ function ChargedPlane(sigma_, rho_,
 
   this.zAxisRotation        = function(boundingBox)
   {
-    var dx1, dx2;
+    var dx0, dx1;
     /** Slope of two adjacent sides, the smaller of which is parallel to the x axis */
     var s1, s2;
     var tmpx, tmpy;
 
-    // x1-x4
-    dx1 = boundingBox[3] - boundingBox[0];
-    // x2-x1
-    dx2 = boundingBox[0] - boundingBox[9];
+    // x0-x3
+    dx0 = boundingBox[3] - boundingBox[0];
+    // x1-x0
+    dx1 = boundingBox[0] - boundingBox[9];
 
-    if (dx1 == 0 || dx2 == 0)
+    if (dx0 == 0 || dx1 == 0)
     {
       // If either side is already parallel to the X axis
       // suppress rotation about the z axis.
       g     = 0;
 
-      if (dx1 == 0 && dx2 == 0)
+      if (dx0 == 0 && dx1 == 0)
       {
-        // Both dx1 and dx2 are zero - rectangle is in the Y-Z plane.
+        // Both dx0 and dx1 are zero - rectangle is in the Y-Z plane.
         // If side 1 is not along the y axis
         if (boundingBox[4] - boundingBox[1] == 0)
         {
@@ -280,7 +281,7 @@ function ChargedPlane(sigma_, rho_,
           xside = 2;
         }
       }
-      else if (dx1 == 0)
+      else if (dx0 == 0)
       {
         // Side 1 is already parallel to the x-axis.
         xside = 1;
@@ -293,8 +294,8 @@ function ChargedPlane(sigma_, rho_,
     }
     else
     {
-      s1 = (y2-y1)/dx1;
-      s2 = (y3-y2)/dx2;
+      s1 = (y1-y0)/dx0;
+      s2 = (y2-y1)/dx1;
 
       if (Math.abs(s1) < Math.abs(s2))
       {
@@ -511,12 +512,12 @@ function ChargedPlane(sigma_, rho_,
     vertices = this.getVertexBuffers(glUtility);
 
     // RGBA positive (blue) or negative (red) charge
-    if (sigma > 0)
+    if (chargeDensity > 0)
     {
       // Switch to uniform4fv ?
       gl.uniform4f(program.getSurfaceColorHandle(), 0.05, 0.05, 0.8,  0.40);
     }
-    else if (sigma < 0)
+    else if (chargeDensity < 0)
     {
       gl.uniform4f(program.getSurfaceColorHandle(), 0.8,  0.05, 0.05, 0.40);
     }
@@ -535,12 +536,12 @@ function ChargedPlane(sigma_, rho_,
   }
 
   twoPi       = 6.28318530717958648;
-  sigma       = sigma_;
-  rho         = rho_;
-  boundingBox = new Array(x1, y1, z1,
+  chargeDensity      = chargeDensity_;
+  fieldLineDensity   = fieldLineDensity_;
+  boundingBox = new Array(x0, y0, z0,
+                          x1, y1, z1,
                           x2, y2, z2,
-                          x3, y3, z3,
-                          x4, y4, z4);
+                          x3, y3, z3);
 
   workingBoundingBox = boundingBox.slice(0);
 

@@ -1,29 +1,31 @@
 /**
  * A segment of an infinite charged line. Represented as a line from
- * (x0, y0, z0) to (x1, y1, z1) with linear charge density lambda.
+ * (x0, y0, z0) to (x1, y1, z1) with linear charge density chargeDensity.
+ * The number of field lines drawn is fieldLineDensity*chargeDensity*length.
  *
- * @param x0_     {Double} The x coordinate one end cap of the cylinder.
- * @param y0_     {Double} The y coordinate one end cap of the cylinder.
- * @param z0_     {Double} The z coordinate one end cap of the cylinder.
- * @param x1_     {Double} The x coordinate for the other end cap of the cylinder.
- * @param y1_     {Double} The y coordinate for the other end cap of the cylinder.
- * @param z1_     {Double} The z coordinate for the other end cap of the cylinder.
- * @param lambda_ {Double} The linear charge density on the line.
+ * @param x0_               {Double} The x coordinate one end cap of the cylinder.
+ * @param y0_               {Double} The y coordinate one end cap of the cylinder.
+ * @param z0_               {Double} The z coordinate one end cap of the cylinder.
+ * @param x1_               {Double} The x coordinate for the other end cap of the cylinder.
+ * @param y1_               {Double} The y coordinate for the other end cap of the cylinder.
+ * @param z1_               {Double} The z coordinate for the other end cap of the cylinder.
+ * @param chargeDensity_    {Double} The linear charge density on the line.
+ * @param fieldLineDensity_ {Double} The proportionality between field lines and charge.
  *
  * @constructor
  */
-function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, lambda_, rho_)
+function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDensity_)
 {
   /** Container for r,g,b,a color values. */
   var color;
   var height;
-  var lambda;
+  var chargeDensity;
   /** Transforms the base cylinder to the r=r1 cylinder. */
   var modelViewMatrix;
   /** Rotation angles around the y and z axes */
   var phi, theta;
   /** The density of field line per unit charge. */
-  var rho;
+  var fieldLineDensity;
   /** The inner and outer radius of the cylinder. */
   var r0, r1;
   /**
@@ -37,9 +39,9 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, lambda_, rho_)
   var x0, y0, z0;
   /** The coordinates of the other end cap of the cylinder. */
   var x1, y1, z1;
-  /** (x1,y1,z1) - (x0, y0, z0) used in distance calculations */
+  /** (x1,y1,z1) - (x0, y0, z0) used to find the normal */
   var x10, y10, z10;
-  /** |(x1,y1,z1) - (x0, y0, z0)| used in distance calculations */
+  /** |(x1,y1,z1) - (x0, y0, z0)| used to find the normal */
   var mag10;
 
 
@@ -209,11 +211,11 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, lambda_, rho_)
     sinpi4      = 0.707106781;
     startPoints = new Array();
 
-    if (rho != 0)
+    if (fieldLineDensity != 0)
     {
-      sgn         = this.sign(lambda);
+      sgn         = this.sign(chargeDensity);
 
-      npoints     = Math.max(2, Math.round(Math.abs(lambda*rho*height)));
+      npoints     = Math.max(2, Math.round(Math.abs(chargeDensity*fieldLineDensity*height)));
       s           = -0.5;
       ds          = 1/(npoints-1);
 
@@ -279,7 +281,7 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, lambda_, rho_)
     nmag = Math.sqrt(n.x*n.x + n.y*n.y + n.z*n.z);
 
     f    = new Array(3);
-    fmag = 2*lambda/nmag;
+    fmag = 2*chargeDensity/nmag;
 
     f[0] = fmag * n.x/nmag;
     f[1] = fmag * n.y/nmag;
@@ -293,12 +295,12 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, lambda_, rho_)
     this.fullRender(glUtility, surfaceProgram, modelViewMatrix, height, r0, r1, false);
   }
 
-  lambda = lambda_;
-  if (lambda > 0)
+  chargeDensity = chargeDensity_;
+  if (chargeDensity > 0)
   {
     color = new Color(0.05, 0.05, 0.8, 0.80);
   }
-  else if (lambda < 0)
+  else if (chargeDensity < 0)
   {
     color = new Color(0.8, 0.05, 0.05, 0.80);
   }
@@ -311,15 +313,15 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, lambda_, rho_)
   this.setColor(color);
 
   // Stock radius for a charged line.
-  r0     = 0;
-  r1     = 3;
-  rho    = rho_;
-  x0     = x0_;
-  y0     = y0_;
-  z0     = z0_;
-  x1     = x1_;
-  y1     = y1_;
-  z1     = z1_;
+  r0               = 0;
+  r1               = 3;
+  fieldLineDensity = fieldLineDensity_;
+  x0               = x0_;
+  y0               = y0_;
+  z0               = z0_;
+  x1               = x1_;
+  y1               = y1_;
+  z1               = z1_;
 
   this.translateBounds(this, x0, y0, z0, x1, y1, z1);
   this.zAxisRotation(this, x0, y0, x1, y1);
@@ -327,18 +329,18 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, lambda_, rho_)
   this.scale(this, z0, z1);
 
   // Restore these after the transformation is done.
-  x0     = x0_;
-  y0     = y0_;
-  z0     = z0_;
-  x1     = x1_;
-  y1     = y1_;
-  z1     = z1_;
+  x0               = x0_;
+  y0               = y0_;
+  z0               = z0_;
+  x1               = x1_;
+  y1               = y1_;
+  z1               = z1_;
 
-  modelViewMatrix = this.getCylinderModelView(tx, ty, tz, this.getBaseHeight(), this.getBaseRadius(), phi, theta);
-  x10             = x1-x0;
-  y10             = y1-y0;
-  z10             = z1-z0;
-  mag10           = Math.sqrt(x10*x10 + y10*y10 + z10*z10);
+  modelViewMatrix  = this.getCylinderModelView(tx, ty, tz, this.getBaseHeight(), this.getBaseRadius(), phi, theta);
+  x10              = x1-x0;
+  y10              = y1-y0;
+  z10              = z1-z0;
+  mag10            = Math.sqrt(x10*x10 + y10*y10 + z10*z10);
 }
 
 /**

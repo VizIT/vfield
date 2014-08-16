@@ -1,21 +1,22 @@
 /**
  * A segment of an infinite charged cylinder. Represented as a line from
- * (x0, y0, z0) to (x1, y1, z1) with volume charge density rhoq.
+ * (x0, y0, z0) to (x1, y1, z1) with volume charge density chargeDensity.
+ * The number of field lines drawn is fieldLineDensity*chargeDensity*length.
  *
- * @param x0_     {Double} The x coordinate one end cap of the cylinder.
- * @param y0_     {Double} The y coordinate one end cap of the cylinder.
- * @param z0_     {Double} The z coordinate one end cap of the cylinder.
- * @param x1_     {Double} The x coordinate for the other end cap of the cylinder.
- * @param y1_     {Double} The y coordinate for the other end cap of the cylinder.
- * @param z1_     {Double} The z coordinate for the other end cap of the cylinder.
- * @param r0_     {Double} The inner radios of the cylinder, 0 for a solid cylinder.
- * @param r1_     {Double} The outer radius of the cylinder.
- * @param rhoq_   {Double} The volume charge density within the cylinder. Related to linear charge density by lambda = Pi (r1*r1-r0*r0)*rho
- * @param rhof_   {Double} The ratio of field lines to charge.
+ * @param x0_               {Double} The x coordinate one end cap of the cylinder.
+ * @param y0_               {Double} The y coordinate one end cap of the cylinder.
+ * @param z0_               {Double} The z coordinate one end cap of the cylinder.
+ * @param x1_               {Double} The x coordinate for the other end cap of the cylinder.
+ * @param y1_               {Double} The y coordinate for the other end cap of the cylinder.
+ * @param z1_               {Double} The z coordinate for the other end cap of the cylinder.
+ * @param r0_               {Double} The inner radios of the cylinder, 0 for a solid cylinder.
+ * @param r1_               {Double} The outer radius of the cylinder.
+ * @param chargeDensity_    {Double} The volume charge density within the cylinder. Related to linear charge density by lambda = Pi (r1*r1-r0*r0)*rho
+ * @param fieldLineDensity_ {Double} The ratio of field lines to charge.
  *
  * @constructor
  */
-function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, rhoq_, rhof_)
+function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_, fieldLineDensity_)
 {
   var color;
   var height;
@@ -24,7 +25,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, rhoq_, rhof_)
   /** Rotation angles around the z and y axes */
   var phi, theta;
   /** The charge density and density of field lines per unit charge. */
-  var rhoq, rhof;
+  var chargeDensity, fieldLineDensity;
   /** The inner and outer radius of the cylinder. */
   var r0, r1;
   /**
@@ -212,11 +213,11 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, rhoq_, rhof_)
     sinpi4      = 0.707106781;
     startPoints = new Array();
 
-    if (rhof != 0)
+    if (fieldLineDensity != 0)
     {
-      sgn         = this.sign(rhoq);
+      sgn         = this.sign(chargeDensity);
 
-      npoints     = Math.max(2, Math.round(Math.abs(rhoq*Math.PI*(r1*r1-r0*r0)*rhof*height)));
+      npoints     = Math.max(2, Math.round(Math.abs(chargeDensity*Math.PI*(r1*r1-r0*r0)*fieldLineDensity*height)));
       // Used in field lines at multiples of Pi/2 around the cylinder.
       r0p1        = (r0+1)/r1;
       // Used in field lines at multiples of Pi/4 around the cylinder.
@@ -295,11 +296,11 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, rhoq_, rhof_)
     }
     else if (nmag<r1)
     {
-      lambda = Math.PI*(nmag*nmag-r0*r0)*rhoq;
+      lambda = Math.PI*(nmag*nmag-r0*r0)*chargeDensity;
     }
     else
     {
-      lambda = Math.PI*(r1*r1-r0*r0)*rhoq;
+      lambda = Math.PI*(r1*r1-r0*r0)*chargeDensity;
     }
     
     fmag = 2*lambda/nmag;
@@ -318,23 +319,22 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, rhoq_, rhof_)
                       false);
   }
 
-  // Stock radius for a charged line.
-  r0     = r0_;
-  r1     = r1_;
-  rhoq   = rhoq_;
-  rhof   = rhof_;
-  x0     = x0_;
-  y0     = y0_;
-  z0     = z0_;
-  x1     = x1_;
-  y1     = y1_;
-  z1     = z1_;
+  r0               = r0_;
+  r1               = r1_;
+  chargeDensity    = chargeDensity_;
+  fieldLineDensity = fieldLineDensity_;
+  x0               = x0_;
+  y0               = y0_;
+  z0               = z0_;
+  x1               = x1_;
+  y1               = y1_;
+  z1               = z1_;
 
-  if (rhoq > 0)
+  if (chargeDensity > 0)
   {
     color = new Color(0.05, 0.05, 0.8, 0.30);
   }
-  else if (rhoq < 0)
+  else if (chargeDensity < 0)
   {
     color = new Color(0.8, 0.05, 0.05, 0.30);
   }

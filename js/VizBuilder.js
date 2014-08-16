@@ -1,5 +1,7 @@
 function VizBuilder()
 {
+  var chargeDensityRE;
+  var fieldLineDensityRE;
   var errorMessage;
   var warningMessage;
       
@@ -96,7 +98,7 @@ function VizBuilder()
   }
 
   /**
-   * Process the charges provided in a visualization configuration into
+   * Process one or more charges provided in a visualization configuration into
    * a Charges collection
    *
    * @param   {object|Array} Configuraction object fo a single charge or array of charges,
@@ -144,29 +146,41 @@ function VizBuilder()
    * construct the corresponding charged plane.
    *
    * @param {object} config Has type "charged plane", with charge density
-   *                 sigma, field line density rho, and bounding box
+   *                 chargeDensity, field line density fieldLineDensity, and bounding box
    *                 {(x1, y1, z1), (x2, y2, z2), (x3, y3, z3), (x4, y4, z4)}.
    */
   this.chargedPlaneBuilder      = function(config)
   {
     var chargedPlane;
     var name;
-    var sigma;
-    var rho;
+    var chargeDensity;
+    var fieldLineDensity;
+    var x0, y0, z0;
     var x1, y1, z1;
     var x2, y2, z2;
     var x3, y3, z3;
-    var x4, y4, z4;
 
     for (name in config)
     {
-      if (name.toLowerCase() === "sigma")
+      if (name.match(chargeDensityRE))
       {
-        sigma = config[name];
+        chargeDensity = config[name];
       }
-      else if (name.toLowerCase() === "rho")
+      else if (name.match(fieldLineDensityRE))
       {
-        rho = config[name];
+        fieldLineDensity = config[name];
+      }
+      else if (name.toLowerCase() === "x0")
+      {
+        x0 = config[name];
+      }
+      else if (name.toLowerCase() === "y0")
+      {
+        y0 = config[name];
+      }
+      else if (name.toLowerCase() === "z0")
+      {
+        z0 = config[name];
       }
       else if (name.toLowerCase() === "x1")
       {
@@ -204,25 +218,14 @@ function VizBuilder()
       {
         z3 = config[name];
       }
-      else if (name.toLowerCase() === "x4")
-      {
-        x4 = config[name];
-      }
-      else if (name.toLowerCase() === "y4")
-      {
-        y4 = config[name];
-      }
-      else if (name.toLowerCase() === "z4")
-      {
-        z4 = config[name];
-      }
     }
 
-    chargedPlane = new ChargedPlane(sigma, rho,
+    chargedPlane = new ChargedPlane(chargeDensity,
+                                    fieldLineDensity,
+                                    x0, y0, z0,
                                     x1, y1, z1,
                                     x2, y2, z2,
-                                    x3, y3, z3,
-                                    x4, y4, z4);
+                                    x3, y3, z3);
 
     return chargedPlane;
   }
@@ -232,7 +235,7 @@ function VizBuilder()
    * construct the corresponding charged cylinder.
    *
    * @param {object} config has the type "charged cylinder" with charge density
-   *                 rhoq, field line density rhof, inner redius r0, and outer
+   *                 chargeDensity, field line density fieldLineDensity, inner redius r0, and outer
    *                 radius r1. The section of the cylinder between (x0, y0, z0)
    *                 and (x1, y1, z1) is drawn.
    */
@@ -241,7 +244,7 @@ function VizBuilder()
     var chargedCylinder;
     var name;
     // Charge density and field lines per unit charge.
-    var rhoq, rhof;
+    var chargeDensity, fieldLineDensity;
     // Center point of one end of the rendered section of an infinite cylinder.
     var x0, y0, z0;
     // The other end of the rendered section of the cylinder.
@@ -251,13 +254,13 @@ function VizBuilder()
 
     for (name in config)
     {
-      if (name.toLowerCase() === "rhoq")
+      if (name.match(chargeDensityRE))
       {
-        rhoq = config[name];
+        chargeDensity = config[name];
       }
-      else if (name.toLowerCase() === "rhof")
+      else if (name.match(fieldLineDensityRE))
       {
-        rhof = config[name];
+        fieldLineDensity = config[name];
       }
       else if (name.toLowerCase() === "x0")
       {
@@ -293,9 +296,107 @@ function VizBuilder()
       }
     }
 
-    chargedCylinder = new ChargedCylinder(x0, y0, z0, x1, y1, z1, r0, r1, rhoq, rhof);
+    chargedCylinder = new ChargedCylinder(x0, y0, z0, x1, y1, z1, r0, r1, chargeDensity, fieldLineDensity);
 
     return chargedCylinder;
+  }
+
+  this.chargedLineBuilder       = function(config)
+  {
+    var chargedLine;
+    var name;
+    var chargeDensity, fieldLineDensity;
+    // Center point of one end of the rendered section of an infinite cylinder.
+    var x0, y0, z0;
+    // The other end of the rendered section of the cylinder.
+    var x1, y1, z1;
+
+    for (name in config)
+    {
+      if (name.match(chargeDensityRE))
+      {
+        chargeDensity = config[name];
+      }
+      else if (name.match(fieldLineDensityRE))
+      {
+        fieldLineDensity = config[name];
+      }
+      else if (name.toLowerCase() === "x0")
+      {
+        x0 = config[name];
+      }
+      else if (name.toLowerCase() === "y0")
+      {
+        y0 = config[name];
+      }
+      else if (name.toLowerCase() === "z0")
+      {
+        z0 = config[name];
+      }
+      else if (name.toLowerCase() === "x1")
+      {
+        x1 = config[name];
+      }
+      else if (name.toLowerCase() === "y1")
+      {
+        y1 = config[name];
+      }
+      else if (name.toLowerCase() === "z1")
+      {
+        z1 = config[name];
+      }
+    }
+
+    chargedLine = new ChargedLine(x0, y0, z0, x1, y1, z1, chargeDensity, fieldLineDensity);
+
+    return chargedLine;
+  }
+
+  this.chargedSphereBuilder      = function(config)
+  {
+    var chargedSphere;
+    var charge;
+    var fieldLineDensity;
+    // The center of the sphere.
+    var x, y, z;
+    // The inner and outer radius.
+    var a, b;
+
+    for (name in config)
+    {
+      if (name.toLowerCase() === "charge")
+      {
+        charge = config[name];
+      }
+      else if (name.match(fieldLineDensityRE))
+      {
+        fieldLineDensity = config[name];
+      }
+      else if (name.toLowerCase() === "x")
+      {
+        x = config[name];
+      }
+      else if (name.toLowerCase() === "y")
+      {
+        y = config[name];
+      }
+      else if (name.toLowerCase() === "z")
+      {
+        z = config[name];
+      }
+      else if (name.toLowerCase() === "a")
+      {
+        a = config[name];
+      }
+      else if (name.toLowerCase() === "b")
+      {
+        b = config[name];
+      }
+    }
+
+    chargedSphere = new ChargedSphere(charge, fieldLineDensity, x, y, z, a, b);
+
+    return chargedSphere;
   }
 
   /**
@@ -312,8 +413,10 @@ function VizBuilder()
     var name;
     var type;
 
-    chargedPlaneRE    = /\s*charged\s*plane\s*/i;
     chargedCylinderRE = /\s*charged\s*cylinder\s*/i;
+    chargedLineRE     = /\s*charged\s*line\s*/i;
+    chargedPlaneRE    = /\s*charged\s*plane\s*/i;
+    chargedSphereRE   = /\s*charged\s*sphere\s*/i;
 
     for (name in config)
     {
@@ -331,6 +434,14 @@ function VizBuilder()
     else if (type.match(chargedCylinderRE))
     {
       distribution = this.chargedCylinderBuilder(config);
+    }
+    else if (type.match(chargedLineRE))
+    {
+      distribution = this.chargedLineBuilder(config);
+    }
+    else if (type.match(chargedSphereRE))
+    {
+      distribution = this.chargedSphereBuilder(config);
     }
 
     return distribution;
@@ -515,8 +626,11 @@ function VizBuilder()
     }
   }
 
-  errorMessage        = "";
-  warningMessage      = "";
+  // Common RE's acros multiple methods.
+  chargeDensityRE    = /\s*charge\s*density\s*/i;
+  fieldLineDensityRE = /\s*field\s*line\s*density\s*/i;
+  errorMessage       = "";
+  warningMessage     = "";
 }
 
 /**

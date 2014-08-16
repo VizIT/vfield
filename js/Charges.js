@@ -130,7 +130,7 @@ function Charge(Q_, x_, y_, z_, rho_)
         for (var i=1; i<nlines; i++)
         {
           y   = -1.0 + 2.0 * i / (nlines);
-          r   = Math.sqrt(1 - y*y);
+          r   = Math.sqrt(1.0 - y*y);
           phi = phi + s / r;
           seedPoints.push(new Array(Math.cos(phi)*r*radius + position[0],
                                     y*radius               + position[1],

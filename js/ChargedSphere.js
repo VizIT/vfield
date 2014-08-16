@@ -4,15 +4,15 @@
  * a solid sphere.
  *
  * @constructor	
- * @param {number} Q_   The total charge contained in this distribution.
- * @param {number} rho_ The density of field lines in lines per unit charge.
- * @param {number} x_   The x coordinate of the center of the sphere.
- * @param {number} y_   The y coordinate of the center of the sphere.
- * @param {number} z_   The z coordinate of the center of the sphere.
- * @param {number} a_   The inner radius of the distribution. 0 for a solid sphere.
- * @param {number} b_   The outer radius of the distribution.
+ * @param {number} Q_                The total charge contained in this distribution.
+ * @param {number} fieldLineDensity_ The density of field lines in lines per unit charge.
+ * @param {number} x_                The x coordinate of the center of the sphere.
+ * @param {number} y_                The y coordinate of the center of the sphere.
+ * @param {number} z_                The z coordinate of the center of the sphere.
+ * @param {number} a_                The inner radius of the distribution. 0 for a solid sphere.
+ * @param {number} b_                The outer radius of the distribution.
  */
-function ChargedSphere(Q_, rho_, x_, y_, z_, a_, b_)
+function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_)
 {
   var a;
   var a2;
@@ -23,7 +23,7 @@ function ChargedSphere(Q_, rho_, x_, y_, z_, a_, b_)
   var nindices;
   var pi;
   var Q;
-  var rho;
+  var fieldLineDensity;
   var vertexRegistry;
   var x0;
   var y0;
@@ -38,7 +38,7 @@ function ChargedSphere(Q_, rho_, x_, y_, z_, a_, b_)
   b      = b_;
   b3     = b*b*b;
   Q      = Q_;
-  rho    = rho_;
+  fieldLineDensity    = fieldLineDensity_;
   x0     = x_;
   y0     = y_;
   z0     = z_;
@@ -97,20 +97,21 @@ function ChargedSphere(Q_, rho_, x_, y_, z_, a_, b_)
     var sgn;
     var y;
 
-    sgn        = Q > 0 ? 1 : Q < 0 ? -1 : 0;
-    nlines     = Math.round(rho * Q * sgn);
-    s          = 4*a / Math.sqrt(nlines);
+    sgn        = Q > 0.0 ? 1.0 : Q < 0.0 ? -1.0 : 0.0;
+    nlines     = Math.round(fieldLineDensity * Q * sgn);
+    s          = 3.6 / Math.sqrt(nlines);
     phi        = 0; // Or inject variablility with: Math.random() * Math.PI / 2;
+    radius     = a + 0.2*(b-a);
     seedPoints = new Array();
 
-    for (var i=0; i<nlines; i++)
+    for (var i=1; i<nlines; i++)
     {
-      y   = (-1 + 2 * i / (nlines-1)) * a;
-      r   = Math.sqrt(a*a - y*y) + .2*(b-a);
+      y   = -1.0 + 2.0 * i / (nlines);
+      r   = Math.sqrt(1.0 - y*y);
       phi = phi + s / r;
-      seedPoints.push(new Array(Math.cos(phi)*r + x0,
-                                y               + y0,
-                                Math.sin(phi)*r + z0,
+      seedPoints.push(new Array(Math.cos(phi)*r*radius + x0,
+                                y*radius               + y0,
+                                Math.sin(phi)*r*radius + z0,
                                 sgn));
     }
 
@@ -147,12 +148,12 @@ function ChargedSphere(Q_, rho_, x_, y_, z_, a_, b_)
       if (r >=a && r<b)
       {
         // We are in the interior of the charge distribution.
-        f         = Q * (r-(a3/r2))/(b3-a3); // = (4*pi/3)*(r-(a3/r2)) * rho;
+        f         = Q * (r-(a3/r2))/(b3-a3); // = (4*pi/3)*(r-(a3/r2)) * chargeDensity;
       }
       else
       {
         // Outside the charge distribution the field is as a point charge
-        f         = Q/r2; // = (4*pi/3)*(b3-a3) * rho /r2;
+        f         = Q/r2; // = (4*pi/3)*(b3-a3) * chargeDensity /r2;
       }
 
       // Similar triangles allows easy distribution of the field into vector components.
