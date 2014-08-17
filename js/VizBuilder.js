@@ -681,6 +681,7 @@ function VizBuilder()
     var chargeDistributionRE;
     var drawingSurface, drawingSurfaceID;
     var charges, pointChargeConfig, distributedChargeConfig;
+    var framework;
     var renderer;
     var surfaceConfig;
     var startPointsConfig;
