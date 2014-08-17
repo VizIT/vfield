@@ -3,9 +3,9 @@
  * have no effect on the field. The cylinder of radius r and height h centered at
  * (x, y, z) and rotated by phi about the y axis, then by theta about the z axis.
  *
- * @param {Double} tx     The x position of the center of the cylinder.
- * @param {Double} ty     The y position of the center of the cylinder.
- * @param {Double} tz     The z position of the center of the cylinder.
+ * @param {Double} x     The x position of the center of the cylinder.
+ * @param {Double} y     The y position of the center of the cylinder.
+ * @param {Double} z     The z position of the center of the cylinder.
  * @param {Double} height The height of the cylinder.
  * @param {Double} r      The radius of the cylinder.
  * @param {Double} phi    The angle of rotation about the y axis.

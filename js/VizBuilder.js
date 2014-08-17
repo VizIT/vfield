@@ -5,6 +5,11 @@ function VizBuilder()
   var errorMessage;
   var warningMessage;
       
+  /* ===========================================================
+   * Point charge builders.
+   * ===========================================================
+   */
+
   /**
    * Build a single point charge from the charges section of the config object.
    *
@@ -140,6 +145,11 @@ function VizBuilder()
     }
     return charges;
   }
+
+  /* ======================================================
+   * Charge Distribution Builders
+   * ======================================================
+   */
 
   /**
    * Pull out elements from a charged plane configuration and
@@ -485,16 +495,142 @@ function VizBuilder()
     return charges;
   }
 
+  /* ===================================================
+   * Other surfaces - Gaussian, etc
+   * ===================================================
+   */
+
+  this.gaussianCylinderBuilder = function(config)
+  {
+    var gaussianCylinder;
+    // The coordinates of the center of the cylinder
+    var x, y, z;
+    // Its height and radius.
+    var h, r;
+    // The angle of rotation about the y axis.
+    var phi;
+    // The angle of rotation about the z axis.
+    var theta;
+
+    for (name in config)
+    {
+      if (name.toLowerCase() === "x")
+      {
+        x = config[name];
+      }
+      else if (name.toLowerCase() === "y")
+      {
+        y = config[name];
+      }
+      else if (name.toLowerCase() === "z")
+      {
+        z = config[name];
+      }
+      else if (name.toLowerCase() === "h")
+      {
+        h = config[name];
+      }
+      else if (name.toLowerCase() === "r")
+      {
+        r = config[name];
+      }
+      else if (name.toLowerCase() === "phi")
+      {
+        phi = config[name];
+      }
+      else if (name.toLowerCase() === "theta")
+      {
+        theta = config[name];
+      }
+    }
+
+    gaussianCylinder = new GaussianCylinder(x, y, z, h, r, phi, theta);
+
+    return gaussianCylinder;
+  }
+
+  /**
+   * Build a single surface. Peek at the surface type and dispatch
+   * the config to the appropriate builder.
+   */
+  this.surfaceBuilder       = function(config)
+  {
+    var gaussianCylinderRE;
+    var gaussianSphereRE;
+    var name;
+    var surface;
+    var type;
+
+    gaussianCylinderRE = /\s*gaussian\s*cylinder\s*/i;
+    gaussianSphereRE   = /\s*gaussian\s*sphere\s*/i;
+
+    for (name in config)
+    {
+      if(name.toLowerCase() === "type")
+      {
+        type = config[name];
+        break;
+      }
+    }
+
+    if (type.match(gaussianCylinderRE))
+    {
+      surface = this.gaussianCylinderBuilder(config);
+    }
+
+    return surface;
+  }
+
+  /**
+   * Build one or more surfaces according to whether the config is an
+   * array or a single object. The renderer must have an addGaussianSurface
+   * method.
+   */
+  this.surfacesBuilder      = function(config, renderer)
+  {
+    var surface;
+    var nsurfaces;
+
+    if (!!config)
+    {
+      if (Array.isArray(config))
+      {
+        nsurfaces = config.length;
+        for (var i=0; i<nsurfaces; ++i)
+        {
+          surface = this.surfaceBuilder(config[i]);
+          // Only add surface if surfaceBuilder was successful
+          if (!!surface)
+          {
+            renderer.addGaussianSurface(surface);
+          }
+        }
+      }
+      else
+      {
+        surface = this.surfaceBuilder(config);
+        // Only add surface if surfaceBuilder was successful
+        if (!!surface)
+        {
+          renderer.addGaussianSurface(surface);
+        }
+      }
+    }
+    return renderer;
+  }
+
   this.electricFieldBuilder = function(config)
   {
+    var chargeDistributionRE;
     var drawingSurface, drawingSurfaceID;
     var charges, pointChargeConfig, distributedChargeConfig;
     var renderer;
+    var surfaceConfig;
     var startPointsConfig;
     // Name and value of the properties on the config object.
     var name, value;
 
-    console.log("Electric Field matched " + config.type);
+    chargeDistributionRE = /\s*charge\s*distribution\s*/i;
     charges = new Charges();
 
     for(var name in config)
@@ -510,6 +646,10 @@ function VizBuilder()
       else if (name.toLowerCase() === "chargedistributions")
       {
         distributedChargeConfig = config[name]
+      }
+      else if (name.toLowerCase() ==="surfaces")
+      {
+        surfaceConfig = config[name];
       }
     }
 
@@ -534,6 +674,12 @@ function VizBuilder()
         renderer.setArrowSize(3.0);
         renderer.setArrowSpacing(30.0);
         renderer.addStartPoints(charges.getStartPoints(0, 5.0));
+
+        if (surfaceConfig)
+        {
+          renderer = this.surfacesBuilder(surfaceConfig, renderer);
+        }
+
         framework      = new FieldRenderer(drawingSurface, renderer);
         framework.setScale(120.0);
 
