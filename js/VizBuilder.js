@@ -1,3 +1,24 @@
+"use strict";
+
+/**
+ * Copyright 2013-2014 Vizit Solutions
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+/**
+ * Build a visualization declaritively using JSON.
+ */
 function VizBuilder()
 {
   var chargeDensityRE;
@@ -5,10 +26,9 @@ function VizBuilder()
   var errorMessage;
   var warningMessage;
       
-  /* ===========================================================
-   * Point charge builders.
-   * ===========================================================
-   */
+  // ===========================================================
+  // Point charge builders.
+  // ===========================================================
 
   /**
    * Build a single point charge from the charges section of the config object.
@@ -146,10 +166,9 @@ function VizBuilder()
     return charges;
   }
 
-  /* ======================================================
-   * Charge Distribution Builders
-   * ======================================================
-   */
+  // ======================================================
+  // Charge Distribution Builders
+  // ======================================================
 
   /**
    * Pull out elements from a charged plane configuration and
@@ -495,10 +514,10 @@ function VizBuilder()
     return charges;
   }
 
-  /* ===================================================
-   * Other surfaces - Gaussian, etc
-   * ===================================================
-   */
+  // ===================================================
+  // Other, usually Gaussian, surfaces
+  // ===================================================
+
 
   this.gaussianCylinderBuilder = function(config)
   {
@@ -549,6 +568,40 @@ function VizBuilder()
     return gaussianCylinder;
   }
 
+
+  this.gaussianSphereBuilder = function(config)
+  {
+    var gaussianSphere;
+    /** The coordinates of the center of the sphere. */
+    var x, y, z;
+    /** The radius of the sphere. */
+    var r;
+
+    for (name in config)
+    {
+      if (name.toLowerCase() === "x")
+      {
+        x = config[name];
+      }
+      else if (name.toLowerCase() === "y")
+      {
+        y = config[name];
+      }
+      else if (name.toLowerCase() === "z")
+      {
+        z = config[name];
+      }
+      else if (name.toLowerCase() === "r")
+      {
+        r = config[name];
+      }
+    }
+
+    gaussianSphere = new GaussianSphere(x, y, z, r);
+
+    return gaussianSphere;
+  }
+
   /**
    * Build a single surface. Peek at the surface type and dispatch
    * the config to the appropriate builder.
@@ -576,6 +629,10 @@ function VizBuilder()
     if (type.match(gaussianCylinderRE))
     {
       surface = this.gaussianCylinderBuilder(config);
+    }
+    else if (type.match(gaussianSphereRE))
+    {
+      surface = this.gaussianSphereBuilder(config);
     }
 
     return surface;
