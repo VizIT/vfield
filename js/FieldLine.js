@@ -21,6 +21,7 @@
  */
 function FieldLine(maxPoints)
 {
+  var arrowIndex;
   /** A Float32Array containing two lines (four points) for each arrow. */
   var arrows;
   var maxPoints;
