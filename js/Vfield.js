@@ -119,6 +119,7 @@ function FieldRenderer(drawingSurface_)
   }
 
   drawingSurface   = drawingSurface_;
+  elementNames     = new Object();
   glUtility        = new GLUtility(drawingSurface);
   scale            = 5;
 

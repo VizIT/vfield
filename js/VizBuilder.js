@@ -163,7 +163,7 @@ function VizBuilder()
             name = charge.getName();
             if (name)
             {
-              framework.setElementName(surface, name)
+              framework.setElementName(charge, name)
             }
           }
         }
@@ -178,7 +178,7 @@ function VizBuilder()
             name = charge.getName();
             if (name)
             {
-              framework.setElementName(surface, name)
+              framework.setElementName(charge, name)
             }
         }
       }
@@ -560,7 +560,7 @@ function VizBuilder()
             name = distribution.getName();
             if (name)
             {
-              framework.setElementName(surface, name)
+              framework.setElementName(distribution, name)
             }
           }
         }
@@ -575,7 +575,7 @@ function VizBuilder()
           name = distribution.getName();
           if (name)
           {
-            framework.setElementName(surface, name)
+            framework.setElementName(distribution, name)
           }
         }
       }
