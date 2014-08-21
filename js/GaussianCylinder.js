@@ -28,14 +28,17 @@
  * @param {Double} r      The radius of the cylinder.
  * @param {Double} phi    The angle of rotation about the y axis.
  * @param {Double} theta  The angle of rotation about the z axis.
+ * @param {string} [name]            A unique identifier for this element of the
+ *                                   visualization.
  *
- * @constructor
+ * @class
  */
-function GaussianCylinder(x_, y_, z_, h_, r_, phi_, theta_)
+function GaussianCylinder(x_, y_, z_, h_, r_, phi_, theta_, name_)
 {
   var color;
   var height;
   var modelViewMatrix;
+  var name;
   var phi;
   var radius;
   var theta;
@@ -136,6 +139,16 @@ function GaussianCylinder(x_, y_, z_, h_, r_, phi_, theta_)
     return phi;
   }
 
+  this.setName            = function(name_)
+  {
+    name = name_;
+  }
+
+  this.getName            = function()
+  {
+    return name;
+  }
+
   this.render                 = function(glUtility, surfaceProgram)
   {
     this.fullRender(glUtility, surfaceProgram, modelViewMatrix, height, radius, radius, true);
@@ -144,6 +157,7 @@ function GaussianCylinder(x_, y_, z_, h_, r_, phi_, theta_)
   // Gaussian (neutral) surfaces are grey
   color  = new Color(0.5, 0.5, 0.5, 0.50);
   height = h_;
+  name   = name_;
   phi    = phi_;
   radius = r_;
   theta  = theta_;

@@ -21,23 +21,27 @@
  * (x0, y0, z0) to (x1, y1, z1) with volume charge density chargeDensity.
  * The number of field lines drawn is fieldLineDensity*chargeDensity*length.
  *
- * @param x0_               {Double} The x coordinate one end cap of the cylinder.
- * @param y0_               {Double} The y coordinate one end cap of the cylinder.
- * @param z0_               {Double} The z coordinate one end cap of the cylinder.
- * @param x1_               {Double} The x coordinate for the other end cap of the cylinder.
- * @param y1_               {Double} The y coordinate for the other end cap of the cylinder.
- * @param z1_               {Double} The z coordinate for the other end cap of the cylinder.
- * @param r0_               {Double} The inner radios of the cylinder, 0 for a solid cylinder.
- * @param r1_               {Double} The outer radius of the cylinder.
- * @param chargeDensity_    {Double} The volume charge density within the cylinder. Related to linear charge density by lambda = Pi (r1*r1-r0*r0)*rho
- * @param fieldLineDensity_ {Double} The ratio of field lines to charge.
+ * @param {Double} x0_               The x coordinate one end cap of the cylinder.
+ * @param {Double} y0_               The y coordinate one end cap of the cylinder.
+ * @param {Double} z0_               The z coordinate one end cap of the cylinder.
+ * @param {Double} x1_               The x coordinate for the other end cap of the cylinder.
+ * @param {Double} y1_               The y coordinate for the other end cap of the cylinder.
+ * @param {Double} z1_               The z coordinate for the other end cap of the cylinder.
+ * @param {Double} r0_               The inner radios of the cylinder, 0 for a solid cylinder.
+ * @param {Double} r1_               The outer radius of the cylinder.
+ * @param {Double} chargeDensity_    The volume charge density within the cylinder. Related to linear
+ *                                   charge density by lambda = Pi (r1*r1-r0*r0)*rho
+ * @param {Double} fieldLineDensity_ The ratio of field lines to charge.
+ * @param {string} [name]            A unique identifier for this element of the
+ *                                   visualization.
  *
- * @constructor
+ * @class
  */
-function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_, fieldLineDensity_)
+function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_, fieldLineDensity_, name_)
 {
   var color;
   var height;
+  var name;
   /** Transforms the base cylinder to the r=r1 cylinder. */
   var modelViewMatrix;
   /** Rotation angles around the z and y axes */
@@ -211,6 +215,21 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
     return this;
   }
 
+  this.getTheta           = function()
+  {
+    return theta;
+  }
+
+  this.setName            = function(name_)
+  {
+    name = name_;
+  }
+
+  this.getName            = function()
+  {
+    return name;
+  }
+
   /**
    * Create a set of start points along the base line charge, then transform them
    * with the model view to get the tru location in the scene.
@@ -337,6 +356,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
                       false);
   }
 
+  name             = name_;
   r0               = r0_;
   r1               = r1_;
   chargeDensity    = chargeDensity_;

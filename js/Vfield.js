@@ -24,12 +24,16 @@
  *
  * @constructor
  */
-function FieldRenderer(drawingSurface_, renderer_)
+function FieldRenderer(drawingSurface_)
 {
   /* Global variables within this field renderer. */
+  /** HTML Canvas element we render on */
   var drawingSurface;
+  /** Mappings from names to elements of the visualization. */
+  var elementNames;
+  /** Event handler for standard mouse and touch events */
   var eventHandler;
-  /** v = f(x, y, z) */
+  /** [Vx, Vy, Vz] = f(x, y, z) */
   var f;
   var glUtility;
   /** Do not rerender in response to an event until after we are initialized. */
@@ -48,6 +52,14 @@ function FieldRenderer(drawingSurface_, renderer_)
   this.getContext          = function()
   {
     return glUtility.getGLContext();
+  }
+
+  this.setRenderer         = function(renderer_)
+  {
+    renderer = renderer_;
+    renderer.setGlUtility(glUtility);
+    renderer.setModelViewMatrix(modelViewMatrix);
+    renderer.setProjectionMatrix(projectionMatrix);
   }
 
   this.setModelViewMatrix = function(modelViewMatrix_)
@@ -89,27 +101,41 @@ function FieldRenderer(drawingSurface_, renderer_)
     this.setScale(scale+delta);
   }
 
-  drawingSurface = drawingSurface_;
-  glUtility      = new GLUtility(drawingSurface);
-  scale          = 5;
-  renderer       = renderer_;
-  renderer.setGlUtility(glUtility);
+  this.setElementName     = function(element, name)
+  {
+    elementNames[name] = element;
+  }
+
+  this.getElementByName   = function(name)
+  {
+    var element;
+
+    if (elementNames.hasOwnProperty(name))
+    {
+	element=elementNames[name];
+    }
+
+    return element;
+  }
+
+  drawingSurface   = drawingSurface_;
+  glUtility        = new GLUtility(drawingSurface);
+  scale            = 5;
+
   // Initially an identity matrix, modified by movementEventHandler.
-  modelViewMatrix = new Float32Array([1, 0, 0, 0,
-                                      0, 1, 0, 0,
-                                      0, 0, 1, 0,
-                                      0, 0, 0, 1]);
+  modelViewMatrix  = new Float32Array([1, 0, 0, 0,
+                                       0, 1, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 0, 0, 1]);
 
-  normalMatrix    = new Float32Array([1, 0, 0,
-                                      0, 1, 0,
-                                      0, 0, 1]);
+  normalMatrix     = new Float32Array([1, 0, 0,
+                                       0, 1, 0,
+                                       0, 0, 1]);
 
-  projectionMatrix     = glUtility.generateOrthographicMatrix(scale, scale, -scale, scale);
+  projectionMatrix = glUtility.generateOrthographicMatrix(scale, scale, -scale, scale);
 
-  renderer.setModelViewMatrix(modelViewMatrix);
-  renderer.setProjectionMatrix(projectionMatrix);
   // motionEventHandler(target_, utility_, mouseScale_, pinchScale_)
-  eventHandler             = new MotionEventHandler(this, glUtility, 75, 4);
+  eventHandler     = new MotionEventHandler(this, glUtility, 75, 4);
   drawingSurface.addEventListener("mousewheel", eventHandler.handleMouseWheel.bind(eventHandler), false);
   drawingSurface.addEventListener("mousedown",  eventHandler.handleMouseDown.bind(eventHandler),  false);
   document.addEventListener("mouseup",          eventHandler.handleMouseUp.bind(eventHandler),    false);

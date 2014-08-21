@@ -29,8 +29,12 @@
  * @param {number} z_                The z coordinate of the center of the sphere.
  * @param {number} a_                The inner radius of the distribution. 0 for a solid sphere.
  * @param {number} b_                The outer radius of the distribution.
+ * @param {string} [name]            A unique identifier for this element of the
+ *                                   visualization.
+ *
+ * @class
  */
-function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_)
+function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
 {
   var a;
   var a2;
@@ -38,6 +42,7 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_)
   var b;
   var b3;
   var modelViewMatrix;
+  var name;
   var nindices;
   var pi;
   var Q;
@@ -47,6 +52,7 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_)
   var y0;
   var z0;
 
+  name      = name_;
   nindices  = 0;
   pi        = 3.14159265359;
 
@@ -89,17 +95,17 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_)
     nindices = n;
   }
 
-  this.setVertexRegistry   = function(registry)
+  this.setName            = function(name_)
   {
-    vertexRegistry = registry;
+    name = name_;
   }
 
-  this.getVertexRegistry   = function()
+  this.getName            = function()
   {
-    return vertexRegistry;
+    return name;
   }
 
-  /**
+ /**
    * Compute the start points for field lines due to the presence of this charge.
    * 
    * TODO: make the start point distribution vary with r as the charge.

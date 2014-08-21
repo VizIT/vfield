@@ -29,21 +29,24 @@
  * @param z1_               {Double} The z coordinate for the other end cap of the cylinder.
  * @param chargeDensity_    {Double} The linear charge density on the line.
  * @param fieldLineDensity_ {Double} The proportionality between field lines and charge.
+ * @param {string} [name]   A unique identifier for this element of the
+ *                          visualization.
  *
- * @constructor
+ * @class
  */
-function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDensity_)
+function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDensity_, name_)
 {
+  var chargeDensity;
   /** Container for r,g,b,a color values. */
   var color;
-  var height;
-  var chargeDensity;
-  /** Transforms the base cylinder to the r=r1 cylinder. */
-  var modelViewMatrix;
-  /** Rotation angles around the y and z axes */
-  var phi, theta;
   /** The density of field line per unit charge. */
   var fieldLineDensity;
+  var height;
+  /** Transforms the base cylinder to the r=r1 cylinder. */
+  var modelViewMatrix;
+  var name;
+  /** Rotation angles around the y and z axes */
+  var phi, theta;
   /** The inner and outer radius of the cylinder. */
   var r0, r1;
   /**
@@ -211,6 +214,21 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
     return this;
   }
 
+  this.getTheta           = function()
+  {
+    return theta;
+  }
+
+  this.setName            = function(name_)
+  {
+    name = name_;
+  }
+
+  this.getName            = function()
+  {
+    return name;
+  }
+
   /**
    * Create a set of start points along the base line charge, then transform them
    * with the model view to get the true location in the scene.
@@ -330,6 +348,7 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setColor(color);
 
+  name             = name_;
   // Stock radius for a charged line.
   r0               = 0;
   r1               = 3;

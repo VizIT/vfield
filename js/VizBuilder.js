@@ -18,6 +18,9 @@
 
 /**
  * Build a visualization declaritively using JSON.
+ * TODO Break up into smaller classes?
+ *
+ * @class
  */
 function VizBuilder()
 {
@@ -41,6 +44,8 @@ function VizBuilder()
     var charge;
     /** Error message why the error flag was set. */
     var message;
+    /** The name of this element */
+    var name;
     // Magnitude of the charge
     var q;
     // Position of the charge
@@ -48,37 +53,41 @@ function VizBuilder()
     // number of field lines per unit charge, or the number of field lines.
     var rho, nlines;
     // Name and value of the properties on the config object.
-    var name, value;
+    var property, value;
 
     // We know in what follows that this is a string.
     message = "";
 
     // Reasonable becaue this is a small object with few properties.
-    for(var name in config)
+    for(var property in config)
     {
-      if(name.toLowerCase() === "q")
+      if(property.toLowerCase() === "q")
       {
-        q = config[name];
+        q = config[property];
       }
-      else if (name.toLowerCase() === "x")
+      else if (property.toLowerCase() === "x")
       {
-        x = config[name];
+        x = config[property];
       }
-      else if (name.toLowerCase() === "y")
+      else if (property.toLowerCase() === "y")
       {
-        y = config[name];
+        y = config[property];
       }
-      else if (name.toLowerCase() === "z")
+      else if (property.toLowerCase() === "z")
       {
-        z = config[name];
+        z = config[property];
       }
-      else if (name.toLowerCase() === "rho")
+      else if (property.toLowerCase() === "rho")
       {
-        rho = config[name];
+        rho = config[property];
       }
-      else if (name.toLowerCase() === "nlines")
+      else if (property.toLowerCase() === "nlines")
       {
-        nlines = config[name];
+        nlines = config[property];
+      }
+      else if (property.toLowerCase() === "name")
+      {
+        name = config[property];
       }
     }
 
@@ -116,7 +125,7 @@ function VizBuilder()
 
     if (message.length == 0)
     {
-      charge = new Charge(q, x, y, z, rho);
+	charge = new Charge(q, x, y, z, rho, name);
     }
 
     return charge;
@@ -133,9 +142,10 @@ function VizBuilder()
    *
    * @returns {Charges}
    */
-  this.chargesBuilder = function(config, charges)
+  this.chargesBuilder = function(config, charges, framework)
   {
     var charge;
+    var name;
     var ncharges;
 
     if (!!config)
@@ -150,6 +160,11 @@ function VizBuilder()
           if (!!charge)
           {
             charges.addCharge(charge);
+            name = charge.getName();
+            if (name)
+            {
+              framework.setElementName(surface, name)
+            }
           }
         }
       }
@@ -160,6 +175,11 @@ function VizBuilder()
         if (!!charge)
         {
           charges.addCharge(charge);
+            name = charge.getName();
+            if (name)
+            {
+              framework.setElementName(surface, name)
+            }
         }
       }
     }
@@ -181,71 +201,77 @@ function VizBuilder()
   this.chargedPlaneBuilder      = function(config)
   {
     var chargedPlane;
-    var name;
+    var property;
     var chargeDensity;
     var fieldLineDensity;
+    /** The name of this element */
+    var name;
     var x0, y0, z0;
     var x1, y1, z1;
     var x2, y2, z2;
     var x3, y3, z3;
 
-    for (name in config)
+    for (property in config)
     {
-      if (name.match(chargeDensityRE))
+      if (property.match(chargeDensityRE))
       {
-        chargeDensity = config[name];
+        chargeDensity = config[property];
       }
-      else if (name.match(fieldLineDensityRE))
+      else if (property.match(fieldLineDensityRE))
       {
-        fieldLineDensity = config[name];
+        fieldLineDensity = config[property];
       }
-      else if (name.toLowerCase() === "x0")
+      else if (property.toLowerCase() === "x0")
       {
-        x0 = config[name];
+        x0 = config[property];
       }
-      else if (name.toLowerCase() === "y0")
+      else if (property.toLowerCase() === "y0")
       {
-        y0 = config[name];
+        y0 = config[property];
       }
-      else if (name.toLowerCase() === "z0")
+      else if (property.toLowerCase() === "z0")
       {
-        z0 = config[name];
+        z0 = config[property];
       }
-      else if (name.toLowerCase() === "x1")
+      else if (property.toLowerCase() === "x1")
       {
-        x1 = config[name];
+        x1 = config[property];
       }
-      else if (name.toLowerCase() === "y1")
+      else if (property.toLowerCase() === "y1")
       {
-        y1 = config[name];
+        y1 = config[property];
       }
-      else if (name.toLowerCase() === "z1")
+      else if (property.toLowerCase() === "z1")
       {
-        z1 = config[name];
+        z1 = config[property];
       }
-      else if (name.toLowerCase() === "x2")
+      else if (property.toLowerCase() === "x2")
       {
-        x2 = config[name];
+        x2 = config[property];
       }
-      else if (name.toLowerCase() === "y2")
+      else if (property.toLowerCase() === "y2")
       {
-        y2 = config[name];
+        y2 = config[property];
       }
-      else if (name.toLowerCase() === "z2")
+      else if (property.toLowerCase() === "z2")
       {
-        z2 = config[name];
+        z2 = config[property];
       }
-      else if (name.toLowerCase() === "x3")
+      else if (property.toLowerCase() === "x3")
       {
-        x3 = config[name];
+        x3 = config[property];
       }
-      else if (name.toLowerCase() === "y3")
+      else if (property.toLowerCase() === "y3")
       {
-        y3 = config[name];
+        y3 = config[property];
       }
-      else if (name.toLowerCase() === "z3")
+      else if (property.toLowerCase() === "z3")
       {
-        z3 = config[name];
+        z3 = config[property];
+      }
+      else if (property.toLowerCase() === "name")
+      {
+        name = config[property];
       }
     }
 
@@ -254,7 +280,8 @@ function VizBuilder()
                                     x0, y0, z0,
                                     x1, y1, z1,
                                     x2, y2, z2,
-                                    x3, y3, z3);
+                                    x3, y3, z3,
+                                    name);
 
     return chargedPlane;
   }
@@ -271,9 +298,11 @@ function VizBuilder()
   this.chargedCylinderBuilder   = function(config)
   {
     var chargedCylinder;
-    var name;
+    var property;
     // Charge density and field lines per unit charge.
     var chargeDensity, fieldLineDensity;
+    /** The name of this element */
+    var name;
     // Center point of one end of the rendered section of an infinite cylinder.
     var x0, y0, z0;
     // The other end of the rendered section of the cylinder.
@@ -281,51 +310,60 @@ function VizBuilder()
     // Inner and outer radii of the cylinder.
     var r0, r1;
 
-    for (name in config)
+    for (property in config)
     {
-      if (name.match(chargeDensityRE))
+      if (property.match(chargeDensityRE))
       {
-        chargeDensity = config[name];
+        chargeDensity = config[property];
       }
-      else if (name.match(fieldLineDensityRE))
+      else if (property.match(fieldLineDensityRE))
       {
-        fieldLineDensity = config[name];
+        fieldLineDensity = config[property];
       }
-      else if (name.toLowerCase() === "x0")
+      else if (property.toLowerCase() === "x0")
       {
-        x0 = config[name];
+        x0 = config[property];
       }
-      else if (name.toLowerCase() === "y0")
+      else if (property.toLowerCase() === "y0")
       {
-        y0 = config[name];
+        y0 = config[property];
       }
-      else if (name.toLowerCase() === "z0")
+      else if (property.toLowerCase() === "z0")
       {
-        z0 = config[name];
+        z0 = config[property];
       }
-      else if (name.toLowerCase() === "x1")
+      else if (property.toLowerCase() === "x1")
       {
-        x1 = config[name];
+        x1 = config[property];
       }
-      else if (name.toLowerCase() === "y1")
+      else if (property.toLowerCase() === "y1")
       {
-        y1 = config[name];
+        y1 = config[property];
       }
-      else if (name.toLowerCase() === "z1")
+      else if (property.toLowerCase() === "z1")
       {
-        z1 = config[name];
+        z1 = config[property];
       }
-      else if (name.toLowerCase() === "r0")
+      else if (property.toLowerCase() === "r0")
       {
-        r0 = config[name];
+        r0 = config[property];
       }
-      else if (name.toLowerCase() === "r1")
+      else if (property.toLowerCase() === "r1")
       {
-        r1 = config[name];
+        r1 = config[property];
+      }
+      else if (property.toLowerCase() === "name")
+      {
+        name = config[property];
       }
     }
 
-    chargedCylinder = new ChargedCylinder(x0, y0, z0, x1, y1, z1, r0, r1, chargeDensity, fieldLineDensity);
+    chargedCylinder = new ChargedCylinder(x0, y0, z0,
+                                          x1, y1, z1,
+                                          r0, r1,
+                                          chargeDensity,
+                                          fieldLineDensity,
+                                          name);
 
     return chargedCylinder;
   }
@@ -333,50 +371,60 @@ function VizBuilder()
   this.chargedLineBuilder       = function(config)
   {
     var chargedLine;
-    var name;
+    var property;
     var chargeDensity, fieldLineDensity;
+    /** The name of this element */
+    var name;
     // Center point of one end of the rendered section of an infinite cylinder.
     var x0, y0, z0;
     // The other end of the rendered section of the cylinder.
     var x1, y1, z1;
 
-    for (name in config)
+    for (property in config)
     {
-      if (name.match(chargeDensityRE))
+      if (property.match(chargeDensityRE))
       {
-        chargeDensity = config[name];
+        chargeDensity = config[property];
       }
-      else if (name.match(fieldLineDensityRE))
+      else if (property.match(fieldLineDensityRE))
       {
-        fieldLineDensity = config[name];
+        fieldLineDensity = config[property];
       }
-      else if (name.toLowerCase() === "x0")
+      else if (property.toLowerCase() === "x0")
       {
-        x0 = config[name];
+        x0 = config[property];
       }
-      else if (name.toLowerCase() === "y0")
+      else if (property.toLowerCase() === "y0")
       {
-        y0 = config[name];
+        y0 = config[property];
       }
-      else if (name.toLowerCase() === "z0")
+      else if (property.toLowerCase() === "z0")
       {
-        z0 = config[name];
+        z0 = config[property];
       }
-      else if (name.toLowerCase() === "x1")
+      else if (property.toLowerCase() === "x1")
       {
-        x1 = config[name];
+        x1 = config[property];
       }
-      else if (name.toLowerCase() === "y1")
+      else if (property.toLowerCase() === "y1")
       {
-        y1 = config[name];
+        y1 = config[property];
       }
-      else if (name.toLowerCase() === "z1")
+      else if (property.toLowerCase() === "z1")
       {
-        z1 = config[name];
+        z1 = config[property];
+      }
+      else if (property.toLowerCase() === "name")
+      {
+        name = config[property];
       }
     }
 
-    chargedLine = new ChargedLine(x0, y0, z0, x1, y1, z1, chargeDensity, fieldLineDensity);
+    chargedLine = new ChargedLine(x0, y0, z0,
+                                  x1, y1, z1,
+                                  chargeDensity,
+                                  fieldLineDensity,
+                                  name);
 
     return chargedLine;
   }
@@ -386,44 +434,54 @@ function VizBuilder()
     var chargedSphere;
     var charge;
     var fieldLineDensity;
+    /** The name of this element */
+    var name;
     // The center of the sphere.
     var x, y, z;
     // The inner and outer radius.
     var a, b;
 
-    for (name in config)
+    for (property in config)
     {
-      if (name.toLowerCase() === "charge")
+      if (property.toLowerCase() === "charge")
       {
-        charge = config[name];
+        charge = config[property];
       }
-      else if (name.match(fieldLineDensityRE))
+      else if (property.match(fieldLineDensityRE))
       {
-        fieldLineDensity = config[name];
+        fieldLineDensity = config[property];
       }
-      else if (name.toLowerCase() === "x")
+      else if (property.toLowerCase() === "x")
       {
-        x = config[name];
+        x = config[property];
       }
-      else if (name.toLowerCase() === "y")
+      else if (property.toLowerCase() === "y")
       {
-        y = config[name];
+        y = config[property];
       }
-      else if (name.toLowerCase() === "z")
+      else if (property.toLowerCase() === "z")
       {
-        z = config[name];
+        z = config[property];
       }
-      else if (name.toLowerCase() === "a")
+      else if (property.toLowerCase() === "a")
       {
-        a = config[name];
+        a = config[property];
       }
-      else if (name.toLowerCase() === "b")
+      else if (property.toLowerCase() === "b")
       {
-        b = config[name];
+        b = config[property];
+      }
+      else if (property.toLowerCase() === "name")
+      {
+        name = config[property];
       }
     }
 
-    chargedSphere = new ChargedSphere(charge, fieldLineDensity, x, y, z, a, b);
+    chargedSphere = new ChargedSphere(charge,
+                                      fieldLineDensity,
+                                      x, y, z,
+                                      a, b,
+                                      name);
 
     return chargedSphere;
   }
@@ -439,7 +497,7 @@ function VizBuilder()
     var chargedPlaneRE;
     var chargedSphereRE;
     var distribution;
-    var name;
+    var property;
     var type;
 
     chargedCylinderRE = /\s*charged\s*cylinder\s*/i;
@@ -447,11 +505,11 @@ function VizBuilder()
     chargedPlaneRE    = /\s*charged\s*plane\s*/i;
     chargedSphereRE   = /\s*charged\s*sphere\s*/i;
 
-    for (name in config)
+    for (property in config)
     {
-      if(name.toLowerCase() === "type")
+      if(property.toLowerCase() === "type")
       {
-        type = config[name];
+        type = config[property];
         break;
       }
     }
@@ -481,9 +539,10 @@ function VizBuilder()
    * charge distribution attribute.
    * TODO: Repeated pattern, make use a pluggable strategy?
    */
-  this.chargeDistributionsBuilder = function(config, charges)
+  this.chargeDistributionsBuilder = function(config, charges, framework)
   {
     var distribution;
+    var name;
     var ndistributions;
 
     if (!!config)
@@ -498,6 +557,11 @@ function VizBuilder()
           if (!!distribution)
           {
             charges.addDistribution(distribution);
+            name = distribution.getName();
+            if (name)
+            {
+              framework.setElementName(surface, name)
+            }
           }
         }
       }
@@ -508,6 +572,11 @@ function VizBuilder()
         if (!!distribution)
         {
           charges.addDistribution(distribution);
+          name = distribution.getName();
+          if (name)
+          {
+            framework.setElementName(surface, name)
+          }
         }
       }
     }
@@ -522,6 +591,8 @@ function VizBuilder()
   this.gaussianCylinderBuilder = function(config)
   {
     var gaussianCylinder;
+    /** The name of this element */
+    var name;
     // The coordinates of the center of the cylinder
     var x, y, z;
     // Its height and radius.
@@ -531,39 +602,46 @@ function VizBuilder()
     // The angle of rotation about the z axis.
     var theta;
 
-    for (name in config)
+    for (property in config)
     {
-      if (name.toLowerCase() === "x")
+      if (property.toLowerCase() === "x")
       {
-        x = config[name];
+        x = config[property];
       }
-      else if (name.toLowerCase() === "y")
+      else if (property.toLowerCase() === "y")
       {
-        y = config[name];
+        y = config[property];
       }
-      else if (name.toLowerCase() === "z")
+      else if (property.toLowerCase() === "z")
       {
-        z = config[name];
+        z = config[property];
       }
-      else if (name.toLowerCase() === "h")
+      else if (property.toLowerCase() === "h")
       {
-        h = config[name];
+        h = config[property];
       }
-      else if (name.toLowerCase() === "r")
+      else if (property.toLowerCase() === "r")
       {
-        r = config[name];
+        r = config[property];
       }
-      else if (name.toLowerCase() === "phi")
+      else if (property.toLowerCase() === "phi")
       {
-        phi = config[name];
+        phi = config[property];
       }
-      else if (name.toLowerCase() === "theta")
+      else if (property.toLowerCase() === "theta")
       {
-        theta = config[name];
+        theta = config[property];
+      }
+      else if (property.toLowerCase() === "name")
+      {
+        name = config[property];
       }
     }
 
-    gaussianCylinder = new GaussianCylinder(x, y, z, h, r, phi, theta);
+    gaussianCylinder = new GaussianCylinder(x, y, z,
+                                            h, r,
+                                            phi, theta,
+                                            name);
 
     return gaussianCylinder;
   }
@@ -572,32 +650,37 @@ function VizBuilder()
   this.gaussianSphereBuilder = function(config)
   {
     var gaussianSphere;
+    var name;
     /** The coordinates of the center of the sphere. */
     var x, y, z;
     /** The radius of the sphere. */
     var r;
 
-    for (name in config)
+    for (property in config)
     {
-      if (name.toLowerCase() === "x")
+      if (property.toLowerCase() === "x")
       {
-        x = config[name];
+        x = config[property];
       }
-      else if (name.toLowerCase() === "y")
+      else if (property.toLowerCase() === "y")
       {
-        y = config[name];
+        y = config[property];
       }
-      else if (name.toLowerCase() === "z")
+      else if (property.toLowerCase() === "z")
       {
-        z = config[name];
+        z = config[property];
       }
-      else if (name.toLowerCase() === "r")
+      else if (property.toLowerCase() === "r")
       {
-        r = config[name];
+        r = config[property];
+      }
+      else if (property.toLowerCase() === "name")
+      {
+        name = config[property];
       }
     }
 
-    gaussianSphere = new GaussianSphere(x, y, z, r);
+    gaussianSphere = new GaussianSphere(x, y, z, r, name);
 
     return gaussianSphere;
   }
@@ -610,18 +693,18 @@ function VizBuilder()
   {
     var gaussianCylinderRE;
     var gaussianSphereRE;
-    var name;
+    var property;
     var surface;
     var type;
 
     gaussianCylinderRE = /\s*gaussian\s*cylinder\s*/i;
     gaussianSphereRE   = /\s*gaussian\s*sphere\s*/i;
 
-    for (name in config)
+    for (property in config)
     {
-      if(name.toLowerCase() === "type")
+      if(property.toLowerCase() === "type")
       {
-        type = config[name];
+        type = config[property];
         break;
       }
     }
@@ -643,7 +726,7 @@ function VizBuilder()
    * array or a single object. The renderer must have an addGaussianSurface
    * method.
    */
-  this.surfacesBuilder      = function(config, renderer)
+  this.surfacesBuilder      = function(config, renderer, framework)
   {
     var surface;
     var nsurfaces;
@@ -655,11 +738,16 @@ function VizBuilder()
         nsurfaces = config.length;
         for (var i=0; i<nsurfaces; ++i)
         {
-          surface = this.surfaceBuilder(config[i]);
+          surface = this.surfaceBuilder(config[i], framework);
           // Only add surface if surfaceBuilder was successful
           if (!!surface)
           {
             renderer.addGaussianSurface(surface);
+            name = surface.getName();
+            if (name)
+            {
+              framework.setElementName(surface, name)
+            }
           }
         }
       }
@@ -670,6 +758,12 @@ function VizBuilder()
         if (!!surface)
         {
           renderer.addGaussianSurface(surface);
+          name = surface.getName();
+          if (name)
+          {
+            // TODO Error handling if name already defined.
+            framework.setElementName(surface, name)
+          }
         }
       }
     }
@@ -686,28 +780,28 @@ function VizBuilder()
     var surfaceConfig;
     var startPointsConfig;
     // Name and value of the properties on the config object.
-    var name, value;
+    var property, value;
 
     chargeDistributionRE = /\s*charge\s*distribution\s*/i;
     charges = new Charges();
 
-    for(var name in config)
+    for(var property in config)
     {
-      if(name.toLowerCase() === "canvas")
+      if(property.toLowerCase() === "canvas")
       {
-        drawingSurfaceID = config[name];
+        drawingSurfaceID = config[property];
       }
-      else if (name.toLowerCase() === "charges")
+      else if (property.toLowerCase() === "charges")
       {
-        pointChargeConfig = config[name];
+        pointChargeConfig = config[property];
       }
-      else if (name.toLowerCase() === "chargedistributions")
+      else if (property.toLowerCase() === "chargedistributions")
       {
-        distributedChargeConfig = config[name]
+        distributedChargeConfig = config[property]
       }
-      else if (name.toLowerCase() ==="surfaces")
+      else if (property.toLowerCase() ==="surfaces")
       {
-        surfaceConfig = config[name];
+        surfaceConfig = config[property];
       }
     }
 
@@ -718,14 +812,15 @@ function VizBuilder()
 
       if (!!drawingSurface)
       {
+        framework = new FieldRenderer(drawingSurface);
         if (pointChargeConfig)
         {
-          charges = this.chargesBuilder(pointChargeConfig, charges);
+          charges = this.chargesBuilder(pointChargeConfig, charges, framework);
         }
         
         if(distributedChargeConfig)
         {
-          charges = this.chargeDistributionsBuilder(distributedChargeConfig, charges);
+          charges = this.chargeDistributionsBuilder(distributedChargeConfig, charges, framework);
         }
         renderer = new ElectricField(charges);
         renderer.setMaxVectors(30);
@@ -735,10 +830,10 @@ function VizBuilder()
 
         if (surfaceConfig)
         {
-          renderer = this.surfacesBuilder(surfaceConfig, renderer);
+	    renderer = this.surfacesBuilder(surfaceConfig, renderer, framework);
         }
 
-        framework      = new FieldRenderer(drawingSurface, renderer);
+        framework.setRenderer(renderer);
         framework.setScale(120.0);
 
         framework.start();
@@ -763,7 +858,7 @@ function VizBuilder()
     var renderer;
     var startPointsConfig;
     // Name and value of the properties on the config object.
-    var name, value;
+    var property, value;
 
     console.log("Simple Vector Field matched " + config.type);
   }

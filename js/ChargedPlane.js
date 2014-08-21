@@ -23,12 +23,18 @@
  * only concerned with displaying the section of the plane within the
  * bounding box.
  * The number of field lines drawn is fieldLineDensity*chargeDensity*length.
+ *
+ * @param {string} [name]            A unique identifier for this element of the
+ *                                   visualization.
+ *
+ * @class
  */
 function ChargedPlane(chargeDensity_, fieldLineDensity_,
                       x0, y0, z0,
                       x1, y1, z1,
                       x2, y2, z2,
-                      x3, y3, z3)
+                      x3, y3, z3,
+                      name_)
 {
   /**
    * a: angle about the y axis
@@ -49,6 +55,7 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   var ca, cb, cg;
   /** Transforms the unit square into the provided rectangle for this instance. */
   var modelView;
+  var name;
   /** Unit normal to the plane */
   var normal;
   /** The density of field lines - lines per unit charge. */
@@ -79,14 +86,14 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   var workingBoundingBox;
   var xside;
 
-  this.setVertexRegistry   = function(registry)
+  this.setName            = function(name_)
   {
-    vertexRegistry = registry;
+    name = name_;
   }
 
-  this.getVertexRegistry   = function()
+  this.getName            = function()
   {
-    return vertexRegistry;
+    return name;
   }
 
   /**
@@ -553,13 +560,14 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
     gl.enable(gl.CULL_FACE);
   }
 
-  twoPi       = 6.28318530717958648;
-  chargeDensity      = chargeDensity_;
-  fieldLineDensity   = fieldLineDensity_;
-  boundingBox = new Array(x0, y0, z0,
-                          x1, y1, z1,
-                          x2, y2, z2,
-                          x3, y3, z3);
+  name             = name_;
+  twoPi            = 6.28318530717958648;
+  chargeDensity    = chargeDensity_;
+  fieldLineDensity = fieldLineDensity_;
+  boundingBox      = new Array(x0, y0, z0,
+                               x1, y1, z1,
+                               x2, y2, z2,
+                               x3, y3, z3);
 
   workingBoundingBox = boundingBox.slice(0);
 

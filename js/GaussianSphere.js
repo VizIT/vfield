@@ -19,11 +19,17 @@
 /**
  * Represent a Gaussian sphere. This is a Gaussian surface, it will be drawn but will
  * have no effect on the field. The sphere of radius r is centered at (x, y, z).
+ *
+ * @param {string} [name]            A unique identifier for this element of the
+ *                                   visualization.
+ *
+ * @class
  */
-function GaussianSphere(x_, y_, z_, r_)
+function GaussianSphere(x_, y_, z_, r_, name_)
 {
   var color;
   var modelViewMatrix;
+  var name;
   var radius;
   var x0;
   var y0;
@@ -81,6 +87,16 @@ function GaussianSphere(x_, y_, z_, r_)
   this.getRadius          = function()
   {
     return radius;
+  }
+
+  this.setName            = function(name_)
+  {
+    name = name_;
+  }
+
+  this.getName            = function()
+  {
+    return name;
   }
 
   this.getModelView       = function(scale)
@@ -157,6 +173,7 @@ function GaussianSphere(x_, y_, z_, r_)
 
   // Gaussian (neutral) surfaces are grey
   color  = new Color(0.5, 0.5, 0.5, 0.50);
+  name   = name_;
   radius = r_;
   x0     = x_;
   y0     = y_;

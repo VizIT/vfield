@@ -19,16 +19,18 @@
 /**
  * Represents a single charge in a set of charges
  * A charge has position and a charge in stat-Columbs.
+ *
+ * @param {string} [name] A unique identifier for this element of the
+ *                        visualization.
+ *
+ * @class
  */
-function Charge(Q_, x_, y_, z_, rho_)
+function Charge(Q_, x_, y_, z_, rho_, name_)
 {
     var Q;
+    var name;
     var position;
     var rho;
-
-    Q        = Q_;
-    position = new Array(x_, y_, z_);
-    rho      = typeof rho_ == 'undefined' ? 0 : rho_;
 
     this.setCharge = function(Q_)
     {
@@ -48,6 +50,16 @@ function Charge(Q_, x_, y_, z_, rho_)
     this.getPosition = function()
     {
       return position;
+    }
+
+    this.setName            = function(name_)
+    {
+      name = name_;
+    }
+
+    this.getName            = function()
+    {
+      return name;
     }
 
     this.getField           = function(x, y, z)
@@ -192,6 +204,10 @@ function Charge(Q_, x_, y_, z_, rho_)
       return should;
     }
 
+    Q        = Q_;
+    position = new Array(x_, y_, z_);
+    rho      = typeof rho_ == 'undefined' ? 0 : rho_;
+    name     = name_;
 }
 
 /**
