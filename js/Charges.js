@@ -28,13 +28,15 @@
 function Charge(Q_, x_, y_, z_, rho_, name_)
 {
     var Q;
+    var modified;
     var name;
     var position;
     var rho;
 
     this.setCharge = function(Q_)
     {
-      Q = Q_;
+      Q        = Q_;
+      modified = true;
     }
 
     this.getCharge = function()
@@ -44,12 +46,23 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
 
     this.setPosition = function(position)
     {
-      this.position = position;
+      position = position;
+      modified = true;
     }
 
     this.getPosition = function()
     {
       return position;
+    }
+
+    this.setModified        = function(modified_)
+    {
+      modified = modified;
+    }
+
+    this.isModified         = function()
+    {
+      return modified;
     }
 
     this.setName            = function(name_)
@@ -205,9 +218,10 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
     }
 
     Q        = Q_;
+    modified = true;
+    name     = name_;
     position = new Array(x_, y_, z_);
     rho      = typeof rho_ == 'undefined' ? 0 : rho_;
-    name     = name_;
 }
 
 /**
@@ -261,6 +275,43 @@ function Charges()
     this.getDistributions  = function()
     {
       return distributions;
+    }
+
+    this.chargesModified   = function()
+    {
+      var modified;
+
+      modified = false;
+
+      for (i=0; i<ncharges && !modified; i++)
+      {
+        modified = modified || charges[i].isModified();
+      }
+    }
+
+    this.distributionsModified = function()
+    {
+      var modified;
+
+      modified = false;
+
+      for (i=0; i<ndistributions && !modified; i++)
+      {
+        modified = modified || distributions[i].isModified();
+      }
+    }
+
+    this.clearModified         = function()
+    {
+      for (i=0; i<ncharges; i++)
+      {
+        charges[i].setModified(false);
+      }
+
+      for (i=0; i<ndistributions; i++)
+      {
+        distributions[i].setModified(false);
+      }
     }
 
     /**

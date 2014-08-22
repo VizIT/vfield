@@ -43,7 +43,9 @@ function FieldRenderer(drawingSurface_)
   /** The specific program that controls the OpenGL. */
   var normalMatrix;
   var projectionMatrix;
+  /** Track if we are rendering a frame. */
   var renderer;
+  var rendering;
   /** Scale sets the bounds used in the projection matrix. */
   var scale;
   /** Start points for tracing field lines. */
@@ -73,9 +75,20 @@ function FieldRenderer(drawingSurface_)
     return modelViewMatrix;
   }
 
+  this.requestRender      = function()
+  {
+    if (!rendering)
+    {
+      rendering = true;
+      requestAnimationFrame(this.render);
+    }
+
+  }
+
   this.render             = function()
   {
     renderer.render();
+    rendering = false;
   }
 
   this.start              = function()

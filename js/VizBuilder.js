@@ -593,6 +593,7 @@ function VizBuilder()
     var gaussianCylinder;
     /** The name of this element */
     var name;
+    var property;
     // The coordinates of the center of the cylinder
     var x, y, z;
     // Its height and radius.
@@ -651,6 +652,7 @@ function VizBuilder()
   {
     var gaussianSphere;
     var name;
+    var property;
     /** The coordinates of the center of the sphere. */
     var x, y, z;
     /** The radius of the sphere. */
