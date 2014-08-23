@@ -52,13 +52,28 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
     // The maximum number of points along the line to trace.
     var maxPoints;
 
+    this.setCharges   = function(charges_)
+    {
+      charges = charges_;
+      return this;
+    }
+
+    this.getCharges   = function()
+    {
+      return charges;
+    }
+
     this.getArrows    = function()
     {
-        return arrows;
+      return arrows;
     }
 
     this.setMaxPoints = function(maxPoints_)
     {
+      if (maxPoints_ > maxpoints)
+      {
+        fieldLine     = new FieldLine(maxPoints);
+      }
       maxPoints = maxPoints_;
       return this;
     }
@@ -173,27 +188,6 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
       fieldLine.pushArrow(x1, y1, z1, x0, y0, z0, x2, y2, z2);
     }
 
-    /**
-     * Add the fields from charge distributions into an existing field array.
-     * TODO Move this into Charges.
-     */
-    this.addDistributionFields = function(f, distributions, x, y, z)
-    {
-      var ndistributions;
-      var newfield;
-
-      ndistributions = distributions.length;
-
-      for(var i=0; i<ndistributions; i++)
-      {
-        newfield = distributions[i].getField(x, y, z)
-        f[0]    += newfield[0];
-        f[1]    += newfield[1];
-        f[2]    += newfield[2];
-      }
-      return f;
-    }
-
   /**
    * Trace a field line starting at the given x, y, z coordinates.
    * Each step of length ds has components (Ex/E*ds, Ey/E*ds, Ez/E*ds).
@@ -223,9 +217,8 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
     for(i=0; i<maxPoints; i++)
     {
       fieldLine.pushPoint(x, y, z);
-      field            = charges.getField(x, y, z);
-      //field            = this.addDistributionFields(field, distributions, x, y, z)
-      f                = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
+      field = charges.getField(x, y, z);
+      f     = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
 
       if (f == 0)
       {

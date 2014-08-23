@@ -36,6 +36,7 @@ function ElectricField(charges_, home_)
   /** The sum of ds along the path increments by this much between arrows. */
   var arrowSpacing;
   var chargeBuffer;
+  var chargeGenerator;
   var chargeRenderer;
   /** The charges generate the field. */
   var charges;
@@ -45,7 +46,6 @@ function ElectricField(charges_, home_)
   // Probably not have multiple Gaussian surfaces, but allow the rendering
   // method to take arrays of surfaces.
   var gaussianSurfaces;
-  var generator;
   /** A wrapper around the WebGL context, gl. */
   var glUtility;
   /** Home directory for resource loading. */
@@ -57,6 +57,8 @@ function ElectricField(charges_, home_)
   /** The maximum number of vectors to be drawn per field line. */
   var maxVectors;
   var normalMatrix;
+  /** Given a charge configuration, draws field lines. */
+  var fieldLineGenerator;
   /** Actually draws the electric field */
   var fieldLineRenderer;
   // Model-View matrix for use in all programs.
@@ -175,6 +177,17 @@ function ElectricField(charges_, home_)
       var gl;
 
       gl = glUtility.getGLContext();
+
+      if (charges.chargesModified())
+      {
+        this.setupCharges();
+        this.setupFieldLines();
+      }
+      else if (charges.distributionsModified())
+      {
+        this.setupFieldLines();
+      }
+
       glUtility.clear();
       fieldLineRenderer.render(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
       chargeRenderer.render(projectionMatrix, modelViewMatrix, chargeBuffer, charges);
@@ -190,17 +203,23 @@ function ElectricField(charges_, home_)
       gl.enable(gl.DEPTH_TEST);
       gl.disable(gl.BLEND);
       gl.disable(gl.CULL_FACE);
+
+      charges.clearModified();
     }
   }
 
   this.setupCharges        = function(charges)
   {
-    var generator;
     var chargesArray;
+    var gl;
 
-    generator    = new ChargeGenerator(charges);
-    chargesArray = generator.generate();
-    chargeBuffer = glUtility.createBuffer(chargesArray);
+    if (!chargeBuffer)
+    {
+      gl = glUtility.getGLContext();
+      chargeBuffer = gl.createBuffer();
+    }
+    chargesArray = chargeGenerator.generate();
+    glUtility.loadData(chargeBuffer, chargesArray);
   }
 
   /**
@@ -210,22 +229,33 @@ function ElectricField(charges_, home_)
   this.setupFieldLines     = function()
   {
     var fieldLine;
-    var generator;
+    var i;
     var nstartPoints;
+    var nVBOs;
     var point;
+    var tmp;
 
     nstartPoints = startPoints.length;
-    if (nstartPoints > 0)
-    {
-      // Introduce variables and defaults for maxVectors and arrowSize.
-      generator    = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
+    nVBOs        = fieldLineVBOs.length;
+    tmp          = Math.min(nstartPoints, nVBOs);
 
-      for (var i=nstartPoints-1; i>=0; --i)
-      {
-        point     = startPoints[i];
-        fieldLine = generator.generate(point[0], point[1], point[2], point[3]);
-        fieldLineVBOs.push(new FieldLineVBO(glUtility, fieldLine));
-      }
+    for (i=0; i<tmp; ++i)
+    {
+      point     = startPoints[i];
+      fieldLine = fieldLineGenerator.generate(point[0], point[1], point[2], point[3]);
+      fieldLineVBOs[i].reload(glUtility, fieldLine)
+    }
+
+    for (; i<nVBOs; ++i)
+    {
+      fieldLineVBOs[i].disable();
+    }
+
+    for (; i<nstartPoints; ++i)
+    {
+      point     = startPoints[i];
+      fieldLine = fieldLineGenerator.generate(point[0], point[1], point[2], point[3]);
+      fieldLineVBOs.push(new FieldLineVBO(glUtility, fieldLine));
     }
   }
 
@@ -246,23 +276,27 @@ function ElectricField(charges_, home_)
     latch.countDown();
   }
   
-  arrowSize        = 0.3;
-  arrowSpacing     = 1.2;
-  charges          = charges_;
+  arrowSize          = 0.3;
+  arrowSpacing       = 1.2;
+  charges            = charges_;
   /* Default color */
-  color            = new Float32Array([0.8, 0.3, 0.3, 1]);
-  ds               = 0.3;
-  fieldLineVBOs    = new Array();
-  gaussianSurfaces = new Array();
+  color              = new Float32Array([0.8, 0.3, 0.3, 1]);
+  ds                 = 0.3;
+  fieldLineVBOs      = new Array();
+  gaussianSurfaces   = new Array();
   // Use ./ if home_ is undefined
-  home             = typeof home_ == 'undefined' ? "./" : home_;
+  home               = typeof home_ == 'undefined' ? "./" : home_;
   // Wait for two textures to load, and this renderer to be started.
-  latch            = new CountdownLatch(3, this.started.bind(this));
-  maxPoints        = 3000;
-  maxVectors       = 5;
-  normalMatrix     = new Float32Array([1, 0, 0,
-                                       0, 1, 0,
-                                       0, 0, 1]);
-  startPoints      = new Array();
-  started          = false;
+  latch              = new CountdownLatch(3, this.started.bind(this));
+  maxPoints          = 3000;
+  maxVectors         = 5;
+  normalMatrix       = new Float32Array([1, 0, 0,
+                                         0, 1, 0,
+                                         0, 0, 1]);
+  startPoints        = new Array();
+  started            = false;
+
+  chargeGenerator    = new ChargeGenerator(charges);
+  fieldLineGenerator = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
+
 }

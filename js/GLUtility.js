@@ -115,6 +115,17 @@ function GLUtility(drawingSurface_)
       return program;
   }
 
+  /**
+   * Load data into an existing buffer - for animation
+   */
+  this.loadData         = function(vertexBuffer, floatArray)
+  {
+    // Binding an object in Open GL creates it, and makes it the target of subsequent manipulations.
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    // loads the current buffer, the vertexBuffer found above, with the vertex data.
+    // The gl bufer is strongly typed with 32 bit floating point data.
+    gl.bufferData(gl.ARRAY_BUFFER, floatArray, gl.STATIC_DRAW);
+  }
 
   /**
    * Generate a buffer from a Float32Array
@@ -123,12 +134,7 @@ function GLUtility(drawingSurface_)
   {
       // This is a handle to what will be a buffer
       var vertexBuffer = gl.createBuffer();
-      // Binding an object in Open GL creates it, and makes it the target of subsequent manipulations.
-      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-      // loads the current buffer, the vertexBuffer found above, with the vertex data.
-      // The gl bufer is strongly typed with 32 bit floating point data.
-      gl.bufferData(gl.ARRAY_BUFFER, floatArray, gl.STATIC_DRAW);
-
+      this.loadData(vertexBuffer, floatArray);
       return vertexBuffer;
   }
 

@@ -22,8 +22,31 @@
  */
 function FieldLineVBO(glUtility, fieldLine)
 {
+  this.disable = function()
+  {
+    this.enabled = false;
+  }
+
+  this.isEnabled = function()
+  {
+    return this.enabled;
+  }
+
+  /**
+   *
+   */
+  this.reload = function(glUtility, fieldLine)
+  {
+    glUtility.loadData(this.fieldLineBufferHandle, fieldLine.getPoints());
+    this.npoints                    = fieldLine.getNpoints();
+    glUtility.loadData(this.fieldDirectionBufferHandle, fieldLine.getArrows());
+    this.narrows                    = fieldLine.getNarrows();
+    this.enabled                    = true;
+  }
+
   this.fieldLineBufferHandle      = glUtility.createBuffer(fieldLine.getPoints());
   this.npoints                    = fieldLine.getNpoints();
   this.fieldDirectionBufferHandle = glUtility.createBuffer(fieldLine.getArrows());
   this.narrows                    = fieldLine.getNarrows();
+  this.enabled                    = true;
 }

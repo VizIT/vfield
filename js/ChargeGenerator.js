@@ -32,6 +32,21 @@ function ChargeGenerator(charges_)
   var chargesArray;
   var ncharges;
 
+  this.setCharges      = function(charges_)
+  {
+    charges      = charges_;
+    // iff we need a larger array to hold the charge vertices, build it
+    if (4*charges.getCharges().length > chargesArray.length)
+    {
+       chargesArray = new Float32Array(4*charges.getCharges().length);
+    }
+  }
+
+  this.getCharges      = function()
+  {
+    return charges;
+  }
+
   this.getChargesArray = function()
   {
     return chargesArray;
