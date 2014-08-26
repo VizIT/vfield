@@ -64,7 +64,7 @@ function ElectricField(charges_, home_)
   // Model-View matrix for use in all programs.
   var modelViewMatrix;
   var projectionMatrix;
-  var startPoints;
+  var explicitStartPoints;
   // Has this renderer started - do not render in response to events if not.
   var started;
   var surfaceRenderer;
@@ -156,18 +156,18 @@ function ElectricField(charges_, home_)
 
   this.addStartPoint  = function(x_, y_, z_, sgn_)
   {
-    startPoints.push(new Array(x_, y_, z_, sgn_));
+    explicitStartPoints.push(new Array(x_, y_, z_, sgn_));
     return this;
   }
 
-  this.addStartPoints = function(startPoints_)
+  this.addStartPoints = function(startPoints)
   {
-    startPoints = startPoints.concat(startPoints_)
+    explicitStartPoints = explicitStartPoints.concat(startPoints)
   }
 
   this.getStartPoints = function()
   {
-    return startPoints;
+    return explicitStartPoints;
   }
 
   this.render              = function()
@@ -233,7 +233,14 @@ function ElectricField(charges_, home_)
     var nstartPoints;
     var nVBOs;
     var point;
+    var startPoints;
     var tmp;
+
+    startPoints  = new Array();
+    // Get start points defined implicitly by fieldLineDensity in charges.
+    startPoints  = startPoints.concat(charges.getStartPoints(0, 5.0));
+    // Add any explicitly defined start points.
+    startPoints  = startPoints.concat(explicitStartPoints);
 
     nstartPoints = startPoints.length;
     nVBOs        = fieldLineVBOs.length;
@@ -276,27 +283,26 @@ function ElectricField(charges_, home_)
     latch.countDown();
   }
   
-  arrowSize          = 0.3;
-  arrowSpacing       = 1.2;
-  charges            = charges_;
+  arrowSize           = 0.3;
+  arrowSpacing        = 1.2;
+  charges             = charges_;
   /* Default color */
-  color              = new Float32Array([0.8, 0.3, 0.3, 1]);
-  ds                 = 0.3;
-  fieldLineVBOs      = new Array();
-  gaussianSurfaces   = new Array();
+  color               = new Float32Array([0.8, 0.3, 0.3, 1]);
+  ds                  = 0.3;
+  fieldLineVBOs       = new Array();
+  gaussianSurfaces    = new Array();
   // Use ./ if home_ is undefined
-  home               = typeof home_ == 'undefined' ? "./" : home_;
+  home                = typeof home_ == 'undefined' ? "./" : home_;
   // Wait for two textures to load, and this renderer to be started.
-  latch              = new CountdownLatch(3, this.started.bind(this));
-  maxPoints          = 3000;
-  maxVectors         = 5;
-  normalMatrix       = new Float32Array([1, 0, 0,
-                                         0, 1, 0,
-                                         0, 0, 1]);
-  startPoints        = new Array();
-  started            = false;
+  latch               = new CountdownLatch(3, this.started.bind(this));
+  maxPoints           = 3000;
+  maxVectors          = 5;
+  normalMatrix        = new Float32Array([1, 0, 0,
+                                          0, 1, 0,
+                                          0, 0, 1]);
+  explicitStartPoints = new Array();
+  started             = false;
 
-  chargeGenerator    = new ChargeGenerator(charges);
-  fieldLineGenerator = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
-
+  chargeGenerator     = new ChargeGenerator(charges);
+  fieldLineGenerator  = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
 }

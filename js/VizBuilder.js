@@ -772,8 +772,100 @@ function VizBuilder()
     return renderer;
   }
 
+  /**
+   * Build an event handler that bings an element of the visualization
+   * the changes in a value from an external source.
+   */
+  this.bindingBuilder       = function(config, framework)
+  {
+    var binding;
+    /** The element of the visualization named as the target. */
+    var element;
+    /** The external variable used to make the update. */
+    var from;
+    /** The function, if any, that transforms the from variable to the set variable. */
+    var mapping;
+    /** The name of the method to make the update on the target. */
+    var methodName;
+    var property;
+    /** The name of the variable on the object to be updated. */
+    var set;
+    /** The name of the object to be updated. */
+    var target;
+    /** The method on the target to set the variable. */
+    var updater;
+
+    for (property in config)
+    {
+      if (property.toLowerCase() === "target")
+      {
+        target = config[property];
+      }
+      else if (property.toLowerCase() === "set")
+      {
+        set = config[property];
+      }
+      else if (property.toLowerCase() === "from")
+      {
+        from = config[property];
+      }
+      else if (property.toLowerCase() === "mapping")
+      {
+        mapping = config[property];
+      }
+    }
+
+    if (!from)
+    {
+      from = set;
+    }
+
+    methodName = "set" + set.charAt(0).toUpperCase();
+    if (set.length > 1)
+    {
+	methodName += set.slice(1)
+    }
+
+    element = framework.getElementByName(target);
+    updater = element[methodName];
+
+    if (mapping)
+    {
+	binding = new MappingEventHandler(updater, from, mapping, framework);
+    }
+    else
+    {
+	binding = new DirectEventHandler(updater, framework);
+    }
+    // By convention in the lesson framework changes in var are named varChanged.
+    document.addEventListener(from + "Changed", binding.handleUpdate.bind(binding),   false);
+  }
+
+  this.bindingsBuilder      = function(config, framework)
+  {
+    var binding;
+    var nbindings;
+
+    if (!!config)
+    {
+      if (Array.isArray(config))
+      {
+        nbindings = config.length;
+        for (var i=0; i<nbindings; ++i)
+        {
+          binding = this.bindingBuilder(config, framework);
+        }
+      }
+      else
+      {
+        binding = this.bindingBuilder(config, framework);
+      }
+    }
+  }
+
   this.electricFieldBuilder = function(config)
   {
+    var bindingsConfig;
     var chargeDistributionRE;
     var drawingSurface, drawingSurfaceID;
     var charges, pointChargeConfig, distributedChargeConfig;
@@ -805,6 +897,10 @@ function VizBuilder()
       {
         surfaceConfig = config[property];
       }
+      else if (property.toLowerCase() ==="bindings")
+      {
+        bindingsConfig = config[property];
+      }
     }
 
     // If a canvas ID is defined
@@ -828,11 +924,15 @@ function VizBuilder()
         renderer.setMaxVectors(30);
         renderer.setArrowSize(3.0);
         renderer.setArrowSpacing(30.0);
-        renderer.addStartPoints(charges.getStartPoints(0, 5.0));
 
         if (surfaceConfig)
         {
-	    renderer = this.surfacesBuilder(surfaceConfig, renderer, framework);
+          renderer = this.surfacesBuilder(surfaceConfig, renderer, framework);
+        }
+
+        if (bindingsConfig)
+        {
+          this.bindingsBuilder(bindingsConfig, framework)
         }
 
         framework.setRenderer(renderer);

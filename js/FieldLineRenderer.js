@@ -89,11 +89,16 @@ function FieldLineRenderer(glUtility_)
 
       for(var i=0; i<nlines; i++)
       {
+        fieldLineVBO = fieldLineVBOs[i];
+        if (!fieldLineVBO.isEnabled())
+        {
+          break;
+        }
         // Bind the buffer to the positon attribute
-        glUtility.bindBuffer(fieldLineVBOs[i].fieldLineBufferHandle,      positionHandle, 3, gl.FLOAT, 12, 0);
-        gl.drawArrays(gl.LINE_STRIP, 0, fieldLineVBOs[i].npoints);
-        glUtility.bindBuffer(fieldLineVBOs[i].fieldDirectionBufferHandle, positionHandle, 3, gl.FLOAT, 12, 0);
-        gl.drawArrays(gl.LINES, 0, fieldLineVBOs[i].narrows);
+        glUtility.bindBuffer(fieldLineVBO.fieldLineBufferHandle,      positionHandle, 3, gl.FLOAT, 12, 0);
+        gl.drawArrays(gl.LINE_STRIP, 0, fieldLineVBO.npoints);
+        glUtility.bindBuffer(fieldLineVBO.fieldDirectionBufferHandle, positionHandle, 3, gl.FLOAT, 12, 0);
+        gl.drawArrays(gl.LINES, 0, fieldLineVBO.narrows);
       }
     }
   }
