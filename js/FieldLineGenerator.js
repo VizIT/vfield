@@ -204,17 +204,20 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
     var f;
     var field;
     var i;
+    // The vector function thinks we are at a sink and should stop tracing a field line.
+    var shouldStop;
     var x;
     var y;
     var z;
 
-    deltaS  = 0;
-    x       = x0;
-    y       = y0;
-    z       = z0;
+    deltaS     = 0;
+    shouldStop = false;
+    x          = x0;
+    y          = y0;
+    z          = z0;
     fieldLine.reset();
 
-    for(i=0; i<maxPoints; i++)
+    for(i=0; i<maxPoints && !shouldStop; i++)
     {
       fieldLine.pushPoint(x, y, z);
       field = charges.getField(x, y, z);
@@ -237,6 +240,8 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
         deltaS = 0;
         this.drawArrow(x, y, z, field, f, arrowSize, fieldLine);
       }
+
+      shouldStop = charges.shouldStop(sgn, x, y, z);
     }
     return fieldLine;
   }

@@ -397,7 +397,7 @@ function Charges()
 
       should = false;
 
-      for(var i=0; i<n & !should; i++)
+      for(var i=0; i<ncharges & !should; i++)
       {
         charge = charges[i];
         should = charge.shouldStop(sgn, x, y, z);
