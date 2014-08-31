@@ -233,7 +233,8 @@
     //renderer.addStartPoints(f.getStartPoints(    Math.PI / 4, 3.0));
     //renderer.addStartPoints(f.getStartPoints(    Math.PI / 2, 3.0));
     //renderer.addStartPoints(f.getStartPoints(3 * Math.PI / 4, 3.0));
-    framework      = new FieldRenderer(drawingSurface, renderer);
+    framework      = new FieldRenderer(drawingSurface);
+    framework.setRenderer(renderer);
     framework.setScale(5);
 
     framework.start();

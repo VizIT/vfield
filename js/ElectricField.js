@@ -288,7 +288,7 @@ function ElectricField(charges_, home_)
   charges             = charges_;
   /* Default color */
   color               = new Float32Array([0.8, 0.3, 0.3, 1]);
-  ds                  = 0.3;
+  ds                  = 0.6;
   fieldLineVBOs       = new Array();
   gaussianSurfaces    = new Array();
   // Use ./ if home_ is undefined

@@ -32,6 +32,7 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
     var name;
     var position;
     var rho;
+    var r2;
 
     this.setQ = function(Q_)
     {
@@ -86,7 +87,7 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
       // The field vector
       var field   = new Array(0, 0, 0);
       var r;
-      var r2;
+      //var r2;
 
       deltaX      = x - position[0];
       deltaY      = y - position[1];
@@ -188,33 +189,16 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
     this.shouldStop      = function(sgn, x, y, z)
     {
       var minR2;
-      var r2;
-      var should;
-      var tmp;
 
       minR2  = 4;
-      should = false;
 
       // If we are tracing a field line forward to a positive charge
       // or backwards to a negative charge, skip the computation.
       // This corresponds to tracing a field line from a negative charge
       // to a negative charge, or from a positive charge to a positive
       // charge - where the field line should not terminate.
-      if (sgn * Q < 0.0)
-      {
-          tmp = position[0]-x;
-          r2  = tmp*tmp;
-
-          tmp = position[1]-y;
-          r2 += tmp*tmp;
-
-          tmp = position[2]-z;
-          r2 += tmp*tmp;
-
-          should = r2 < minR2;
-      }
-
-      return should;
+      
+      return sgn * Q < 0.0 && r2 < minR2;
     }
 
     Q        = Q_;
