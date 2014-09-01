@@ -41,9 +41,10 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 {
   var color;
   var height;
-  var name;
   /** Transforms the base cylinder to the r=r1 cylinder. */
   var modelViewMatrix;
+  var modified;
+  var name;
   /** Rotation angles around the z and y axes */
   var phi, theta;
   /** The charge density and density of field lines per unit charge. */
@@ -69,7 +70,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setHeight           = function(height_)
   {
-    height = height_;
+    height   = height_;
+    modified = true;
   }
 
   this.getHeight           = function()
@@ -79,7 +81,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setTx               = function(t)
   {
-    tx = t;
+    tx       = t;
+    modified = true;
     return this;
   }
 
@@ -90,7 +93,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setTy               = function(t)
   {
-    ty = t;
+    ty       = t;
+    modified = true;
     return this;
   }
 
@@ -101,7 +105,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setTz               = function(t)
   {
-    tz = t;
+    tz       = t;
+    modified = true;
     return this;
   }
 
@@ -112,7 +117,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setX0               = function(x_)
   {
-    x0 = x_;
+    x0       = x_;
+    modified = true;
     return this;
   }
 
@@ -123,7 +129,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setY0               = function(y_)
   {
-    y0 = y_;
+    y0       = y_;
+    modified = true;
     return this;
   }
 
@@ -134,7 +141,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setZ0               = function(z_)
   {
-    z0 = z_;
+    z0       = z_;
+    modified = true;
     return this;
   }
 
@@ -145,7 +153,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setX1               = function(x_)
   {
-    x1 = x_;
+    x1       = x_;
+    modified = true;
     return this;
   }
 
@@ -156,7 +165,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setY1               = function(y_)
   {
-    y1 = y_;
+    y1       = y_;
+    modified = true;
     return this;
   }
 
@@ -167,7 +177,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setZ1               = function(z_)
   {
-    z1 = z_;
+    z1       = z_;
+    modified = true;
     return this;
   }
 
@@ -178,7 +189,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setR0               = function(r_)
   {
-    r0 = r_;
+    r0       = r_;
+    modified = true;
     return this;
   }
 
@@ -189,7 +201,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setR1               = function(r_)
   {
-    r1 = r_;
+    r1       = r_;
+    modified = true;
     return this;
   }
 
@@ -200,7 +213,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setPhi              = function(phi_)
   {
-    phi = phi_;
+    phi      = phi_;
+    modified = true;
     return this;
   }
 
@@ -211,13 +225,24 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   this.setTheta            = function(theta_)
   {
-    theta = theta_;
+    theta    = theta_;
+    modified = true;
     return this;
   }
 
   this.getTheta           = function()
   {
     return theta;
+  }
+
+  this.setModified        = function(modified_)
+  {
+    modified = modified_;
+  }
+
+  this.isModified         = function()
+  {
+    return modified;
   }
 
   this.setName            = function(name_)
@@ -356,6 +381,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
                       false);
   }
 
+  modified         = true;
   name             = name_;
   r0               = r0_;
   r1               = r1_;

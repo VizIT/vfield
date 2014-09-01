@@ -42,6 +42,8 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
   var b;
   var b3;
   var modelViewMatrix;
+  /** Whether this has been modified since the last render. */
+  var modified;
   var name;
   var nindices;
   var pi;
@@ -52,6 +54,7 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
   var y0;
   var z0;
 
+  modified  = true;
   name      = name_;
   nindices  = 0;
   pi        = 3.14159265359;
@@ -69,9 +72,10 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
 
   this.setA               = function(a_)
   {
-    a      = a_;
-    a2     = a*a;
-    a3     = a2*a;
+    a        = a_;
+    a2       = a*a;
+    a3       = a2*a;
+    modified = true;
   }
 
   this.getA               = function()
@@ -81,8 +85,9 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
 
   this.setB               = function(b_)
   {
-    b      = b_;
-    b3     = b*b*b;
+    b        = b_;
+    b3       = b*b*b;
+    modified = true;
   }
 
   this.getB               = function()
@@ -93,6 +98,16 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
   this.setNindices        = function(n)
   {
     nindices = n;
+  }
+
+  this.setModified        = function(modified_)
+  {
+    modified = modified_;
+  }
+
+  this.isModified         = function()
+  {
+    return modified;
   }
 
   this.setName            = function(name_)

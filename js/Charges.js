@@ -28,6 +28,7 @@
 function Charge(Q_, x_, y_, z_, rho_, name_)
 {
     var Q;
+    /** Whether this has been modified since the last render. */
     var modified;
     var name;
     var position;

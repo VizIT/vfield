@@ -55,6 +55,8 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   var ca, cb, cg;
   /** Transforms the unit square into the provided rectangle for this instance. */
   var modelView;
+  /** Whether this has been modified since the last render. */
+  var modified;
   var name;
   /** Unit normal to the plane */
   var normal;
@@ -85,6 +87,16 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   var vertexRegistry;
   var workingBoundingBox;
   var xside;
+
+  this.setModified        = function(modified_)
+  {
+    modified = modified_;
+  }
+
+  this.isModified         = function()
+  {
+    return modified;
+  }
 
   this.setName            = function(name_)
   {
@@ -560,6 +572,7 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
     gl.enable(gl.CULL_FACE);
   }
 
+  modified         = true;
   name             = name_;
   twoPi            = 6.28318530717958648;
   chargeDensity    = chargeDensity_;

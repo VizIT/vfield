@@ -44,6 +44,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
   var height;
   /** Transforms the base cylinder to the r=r1 cylinder. */
   var modelViewMatrix;
+  /** Whether this has been modified since the last render. */
+  var modified;
   var name;
   /** Rotation angles around the y and z axes */
   var phi, theta;
@@ -68,7 +70,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setHeight           = function(height_)
   {
-    height = height_;
+    height   = height_;
+    modified = true;
   }
 
   this.getHeight           = function()
@@ -78,7 +81,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setTx               = function(t)
   {
-    tx = t;
+    tx       = t;
+    modified = true;
     return this;
   }
 
@@ -100,7 +104,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setTz               = function(t)
   {
-    tz = t;
+    tz       = t;
+    modified = true;
     return this;
   }
 
@@ -111,7 +116,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setX0               = function(x_)
   {
-    x0 = x_;
+    x0       = x_;
+    modified = true;
     return this;
   }
 
@@ -122,7 +128,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setY0               = function(y_)
   {
-    y0 = y_;
+    y0       = y_;
+    modified = true;
     return this;
   }
 
@@ -133,7 +140,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setZ0               = function(z_)
   {
-    z0 = z_;
+    z0       = z_;
+    modified = true;
     return this;
   }
 
@@ -144,7 +152,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setX1               = function(x_)
   {
-    x1 = x_;
+    x1       = x_;
+    modified = true;
     return this;
   }
 
@@ -155,7 +164,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setY1               = function(y_)
   {
-    y1 = y_;
+    y1       = y_;
+    modified = true;
     return this;
   }
 
@@ -166,7 +176,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setZ1               = function(z_)
   {
-    z1 = z_;
+    z1       = z_;
+    modified = true;
     return this;
   }
 
@@ -177,7 +188,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setR0               = function(r_)
   {
-    r0 = r_;
+    r0       = r_;
+    modified = true;
     return this;
   }
 
@@ -188,7 +200,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setR1               = function(r_)
   {
-    r1 = r_;
+    r1       = r_;
+    modified = true;
     return this;
   }
 
@@ -199,7 +212,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setPhi              = function(phi_)
   {
-    phi = phi_;
+    phi      = phi_;
+    modified = true;
     return this;
   }
 
@@ -210,13 +224,24 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setTheta            = function(theta_)
   {
-    theta = theta_;
+    theta    = theta_;
+    modified = true;
     return this;
   }
 
   this.getTheta           = function()
   {
     return theta;
+  }
+
+  this.setModified        = function(modified_)
+  {
+    modified = modified_;
+  }
+
+  this.isModified         = function()
+  {
+    return modified;
   }
 
   this.setName            = function(name_)
@@ -348,6 +373,7 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   this.setColor(color);
 
+  modified         = true;
   name             = name_;
   // Stock radius for a charged line.
   r0               = 0;
