@@ -186,5 +186,4 @@ window.vizit.builder = window.vizit.builder || {};
        return charges;
      }
    }
- }(window.vizit.builder)
- );
+ }(window.vizit.builder));
