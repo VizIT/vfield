@@ -25,7 +25,6 @@ window.vizit.builder = window.vizit.builder || {};
    /**
     * Build a visualization from a configuration class - most likely
     * an object literal.
-    * TODO Break up into smaller classes?
     *
     * @class
     */
@@ -33,203 +32,6 @@ window.vizit.builder = window.vizit.builder || {};
    {
      var errorMessage;
      var warningMessage;
-
-     /**
-      * Build an event handler that bings an element of the visualization
-      * the changes in a value from an external source.
-      */
-     this.bindingBuilder       = function(config, framework)
-     {
-       var binding;
-       /** The element of the visualization named as the target. */
-       var element;
-       /** The external variable used to make the update. */
-       var from;
-       /** The function, if any, that transforms the from variable to the set variable. */
-       var mapping;
-       /** The name of the method to make the update on the target. */
-       var methodName;
-       var property;
-       /** The name of the variable on the object to be updated. */
-       var set;
-       /** The name of the object to be updated. */
-       var target;
-       /** The method on the target to set the variable. */
-       var updater;
-
-       for (property in config)
-       {
-         if (property.toLowerCase() === "target")
-         {
-           target = config[property];
-         }
-         else if (property.toLowerCase() === "set")
-         {
-           set = config[property];
-         }
-         else if (property.toLowerCase() === "from")
-         {
-           from = config[property];
-         }
-         else if (property.toLowerCase() === "mapping")
-         {
-           mapping = config[property];
-         }
-       }
-
-       if (!from)
-       {
-         from = set;
-       }
-
-       methodName = "set" + set.charAt(0).toUpperCase();
-       if (set.length > 1)
-       {
-         methodName += set.slice(1)
-       }
-
-       element = framework.getElementByName(target);
-       updater = element[methodName];
-
-       if (mapping)
-       {
-         binding = new MappingEventHandler(updater, from, mapping, framework);
-       }
-       else
-       {
-         binding = new DirectEventHandler(updater, framework);
-       }
-       // By convention in the lesson framework changes in var are named varChanged.
-       document.addEventListener(from + "Changed", binding.handleUpdate.bind(binding),   false);
-     }
-
-     this.bindingsBuilder      = function(config, framework)
-     {
-       var binding;
-       var nbindings;
-
-       if (!!config)
-       {
-         if (Array.isArray(config))
-         {
-           nbindings = config.length;
-           for (var i=0; i<nbindings; ++i)
-           {
-             binding = this.bindingBuilder(config, framework);
-           }
-         }
-         else
-         {
-           binding = this.bindingBuilder(config, framework);
-         }
-       }
-     }
-
-     this.electricFieldBuilder = function(config)
-     {
-       var bindingsConfig;
-       var builder;
-       var chargeDistributionRE;
-       var drawingSurface, drawingSurfaceID;
-       var charges, pointChargeConfig, distributedChargeConfig;
-       var framework;
-       var renderer;
-       var surfaceConfig;
-       var startPointsConfig;
-       // Name and value of the properties on the config object.
-       var property, value;
-
-       chargeDistributionRE = /\s*charge\s*distribution\s*/i;
-       charges = new Charges();
-
-       for(var property in config)
-       {
-         if(property.toLowerCase() === "canvas")
-         {
-           drawingSurfaceID = config[property];
-         }
-         else if (property.toLowerCase() === "charges")
-         {
-           pointChargeConfig = config[property];
-         }
-         else if (property.toLowerCase() === "chargedistributions")
-         {
-           distributedChargeConfig = config[property]
-         }
-         else if (property.toLowerCase() ==="surfaces")
-         {
-           surfaceConfig = config[property];
-         }
-         else if (property.toLowerCase() ==="bindings")
-         {
-           bindingsConfig = config[property];
-         }
-       }
-
-       // If a canvas ID is defined
-       if (!!drawingSurfaceID)
-       {
-         drawingSurface = document.getElementById(drawingSurfaceID);
-
-         if (!!drawingSurface)
-         {
-           framework = new FieldRenderer(drawingSurface);
-           if (pointChargeConfig)
-           {
-             builder = new vizit.builder.ChargesBuilder();
-             charges = builder.build(pointChargeConfig, charges, framework);
-           }
-        
-           if(distributedChargeConfig)
-           {
-             builder = new vizit.builder.DistributionBuilder();
-             charges = builder.build(distributedChargeConfig, charges, framework);
-           }
-           renderer = new ElectricField(charges);
-           renderer.setMaxVectors(30);
-           renderer.setArrowSize(3.0);
-           renderer.setArrowSpacing(30.0);
-
-           if (surfaceConfig)
-           {
-             builder = new vizit.builder.SurfaceBuilder();
-             renderer = builder.build(surfaceConfig, renderer, framework);
-           }
-
-           if (bindingsConfig)
-           {
-             this.bindingsBuilder(bindingsConfig, framework)
-           }
-
-           framework.setRenderer(renderer);
-           framework.setScale(120.0);
-
-           framework.start();
-         }
-         else
-         {
-           alert("Can not find canvas with id=\"" + config.canvas + "\".");
-         }
-       }
-       else
-       {
-         alert("No canvas specified for " + config.type + " visualization.");
-       }
-     }
-
-     this.simpleVectorFieldBuilder = function(config)
-     {
-       var drawingSurface, drawingSurfaceID;
-       var charges, pointChargeConfig, distributedChargeConfig;
-       // An optional vector valued function.
-       var field;
-       var renderer;
-       var startPointsConfig;
-       // Name and value of the properties on the config object.
-       var property, value;
-
-       console.log("Simple Vector Field matched " + config.type);
-     }
 
      /**
       * Process a single visualization configuration. Peek at the type of config,
@@ -240,6 +42,7 @@ window.vizit.builder = window.vizit.builder || {};
       */
      this.processConfig = function(config)
      {
+       var builder;
        var electricFieldRE;
        /** Case insnesitive match of "simple vector field" with or without spaces. */
        var simpleVectorFieldRE;
@@ -259,10 +62,12 @@ window.vizit.builder = window.vizit.builder || {};
        {
          if (type.match(electricFieldRE))
          {
-           this.electricFieldBuilder(config);
+           builder = new window.vizit.builder.ElectricFieldBuilder();
+           builder.build(config);
          }
          else if (type.match(simpleVectorFieldRE))
          {
+           builder = new window.vizit.builder.SimpleVectorFieldBuilder();
            this.simpleVectorFieldBuilder(config);
          }
          else
