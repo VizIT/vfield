@@ -34,6 +34,7 @@ function SimpleVectorField(f_, scale_)
   /** General size parameter for the arrowheads. */
   var arrowSize;
   var color;
+  var explicitStartPoints;
   /** The vector field */
   var f;
   var generator;
@@ -42,13 +43,12 @@ function SimpleVectorField(f_, scale_)
   var indexedBuffers;
   /** The maximum number of vectors to be drawn per field line. */
   var maxVectors;
+  var modelViewMatrix;
   /** Actually draws the vector field */
   var renderer;
   // Model-View matrix for use in all programs.
-  var modelViewMatrix;
   var projectionMatrix;
   var scale;
-  var startPoints;
   // Has this renderer started - do not render in response to events if not.
   var started;
 
@@ -119,12 +119,12 @@ function SimpleVectorField(f_, scale_)
 
   this.addStartPoints = function(startPoints_)
   {
-    startPoints = startPoints.concat(startPoints_)
+    explicitStartPoints = explicitStartPoints.concat(startPoints_)
   }
 
   this.getStartPoints = function()
   {
-    return startPoints;
+    return explicitStartPoints;
   }
 
   this.render              = function()
@@ -157,14 +157,14 @@ function SimpleVectorField(f_, scale_)
     this.render();
   }
   
-  arrowScale     = 0.5;
-  arrowSize      = 0.3;
-  f              = f_;
-  indexedBuffers = new Array();
+  arrowScale          = 0.5;
+  arrowSize           = 0.3;
+  f                   = f_;
+  indexedBuffers      = new Array();
   /* Default color */
-  color          = new Float32Array([0.8, 0.3, 0.3, 1]);
-  maxVectors     = 5;
-  scale          = scale_;
-  startPoints    = new Array();
-  started        = false;
+  color               = new Float32Array([0.8, 0.3, 0.3, 1]);
+  maxVectors          = 5;
+  scale               = scale_;
+  explicitStartPoints = new Array();
+  started             = false;
 }

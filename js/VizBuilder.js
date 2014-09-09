@@ -43,7 +43,13 @@ window.vizit.builder = window.vizit.builder || {};
      this.processConfig = function(config)
      {
        var builder;
+       var drawingSurface, drawingSurfaceID;
+       /** Case insensitive match of "electric field" with or without spaces. */
        var electricFieldRE;
+       var framework;
+       var property;
+       var renderer;
+       var scale;
        /** Case insnesitive match of "simple vector field" with or without spaces. */
        var simpleVectorFieldRE;
        var type;
@@ -51,28 +57,64 @@ window.vizit.builder = window.vizit.builder || {};
        electricFieldRE     = /\s*electric\s*field\s*/i;
        simpleVectorFieldRE = /\s*simple\s*vector\s*field\s*/i;
 
-       /** Case insensitive match of "electric field" with or without spaces. */
-       type = config.type;
+       for(var property in config)
+       {
+         if(property.toLowerCase() === "canvas")
+         {
+           drawingSurfaceID = config[property];
+         }
+         else if (property.toLowerCase() === "scale")
+         {
+           scale = config[property];
+         }
+         else if (property.toLowerCase() === "type")
+         {
+           type = config[property];
+         }
+       }
 
-       if(!type)
+       if(typeof type === "undefined")
        {
          alert("Missing type for visualization configuration.");
        }
+       else if (drawingSurfaceID === "undefined")
+       {
+         alert("No canvas specified, please provide the id of a canvas.");
+       }
        else
        {
-         if (type.match(electricFieldRE))
+         drawingSurface = document.getElementById(drawingSurfaceID);
+         
+         if (drawingSurface)
          {
-           builder = new window.vizit.builder.ElectricFieldBuilder();
-           builder.build(config);
-         }
-         else if (type.match(simpleVectorFieldRE))
-         {
-           builder = new window.vizit.builder.SimpleVectorFieldBuilder();
-           this.simpleVectorFieldBuilder(config);
+           framework = new FieldRenderer(drawingSurface);
+
+           if (type.match(electricFieldRE))
+           {
+             builder  = new window.vizit.builder.ElectricFieldBuilder(framework);
+             renderer = builder.build(config);
+           }
+           else if (type.match(simpleVectorFieldRE))
+           {
+             builder  = new window.vizit.builder.SimpleVectorFieldBuilder(framework);
+             renderer = builder.build(config);
+           }
+           else
+           {
+             alert("Unrecognized visualization type: " + type + ".");
+           }
+
+           framework.setRenderer(renderer);
+           if (typeof scale !== "undefined")
+           {
+             framework.setScale(scale);
+           }
+
+           framework.start();
          }
          else
          {
-           alert("Unrecognized visualization type: " + type + ".");
+           alert("Can not find canvas with id=\"" + drawingSurfaceID + "\".");
          }
        }
      }
@@ -112,7 +154,7 @@ function VIZ_CONFIG_IF_EXISTS(event)
 {
   var VIZ_CONFIG_PROCESSOR;
 
-  if (VISUALIZATION_CONFIG)
+  if (typeof VISUALIZATION_CONFIG !== 'undefined')
   {
     VIZ_CONFIG_PROCESSOR = new vizit.builder.VizBuilder();
     VIZ_CONFIG_PROCESSOR.process(VISUALIZATION_CONFIG);

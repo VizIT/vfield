@@ -29,9 +29,42 @@ window.vizit.builder = window.vizit.builder || {};
     */
    ns.ChargesBuilder = function()
    {
-     var fieldLineDensityRE;
      var errorMessage;
+     var fieldLineDensityRE;
+     var xMin, xMax;
+     var yMin, yMax;
+     var zMin, zMax;
      var warningMessage;
+
+     this.getXMin = function()
+     {
+       return xMin;
+     }
+
+     this.getXMax = function()
+     {
+       return xMax;
+     }
+      
+     this.getYMin = function()
+     {
+       return yMin;
+     }
+
+     this.getYMax = function()
+     {
+       return yMax;
+     }
+      
+     this.getZMin = function()
+     {
+       return zMin;
+     }
+
+     this.getZMax = function()
+     {
+       return zMax;
+     }
       
      /**
       * Build a single point charge from the charges section of the config object.
@@ -125,6 +158,33 @@ window.vizit.builder = window.vizit.builder || {};
 
        if (message.length == 0)
        {
+         if (x < xMin)
+         {
+           xMin = x;
+         }
+         if (x > xMax)
+         {
+           xMax = x;
+         }
+
+         if (y < yMin)
+         {
+           yMin = y;
+         }
+         if (y > yMax)
+         {
+           yMax = y;
+         }
+
+         if (z < zMin)
+         {
+           zMin = z;
+         }
+         if (z > zMax)
+         {
+           zMax = z;
+         }
+
          charge = new Charge(q, x, y, z, rho, name);
        }
 
@@ -185,5 +245,13 @@ window.vizit.builder = window.vizit.builder || {};
        }
        return charges;
      }
+     errorMessage   = "";
+     xMin           = Number.POSITIVE_INFINITY;
+     xMax           = Number.NEGATIVE_INFINITY;
+     yMin           = Number.POSITIVE_INFINITY;
+     yMax           = Number.NEGATIVE_INFINITY;
+     zMin           = Number.POSITIVE_INFINITY;
+     zMax           = Number.NEGATIVE_INFINITY;
+     warningMessage = "";
    }
  }(window.vizit.builder));

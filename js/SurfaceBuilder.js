@@ -30,7 +30,40 @@ window.vizit.builder = window.vizit.builder || {};
    ns.SurfaceBuilder = function()
    {
      var errorMessage;
+     var xMin, xMax;
+     var yMin, yMax;
+     var zMin, zMax;
      var warningMessage;
+
+     this.getXMin = function()
+     {
+       return xMin;
+     }
+
+     this.getXMax = function()
+     {
+       return xMax;
+     }
+      
+     this.getYMin = function()
+     {
+       return yMin;
+     }
+
+     this.getYMax = function()
+     {
+       return yMax;
+     }
+      
+     this.getZMin = function()
+     {
+       return zMin;
+     }
+
+     this.getZMax = function()
+     {
+       return zMax;
+     }
 
      this.gaussianCylinderBuilder = function(config)
      {
@@ -85,6 +118,15 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
+       xMin = Math.min(xMin, x-r, x+r);
+       xMax = Math.max(xMax, x-r, x+r);
+
+       yMin = Math.min(yMin, y-r, y-r);
+       yMax = Math.max(yMax, y-r, y+r);
+
+       zMin = Math.min(zMin, z-h, z+h);
+       zMax = Math.max(zMax, z-h, z+h);
+
        gaussianCylinder = new GaussianCylinder(x, y, z,
                                                h, r,
                                                phi, theta,
@@ -127,6 +169,14 @@ window.vizit.builder = window.vizit.builder || {};
            name = config[property];
          }
        }
+       xMin = Math.min(xMin, x-r, x+r);
+       xMax = Math.max(xMax, x-r, x+r);
+
+       yMin = Math.min(yMin, y-r, y-r);
+       yMax = Math.max(yMax, y-r, y+r);
+
+       zMin = Math.min(zMin, z-r, z+r);
+       zMax = Math.max(zMax, z-r, z+r);
 
        gaussianSphere = new GaussianSphere(x, y, z, r, name);
 

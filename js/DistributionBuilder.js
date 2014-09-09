@@ -30,10 +30,43 @@ window.vizit.builder = window.vizit.builder || {};
    ns.DistributionBuilder = function()
    {
      var chargeDensityRE;
-     var fieldLineDensityRE;
      var errorMessage;
+     var fieldLineDensityRE;
+     var xMin, xMax;
+     var yMin, yMax;
+     var zMin, zMax;
      var warningMessage;
       
+     this.getXMin = function()
+     {
+       return xMin;
+     }
+
+     this.getXMax = function()
+     {
+       return xMax;
+     }
+      
+     this.getYMin = function()
+     {
+       return yMin;
+     }
+
+     this.getYMax = function()
+     {
+       return yMax;
+     }
+      
+     this.getZMin = function()
+     {
+       return zMin;
+     }
+
+     this.getZMax = function()
+     {
+       return zMax;
+     }
+
      /**
       * Pull out elements from a charged plane configuration and
       * construct the corresponding charged plane.
@@ -119,6 +152,15 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
+       xMin = Math.min(xMin, x0, x1, x2, x3);
+       xMax = Math.max(xMax, x0, x1, x2, x3);
+
+       yMin = Math.min(yMin, y0, y1, y2, z3);
+       yMax = Math.max(yMax, y0, y1, y2, z3);
+
+       zMin = Math.min(zMin, z0, z1, z2, z3);
+       zMax = Math.max(zMax, z0, z1, z2, z3);
+
        chargedPlane = new ChargedPlane(chargeDensity,
                                        fieldLineDensity,
                                        x0, y0, z0,
@@ -202,6 +244,15 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
+       xMin = Math.min(xMin, x0, x1);
+       xMax = Math.max(xMax, x0, x1);
+
+       yMin = Math.min(yMin, y0, y1);
+       yMax = Math.max(yMax, y0, y1);
+
+       zMin = Math.min(zMin, z0, z1);
+       zMax = Math.max(zMax, z0, z1);
+
        chargedCylinder = new ChargedCylinder(x0, y0, z0,
                                              x1, y1, z1,
                                              r0, r1,
@@ -264,6 +315,15 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
+       xMin = Math.min(xMin, x0, x1);
+       xMax = Math.max(xMax, x0, x1);
+
+       yMin = Math.min(yMin, y0, y1);
+       yMax = Math.max(yMax, y0, y1);
+
+       zMin = Math.min(zMin, z0, z1);
+       zMax = Math.max(zMax, z0, z1);
+
        chargedLine = new ChargedLine(x0, y0, z0,
                                      x1, y1, z1,
                                      chargeDensity,
@@ -320,6 +380,15 @@ window.vizit.builder = window.vizit.builder || {};
            name = config[property];
          }
        }
+
+       xMin = Math.min(xMin, x-b);
+       xMax = Math.max(xMax, x+b);
+
+       yMin = Math.min(yMin, y-b);
+       yMax = Math.max(yMax, y+b);
+
+       zMin = Math.min(zMin, z-b);
+       zMax = Math.max(zMax, z+b);
 
        chargedSphere = new ChargedSphere(charge,
                                          fieldLineDensity,

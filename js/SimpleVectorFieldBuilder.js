@@ -23,32 +23,82 @@ window.vizit.builder = window.vizit.builder || {};
 (function(ns)
  {
    /**
-    * Build a visualization from a configuration class - most likely
-    * an object literal.
+    * Build a simple vector field, that is drawing vectors along field lines.
+    * The vector field can be supplied explicitly, or by specifying electric
+    * charges. If electric charges are specified, elcetric field vectors are
+    * drawn.
     *
     * @class
     */
-   ns.SimpleVectorFieldBuilder = function()
+   ns.SimpleVectorFieldBuilder = function(framework_)
    {
      var errorMessage;
+     var framework;
      var warningMessage;
 
      this.build = function(config)
      {
-       var drawingSurface, drawingSurfaceID;
+       var bindingsConfig;
+       var builder;
+       var chargeDistributionRE;
        var charges, pointChargeConfig, distributedChargeConfig;
        // An optional vector valued function.
        var field;
        var renderer;
        var startPointsConfig;
-       // Name and value of the properties on the config object.
-       var property, value;
+       // Name of properties on the config object.
+       var property;
 
-       console.log("Simple Vector Field matched " + config.type);
+       chargeDistributionRE = /\s*charge\s*distribution\s*/i;
+       charges = new Charges();
+
+       for(var property in config)
+       {
+         if (property.toLowerCase() === "charges")
+         {
+           pointChargeConfig = config[property];
+         }
+         else if (property.toLowerCase() === "chargedistributions")
+         {
+           distributedChargeConfig = config[property]
+         }
+         else if (property.toLowerCase() ==="surfaces")
+         {
+           surfaceConfig = config[property];
+         }
+         else if (property.toLowerCase() ==="bindings")
+         {
+           bindingsConfig = config[property];
+         }
+       }
+
+       if (pointChargeConfig)
+       {
+         builder = new vizit.builder.ChargesBuilder();
+         charges = builder.build(pointChargeConfig, charges, framework);
+       }
+        
+       if(distributedChargeConfig)
+       {
+         builder = new vizit.builder.DistributionBuilder();
+         charges = builder.build(distributedChargeConfig, charges, framework);
+       }
+
+       if (charges.getNcharges() + charges.getNdistributions() > 0)
+       {
+         field = charges;
+       }
+
+       // SimpleVectorField(f, scale)
+       renderer = new SimpleVectorField(field, 1.0);
+       renderer.setMaxVectors(30);
+
+       return renderer;
      }
 
-     errorMessage       = "";
-     warningMessage     = "";
+     errorMessage   = "";
+     framework      = framework_;
+     warningMessage = "";
    }
  }(window.vizit.builder));
 

@@ -72,6 +72,7 @@ function ElectricField(charges_, home_)
   this.setArrowSpacing       = function(spacing)
   {
     arrowSpacing = spacing;
+    fieldLineGenerator.setArrowSpacing(spacing);
   }
 
   this.getArrowSpacing       = function()
@@ -82,6 +83,7 @@ function ElectricField(charges_, home_)
   this.setArrowSize        = function(size)
   {
     arrowSize = size;
+    fieldLineGenerator.setArrowSize(size);
   }
 
   this.getArrowSize        = function()
