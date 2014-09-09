@@ -72,7 +72,10 @@ function ElectricField(charges_, home_)
   this.setArrowSpacing       = function(spacing)
   {
     arrowSpacing = spacing;
-    fieldLineGenerator.setArrowSpacing(spacing);
+    if (typeof fieldLineGenerator !== "undefined")
+    {
+      fieldLineGenerator.setArrowSpacing(spacing);
+    }
   }
 
   this.getArrowSpacing       = function()
@@ -83,7 +86,10 @@ function ElectricField(charges_, home_)
   this.setArrowSize        = function(size)
   {
     arrowSize = size;
-    fieldLineGenerator.setArrowSize(size);
+    if (typeof fieldLineGenerator !== "undefined")
+    {
+      fieldLineGenerator.setArrowSize(size);
+    }
   }
 
   this.getArrowSize        = function()
@@ -277,11 +283,13 @@ function ElectricField(charges_, home_)
   this.start               = function()
   {
     glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
-    fieldLineRenderer = new FieldLineRenderer(glUtility);
+    fieldLineRenderer  = new FieldLineRenderer(glUtility);
+    chargeGenerator    = new ChargeGenerator(charges);
+    fieldLineGenerator = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
     this.setupFieldLines(charges, maxPoints, ds, arrowSize, arrowSpacing);
-    chargeRenderer    = new ChargeRenderer(glUtility, latch.countDown, home);
+    chargeRenderer     = new ChargeRenderer(glUtility, latch.countDown, home);
     this.setupCharges(charges);
-    surfaceRenderer   = new SurfaceRenderer(glUtility);
+    surfaceRenderer    = new SurfaceRenderer(glUtility);
     latch.countDown();
   }
   
@@ -304,7 +312,4 @@ function ElectricField(charges_, home_)
                                           0, 0, 1]);
   explicitStartPoints = new Array();
   started             = false;
-
-  chargeGenerator     = new ChargeGenerator(charges);
-  fieldLineGenerator  = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
 }

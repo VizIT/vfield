@@ -44,15 +44,13 @@ window.vizit.builder = window.vizit.builder || {};
        var arrowSpacing;
        var bindingsConfig;
        var builder;
-       var chargeDistributionRE;
-       var charges, pointChargeConfig, distributedChargeConfig;
+       var charges;
+       var elementsConfig;
        var renderer;
-       var surfaceConfig;
        var startPointsConfig;
        // Name of properties on the config object.
        var property;
 
-       chargeDistributionRE = /\s*charge\s*distribution\s*/i;
        charges = new Charges();
 
        for(var property in config)
@@ -65,17 +63,9 @@ window.vizit.builder = window.vizit.builder || {};
          {
            arrowSpacing = config[property];
          }
-         else if (property.toLowerCase() === "charges")
+         else if (property.toLowerCase() === "elements")
          {
-           pointChargeConfig = config[property];
-         }
-         else if (property.toLowerCase() === "chargedistributions")
-         {
-           distributedChargeConfig = config[property]
-         }
-         else if (property.toLowerCase() ==="surfaces")
-         {
-           surfaceConfig = config[property];
+           elementsConfig = config[property];
          }
          else if (property.toLowerCase() ==="bindings")
          {
@@ -83,17 +73,6 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
-       if (pointChargeConfig)
-       {
-         builder = new vizit.builder.ChargesBuilder();
-         charges = builder.build(pointChargeConfig, charges, framework);
-       }
-        
-       if(distributedChargeConfig)
-       {
-         builder = new vizit.builder.DistributionBuilder();
-         charges = builder.build(distributedChargeConfig, charges, framework);
-       }
        renderer = new ElectricField(charges);
        renderer.setMaxVectors(30);
        if (typeof arrowSize !== "undefined")
@@ -105,10 +84,11 @@ window.vizit.builder = window.vizit.builder || {};
          renderer.setArrowSpacing(arrowSpacing);
        }
 
-       if (surfaceConfig)
+       if (elementsConfig)
        {
-         builder = new vizit.builder.SurfaceBuilder();
-         renderer = builder.build(surfaceConfig, renderer, framework);
+         // Potentially can modify framework, charges and renderer.
+	 builder = new vizit.builder.ElectricFieldElementBuilder(framework, renderer);
+	 charges = builder.build(elementsConfig, charges);
        }
 
        if (bindingsConfig)
