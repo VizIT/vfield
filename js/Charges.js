@@ -311,7 +311,7 @@ function Charges()
       var i;
       var r0     = 6.0;
       var phi    = 0.0;
-      var dphi   = 0.0;
+      var dphi   = 1.57079632679/(ncharges+1);
       var points = new Array();
       var charge;
 

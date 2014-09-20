@@ -51,9 +51,7 @@ window.vizit.builder = window.vizit.builder || {};
        // Name of properties on the config object.
        var property;
 
-       charges = new Charges();
-
-       for(var property in config)
+       for(property in config)
        {
          if (property.toLowerCase() === "arrowsize")
          {
@@ -73,7 +71,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
-       renderer = new ElectricField(charges);
+       renderer = new ElectricField();
        renderer.setMaxVectors(30);
        if (typeof arrowSize !== "undefined")
        {
@@ -89,6 +87,10 @@ window.vizit.builder = window.vizit.builder || {};
          // Potentially can modify framework, charges and renderer.
 	 builder = new vizit.builder.ElectricFieldElementBuilder(framework, renderer);
 	 charges = builder.build(elementsConfig, charges);
+         if (!!charges)
+         {
+           renderer.setCharges(charges);
+         }
        }
 
        if (bindingsConfig)

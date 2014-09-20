@@ -40,31 +40,19 @@ window.vizit.builder = window.vizit.builder || {};
      {
        var bindingsConfig;
        var builder;
-       var chargeDistributionRE;
-       var charges, pointChargeConfig, distributedChargeConfig;
        // An optional vector valued function.
-       var field;
-       var renderer;
-       var startPointsConfig;
+       var vectorValuedFunction, vectorValuedFunctionConfig;
        // Name of properties on the config object.
        var property;
+       // Wrapper around the shader program that renders the vector field to the screen.
+       var renderer;
 
-       chargeDistributionRE = /\s*charge\s*distribution\s*/i;
-       charges = new Charges();
-
-       for(var property in config)
+       for(property in config)
        {
-         if (property.toLowerCase() === "charges")
+         // For now, our vector valued function is configured as f.
+         if (property.toLowerCase() === "f")
          {
-           pointChargeConfig = config[property];
-         }
-         else if (property.toLowerCase() === "chargedistributions")
-         {
-           distributedChargeConfig = config[property]
-         }
-         else if (property.toLowerCase() ==="surfaces")
-         {
-           surfaceConfig = config[property];
+           vectorValuedFunctionConfig = config[property];
          }
          else if (property.toLowerCase() ==="bindings")
          {
@@ -72,25 +60,14 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
-       if (pointChargeConfig)
+       if (vectorValuedFunctionConfig)
        {
-         builder = new vizit.builder.ChargesBuilder();
-         charges = builder.build(pointChargeConfig, charges, framework);
+         builder              = new vizit.builder.VectorValuedFunctionBuilder(framework);
+         vectorValuedFunction = builder.build(vectorValuedFunctionConfig);
        }
         
-       if(distributedChargeConfig)
-       {
-         builder = new vizit.builder.DistributionBuilder();
-         charges = builder.build(distributedChargeConfig, charges, framework);
-       }
-
-       if (charges.getNcharges() + charges.getNdistributions() > 0)
-       {
-         field = charges;
-       }
-
        // SimpleVectorField(f, scale)
-       renderer = new SimpleVectorField(field, 1.0);
+       renderer = new SimpleVectorField(vectorValuedFunction, 1.0);
        renderer.setMaxVectors(30);
 
        return renderer;

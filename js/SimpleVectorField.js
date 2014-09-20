@@ -143,7 +143,7 @@ function SimpleVectorField(f_, scale_)
     indexedBuffer          = new Object();
     renderer               = new LineRenderer(glUtility);
     // Introduce variables and defaults for maxVectors and arrowSize.
-    generator              = new VectorFieldGenerator(f, startPoints, maxVectors, arrowSize, arrowScale, scale);
+    generator              = new VectorFieldGenerator(f, explicitStartPoints, maxVectors, arrowSize, arrowScale, scale);
     // TODO IndexedBuffer here?
     indexedVertices        = generator.generateField();
 

@@ -20,16 +20,13 @@
  * Representation of charges and their associated field lines. Given a set of charges
  * draw the field lines along with directional arrows from the given start points.
  *
- * @param {Charges} charges_        Set of point and distributed charges. It must
- *                                  impliment getField(x, y, z).
- *
  * @param {string}  [home_ = .]     A string giving the path to the efield
  *                                  home directory if not the directory the
  *                                  page is loaded from.
  *
- * @constructor
+ * @class
  */
-function ElectricField(charges_, home_)
+function ElectricField(home_)
 {
   /** General size parameter for the arrowheads. */
   var arrowSize;
@@ -105,6 +102,20 @@ function ElectricField(charges_, home_)
   this.getColor            = function()
   {
     return color;
+  }
+
+  /**
+   * @param {Charges} charges_ Set of point and distributed charges. It must
+   *                           impliment getField(x, y, z).
+   */
+  this.setCharges          = function(charges)
+  {
+    charges = charges_;
+  }
+
+  this.getCharges          = function()
+  {
+    return charges;
   }
 
   this.addGaussianSurface  = function(surface)
@@ -295,7 +306,6 @@ function ElectricField(charges_, home_)
   
   arrowSize           = 0.3;
   arrowSpacing        = 1.2;
-  charges             = charges_;
   /* Default color */
   color               = new Float32Array([0.8, 0.3, 0.3, 1]);
   ds                  = 0.6;
