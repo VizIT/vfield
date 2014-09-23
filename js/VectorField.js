@@ -23,7 +23,6 @@
  *
  * @param f           A vector valued function. Must implement a getField(x,y,z)
  *                    method.
- * @param startPoints A set of start points (x,y,z,sgn) from which field lines are traced.
  * @param maxVectors  The maximum number of arrows to draw. Each arrow requires
  *                    6 verticies and 10 indices. Or 6*3 + 10 = 28 floating point
  *                    numbers.
@@ -31,7 +30,7 @@
  * @param arrowScale  Scales how far the arrow heads fan out from the arrow shaft.
  * @param scale       Scale factor between the electric field and physical coordinates.
  */
-function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowScale_, scale_)
+function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
 {
   /** A scale factor for how fast the arrowhead spreads out as E grows. */
   var arrowScale;
@@ -46,6 +45,20 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
   /** Scale factor between the electric field and physical coordinates. */
   var scale;
   var startPoints;
+
+  /**
+   * @param startPoints A set of start points (x,y,z,sgn) from which field lines are traced.
+   */
+  this.setStartPoints = function(points)
+  {
+    startPoints = points;
+    return this;
+  }
+
+  this.getStartPoints = function()
+  {
+    return startPoints;
+  }
 
   this.setMaxVectors = function(maxVectors_)
   {
@@ -324,7 +337,6 @@ function VectorFieldGenerator(f_, startPoints_, maxVectors_, arrowSize_, arrowSc
   f           = f_;
   maxVectors  = maxVectors_;
   scale       = scale_;
-  startPoints = startPoints_;
 }
 
 

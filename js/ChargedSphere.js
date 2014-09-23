@@ -22,19 +22,22 @@
  * a solid sphere.
  *
  * @constructor	
- * @param {number} Q_                The total charge contained in this distribution.
- * @param {number} fieldLineDensity_ The density of field lines in lines per unit charge.
- * @param {number} x_                The x coordinate of the center of the sphere.
- * @param {number} y_                The y coordinate of the center of the sphere.
- * @param {number} z_                The z coordinate of the center of the sphere.
- * @param {number} a_                The inner radius of the distribution. 0 for a solid sphere.
- * @param {number} b_                The outer radius of the distribution.
- * @param {string} [name]            A unique identifier for this element of the
- *                                   visualization.
+ * @param {number} x_               The x coordinate of the center of the sphere.
+ * @param {number} y_               The y coordinate of the center of the sphere.
+ * @param {number} z_               The z coordinate of the center of the sphere.
+ * @param {number} a_               The inner radius of the distribution. 0 for a solid sphere.
+ * @param {number} b_               The outer radius of the distribution.
+ * @param {number} charge           The total charge contained in this distribution.
+ * @param {number} fieldLineDensity The density of field lines in lines per unit charge.
+ * @param {Double} nfieldLines      Min number of field lines to generate. With fieldLineDensity
+ *                                  = 0, the number of field lines are fixed. 
+ * @param {string} [name]           A unique identifier for this element of the
+ *                                  visualization.
  *
  * @class
  */
-function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
+function ChargedSphere(x_, y_, z_, a_, b_,
+                       charge_, fieldLineDensity_, nfieldLines_, name_)
 {
   var a;
   var a2;
@@ -47,28 +50,29 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
   var name;
   var nindices;
   var pi;
-  var Q;
+  var charge;
   var fieldLineDensity;
   var vertexRegistry;
   var x0;
   var y0;
   var z0;
 
-  modified  = true;
-  name      = name_;
-  nindices  = 0;
-  pi        = 3.14159265359;
+  modified         = true;
+  name             = name_;
+  nindices         = 0;
+  pi               = 3.14159265359;
 
-  a      = a_;
-  a2     = a*a;
-  a3     = a2*a;
-  b      = b_;
-  b3     = b*b*b;
-  Q      = Q_;
-  fieldLineDensity    = fieldLineDensity_;
-  x0     = x_;
-  y0     = y_;
-  z0     = z_;
+  a                = a_;
+  a2               = a*a;
+  a3               = a2*a;
+  b                = b_;
+  b3               = b*b*b;
+  charge           = typeof charge_           == 'undefined' ? 0 : charge_;
+  fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
+  nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
+  x0               = x_;
+  y0               = y_;
+  z0               = z_;
 
   this.setA               = function(a_)
   {
@@ -76,6 +80,7 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
     a2       = a*a;
     a3       = a2*a;
     modified = true;
+    return this;
   }
 
   this.getA               = function()
@@ -88,6 +93,7 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
     b        = b_;
     b3       = b*b*b;
     modified = true;
+    return this;
   }
 
   this.getB               = function()
@@ -98,11 +104,13 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
   this.setNindices        = function(n)
   {
     nindices = n;
+    return this;
   }
 
   this.setModified        = function(modified_)
   {
     modified = modified_;
+    return this;
   }
 
   this.isModified         = function()
@@ -110,9 +118,22 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
     return modified;
   }
 
+  this.setNfieldLines     = function(n)
+  {
+    nfieldLines = n;
+    modified    = true;
+    return this;
+  }
+
+  this.getNfieldLines     = function()
+  {
+    return nfieldLines;
+  }
+
   this.setName            = function(name_)
   {
     name = name_;
+    return this;
   }
 
   this.getName            = function()
@@ -136,8 +157,8 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
     var sgn;
     var y;
 
-    sgn        = Q > 0.0 ? 1.0 : Q < 0.0 ? -1.0 : 0.0;
-    nlines     = Math.round(fieldLineDensity * Q * sgn);
+    sgn        = charge > 0.0 ? 1.0 : charge < 0.0 ? -1.0 : 0.0;
+    nlines     = Math.round(fieldLineDensity * charge * sgn) + nfieldLines;
     s          = 3.6 / Math.sqrt(nlines);
     phi        = 0; // Or inject variablility with: Math.random() * Math.PI / 2;
     radius     = a + 0.2*(b-a);
@@ -187,12 +208,12 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
       if (r >=a && r<b)
       {
         // We are in the interior of the charge distribution.
-        f         = Q * (r-(a3/r2))/(b3-a3); // = (4*pi/3)*(r-(a3/r2)) * chargeDensity;
+        f         = charge * (r-(a3/r2))/(b3-a3); // = (4*pi/3)*(r-(a3/r2)) * chargeDensity;
       }
       else
       {
         // Outside the charge distribution the field is as a point charge
-        f         = Q/r2; // = (4*pi/3)*(b3-a3) * chargeDensity /r2;
+        f         = charge/r2; // = (4*pi/3)*(b3-a3) * chargeDensity /r2;
       }
 
       // Similar triangles allows easy distribution of the field into vector components.
@@ -266,11 +287,11 @@ function ChargedSphere(Q_, fieldLineDensity_, x_, y_, z_, a_, b_, name_)
     vertices        = this.getVertexBuffers(glUtility);
 
     // RGBA positive (blue) or negative (red) charge
-    if (Q > 0)
+    if (charge > 0)
     {
       gl.uniform4f(surfaceProgram.getSurfaceColorHandle(), 0.05, 0.05, 0.80, 0.20);
     }
-    else if (Q < 0)
+    else if (charge < 0)
     {
       gl.uniform4f(surfaceProgram.getSurfaceColorHandle(), 0.80, 0.05, 0.05, 0.20);
     }

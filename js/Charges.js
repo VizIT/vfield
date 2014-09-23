@@ -20,41 +20,59 @@
  * Represents a single charge in a set of charges
  * A charge has position and a charge in stat-Columbs.
  *
- * @param {string} [name] A unique identifier for this element of the
- *                        visualization.
+ * @param {Double} [fieldLineDensity] The ratio of field lines to charge.
+ * @param {Double} [nfieldLines]      Min number of field lines to generate. With fieldLineDensity
+ *                                    = 0, the number of field lines are fixed. Useful for showing
+ *                                    explicit vectors, which indicate field strength by changing
+ *                                    the magnitude of the vectors.
+ * @param {string} [name]             A unique identifier for this element of the
+ *                                    visualization.
  *
  * @class
  */
-function Charge(Q_, x_, y_, z_, rho_, name_)
+function Charge(x_, y_, z_, charge_, fieldLineDensity_, nfieldLines_, name_)
 {
-    var Q;
+    var charge;
     /** Whether this has been modified since the last render. */
     var modified;
     var name;
+    /** Min number of field lines to generate. */
+    var nfieldLines;
     var position;
-    var rho;
+    var fieldLineDensity;
     var r2;
 
-    this.setQ = function(Q_)
+    this.setCharge          = function(charge_)
     {
-      Q        = Q_;
+      charge   = charge_;
       modified = true;
     }
 
-    this.getQ = function()
+    this.getCharge          = function()
     {
-      return Q;
+      return charge;
     }
 
-    this.setPosition = function(position)
+    this.setPosition        = function(position)
     {
       position = position;
       modified = true;
     }
 
-    this.getPosition = function()
+    this.getPosition        = function()
     {
       return position;
+    }
+
+    this.setNfieldLines     = function(n)
+    {
+      nfieldLines = n;
+      modified    = true;
+    }
+
+    this.getNfieldLines     = function()
+    {
+      return nfieldLines;
     }
 
     this.setModified        = function(modified_)
@@ -100,7 +118,7 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
         return field;
       }
       r           = Math.sqrt(r2);
-      f           = Q/r2;
+      f           = charge/r2;
       // Similar triangles allows easy distribution of the field into vector components.
       field[0]    = f * deltaX / r;
       field[1]    = f * deltaY / r;
@@ -114,7 +132,7 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
      * 
      * @param {Integer} pho The densiy of field lines per unit charge.
      */
-    this.getFieldSeedPointsI = function(rho)
+    this.getFieldSeedPointsI = function(fieldLineDensity)
     {
       var increment;
       var nlines;
@@ -127,8 +145,8 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
 
       increment  = 2.39996323 //Math.PI * (3- Math.sqrt(5))
       seedPoints = new Array();
-      sgn        = Q > 0 ? 1 : Q < 0 ? -1 : 0;
-      nlines     = Math.round(rho * Q * sgn);
+      sgn        = charge > 0 ? 1 : charge < 0 ? -1 : 0;
+      nlines     = Math.round(fieldLineDensity * charge * sgn);
       offset     = 2/nlines;
 
 
@@ -161,14 +179,14 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
       var sgn;
       var y;
 
-      sgn        = Q > 0 ? 1 : Q < 0 ? -1 : 0;
-      nlines     = Math.round(rho * Q * sgn) - 1;
+      sgn        = charge > 0 ? 1 : charge < 0 ? -1 : 0;
+      nlines     = Math.round(fieldLineDensity * charge * sgn) - 1 + nfieldLines;
       s          = 3.6 / Math.sqrt(nlines);
       phi        = typeof phi0   == 'undefined' ? Math.PI / 2 : phi0;
       radius     = typeof radius == 'undefined' ? 1           : radius;
       seedPoints = new Array();
 
-      if (rho > 0)
+      if (nlines > 0)
       {
         // seedPoints.push(new Array(0, -radius, 0, sgn));
         for (var i=1; i<nlines; i++)
@@ -199,14 +217,15 @@ function Charge(Q_, x_, y_, z_, rho_, name_)
       // to a negative charge, or from a positive charge to a positive
       // charge - where the field line should not terminate.
       
-      return sgn * Q < 0.0 && r2 < minR2;
+      return sgn * charge < 0.0 && r2 < minR2;
     }
 
-    Q        = Q_;
-    modified = true;
-    name     = name_;
-    position = new Array(x_, y_, z_);
-    rho      = typeof rho_ == 'undefined' ? 0 : rho_;
+    charge           = charge_;
+    modified         = true;
+    name             = name_;
+    position         = new Array(x_, y_, z_);
+    fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
+    nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
 }
 
 /**
@@ -306,11 +325,10 @@ function Charges()
     /**
      * Get start points using, for now, preset values of phi0 and r
      */
-    this.getStartPoints = function()
+    this.getStartPoints = function(phi0, r0)
     {
       var i;
-      var r0     = 6.0;
-      var phi    = 0.0;
+      var phi    = phi0;
       var dphi   = 1.57079632679/(ncharges+1);
       var points = new Array();
       var charge;

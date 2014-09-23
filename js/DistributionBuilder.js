@@ -83,6 +83,7 @@ window.vizit.builder = window.vizit.builder || {};
        var fieldLineDensity;
        /** The name of this element */
        var name;
+       var nfieldLines;
        var x0, y0, z0;
        var x1, y1, z1;
        var x2, y2, z2;
@@ -97,6 +98,10 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.match(fieldLineDensityRE))
          {
            fieldLineDensity = config[property];
+         }
+         else if (property.toLowerCase() === "nfieldLines")
+         {
+           nfieldLines = config[property];
          }
          else if (property.toLowerCase() === "x0")
          {
@@ -161,12 +166,13 @@ window.vizit.builder = window.vizit.builder || {};
        zMin = Math.min(zMin, z0, z1, z2, z3);
        zMax = Math.max(zMax, z0, z1, z2, z3);
 
-       chargedPlane = new ChargedPlane(chargeDensity,
-                                       fieldLineDensity,
-                                       x0, y0, z0,
+       chargedPlane = new ChargedPlane(x0, y0, z0,
                                        x1, y1, z1,
                                        x2, y2, z2,
                                        x3, y3, z3,
+                                       chargeDensity,
+                                       fieldLineDensity,
+                                       nfieldLines,
                                        name);
 
        return chargedPlane;
@@ -184,11 +190,12 @@ window.vizit.builder = window.vizit.builder || {};
      this.chargedCylinderBuilder   = function(config)
      {
        var chargedCylinder;
-       var property;
        // Charge density and field lines per unit charge.
        var chargeDensity, fieldLineDensity;
        /** The name of this element */
        var name;
+       var nfieldLines;
+       var property;
        // Center point of one end of the rendered section of an infinite cylinder.
        var x0, y0, z0;
        // The other end of the rendered section of the cylinder.
@@ -205,6 +212,10 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.match(fieldLineDensityRE))
          {
            fieldLineDensity = config[property];
+         }
+         else if (property.toLowerCase() === "nfieldLines")
+         {
+           nfieldLines = config[property];
          }
          else if (property.toLowerCase() === "x0")
          {
@@ -258,6 +269,7 @@ window.vizit.builder = window.vizit.builder || {};
                                              r0, r1,
                                              chargeDensity,
                                              fieldLineDensity,
+                                             nfieldLines,
                                              name);
 
        return chargedCylinder;
@@ -266,10 +278,11 @@ window.vizit.builder = window.vizit.builder || {};
      this.chargedLineBuilder       = function(config)
      {
        var chargedLine;
-       var property;
        var chargeDensity, fieldLineDensity;
        /** The name of this element */
        var name;
+       var nfieldLines;
+       var property;
        // Center point of one end of the rendered section of an infinite cylinder.
        var x0, y0, z0;
        // The other end of the rendered section of the cylinder.
@@ -284,6 +297,10 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.match(fieldLineDensityRE))
          {
            fieldLineDensity = config[property];
+         }
+         else if (property.toLowerCase() === "nfieldLines")
+         {
+           nfieldLines = config[property];
          }
          else if (property.toLowerCase() === "x0")
          {
@@ -328,6 +345,7 @@ window.vizit.builder = window.vizit.builder || {};
                                      x1, y1, z1,
                                      chargeDensity,
                                      fieldLineDensity,
+                                     nfieldLines,
                                      name);
 
        return chargedLine;
@@ -340,6 +358,7 @@ window.vizit.builder = window.vizit.builder || {};
        var fieldLineDensity;
        /** The name of this element */
        var name;
+       var nfieldLines;
        // The center of the sphere.
        var x, y, z;
        // The inner and outer radius.
@@ -354,6 +373,10 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.match(fieldLineDensityRE))
          {
            fieldLineDensity = config[property];
+         }
+         else if (property.toLowerCase() === "nfieldLines")
+         {
+           nfieldLines = config[property];
          }
          else if (property.toLowerCase() === "x")
          {
@@ -390,10 +413,11 @@ window.vizit.builder = window.vizit.builder || {};
        zMin = Math.min(zMin, z-b);
        zMax = Math.max(zMax, z+b);
 
-       chargedSphere = new ChargedSphere(charge,
-                                         fieldLineDensity,
-                                         x, y, z,
+       chargedSphere = new ChargedSphere(x, y, z,
                                          a, b,
+                                         charge,
+                                         fieldLineDensity,
+                                         nfieldLines,
                                          name);
 
        return chargedSphere;

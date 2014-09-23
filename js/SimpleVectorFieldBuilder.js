@@ -38,8 +38,11 @@ window.vizit.builder = window.vizit.builder || {};
 
      this.build = function(config)
      {
+       var arrowSize;
+       var arrowSpacing;
        var bindingsConfig;
        var builder;
+       var maxVectors;
        // An optional vector valued function.
        var vectorValuedFunction, vectorValuedFunctionConfig;
        // Name of properties on the config object.
@@ -47,8 +50,21 @@ window.vizit.builder = window.vizit.builder || {};
        // Wrapper around the shader program that renders the vector field to the screen.
        var renderer;
 
+       
        for(property in config)
        {
+         if (property.toLowerCase() === "arrowsize")
+         {
+           arrowSize = config[property];
+         }
+         else if (property.toLowerCase() === "arrowspacing")
+         {
+           arrowSpacing = config[property];
+         }
+         else if (property.toLowerCase() === "maxvectors")
+         {
+           maxVectors = config[property];
+         }
          // For now, our vector valued function is configured as f.
          if (property.toLowerCase() === "f")
          {

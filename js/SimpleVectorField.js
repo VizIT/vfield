@@ -55,6 +55,7 @@ function SimpleVectorField(f_, scale_)
   this.setArrowScale       = function(scale)
   {
     arrowScale = scale;
+    return this;
   }
 
   this.getArrowScale       = function()
@@ -65,6 +66,7 @@ function SimpleVectorField(f_, scale_)
   this.setArrowSize        = function(size)
   {
     arrowSize = size;
+    return this;
   }
 
   this.getArrowSize        = function()
@@ -75,6 +77,7 @@ function SimpleVectorField(f_, scale_)
   this.setColor            = function(color_)
   {
     color = color_;
+    return this;
   }
 
   this.getColor            = function()
@@ -85,6 +88,7 @@ function SimpleVectorField(f_, scale_)
   this.setGlUtility        = function(glUtility_)
   {
     glUtility = glUtility_;
+    return this;
   }
 
   this.getGlUtility        = function()
@@ -95,6 +99,7 @@ function SimpleVectorField(f_, scale_)
   this.setMaxVectors       = function(max)
   {
     maxVectors = max;
+    return this;
   }
 
   this.getMaxVectors       = function()
@@ -105,6 +110,7 @@ function SimpleVectorField(f_, scale_)
   this.setModelViewMatrix  = function(modelViewMatrix_)
   {
     modelViewMatrix = modelViewMatrix_;
+    return this;
   }
 
   this.getModelViewMatrix  = function()
@@ -115,16 +121,50 @@ function SimpleVectorField(f_, scale_)
   this.setProjectionMatrix = function(projectionMatrix_)
   {
     projectionMatrix = projectionMatrix_;
+    return this;
   }
 
   this.addStartPoints = function(startPoints_)
   {
     explicitStartPoints = explicitStartPoints.concat(startPoints_)
+    return this;
   }
 
   this.getStartPoints = function()
   {
     return explicitStartPoints;
+  }
+
+  this.setupVectorField    = function()
+  {
+    var indexedBuffer;
+    var indexedVertices;
+    var startPoints;
+
+    // Include start points defined implicitly in vector function, if any.
+    if (typeof f.getStartPoints === "function")
+    {
+      startPoints = explicitStartPoints.concat(f.getStartPoints(0, 2.0));
+    }
+    else
+    {
+      startPoints = explicitStartPoints;
+    }
+
+    generator.setStartPoints(startPoints);
+
+    indexedBuffer          = new Object();
+
+    // TODO IndexedBuffer here?
+    indexedVertices        = generator.generateField();
+
+    indexedBuffer.vertices = glUtility.createBuffer(indexedVertices.getVertices());
+    indexedBuffer.indices  = glUtility.createIndexBuffer(indexedVertices.getIndices());
+    indexedBuffer.nindices = indexedVertices.getNindices();
+
+    indexedBuffers[0]      = indexedBuffer;
+
+    return indexedBuffers;
   }
 
   this.render              = function()
@@ -140,19 +180,12 @@ function SimpleVectorField(f_, scale_)
     var indexedBuffer;
     var indexedVertices;
 
-    indexedBuffer          = new Object();
-    renderer               = new LineRenderer(glUtility);
+    renderer       = new LineRenderer(glUtility);
     // Introduce variables and defaults for maxVectors and arrowSize.
-    generator              = new VectorFieldGenerator(f, explicitStartPoints, maxVectors, arrowSize, arrowScale, scale);
-    // TODO IndexedBuffer here?
-    indexedVertices        = generator.generateField();
+    generator      = new VectorFieldGenerator(f, maxVectors, arrowSize, arrowScale, scale);
 
-    indexedBuffer.vertices = glUtility.createBuffer(indexedVertices.getVertices());
-    indexedBuffer.indices  = glUtility.createIndexBuffer(indexedVertices.getIndices());
-    indexedBuffer.nindices = indexedVertices.getNindices();
-
-    indexedBuffers[0]      = indexedBuffer;
-    started                = true;
+    indexedBuffers = this.setupVectorField();
+    started        = true;
 
     this.render();
   }

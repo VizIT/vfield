@@ -21,23 +21,28 @@
  * (x0, y0, z0) to (x1, y1, z1) with volume charge density chargeDensity.
  * The number of field lines drawn is fieldLineDensity*chargeDensity*length.
  *
- * @param {Double} x0_               The x coordinate one end cap of the cylinder.
- * @param {Double} y0_               The y coordinate one end cap of the cylinder.
- * @param {Double} z0_               The z coordinate one end cap of the cylinder.
- * @param {Double} x1_               The x coordinate for the other end cap of the cylinder.
- * @param {Double} y1_               The y coordinate for the other end cap of the cylinder.
- * @param {Double} z1_               The z coordinate for the other end cap of the cylinder.
- * @param {Double} r0_               The inner radios of the cylinder, 0 for a solid cylinder.
- * @param {Double} r1_               The outer radius of the cylinder.
- * @param {Double} chargeDensity_    The volume charge density within the cylinder. Related to linear
+ * @param {Double} x0_              The x coordinate one end cap of the cylinder.
+ * @param {Double} y0_              The y coordinate one end cap of the cylinder.
+ * @param {Double} z0_              The z coordinate one end cap of the cylinder.
+ * @param {Double} x1_              The x coordinate for the other end cap of the cylinder.
+ * @param {Double} y1_              The y coordinate for the other end cap of the cylinder.
+ * @param {Double} z1_              The z coordinate for the other end cap of the cylinder.
+ * @param {Double} r0_              The inner radios of the cylinder, 0 for a solid cylinder.
+ * @param {Double} r1_              The outer radius of the cylinder.
+ * @param {Double} chargeDensity    The volume charge density within the cylinder. Related to linear
  *                                   charge density by lambda = Pi (r1*r1-r0*r0)*rho
- * @param {Double} fieldLineDensity_ The ratio of field lines to charge.
- * @param {string} [name]            A unique identifier for this element of the
- *                                   visualization.
+ * @param {Double} fieldLineDensity The ratio of field lines to charge.
+ * @param {Double} nfieldLines      Min number of field lines to generate. With fieldLineDensity
+ *                                  = 0, the number of field lines are fixed. Useful when showing
+ *                                  explicit vectors, which indicate field strength by changing
+ *                                  the magnitude of the vectors.
+ * @param {string} [name]           A unique identifier for this element of the
+ *                                  visualization.
  *
  * @class
  */
-function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_, fieldLineDensity_, name_)
+function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_,
+                         chargeDensity_, fieldLineDensity_, nfieldLines_, name_)
 {
   var color;
   var height;
@@ -45,6 +50,8 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
   var modelViewMatrix;
   var modified;
   var name;
+  /** Min number of field lines to generate. */
+  var nfieldLines;
   /** Rotation angles around the z and y axes */
   var phi, theta;
   /** The charge density and density of field lines per unit charge. */
@@ -235,9 +242,22 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
     return theta;
   }
 
+  this.setNfieldLines     = function(n)
+  {
+    nfieldLines = n;
+    modified    = true;
+    return this;
+  }
+
+  this.getNfieldLines     = function()
+  {
+    return nfieldLines;
+  }
+
   this.setModified        = function(modified_)
   {
     modified = modified_;
+    return this;
   }
 
   this.isModified         = function()
@@ -248,6 +268,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
   this.setName            = function(name_)
   {
     name = name_;
+    return this;
   }
 
   this.getName            = function()
@@ -275,11 +296,12 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
     sinpi4      = 0.707106781;
     startPoints = new Array();
 
-    if (fieldLineDensity != 0)
+    if (fieldLineDensity + nfieldLines != 0)
     {
       sgn         = this.sign(chargeDensity);
 
-      npoints     = Math.max(2, Math.round(Math.abs(chargeDensity*Math.PI*(r1*r1-r0*r0)*fieldLineDensity*height)));
+      npoints     = Math.max(2, Math.round(Math.abs(chargeDensity*Math.PI*(r1*r1-r0*r0)*fieldLineDensity*height)))
+                   + nfieldLines;
       // Used in field lines at multiples of Pi/2 around the cylinder.
       r0p1        = (r0+1)/r1;
       // Used in field lines at multiples of Pi/4 around the cylinder.
@@ -383,10 +405,11 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_, chargeDensity_,
 
   modified         = true;
   name             = name_;
+  chargeDensity    = typeof chargeDensity_    == 'undefined' ? 0 : chargeDensity_;
+  fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
+  nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
   r0               = r0_;
   r1               = r1_;
-  chargeDensity    = chargeDensity_;
-  fieldLineDensity = fieldLineDensity_;
   x0               = x0_;
   y0               = y0_;
   z0               = z0_;

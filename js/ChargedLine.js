@@ -21,20 +21,25 @@
  * (x0, y0, z0) to (x1, y1, z1) with linear charge density chargeDensity.
  * The number of field lines drawn is fieldLineDensity*chargeDensity*length.
  *
- * @param x0_               {Double} The x coordinate one end cap of the cylinder.
- * @param y0_               {Double} The y coordinate one end cap of the cylinder.
- * @param z0_               {Double} The z coordinate one end cap of the cylinder.
- * @param x1_               {Double} The x coordinate for the other end cap of the cylinder.
- * @param y1_               {Double} The y coordinate for the other end cap of the cylinder.
- * @param z1_               {Double} The z coordinate for the other end cap of the cylinder.
- * @param chargeDensity_    {Double} The linear charge density on the line.
- * @param fieldLineDensity_ {Double} The proportionality between field lines and charge.
- * @param {string} [name]   A unique identifier for this element of the
- *                          visualization.
+ * @param {Double}x0_                The x coordinate one end cap of the cylinder.
+ * @param {Double}y0_                The y coordinate one end cap of the cylinder.
+ * @param {Double}z0_                The z coordinate one end cap of the cylinder.
+ * @param {Double}x1_                The x coordinate for the other end cap of the cylinder.
+ * @param {Double}y1_                The y coordinate for the other end cap of the cylinder.
+ * @param {Double}z1_                The z coordinate for the other end cap of the cylinder.
+ * @param {Double}[chargeDensity]    The linear charge density on the line.
+ * @param {Double}[fieldLineDensity] The proportionality between field lines and charge.
+ * @param {Double}[nfieldLines]      Min number of field lines to generate. With fieldLineDensity
+ *                                   = 0, the number of field lines are fixed. Useful for showing
+ *                                   explicit vectors, which indicate field strength by changing
+ *                                   the magnitude of the vectors.
+ * @param {string}[name]             A unique identifier for this element of the
+ *                                   visualization.
  *
  * @class
  */
-function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDensity_, name_)
+function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_,
+                     chargeDensity_, fieldLineDensity_, nfieldLines_, name_)
 {
   var chargeDensity;
   /** Container for r,g,b,a color values. */
@@ -47,6 +52,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
   /** Whether this has been modified since the last render. */
   var modified;
   var name;
+  /** Min number of field lines to generate. */
+  var nfieldLines;
   /** Rotation angles around the y and z axes */
   var phi, theta;
   /** The inner and outer radius of the cylinder. */
@@ -234,9 +241,22 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
     return theta;
   }
 
+  this.setNfieldLines     = function(n)
+  {
+    nfieldLines = n;
+    modified    = true;
+    return this;
+  }
+
+  this.getNfieldLines     = function()
+  {
+    return nfieldLines;
+  }
+
   this.setModified        = function(modified_)
   {
     modified = modified_;
+    return this;
   }
 
   this.isModified         = function()
@@ -247,6 +267,7 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
   this.setName            = function(name_)
   {
     name = name_;
+    return this;
   }
 
   this.getName            = function()
@@ -272,11 +293,12 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
     sinpi4      = 0.707106781;
     startPoints = new Array();
 
-    if (fieldLineDensity != 0)
+    if (fieldLineDensity + nfieldLines != 0)
     {
       sgn         = this.sign(chargeDensity);
 
-      npoints     = Math.max(2, Math.round(Math.abs(chargeDensity*fieldLineDensity*height)));
+      npoints     = Math.max(2, Math.round(Math.abs(chargeDensity*fieldLineDensity*height)))
+                   + nfieldLines;
       s           = -0.5;
       ds          = 1/(npoints-1);
 
@@ -356,7 +378,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
     this.fullRender(glUtility, surfaceProgram, modelViewMatrix, height, r0, r1, false);
   }
 
-  chargeDensity = chargeDensity_;
+  chargeDensity = typeof chargeDensity_ == 'undefined' ? 0 : chargeDensity_;
+
   if (chargeDensity > 0)
   {
     color = new Color(0.05, 0.05, 0.8, 0.80);
@@ -375,10 +398,11 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_, chargeDensity_, fieldLineDens
 
   modified         = true;
   name             = name_;
+  fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
+  nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
   // Stock radius for a charged line.
   r0               = 0;
   r1               = 3;
-  fieldLineDensity = fieldLineDensity_;
   x0               = x0_;
   y0               = y0_;
   z0               = z0_;

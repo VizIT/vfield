@@ -22,19 +22,25 @@
  * The plane is actually infinite, however, for practical reasone we are
  * only concerned with displaying the section of the plane within the
  * bounding box.
- * The number of field lines drawn is fieldLineDensity*chargeDensity*length.
+ * The number of field lines drawn is fieldLineDensity*chargeDensity*area + nfieldLines.
  *
- * @param {string} [name]            A unique identifier for this element of the
- *                                   visualization.
+ * @param {Double} chargeDensity    The 2D charge density of the plane.
+ * @param {Double} fieldLineDensity The ratio of field lines to charge.
+ * @param {Double} nfieldLines      Min number of field lines to generate. With fieldLineDensity
+ *                                  = 0, the number of field lines are fixed. Useful when showing
+ *                                  explicit vectors, which indicate field strength by changing
+ *                                  the magnitude of the vectors.
+ * @param {string} [name]           A unique identifier for this element of the
+ *                                  visualization.
  *
  * @class
  */
-function ChargedPlane(chargeDensity_, fieldLineDensity_,
-                      x0, y0, z0,
+function ChargedPlane(x0, y0, z0,
                       x1, y1, z1,
                       x2, y2, z2,
                       x3, y3, z3,
-                      name_)
+                      chargeDensity_, fieldLineDensity_,
+                      nfieldLines_,   name_)
 {
   /**
    * a: angle about the y axis
@@ -58,6 +64,8 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   /** Whether this has been modified since the last render. */
   var modified;
   var name;
+  /** Min number of field lines to generate. */
+  var nfieldLines;
   /** Unit normal to the plane */
   var normal;
   /** The density of field lines - lines per unit charge. */
@@ -88,9 +96,22 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   var workingBoundingBox;
   var xside;
 
+  this.setNfieldLines     = function(n)
+  {
+    nfieldLines = n;
+    modified    = true;
+    return this;
+  }
+
+  this.getNfieldLines     = function()
+  {
+    return nfieldLines;
+  }
+
   this.setModified        = function(modified_)
   {
     modified = modified_;
+    return this;
   }
 
   this.isModified         = function()
@@ -101,6 +122,7 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   this.setName            = function(name_)
   {
     name = name_;
+    return this;
   }
 
   this.getName            = function()
@@ -164,7 +186,7 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   }
 
   /**
-   *
+   * TODO - does this need to be done on the unit rectangle than transformed?
    */
   this.getStartPoints     = function()
   {
@@ -180,7 +202,8 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
     var top;
     var xpoint, ypoint;
 
-    d           = Math.abs(chargeDensity*fieldLineDensity);
+    d           = Math.abs(chargeDensity*fieldLineDensity)
+                 + nfieldLines/Math.abs(sx*sy);
     startPoints = new Array();
 
     if (d>0)
@@ -575,8 +598,9 @@ function ChargedPlane(chargeDensity_, fieldLineDensity_,
   modified         = true;
   name             = name_;
   twoPi            = 6.28318530717958648;
-  chargeDensity    = chargeDensity_;
-  fieldLineDensity = fieldLineDensity_;
+  chargeDensity    = typeof chargeDensity_    == 'undefined' ? 0 : chargeDensity_;
+  fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
+  nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
   boundingBox      = new Array(x0, y0, z0,
                                x1, y1, z1,
                                x2, y2, z2,

@@ -79,22 +79,24 @@ window.vizit.builder = window.vizit.builder || {};
        var message;
        /** The name of this element */
        var name;
-       // Magnitude of the charge
-       var q;
        // Position of the charge
        var x, y, z;
        // number of field lines per unit charge, or the number of field lines.
-       var rho, nlines;
-       // Name and value of the properties on the config object.
-       var property, value;
+       var fieldLineDensityRE, fieldLineDensity, nfieldLines;
+       // Name of the properties on the config object.
+       var property;
+       // Magnitude of the charge
+       var q;
 
        // We know in what follows that this is a string.
-       message = "";
+       message            = "";
+
+       fieldLineDensityRE = /\s*field\s*line\s*density\s*/i;
 
        // Reasonable becaue this is a small object with few properties.
-       for(var property in config)
+       for(property in config)
        {
-         if(property.toLowerCase() === "q")
+         if(property.toLowerCase() === "charge")
          {
            q = config[property];
          }
@@ -110,13 +112,13 @@ window.vizit.builder = window.vizit.builder || {};
          {
            z = config[property];
          }
-         else if (property.toLowerCase() === "rho")
+         else if (property.match(fieldLineDensityRE))
          {
-           rho = config[property];
+           fieldLineDensity = config[property];
          }
-         else if (property.toLowerCase() === "nlines")
+         else if (property.toLowerCase() === "nfieldlines")
          {
-           nlines = config[property];
+           nfieldLines = config[property];
          }
          else if (property.toLowerCase() === "name")
          {
@@ -126,7 +128,7 @@ window.vizit.builder = window.vizit.builder || {};
 
        if (typeof q === "undefined")
        {
-         message = "No charge (Q) on electric charge.";
+         message = "No charge specified for point charge.";
        }
 
        if (typeof x === "undefined")
@@ -185,7 +187,7 @@ window.vizit.builder = window.vizit.builder || {};
            zMax = z;
          }
 
-         charge = new Charge(q, x, y, z, rho, name);
+         charge = new Charge(x, y, z, q, fieldLineDensity, nfieldLines, name);
        }
 
        return charge;
