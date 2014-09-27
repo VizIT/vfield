@@ -38,8 +38,9 @@ window.vizit.builder = window.vizit.builder || {};
 
      this.build = function(config)
      {
+       var arrowHeadSize;
+       var arrowHeadWidth;
        var arrowSize;
-       var arrowSpacing;
        var bindingsConfig;
        var builder;
        var maxVectors;
@@ -50,16 +51,19 @@ window.vizit.builder = window.vizit.builder || {};
        // Wrapper around the shader program that renders the vector field to the screen.
        var renderer;
 
-       
        for(property in config)
        {
-         if (property.toLowerCase() === "arrowsize")
+         if (property.toLowerCase() === "arrowheadsize")
+         {
+           arrowHeadSize = config[property];
+         }
+         if (property.toLowerCase() === "arrowheadwidth")
+         {
+           arrowHeadWidth = config[property];
+         }
+         else if (property.toLowerCase() === "arrowsize")
          {
            arrowSize = config[property];
-         }
-         else if (property.toLowerCase() === "arrowspacing")
-         {
-           arrowSpacing = config[property];
          }
          else if (property.toLowerCase() === "maxvectors")
          {
@@ -82,9 +86,20 @@ window.vizit.builder = window.vizit.builder || {};
          vectorValuedFunction = builder.build(vectorValuedFunctionConfig);
        }
         
-       // SimpleVectorField(f, scale)
-       renderer = new SimpleVectorField(vectorValuedFunction, 1.0);
-       renderer.setMaxVectors(30);
+       renderer = new SimpleVectorField(vectorValuedFunction, arrowSize);
+
+       if(typeof maxVectors !== "undefined")
+       {
+         renderer.setMaxVectors(maxVectors);
+       }
+       if (typeof arrowHeadSize !== "undefined")
+       {
+         renderer.setArrowHeadSize(arrowHeadSize);
+       }
+       if (typeof arrowHeadWidth !== "undefined")
+       {
+         renderer.setArrowHeadWidth(arrowHeadWidth);
+       }
 
        return renderer;
      }

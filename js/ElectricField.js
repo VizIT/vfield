@@ -29,7 +29,7 @@
 function ElectricField(home_)
 {
   /** General size parameter for the arrowheads. */
-  var arrowSize;
+  var arrowHeadSize;
   /** The sum of ds along the path increments by this much between arrows. */
   var arrowSpacing;
   var chargeBuffer;
@@ -80,18 +80,18 @@ function ElectricField(home_)
     return arrowSpacing;
   }
 
-  this.setArrowSize        = function(size)
+  this.setArrowHeadSize      = function(size)
   {
-    arrowSize = size;
+    arrowHeadSize = size;
     if (typeof fieldLineGenerator !== "undefined")
     {
-      fieldLineGenerator.setArrowSize(size);
+      fieldLineGenerator.setArrowHeadSize(size);
     }
   }
 
-  this.getArrowSize        = function()
+  this.getArrowHeadSize    = function()
   {
-    return arrowSize;
+    return arrowHeadSize;
   }
 
   this.setColor            = function(color_)
@@ -296,15 +296,15 @@ function ElectricField(home_)
     glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
     fieldLineRenderer  = new FieldLineRenderer(glUtility);
     chargeGenerator    = new ChargeGenerator(charges);
-    fieldLineGenerator = new FieldLineGenerator(charges, maxPoints, ds, arrowSize, arrowSpacing);
-    this.setupFieldLines(charges, maxPoints, ds, arrowSize, arrowSpacing);
+    fieldLineGenerator = new FieldLineGenerator(charges, maxPoints, ds, arrowHeadSize, arrowSpacing);
+    this.setupFieldLines(charges, maxPoints, ds, arrowHeadSize, arrowSpacing);
     chargeRenderer     = new ChargeRenderer(glUtility, latch.countDown, home);
     this.setupCharges(charges);
     surfaceRenderer    = new SurfaceRenderer(glUtility);
     latch.countDown();
   }
   
-  arrowSize           = 0.3;
+  arrowHeadSize       = 0.3;
   arrowSpacing        = 1.2;
   /* Default color */
   color               = new Float32Array([0.8, 0.3, 0.3, 1]);
@@ -312,7 +312,7 @@ function ElectricField(home_)
   fieldLineVBOs       = new Array();
   gaussianSurfaces    = new Array();
   // Use ./ if home_ is undefined
-  home                = typeof home_ == 'undefined' ? "./" : home_;
+  home                = typeof home_ === 'undefined' ? "./" : home_;
   // Wait for two textures to load, and this renderer to be started.
   latch               = new CountdownLatch(3, this.started.bind(this));
   maxPoints           = 3000;

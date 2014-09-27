@@ -22,25 +22,25 @@
  * the object will be reused to compute field lines for multiple start
  * points, which will be immediatly loaded as VBOs onto the GPU.
  *
- * @param {Charges} charges      A collection of point charges and charge
- *                               distributions.
+ * @param {Charges} charges       A collection of point charges and charge
+ *                                distributions.
  *
- * @param {double}  maxPoints    The maximum number of steps, of lendth ds, taken
- *                               along a field line.
+ * @param {double}  maxPoints     The maximum number of steps, of lendth ds, taken
+ *                                along a field line.
  *
- * @param {double}  ds           Step size for tracing field lines.
+ * @param {double}  ds            Step size for tracing field lines.
  *
- * @parma {double}  arrowSize    Lines for the directional arrows are
- *                               drawn with this length.
+ * @parma {double}  arrowHeadSize Lines for the directional arrows are
+ *                                drawn with this length.
  *
- * @param {double}  arrowSpacing ds increments by this much between
- *                               directional arrows.
+ * @param {double}  arrowSpacing  ds increments by this much between
+ *                                directional arrows.
  *
  */
-function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_)
+function FieldLineGenerator(charges_, maxPoints_, ds_, arrowHeadSize_, arrowSpacing_)
 {
     // Lines that make up the arrow are drawn with this length.
-    var arrowSize;
+    var arrowHeadSize;
     // The sum of ds along the path increments by this much between arrows.
     var arrowSpacing;
     // Each point represents a distance ds along the field line.
@@ -83,15 +83,15 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
       return maxPoints;
     }
 
-    this.setArrowSize    = function(size)
+    this.setArrowHeadSize    = function(size)
     {
-      arrowSize = size;
+      arrowHeadSize = size;
       return this;
     }
 
-    this.getArrowSize    = function()
+    this.getArrowHeadSize    = function()
     {
-      return arrowSize;
+      return arrowHeadSize;
     }
 
     this.setArrowSpacing = function(spacing)
@@ -120,7 +120,7 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
      * Generate two lines as an arrow head along the field line indicating the
      * direction of the electric field.
      */
-    this.drawArrow          = function(x0, y0, z0, field, f, arrowSize, fieldLine)
+    this.drawArrow          = function(x0, y0, z0, field, f, arrowHeadSize, fieldLine)
     {
       var asx;
       var asy;
@@ -167,15 +167,15 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
       }
 
       // Normalize and multipley by the arrow size
-      resize = arrowSize/Math.sqrt(nx*nx + ny*ny + nz*nz);
+      resize = arrowHeadSize/Math.sqrt(nx*nx + ny*ny + nz*nz);
 
       nx     = nx*resize;
       ny     = ny*resize;
       nz     = nz*resize;
 
-      asx    = arrowSize*exnorm;
-      asy    = arrowSize*eynorm;
-      asz    = arrowSize*eznorm;
+      asx    = arrowHeadSize*exnorm;
+      asy    = arrowHeadSize*eynorm;
+      asz    = arrowHeadSize*eznorm;
 
       x1     = x0 - asx + nx;
       y1     = y0 - asy + ny;
@@ -238,7 +238,7 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
       if (deltaS > arrowSpacing)
       {
         deltaS = 0;
-        this.drawArrow(x, y, z, field, f, arrowSize, fieldLine);
+        this.drawArrow(x, y, z, field, f, arrowHeadSize, fieldLine);
       }
 
       shouldStop = charges.shouldStop(sgn, x, y, z);
@@ -246,7 +246,7 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowSize_, arrowSpacing_
     return fieldLine;
   }
 
-  arrowSize     = arrowSize_;
+  arrowHeadSize = arrowHeadSize_;
   arrowSpacing  = arrowSpacing_;
   charges       = charges_;
   ds            = ds_;

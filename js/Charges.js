@@ -309,6 +309,11 @@ function Charges()
       return modified;
     }
 
+    this.isModified            = function()
+    {
+      return this.chargesModified() || this.distributionsModified();
+    }
+
     this.clearModified         = function()
     {
       for (i=0; i<ncharges; i++)

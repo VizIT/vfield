@@ -19,20 +19,20 @@
 /**
  * Wrapper for a simple vector field, rendered in the simplest way possible.
  *
- * @param f_              A vector function. It must impliment getField(x, y, z)
- * @param scale_ {Double} The length of the vector is scaled b y this factor before
- *                        drawing to the screen. It represents the comparative scale
- *                        of the electric forle to physical coordinates as drawn on
- *                        the screen.
+ * @param {VectorFunction} f_         A vector function. It must impliment getField(x, y, z)
+ * @param {Double}         arrowSize_ The length of the vector is scaled b y this factor before
+ *                                    drawing to the screen. It represents the comparative scale
+ *                                    of the vector field to physical coordinates as drawn on
+ *                                    the screen.
  *
- * @constructor
+ * @class
  */
-function SimpleVectorField(f_, scale_)
+function SimpleVectorField(f_, arrowSize_)
 {
-  /** How the normal to the arrow shaft scales with the length of the vector. */
-  var arrowScale;
   /** General size parameter for the arrowheads. */
-  var arrowSize;
+  var arrowHeadSize;
+  /** How the normal to the arrow shaft scales with the length of the vector. */
+  var arrowHeadWidth;
   var color;
   var explicitStartPoints;
   /** The vector field */
@@ -48,30 +48,30 @@ function SimpleVectorField(f_, scale_)
   var renderer;
   // Model-View matrix for use in all programs.
   var projectionMatrix;
-  var scale;
+  var arrowSize;
   // Has this renderer started - do not render in response to events if not.
   var started;
 
-  this.setArrowScale       = function(scale)
+  this.setArrowHeadWidth   = function(width)
   {
-    arrowScale = scale;
+    arrowHeadWidth = width;
     return this;
   }
 
-  this.getArrowScale       = function()
+  this.getArrowHeadWidth   = function()
   {
-    return arrowScale;
+    return arrowHeadWidth;
   }
 
-  this.setArrowSize        = function(size)
+  this.setArrowHeadSize    = function(size)
   {
-    arrowSize = size;
+    arrowHeadSize = size;
     return this;
   }
 
-  this.getArrowSize        = function()
+  this.getArrowHeadSize    = function()
   {
-    return arrowSize;
+    return arrowHeadSize;
   }
 
   this.setColor            = function(color_)
@@ -171,7 +171,14 @@ function SimpleVectorField(f_, scale_)
   {
     if (started)
     {
+      if (f.isModified())
+      {
+        indexedBuffers = this.setupVectorField();
+      }
+
+      glUtility.clear();
       renderer.drawIndexedLines(projectionMatrix, modelViewMatrix, color, indexedBuffers);
+      f.clearModified();
     }
   }
 
@@ -181,23 +188,22 @@ function SimpleVectorField(f_, scale_)
     var indexedVertices;
 
     renderer       = new LineRenderer(glUtility);
-    // Introduce variables and defaults for maxVectors and arrowSize.
-    generator      = new VectorFieldGenerator(f, maxVectors, arrowSize, arrowScale, scale);
+    // Introduce variables and defaults for maxVectors and arrowHeadSize.
+    generator      = new VectorFieldGenerator(f, maxVectors, arrowHeadSize, arrowHeadWidth, arrowSize);
 
-    indexedBuffers = this.setupVectorField();
     started        = true;
 
     this.render();
   }
   
-  arrowScale          = 0.5;
-  arrowSize           = 0.3;
+  arrowHeadWidth      = 0.5;
+  arrowHeadSize       = 0.3;
   f                   = f_;
   indexedBuffers      = new Array();
   /* Default color */
   color               = new Float32Array([0.8, 0.3, 0.3, 1]);
   maxVectors          = 5;
-  scale               = scale_;
+  arrowSize           = typeof arrowSize_ === "undefined" ? 1.0 : arrowSize_;
   explicitStartPoints = new Array();
   started             = false;
 }

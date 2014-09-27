@@ -32,7 +32,7 @@ window.vizit.builder = window.vizit.builder || {};
    {
      var errorMessage;
      var framework;
-     // Extent of the scene, used to compute default scale, arrowSpace and arrowSize.
+     // Extent of the scene, used to compute default scale, arrowSpacing and arrowHeadSize.
      var xMin, xMax;
      var yMin, yMax;
      var zMin, zMax;
@@ -40,42 +40,46 @@ window.vizit.builder = window.vizit.builder || {};
 
      this.build = function(config)
      {
-       var arrowSize;
+       var arrowHeadSize;
        var arrowSpacing;
-       var bindingsConfig;
        var builder;
        var charges;
        var elementsConfig;
-       var renderer;
-       var startPointsConfig;
+       var maxVectors;
        // Name of properties on the config object.
        var property;
+       var renderer;
+       var startPointsConfig;
 
        for(property in config)
        {
-         if (property.toLowerCase() === "arrowsize")
+         if (property.toLowerCase() === "arrowheadsize")
          {
-           arrowSize = config[property];
+           arrowHeadSize = config[property];
          }
          else if (property.toLowerCase() === "arrowspacing")
          {
            arrowSpacing = config[property];
          }
+         else if (property.toLowerCase() === "maxvectors")
+         {
+           maxVectors = config[property];
+         }
          else if (property.toLowerCase() === "elements")
          {
            elementsConfig = config[property];
          }
-         else if (property.toLowerCase() ==="bindings")
-         {
-           bindingsConfig = config[property];
-         }
        }
 
        renderer = new ElectricField();
-       renderer.setMaxVectors(30);
-       if (typeof arrowSize !== "undefined")
+
+       if(typeof maxVectors !== "undefined")
        {
-         renderer.setArrowSize(arrowSize);
+         renderer.setMaxVectors(maxVectors);
+       }
+       if (typeof arrowHeadSize !== "undefined")
+       {
+         renderer.setArrowHeadSize(arrowHeadSize);
        }
        if (typeof arrowSpacing !== "undefined")
        {
@@ -92,13 +96,6 @@ window.vizit.builder = window.vizit.builder || {};
            renderer.setCharges(charges);
          }
        }
-
-       if (bindingsConfig)
-       {
-         builder = new window.vizit.builder.BindingBuilder();
-         builder.build(bindingsConfig, framework)
-       }
-
        return renderer;
      }
 

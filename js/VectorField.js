@@ -21,21 +21,21 @@
  * Generates sets of vectors along field lines for the vector field f
  * with one field line starting at each of the start points.
  *
- * @param f           A vector valued function. Must implement a getField(x,y,z)
- *                    method.
- * @param maxVectors  The maximum number of arrows to draw. Each arrow requires
- *                    6 verticies and 10 indices. Or 6*3 + 10 = 28 floating point
- *                    numbers.
- * @param arrowSize   Scales the length of the lines that make up the arrow head.
- * @param arrowScale  Scales how far the arrow heads fan out from the arrow shaft.
- * @param scale       Scale factor between the electric field and physical coordinates.
+ * @param f              A vector valued function. Must implement a getField(x,y,z)
+ *                       method.
+ * @param maxVectors     The maximum number of arrows to draw. Each arrow requires
+ *                       6 verticies and 10 indices. Or 6*3 + 10 = 28 floating point
+ *                       numbers.
+ * @param arrowHeadSize  Scales the length of the lines that make up the arrow head.
+ * @param arrowHeadWidth Scales how far the arrow heads fan out from the arrow shaft.
+ * @param arrowSize          Scale factor between the electric field and physical coordinates.
  */
-function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
+function VectorFieldGenerator(f_, maxVectors_, arrowHeadSize_, arrowHeadWidth_, arrowSize_)
 {
-  /** A scale factor for how fast the arrowhead spreads out as E grows. */
-  var arrowScale;
+  /** A scale factor for how fast the arrowhead spreads out as f grows. */
+  var arrowHeadWidth;
   /** Lines that make up the arrow head are drawn with this length. */
-  var arrowSize;
+  var arrowHeadSize;
   // Each point represents a distance ds along the field line traced
   // to generate the vectors
   var ds;
@@ -43,7 +43,7 @@ function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
   var maxVectors;
   var nvectors;
   /** Scale factor between the electric field and physical coordinates. */
-  var scale;
+  var arrowSize;
   var startPoints;
 
   /**
@@ -71,15 +71,15 @@ function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
     return maxVectors;
   }
 
-  this.setArrowSize    = function(size)
+  this.setArrowHeadSize = function(size)
   {
-    arrowSize = size;
+    arrowHeadSize = size;
     return this;
   }
 
-  this.getArrowSize    = function()
+  this.getArrowHeadSize = function()
   {
-    return arrowSize;
+    return arrowHeadSize;
   }
 
   this.setVectorSpacing = function(spacing)
@@ -108,16 +108,16 @@ function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
    * Generate a vector with four lines as an arrow head along the field line
    * indicating the direction of the vector field.
    *
-   * @param x0, y0, z0 The location at which the field is evaluated,
-   *                   also the base of the vector.
+   * @param x0, y0, z0    The location at which the field is evaluated,
+   *                      also the base of the vector.
    *
-   * @param field      The x, y, z components of the vector field at x0, y0, z0.
+   * @param field         The x, y, z components of the vector field at x0, y0, z0.
    *
-   * @param f          The magnatude of the field at this point.
+   * @param f             The magnatude of the field at this point.
    * 
-   * @param arrowSize  A scale factor for the arrow head.
+   * @param arrowHeadSize A scale factor for the arrow head.
    */
-  this.generateVector      = function(x0, y0, z0, field, f, arrowSize, arrowScale, narrows, scale, indexedVertices)
+  this.generateVector      = function(x0, y0, z0, field, f, arrowHeadSize, arrowHeadWidth, narrows, arrowSize, indexedVertices)
   {
     /** The component of the arrow head along the vector. */
     var asx, asy, asz;
@@ -138,10 +138,11 @@ function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
     var x4, y4, z4;
     var x5, y5, z5;
 
-    x1         = x0 + field[0]*scale;
-    y1         = y0 + field[1]*scale;
-    z1         = z0 + field[2]*scale;
+    x1         = x0 + field[0]*arrowSize;
+    y1         = y0 + field[1]*arrowSize;
+    z1         = z0 + field[2]*arrowSize;
 
+    // n is perp to the field line, so n dot f = 0
     if (field[2] != 0)
     {
       // Start with nx, ny = 1, then E dot n = 0 gives
@@ -151,35 +152,36 @@ function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
     }
     else if (field[1] != 0)
     {
-      // Start with nx, nz = 1, then E dot n = 0 gives
+      // Start with nx, nz = 1, then f dot n = 0 gives
       nx     = 1;
       ny     = -(field[0]+field[2])/field[1];
       nz     = 1;
     }
     else
     {
-      // Start with ny, nz = 1, then E dot n = 0 gives
+      // Start with ny, nz = 1, then f dot n = 0 gives
       nx     = -(field[1]+field[2])/field[0];
       ny     = 1;
       nz     = 1;
     }
 
-    // Normalize and multipley by the arrow size
-    resize = arrowScale*arrowSize*f*scale/Math.sqrt(nx*nx + ny*ny + nz*nz);
+    // Normalize and multiply by the arrow size
+    resize = arrowHeadWidth*arrowHeadSize*f*arrowSize/Math.sqrt(nx*nx + ny*ny + nz*nz);
 
     nx     = nx*resize;
     ny     = ny*resize;
     nz     = nz*resize;
 
-    asx    = arrowSize*field[0]*scale;
-    asy    = arrowSize*field[1]*scale;
-    asz    = arrowSize*field[2]*scale;
+    asx    = arrowHeadSize*field[0]*arrowSize;
+    asy    = arrowHeadSize*field[1]*arrowSize;
+    asz    = arrowHeadSize*field[2]*arrowSize;
 
-    n2x    = -2*asy*nz + 2*asz*ny;
-    n2y    =  2*asx*nz - 2*asz*nx;
-    n2z    = -2*asx*ny + 2*asy*nx;
+    // n2 = f cross n1, n2 is perp to both.
+    n2x    = asy*nz - asz*ny;
+    n2y    = asz*nx - asx*nz;
+    n2z    = asx*ny - asy*nx;
 
-    resize = arrowScale*arrowSize*f*scale/Math.sqrt(n2x*n2x + n2y*n2y + n2z*n2z);
+    resize = arrowHeadWidth*arrowHeadSize*f*arrowSize/Math.sqrt(n2x*n2x + n2y*n2y + n2z*n2z);
 
     n2x    = n2x*resize;
     n2y    = n2y*resize;
@@ -244,21 +246,21 @@ function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
    * Each step of length ds has components ((fx/f)*ds, (fy/f)*ds, (fz/f)*ds).
    * Vertices is usually a Float32Array of size 3*6*maxVectors.
    *
-   * @param f             A vector valued function. Must implement a getField(x,y,z)
-   *                      method.
-   * @param x0, y0, z0    Start following the field line from these coordinates.
-   * @param sign          Positive if we follow along the field direction, negative if
-   *                      we run contrary to it.
-   * @param maxVectors    The maximum number of arrows to draw. Each arrow requires
-   *                      6 verticies and 10 indices. Or 6*3 + 10 = 28 floating point
-   *                      numbers.
-   * @param priorVectors  The number of vectors generated on prior passes through trace.
+   * @param f                           A vector valued function. Must implement a getField(x,y,z)
+   *                                    method.
+   * @param x0, y0, z0                  Start following the field line from these coordinates.
+   * @param sign                        Positive if we follow along the field direction, negative if
+   *                                    we run contrary to it.
+   * @param maxVectors                  The maximum number of arrows to draw. Each arrow requires
+   *                                    6 verticies and 10 indices. Or 6*3 + 10 = 28 floating point
+   *                                    numbers.
+   * @param priorVectors                The number of vectors generated on prior passes through trace.
    *
-   * @param {float} scale Scale factor between the electric field and physical coordinates.
+   * @param {float}           arrowSize Size factor between the electric field and physical coordinates.
    *
-   * @param {IndexedVertices} An object holding a vertex list and index list.
+   * @param {IndexedVertices} indexedVertices An object holding a vertex list and index list.
    */
-  this.trace = function(f, x0, y0, z0, sign, maxVectors, priorVectors, scale, indexedVertices)
+  this.trace = function(f, x0, y0, z0, sign, maxVectors, priorVectors, arrowSize, indexedVertices)
   {
     // The distance traversed along the field line.
     var S;
@@ -292,8 +294,11 @@ function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
 
       if (S >= nextVector)
       {
-        this.generateVector(x, y, z, field, fMagnitude, arrowSize, arrowScale, priorVectors + nvectors, scale, indexedVertices);
-        nextVector = S + Math.max(fMagnitude * 1.2 * scale, 1);
+        this.generateVector(x,               y,                       z,                      
+                            field,           fMagnitude,              arrowHeadSize,
+                            arrowHeadWidth,  priorVectors + nvectors, arrowSize,
+                            indexedVertices);
+        nextVector = S + Math.max(fMagnitude * 1.2 * arrowSize, 1);
         nvectors++;
       }
 
@@ -325,18 +330,19 @@ function VectorFieldGenerator(f_, maxVectors_, arrowSize_, arrowScale_, scale_)
       startPoint    = startPoints[i];
       startPoint[4] = nvectors;
       // Compute the vectors from this field line, and load them into indexedVertices
-      nvectors += this.trace(f, startPoint[0], startPoint[1], startPoint[2], startPoint[3], maxVectors, nvectors, scale, indexedVertices);
+      nvectors += this.trace(f,          startPoint[0], startPoint[1], startPoint[2],   startPoint[3],
+                             maxVectors, nvectors,      arrowSize,     indexedVertices);
     }
 
     return indexedVertices;
   }
 
-  arrowScale  = arrowScale_;
-  arrowSize   = arrowSize_;
-  ds          = .33;
-  f           = f_;
-  maxVectors  = maxVectors_;
-  scale       = scale_;
+  arrowHeadWidth = arrowHeadWidth_;
+  arrowHeadSize  = arrowHeadSize_;
+  ds             = .33;
+  f              = f_;
+  maxVectors     = maxVectors_;
+  arrowSize      = arrowSize_;
 }
 
 
