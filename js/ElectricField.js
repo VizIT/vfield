@@ -108,7 +108,7 @@ function ElectricField(home_)
    * @param {Charges} charges_ Set of point and distributed charges. It must
    *                           impliment getField(x, y, z).
    */
-  this.setCharges          = function(charges)
+  this.setCharges          = function(charges_)
   {
     charges = charges_;
   }

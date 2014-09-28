@@ -1,25 +1,22 @@
 <html>
   <head>
-    <title>Simple Point Charge Config Test</title>
-    <!-- Lesson.js uses these styles -->
-    <link   rel="stylesheet" type="text/css" href="../lesson/css/Lesson.css">
+    <title>Field Line Charged Cylinder Config Test</title>
     <script type="text/javascript">
-      // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG = [
                                   {
-                                    // This is a simple vector field, so we draw vectors representing the field along the field lines.
-                                    type:      "simple vector field",
-                                    // The id of the canvas we draw into
-                                    canvas:    "chargeCanvas",
-                                    arrowSize: 2.0,
-                                    scale:     7.0,
-                                    // One or more charges, acting as the source for the field.
-                                    // f is a vector valued function. In this case the electric field from a single charge.
-                                    f:  {type: "charge",  charge:  2.0,
-                                         x: 0.0, y: 0.0, z: 0.0,
-                                         nfieldLines: 20.0, name: "charge1"},
-                                    // The charge of the target named charge1 is set to the value q1 when it changes.
-                                    bindings: {target: "charge1", set: "charge", from: "q1"}
+                                    type:   "electric field",
+                                    canvas: "chargeCanvas",
+                                    scale: 130.0,
+                                    arrowHeadSize: 4.0,
+                                    arrowSpacing: 70.0,
+                                    elements: 
+                                              {
+                                                type:"charged cylinder",
+                                                chargeDensity: 0.003, fieldLineDensity:  0.01,
+                                                r0:  10.0,  r1:   20.0,
+                                                x0: -50.0,  y0:    0.0, z0: 0.0,
+                                                x1:  50.0,  y1:    0.0, z1: 0.0
+                                              }
                                   }
                                  ];
     </script>
@@ -68,16 +65,8 @@
     <script type="text/javascript"    src="js/VizBuilder.js"></script>
     
   </head>
-  <!--This is the canvas for our electric field visualization. -->
+  <!--This is the target for our point charge rendering. -->
   <canvas id="chargeCanvas" width="300" height="300"></canvas>
-
-  <!-- This will allow manipulation of q1, ranging from -20 to 20 with an initial value of 20 -->
-  <!-- This q1 matches the q1 in the binding in VISUALIZATION_CONFIG. -->
-  <!-- bindings: {target: "charge1", set: "q", from: "q1"} -->
-  <span class="lessonRangedSource"
-        data-name="q1"
-        data-value="2.0"
-        data-min="-2.0"
-        data-max="2.0"
-        data-step="0.2"></span>
+  <script>
+  </script>
 </html>
