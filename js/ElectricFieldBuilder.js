@@ -86,15 +86,12 @@ window.vizit.builder = window.vizit.builder || {};
          renderer.setArrowSpacing(arrowSpacing);
        }
 
-       if (elementsConfig)
+       // Potentially can modify framework, charges and renderer.
+       builder = new vizit.builder.ElectricFieldElementBuilder(framework, renderer);
+       charges = builder.build(elementsConfig, charges);
+       if (!!charges)
        {
-         // Potentially can modify framework, charges and renderer.
-	 builder = new vizit.builder.ElectricFieldElementBuilder(framework, renderer);
-	 charges = builder.build(elementsConfig, charges);
-         if (!!charges)
-         {
-           renderer.setCharges(charges);
-         }
+         renderer.setCharges(charges);
        }
        return renderer;
      }
