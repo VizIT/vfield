@@ -78,7 +78,7 @@ function ChargeGenerator(charges_)
       chargesArray[offset++] = position[0];
       chargesArray[offset++] = position[1];
       chargesArray[offset++] = position[2];
-      chargesArray[offset++] = charge.getQ();
+      chargesArray[offset++] = charge.getCharge();
     }
     return chargesArray;
   }
