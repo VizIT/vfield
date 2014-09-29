@@ -52,7 +52,7 @@ function CombinedVectorFunctions()
       return functions;
     }
 
-    this.functionsModified   = function()
+    this.isModified   = function()
     {
       var modified;
 
@@ -66,11 +66,11 @@ function CombinedVectorFunctions()
       return modified;
     }
 
-    this.clearModified         = function()
+    this.setModified         = function(modified)
     {
       for (i=0; i<nfunctions; i++)
       {
-        functions[i].setModified(false);
+        functions[i].setModified(modified);
       }
     }
 

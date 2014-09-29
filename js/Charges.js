@@ -314,16 +314,16 @@ function Charges()
       return this.chargesModified() || this.distributionsModified();
     }
 
-    this.clearModified         = function()
+    this.setModified         = function(modified)
     {
       for (i=0; i<ncharges; i++)
       {
-        charges[i].setModified(false);
+        charges[i].setModified(modified);
       }
 
       for (i=0; i<ndistributions; i++)
       {
-        distributions[i].setModified(false);
+        distributions[i].setModified(modified);
       }
     }
 

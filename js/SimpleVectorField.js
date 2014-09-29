@@ -178,7 +178,7 @@ function SimpleVectorField(f_, arrowSize_)
 
       glUtility.clear();
       renderer.drawIndexedLines(projectionMatrix, modelViewMatrix, color, indexedBuffers);
-      f.clearModified();
+      f.setModified(false);
     }
   }
 

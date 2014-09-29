@@ -223,7 +223,7 @@ function ElectricField(home_)
       gl.disable(gl.BLEND);
       gl.disable(gl.CULL_FACE);
 
-      charges.clearModified();
+      charges.setModified(false);
     }
   }
 
