@@ -158,7 +158,7 @@ window.vizit.builder = window.vizit.builder || {};
          message += "z coordinate is not defined in charge configuration.";
        }
 
-       if (message.length == 0)
+       if (message.length === 0)
        {
          if (x < xMin)
          {

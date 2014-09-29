@@ -168,7 +168,7 @@ function GLUtility(drawingSurface_)
     var attributeLocation;
 
     attributeLocation    = gl.getAttribLocation(program, name);
-    if(attributeLocation == -1)
+    if(attributeLocation === -1)
     {
       alert('Can not find uniform' + attribute + '.');
     }
@@ -283,7 +283,7 @@ function GLUtility(drawingSurface_)
     var reference;
 
     reference = gl.getUniformLocation(program, name);
-    if(reference == -1)
+    if(reference === -1)
     {
       alert('Can not find uniform' + name + '.');
     }
@@ -297,7 +297,7 @@ function GLUtility(drawingSurface_)
   this.loadUniform3f = function(gl, program, uniform, x, y, z)
   {
     var reference = gl.getUniformLocation(program, uniform);
-    if(reference == -1)
+    if(reference === -1)
     {
       alert('Can not find uniform' + uniform + '.');
       return;
@@ -312,7 +312,7 @@ function GLUtility(drawingSurface_)
   this.loadUniform4f = function(program, uniform, r, b, g, a)
   {
     var reference = gl.getUniformLocation(program, uniform);
-    if(reference == -1)
+    if(reference === -1)
     {
       alert('Can not find uniform' + uniform + '.');
       return;
@@ -327,7 +327,7 @@ function GLUtility(drawingSurface_)
   this.loadUniformMatrix3fv = function (program, uniform, matrix)
   {
     var reference = gl.getUniformLocation(program, uniform);
-    if(reference == -1)
+    if(reference === -1)
     {
         alert('Can not find uniform' + uniform + '.');
         return;
@@ -344,7 +344,7 @@ function GLUtility(drawingSurface_)
   this.loadUniformMatrix4fv = function (program, uniform, matrix)
   {
     var reference = gl.getUniformLocation(program, uniform);
-    if(reference == -1)
+    if(reference === -1)
     {
       alert('Can not find uniform' + uniform + '.');
       return;

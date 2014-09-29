@@ -105,7 +105,7 @@ function GaussianSphere(x_, y_, z_, r_, name_)
     {
       scale = 1.0;
     }
-    if (modelViewMatrix == null)
+    if (modelViewMatrix === null)
     {
       modelViewMatrix     = new Float32Array(16);
       modelViewMatrix[0]  = scale;

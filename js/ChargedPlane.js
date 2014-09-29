@@ -263,7 +263,7 @@ function ChargedPlane(x0, y0, z0,
         + (z-boundingBox[2])*normal[2]
 
      E = twoPi*chargeDensity;
-     if (d == 0)
+     if (d === 0)
      {
         EField[0] = 0;
         EField[1] = 0;
@@ -321,17 +321,17 @@ function ChargedPlane(x0, y0, z0,
     // x1-x0
     dx1 = boundingBox[0] - boundingBox[9];
 
-    if (dx0 == 0 || dx1 == 0)
+    if (dx0 === 0 || dx1 === 0)
     {
       // If either side is already parallel to the X axis
       // suppress rotation about the z axis.
       g     = 0;
 
-      if (dx0 == 0 && dx1 == 0)
+      if (dx0 === 0 && dx1 === 0)
       {
         // Both dx0 and dx1 are zero - rectangle is in the Y-Z plane.
         // If side 1 is not along the y axis
-        if (boundingBox[4] - boundingBox[1] == 0)
+        if (boundingBox[4] - boundingBox[1] === 0)
         {
           // It will be rotated onto the x axis later.
           xside = 1;
@@ -341,7 +341,7 @@ function ChargedPlane(x0, y0, z0,
           xside = 2;
         }
       }
-      else if (dx0 == 0)
+      else if (dx0 === 0)
       {
         // Side 1 is already parallel to the x-axis.
         xside = 1;
@@ -404,7 +404,7 @@ function ChargedPlane(x0, y0, z0,
     var deltay, deltaz;
     var tmpy,   tmpz;
 
-    if (xside == 1)
+    if (xside === 1)
     {
       deltay = boundingBox[1] - boundingBox[10];
       deltaz = boundingBox[2] - boundingBox[11];
@@ -419,7 +419,7 @@ function ChargedPlane(x0, y0, z0,
     sb = 0;
     cb = 1;
 
-    if (deltaz != 0 && deltay!= 0)
+    if (deltaz !== 0 && deltay !== 0)
     {
       b = Math.atan(deltaz/deltay)
 
@@ -458,7 +458,7 @@ function ChargedPlane(x0, y0, z0,
     var deltax, deltaz;
     var tmpx,   tmpz;
 
-    if (xside == 1)
+    if (xside === 1)
     {
       deltax = boundingBox[0] - boundingBox[9];
       deltaz = boundingBox[2] - boundingBox[11];
@@ -473,9 +473,9 @@ function ChargedPlane(x0, y0, z0,
     sa = 0;
     ca = 1;
 
-    if (deltaz != 0)
+    if (deltaz !== 0)
     {
-      if (deltax != 0)
+      if (deltax !== 0)
       {
         a  = Math.atan(deltaz/deltax)
         sa =  Math.sin(a);
@@ -517,7 +517,7 @@ function ChargedPlane(x0, y0, z0,
    */
   this.scaleBoundingbox           = function(boundingBox, xside)
   {
-    if (xside == 1)
+    if (xside === 1)
     {
       sx = boundingBox[0] - boundingBox[9];
       sy = boundingBox[4] - boundingBox[1];
@@ -531,12 +531,12 @@ function ChargedPlane(x0, y0, z0,
     // Compute new x and y positions for each bounding box point
     for(var point=0; point<4; point++)
     {
-      if (sx != 0)
+      if (sx !== 0)
       {
         boundingBox[3*point] /= sx;
       }
 
-      if (sy != 0)
+      if (sy !== 0)
       {
         boundingBox[3*point+1] /= sy;
       }
@@ -598,9 +598,9 @@ function ChargedPlane(x0, y0, z0,
   modified         = true;
   name             = name_;
   twoPi            = 6.28318530717958648;
-  chargeDensity    = typeof chargeDensity_    == 'undefined' ? 0 : chargeDensity_;
-  fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
-  nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
+  chargeDensity    = typeof chargeDensity_    === 'undefined' ? 0 : chargeDensity_;
+  fieldLineDensity = typeof fieldLineDensity_ === 'undefined' ? 0 : fieldLineDensity_;
+  nfieldLines      = typeof nfieldLines_      === 'undefined' ? 0 : nfieldLines_;
   boundingBox      = new Array(x0, y0, z0,
                                x1, y1, z1,
                                x2, y2, z2,

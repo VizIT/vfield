@@ -182,8 +182,8 @@ function Charge(x_, y_, z_, charge_, fieldLineDensity_, nfieldLines_, name_)
       sgn        = charge > 0 ? 1 : charge < 0 ? -1 : 0;
       nlines     = Math.round(fieldLineDensity * charge * sgn) - 1 + nfieldLines;
       s          = 3.6 / Math.sqrt(nlines);
-      phi        = typeof phi0   == 'undefined' ? Math.PI / 2 : phi0;
-      radius     = typeof radius == 'undefined' ? 1           : radius;
+      phi        = typeof phi0   === 'undefined' ? Math.PI / 2 : phi0;
+      radius     = typeof radius === 'undefined' ? 1           : radius;
       seedPoints = new Array();
 
       if (nlines > 0)
@@ -224,8 +224,8 @@ function Charge(x_, y_, z_, charge_, fieldLineDensity_, nfieldLines_, name_)
     modified         = true;
     name             = name_;
     position         = new Array(x_, y_, z_);
-    fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
-    nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
+    fieldLineDensity = typeof fieldLineDensity_ === 'undefined' ? 0 : fieldLineDensity_;
+    nfieldLines      = typeof nfieldLines_      === 'undefined' ? 0 : nfieldLines_;
 }
 
 /**

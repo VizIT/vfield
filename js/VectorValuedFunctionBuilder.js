@@ -58,7 +58,7 @@ window.vizit.builder = window.vizit.builder || {};
            testConfig = config;
          }
 
-         if (typeof testConfig != "undefined")
+         if (typeof testConfig !== "undefined")
          {
            // TODO merge these with some functions being renderable
            if (testConfig.type.toLowerCase() === "function")

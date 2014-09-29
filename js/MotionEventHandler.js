@@ -56,7 +56,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     {
       identifier = activeTouches[i].identifier;
 
-      if (identifier == identifier_)
+      if (identifier === identifier_)
       {
         return i;
       }
@@ -78,7 +78,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     for (i=0; i<touches.length; i++)
     {
       touch = touches[i];
-      if (this.findTouchByIdentifier(touch.identifier) == -1)
+      if (this.findTouchByIdentifier(touch.identifier) === -1)
       {
         activeTouches.push(touch);
       }
@@ -108,7 +108,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     for(i=0; i<touches.length; i++)
     {
       index = this.findTouchByIdentifier(touches[i].identifier);
-      if (index != -1)
+      if (index !== -1)
       {
         // Remove the one entry at index from the array.
         activeTouches.splice(index, 1);
@@ -140,7 +140,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
 
     newTouch = event.changedTouches[0];
     oldTouch = activeTouches[0];
-    if (oldTouch != null)
+    if (oldTouch !== null)
     {
       deltaX   = newTouch.pageX - oldTouch.pageX;
       deltaY   = newTouch.pageY - oldTouch.pageY;
@@ -202,12 +202,12 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
       touch      = touches[i];
       identifier = touch.identifier;
       // Replace the touch that matches the identifier of the changed touch
-      if (touch0.identifier == identifier)
+      if (touch0.identifier === identifier)
       {
         touch0 = touch;
         activeTouches.splice(0, 1, touch);
       }
-      else if (touch1.identifier == identifier)
+      else if (touch1.identifier === identifier)
       {
         touch1 = touch;
         activeTouches.splice(1, 1, touch);
@@ -235,11 +235,11 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
 
   this.handleTouchMove = function(event)
   {
-    if (activeTouches.length == 1)
+    if (activeTouches.length === 1)
     {
       return this.handleOneActiveMove(event);
     }
-    else if (activeTouches.length == 2)
+    else if (activeTouches.length === 2)
     {
       return this.handleTwoActiveMove(event);
     }

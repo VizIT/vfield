@@ -144,14 +144,14 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowHeadSize_, arrowSpac
       eynorm = field[1]/f;
       eznorm = field[2]/f;
 
-      if (eznorm != 0)
+      if (eznorm !== 0)
       {
         // Start with nx, ny = 1, then E dot n = 0 gives
         nx     = 1;
         ny     = 1;
         nz     = -(field[0]+field[1])/field[2];
       }
-      else if (eynorm != 0)
+      else if (eynorm !== 0)
       {
         // Start with nx, nz = 1, then E dot n = 0 gives
         nx     = 1;
@@ -223,7 +223,7 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowHeadSize_, arrowSpac
       field = charges.getField(x, y, z);
       f     = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
 
-      if (f == 0)
+      if (f === 0)
       {
         // No field here - no possible field line
         break;

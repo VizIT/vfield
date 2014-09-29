@@ -296,7 +296,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_,
     sinpi4      = 0.707106781;
     startPoints = new Array();
 
-    if (fieldLineDensity + nfieldLines != 0)
+    if (fieldLineDensity + nfieldLines !== 0)
     {
       sgn         = this.sign(chargeDensity);
 
@@ -405,9 +405,9 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_,
 
   modified         = true;
   name             = name_;
-  chargeDensity    = typeof chargeDensity_    == 'undefined' ? 0 : chargeDensity_;
-  fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
-  nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
+  chargeDensity    = typeof chargeDensity_    === 'undefined' ? 0 : chargeDensity_;
+  fieldLineDensity = typeof fieldLineDensity_ === 'undefined' ? 0 : fieldLineDensity_;
+  nfieldLines      = typeof nfieldLines_      === 'undefined' ? 0 : nfieldLines_;
   r0               = r0_;
   r1               = r1_;
   x0               = x0_;

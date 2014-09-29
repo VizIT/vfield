@@ -67,9 +67,9 @@ function ChargedSphere(x_, y_, z_, a_, b_,
   a3               = a2*a;
   b                = b_;
   b3               = b*b*b;
-  charge           = typeof charge_           == 'undefined' ? 0 : charge_;
-  fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
-  nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
+  charge           = typeof charge_           === 'undefined' ? 0 : charge_;
+  fieldLineDensity = typeof fieldLineDensity_ === 'undefined' ? 0 : fieldLineDensity_;
+  nfieldLines      = typeof nfieldLines_      === 'undefined' ? 0 : nfieldLines_;
   x0               = x_;
   y0               = y_;
   z0               = z_;
@@ -230,7 +230,7 @@ function ChargedSphere(x_, y_, z_, a_, b_,
     {
       scale = 1.0;
     }
-    if (modelViewMatrix == null)
+    if (modelViewMatrix === null)
     {
       modelViewMatrix     = new Float32Array(16);
       modelViewMatrix[0]  = scale;

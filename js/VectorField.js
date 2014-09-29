@@ -143,14 +143,14 @@ function VectorFieldGenerator(f_, maxVectors_, arrowHeadSize_, arrowHeadWidth_, 
     z1         = z0 + field[2]*arrowSize;
 
     // n is perp to the field line, so n dot f = 0
-    if (field[2] != 0)
+    if (field[2] !== 0)
     {
       // Start with nx, ny = 1, then E dot n = 0 gives
       nx     = 1;
       ny     = 1;
       nz     = -(field[0]+field[1])/field[2];
     }
-    else if (field[1] != 0)
+    else if (field[1] !== 0)
     {
       // Start with nx, nz = 1, then f dot n = 0 gives
       nx     = 1;
@@ -286,7 +286,7 @@ function VectorFieldGenerator(f_, maxVectors_, arrowHeadSize_, arrowHeadWidth_, 
     {
       field            = f.getField(x, y, z);
       fMagnitude       = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
-      if (fMagnitude == 0)
+      if (fMagnitude === 0)
       {
         // No field here - no possible field line
         break;

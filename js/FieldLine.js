@@ -36,7 +36,7 @@ function FieldLine(maxPoints)
 
   this.setMaxPoints = function(maxPoints_)
   {
-    if (maxPoints_ != maxPoints)
+    if (maxPoints_ !== maxPoints)
     {
       maxPoints = maxPoints_;
       points    = new Float32Array(3*maxPoints);

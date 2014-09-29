@@ -293,7 +293,7 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_,
     sinpi4      = 0.707106781;
     startPoints = new Array();
 
-    if (fieldLineDensity + nfieldLines != 0)
+    if (fieldLineDensity + nfieldLines !== 0)
     {
       sgn         = this.sign(chargeDensity);
 
@@ -378,7 +378,7 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_,
     this.fullRender(glUtility, surfaceProgram, modelViewMatrix, height, r0, r1, false);
   }
 
-  chargeDensity = typeof chargeDensity_ == 'undefined' ? 0 : chargeDensity_;
+  chargeDensity = typeof chargeDensity_ === 'undefined' ? 0 : chargeDensity_;
 
   if (chargeDensity > 0)
   {
@@ -398,8 +398,8 @@ function ChargedLine(x0_, y0_, z0_, x1_, y1_, z1_,
 
   modified         = true;
   name             = name_;
-  fieldLineDensity = typeof fieldLineDensity_ == 'undefined' ? 0 : fieldLineDensity_;
-  nfieldLines      = typeof nfieldLines_      == 'undefined' ? 0 : nfieldLines_;
+  fieldLineDensity = typeof fieldLineDensity_ === 'undefined' ? 0 : fieldLineDensity_;
+  nfieldLines      = typeof nfieldLines_      === 'undefined' ? 0 : nfieldLines_;
   // Stock radius for a charged line.
   r0               = 0;
   r1               = 3;
