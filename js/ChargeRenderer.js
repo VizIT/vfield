@@ -48,7 +48,7 @@ function ChargeRenderer(glUtility_, callback, home)
   /** WebGL GLint handle on the projectionMatrix uniform */
   var projectionMatrixHandle;
 
-  this.createProgram  = function(gl)
+  this.createProgram  = function (gl)
   {
     var fragmentShaderSource;
     var program;
@@ -114,7 +114,7 @@ function ChargeRenderer(glUtility_, callback, home)
   /**
    * Replace these with computed gradients.
    */
-  this.loadTextures = function(home, callback)
+  this.loadTextures = function (home, callback)
   {
     // The texture number
     negativeChargeIndex   = 0;
@@ -123,13 +123,13 @@ function ChargeRenderer(glUtility_, callback, home)
     positiveChargeTexture = glUtility.loadTexture(home + "images/positiveCharge.png", positiveChargeIndex, callback);
   }
 
-  this.bindTextures = function()
+  this.bindTextures = function ()
   {
     glUtility.bindTexture(program, negativeChargeTexture, negativeChargeIndex, negativeChargeHandle);
     glUtility.bindTexture(program, positiveChargeTexture, positiveChargeIndex, positiveChargeHandle);
   }
 
-  this.render       = function(projectionMatrix, modelViewMatrix, chargeBuffer, charges)
+  this.render       = function (projectionMatrix, modelViewMatrix, chargeBuffer, charges)
   {
     // Make this the currently active program
     gl.useProgram(program);

@@ -22,12 +22,12 @@
  */
 function FieldLineVBO(glUtility, fieldLine)
 {
-  this.disable = function()
+  this.disable = function ()
   {
     this.enabled = false;
   }
 
-  this.isEnabled = function()
+  this.isEnabled = function ()
   {
     return this.enabled;
   }
@@ -35,7 +35,7 @@ function FieldLineVBO(glUtility, fieldLine)
   /**
    *
    */
-  this.reload = function(glUtility, fieldLine)
+  this.reload = function (glUtility, fieldLine)
   {
     glUtility.loadData(this.fieldLineBufferHandle, fieldLine.getPoints());
     this.npoints                    = fieldLine.getNpoints();

@@ -20,7 +20,7 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Bind elements of the visualization to to events. Each events sets a variable on
@@ -28,7 +28,7 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.BindingBuilder = function()
+   ns.BindingBuilder = function ()
    {
      var errorMessage;
      var warningMessage;
@@ -37,7 +37,7 @@ window.vizit.builder = window.vizit.builder || {};
       * Build an event handler that bings an element of the visualization
       * the changes in a value from an external source.
       */
-     this.bindingBuilder       = function(config, framework)
+     this.bindingBuilder       = function (config, framework)
      {
        var binding;
        /** The element of the visualization named as the target. */
@@ -106,7 +106,7 @@ window.vizit.builder = window.vizit.builder || {};
       * Build one or more bindings as the config is a single object or an array
       * of objects.
       */
-     this.build      = function(config, framework)
+     this.build      = function (config, framework)
      {
        var binding;
        var nbindings;

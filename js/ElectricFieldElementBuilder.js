@@ -20,7 +20,7 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build an electric field and accompanying visualization according to the
@@ -28,7 +28,7 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.ElectricFieldElementBuilder = function(framework_, renderer_)
+   ns.ElectricFieldElementBuilder = function (framework_, renderer_)
    {
      var errorMessage;
      var framework;
@@ -39,7 +39,7 @@ window.vizit.builder = window.vizit.builder || {};
      var yMin, yMax;
      var zMin, zMax;
 
-     this.buildELement = function(config, charges)
+     this.buildELement = function (config, charges)
      {
        var builder;
        var chargedCylinderRE;
@@ -96,7 +96,7 @@ window.vizit.builder = window.vizit.builder || {};
       * Build one or more elements of an electric field visualization
       * as the config is a single element or an array.
       */
-     this.build = function(config)
+     this.build = function (config)
      {
        var charges;
        var nelements;

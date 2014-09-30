@@ -52,90 +52,90 @@ function SimpleVectorField(f_, arrowSize_)
   // Has this renderer started - do not render in response to events if not.
   var started;
 
-  this.setArrowHeadWidth   = function(width)
+  this.setArrowHeadWidth   = function (width)
   {
     arrowHeadWidth = width;
     return this;
   }
 
-  this.getArrowHeadWidth   = function()
+  this.getArrowHeadWidth   = function ()
   {
     return arrowHeadWidth;
   }
 
-  this.setArrowHeadSize    = function(size)
+  this.setArrowHeadSize    = function (size)
   {
     arrowHeadSize = size;
     return this;
   }
 
-  this.getArrowHeadSize    = function()
+  this.getArrowHeadSize    = function ()
   {
     return arrowHeadSize;
   }
 
-  this.setColor            = function(color_)
+  this.setColor            = function (color_)
   {
     color = color_;
     return this;
   }
 
-  this.getColor            = function()
+  this.getColor            = function ()
   {
     return color;
   }
 
-  this.setGlUtility        = function(glUtility_)
+  this.setGlUtility        = function (glUtility_)
   {
     glUtility = glUtility_;
     return this;
   }
 
-  this.getGlUtility        = function()
+  this.getGlUtility        = function ()
   {
     return glUtility;
   }
 
-  this.setMaxVectors       = function(max)
+  this.setMaxVectors       = function (max)
   {
     maxVectors = max;
     return this;
   }
 
-  this.getMaxVectors       = function()
+  this.getMaxVectors       = function ()
   {
     return maxVectors;
   }
 
-  this.setModelViewMatrix  = function(modelViewMatrix_)
+  this.setModelViewMatrix  = function (modelViewMatrix_)
   {
     modelViewMatrix = modelViewMatrix_;
     return this;
   }
 
-  this.getModelViewMatrix  = function()
+  this.getModelViewMatrix  = function ()
   {
     return modelViewMatrix;
   }
 
-  this.setProjectionMatrix = function(projectionMatrix_)
+  this.setProjectionMatrix = function (projectionMatrix_)
   {
     projectionMatrix = projectionMatrix_;
     return this;
   }
 
-  this.addStartPoints = function(startPoints_)
+  this.addStartPoints = function (startPoints_)
   {
     explicitStartPoints = explicitStartPoints.concat(startPoints_)
     return this;
   }
 
-  this.getStartPoints = function()
+  this.getStartPoints = function ()
   {
     return explicitStartPoints;
   }
 
-  this.setupVectorField    = function()
+  this.setupVectorField    = function ()
   {
     var indexedBuffer;
     var indexedVertices;
@@ -167,7 +167,7 @@ function SimpleVectorField(f_, arrowSize_)
     return indexedBuffers;
   }
 
-  this.render              = function()
+  this.render              = function ()
   {
     if (started)
     {
@@ -182,7 +182,7 @@ function SimpleVectorField(f_, arrowSize_)
     }
   }
 
-  this.start               = function()
+  this.start               = function ()
   {
     var indexedBuffer;
     var indexedVertices;

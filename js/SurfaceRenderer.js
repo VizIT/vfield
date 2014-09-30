@@ -45,7 +45,7 @@ function SurfaceRenderer(glUtility_)
   var projectionMatrixHandle;
   var surfaceColorHandle;
 
-  this.createProgram  = function(gl)
+  this.createProgram  = function (gl)
   {
     var fragmentShaderSource;
     var program;
@@ -108,59 +108,59 @@ function SurfaceRenderer(glUtility_)
     return program;
   }
 
-  this.getAmbientLightingHandle = function()
+  this.getAmbientLightingHandle = function ()
   {
     return ambientLightingHandle;
   }
 
-  this.getDirectionalLightingHandle = function()
+  this.getDirectionalLightingHandle = function ()
   {
     return directionalLightingHandle;
   }
 
-  this.getDirectionalColorHandle = function()
+  this.getDirectionalColorHandle = function ()
   {
     return directionalColorHandle;
   }
 
-  this.getModelViewMatrixHandle = function()
+  this.getModelViewMatrixHandle = function ()
   {
     return modelViewMatrixHandle;
   }
 
-  this.getGlobalModelViewMatrixHandle = function()
+  this.getGlobalModelViewMatrixHandle = function ()
   {
     return globalModelViewMatrixHandle;
   }
 
-  this.getNormalHandle = function()
+  this.getNormalHandle = function ()
   {
     return normalHandle;
   }
 
-  this.getNormalMatrixHandle = function()
+  this.getNormalMatrixHandle = function ()
   {
     return normalMatrixHandle;
   }
 
-  this.getPositionHandle = function()
+  this.getPositionHandle = function ()
   {
     return positionHandle;
   }
 
-  this.getProjectionMatrixHandle = function()
+  this.getProjectionMatrixHandle = function ()
   {
     return projectionMatrixHandle;
   }
 
-  this.getSurfaceColorHandle     = function()
+  this.getSurfaceColorHandle     = function ()
   {
     return surfaceColorHandle;
   }
 
   // TODO Consider adding drawSurfaces, where surface=>surfaces, an array of surfaces.
   // TODO Consider including enable gl.BLEND code
-  this.render      = function(projectionMatrix, globalModelViewMatrix,
+  this.render      = function (projectionMatrix, globalModelViewMatrix,
                               normalMatrix,     surfaces)
   {
     var nsurfaces;

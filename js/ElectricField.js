@@ -66,7 +66,7 @@ function ElectricField(home_)
   var started;
   var surfaceRenderer;
 
-  this.setArrowSpacing       = function(spacing)
+  this.setArrowSpacing       = function (spacing)
   {
     arrowSpacing = spacing;
     if (typeof fieldLineGenerator !== "undefined")
@@ -75,12 +75,12 @@ function ElectricField(home_)
     }
   }
 
-  this.getArrowSpacing       = function()
+  this.getArrowSpacing       = function ()
   {
     return arrowSpacing;
   }
 
-  this.setArrowHeadSize      = function(size)
+  this.setArrowHeadSize      = function (size)
   {
     arrowHeadSize = size;
     if (typeof fieldLineGenerator !== "undefined")
@@ -89,17 +89,17 @@ function ElectricField(home_)
     }
   }
 
-  this.getArrowHeadSize    = function()
+  this.getArrowHeadSize    = function ()
   {
     return arrowHeadSize;
   }
 
-  this.setColor            = function(color_)
+  this.setColor            = function (color_)
   {
     color = color_;
   }
 
-  this.getColor            = function()
+  this.getColor            = function ()
   {
     return color;
   }
@@ -108,17 +108,17 @@ function ElectricField(home_)
    * @param {Charges} charges_ Set of point and distributed charges. It must
    *                           impliment getField(x, y, z).
    */
-  this.setCharges          = function(charges_)
+  this.setCharges          = function (charges_)
   {
     charges = charges_;
   }
 
-  this.getCharges          = function()
+  this.getCharges          = function ()
   {
     return charges;
   }
 
-  this.addGaussianSurface  = function(surface)
+  this.addGaussianSurface  = function (surface)
   {
     gaussianSurfaces.push(surface);
   }
@@ -127,32 +127,32 @@ function ElectricField(home_)
    * Return the set of gaussian surfaces for this electric field model.
    * Usually 0 or 1 surfaces.
    */
-  this.getGaussianSurfaces = function()
+  this.getGaussianSurfaces = function ()
   {
     return gaussianSurfaces;
   }
 
-  this.setGlUtility        = function(glUtility_)
+  this.setGlUtility        = function (glUtility_)
   {
     glUtility = glUtility_;
   }
 
-  this.getGlUtility        = function()
+  this.getGlUtility        = function ()
   {
     return glUtility;
   }
 
-  this.setMaxVectors       = function(max)
+  this.setMaxVectors       = function (max)
   {
     maxVectors = max;
   }
 
-  this.getMaxVectors       = function()
+  this.getMaxVectors       = function ()
   {
     return maxVectors;
   }
 
-  this.setModelViewMatrix  = function(modelViewMatrix_)
+  this.setModelViewMatrix  = function (modelViewMatrix_)
   {
     modelViewMatrix = modelViewMatrix_;
     // This straight copy of the modelView matrix into the normalMatrix
@@ -163,33 +163,33 @@ function ElectricField(home_)
     normalMatrix    = glUtility.extractRotationPart(modelViewMatrix, normalMatrix);
   }
 
-  this.getModelViewMatrix  = function()
+  this.getModelViewMatrix  = function ()
   {
     return modelViewMatrix;
   }
 
-  this.setProjectionMatrix = function(projectionMatrix_)
+  this.setProjectionMatrix = function (projectionMatrix_)
   {
     projectionMatrix = projectionMatrix_;
   }
 
-  this.addStartPoint  = function(x_, y_, z_, sgn_)
+  this.addStartPoint  = function (x_, y_, z_, sgn_)
   {
     explicitStartPoints.push(new Array(x_, y_, z_, sgn_));
     return this;
   }
 
-  this.addStartPoints = function(startPoints)
+  this.addStartPoints = function (startPoints)
   {
     explicitStartPoints = explicitStartPoints.concat(startPoints)
   }
 
-  this.getStartPoints = function()
+  this.getStartPoints = function ()
   {
     return explicitStartPoints;
   }
 
-  this.render              = function()
+  this.render              = function ()
   {
     if (started)
     {
@@ -227,7 +227,7 @@ function ElectricField(home_)
     }
   }
 
-  this.setupCharges        = function(charges)
+  this.setupCharges        = function (charges)
   {
     var chargesArray;
     var gl;
@@ -245,7 +245,7 @@ function ElectricField(home_)
    * Setup and render a set of field lines. Each field line is computed, then set as a VBO
    * on the GPU, minimizing the client side JS storage.
    */
-  this.setupFieldLines     = function()
+  this.setupFieldLines     = function ()
   {
     var fieldLine;
     var i;
@@ -285,13 +285,13 @@ function ElectricField(home_)
     }
   }
 
-  this.started             = function()
+  this.started             = function ()
   {
     started           = true;
     this.render();
   }
 
-  this.start               = function()
+  this.start               = function ()
   {
     glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
     fieldLineRenderer  = new FieldLineRenderer(glUtility);

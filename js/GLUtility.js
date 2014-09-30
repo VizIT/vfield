@@ -35,7 +35,7 @@ function GLUtility(drawingSurface_)
    * javascript API that is used to draw into it. The webgl context API is
    * very similar to OpenGL for Embedded Systems, or OpenGL ES.
    */
-  this.getGLContext      = function()
+  this.getGLContext      = function ()
   {
 
     // Only fetch a gl context if we haven't already
@@ -59,12 +59,12 @@ function GLUtility(drawingSurface_)
     return gl;
   }
 
-  this.clearColor        = function(r, g, b, a)
+  this.clearColor        = function (r, g, b, a)
   {
     gl.clearColor(r, g, b, a);
   }
 
-  this.clear             = function()
+  this.clear             = function ()
   {
     gl.clear(gl.COLOR_BUFFER_BIT);
   }
@@ -91,7 +91,7 @@ function GLUtility(drawingSurface_)
   /**
    * Create a program from the shader sources
    */
-  this.createProgram     = function(vertexShaderSource, fragmentShaderSource)
+  this.createProgram     = function (vertexShaderSource, fragmentShaderSource)
   {
       var fragmentShader;
       var program;
@@ -118,7 +118,7 @@ function GLUtility(drawingSurface_)
   /**
    * Load data into an existing buffer - for animation
    */
-  this.loadData         = function(vertexBuffer, floatArray)
+  this.loadData         = function (vertexBuffer, floatArray)
   {
     // Binding an object in Open GL creates it, and makes it the target of subsequent manipulations.
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -130,7 +130,7 @@ function GLUtility(drawingSurface_)
   /**
    * Generate a buffer from a Float32Array
    */
-  this.createBuffer      = function(floatArray)
+  this.createBuffer      = function (floatArray)
   {
       // This is a handle to what will be a buffer
       var vertexBuffer = gl.createBuffer();
@@ -141,7 +141,7 @@ function GLUtility(drawingSurface_)
   /**
    * Generate a buffer for a vertex array index from a Uint16Array
    */
-  this.createIndexBuffer = function(UintArray)
+  this.createIndexBuffer = function (UintArray)
   {
       // This is a handle to what will be a buffer
       var indexBuffer = gl.createBuffer();
@@ -163,7 +163,7 @@ function GLUtility(drawingSurface_)
    *
    * @returns WebGLHandlesContextLoss The handle for the named attribute.
    */
-  this.getAttribLocation = function(program, name)
+  this.getAttribLocation = function (program, name)
   {
     var attributeLocation;
 
@@ -188,7 +188,7 @@ function GLUtility(drawingSurface_)
    *                                               Note that zero stride indicates also indicates values are adjacent.
    * @param offset       {integer}                 Data begins offset bytes into the array.
    */
-  this.bindBuffer        = function(vertexBuffer, attribute, size, type, stride, offset)
+  this.bindBuffer        = function (vertexBuffer, attribute, size, type, stride, offset)
   {
       // Binding an object in Open GL makes it the target of subsequent operations.
       gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -208,11 +208,11 @@ function GLUtility(drawingSurface_)
    * textureIndex is the index of the texture, we user gl.TEXTURE0 + textureIndex as the
    * currently active texture to bind.
    */
-  this.loadTexture       = function(src, textureIndex, callback)
+  this.loadTexture       = function (src, textureIndex, callback)
   {
       var texture  = gl.createTexture();
       var image    = new Image();
-      image.onload = function()
+      image.onload = function ()
                      {
                        this.onTextureLoaded(image, texture, textureIndex, callback);
                      }.bind(this);
@@ -223,7 +223,7 @@ function GLUtility(drawingSurface_)
   /**
    * Once the image is loaded bind it to a texture and set options
    */
-  this.onTextureLoaded   =  function(image, texture, textureIndex, callback)
+  this.onTextureLoaded   =  function (image, texture, textureIndex, callback)
   {
       gl.activeTexture(gl.TEXTURE0 + textureIndex);
       gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -237,7 +237,7 @@ function GLUtility(drawingSurface_)
   /**
    * Bind a texture to a sampler
    */
-  this.bindTexture       = function(program, texture, textureIndex, uniformSampler)
+  this.bindTexture       = function (program, texture, textureIndex, uniformSampler)
   {
       gl.activeTexture(gl.TEXTURE0+textureIndex);
       gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -252,7 +252,7 @@ function GLUtility(drawingSurface_)
                                t, 0, 0, 1]);
   }
 
-  this.generatePerspectiveMatrix = function(x_scale, y_scale, z_near, z_far)
+  this.generatePerspectiveMatrix = function (x_scale, y_scale, z_near, z_far)
   {
     return new   Float32Array([z_near/x_scale,      0.0,                         0.0,                             0.0,
                                0.0,       z_near/y_scale,                  0.0,                             0.0,
@@ -260,7 +260,7 @@ function GLUtility(drawingSurface_)
                                0.0,             0.0,         -2*z_far*z_near/(z_far-z_near),                0.0]);
   }
 
-  this.generateOrthographicMatrix = function(x_scale, y_scale, z_near, z_far)
+  this.generateOrthographicMatrix = function (x_scale, y_scale, z_near, z_far)
   {
     return new   Float32Array([1/x_scale,       0.0,                     0.0,                       0.0,
                                0.0,          1/y_scale,                  0.0,                       0.0,
@@ -278,7 +278,7 @@ function GLUtility(drawingSurface_)
    *
    * @returns WebGLHandlesContextLoss
    */
-  this.getUniformLocation    = function(program, name)
+  this.getUniformLocation    = function (program, name)
   {
     var reference;
 
@@ -294,7 +294,7 @@ function GLUtility(drawingSurface_)
    * Lookup a uniform by name and load three floating point variables.
    * @deprecated Cache the uniform handle, and invoke gl.uniform3f directly.
    */
-  this.loadUniform3f = function(gl, program, uniform, x, y, z)
+  this.loadUniform3f = function (gl, program, uniform, x, y, z)
   {
     var reference = gl.getUniformLocation(program, uniform);
     if(reference === -1)
@@ -309,7 +309,7 @@ function GLUtility(drawingSurface_)
    * Lookup a uniform by name and load four floating point variables.
    * @deprecated Cache the uniform handle, and invoke gl.uniform4f directly.
    */
-  this.loadUniform4f = function(program, uniform, r, b, g, a)
+  this.loadUniform4f = function (program, uniform, r, b, g, a)
   {
     var reference = gl.getUniformLocation(program, uniform);
     if(reference === -1)
@@ -428,7 +428,7 @@ function GLUtility(drawingSurface_)
    * transformation matrix. Both mat4 and mat3 are expected to be column major
    * Float32 arrays as used to represent WebGL matrices.
    */
- this.extractRotationPart = function(mat4, mat3)
+ this.extractRotationPart = function (mat4, mat3)
  {
      // The first three elements of the mat3 are the same as the mat4
      mat3.set(mat4.subarray(0,3));

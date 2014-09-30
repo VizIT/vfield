@@ -29,7 +29,7 @@ function CountdownLatch(count_, onDone_)
    * drops to zero.
    * @callback latchCallback
    */
-  this.countDown = function()
+  this.countDown = function ()
   {
     count--;
     if (count <= 0)

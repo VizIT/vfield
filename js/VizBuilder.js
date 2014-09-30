@@ -20,7 +20,7 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build a visualization from a configuration class - most likely
@@ -28,7 +28,7 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.VizBuilder = function()
+   ns.VizBuilder = function ()
    {
      var errorMessage;
      var warningMessage;
@@ -40,7 +40,7 @@ window.vizit.builder = window.vizit.builder || {};
       * @param config An object with a type attribute naming the
       *               type of visualization being configured.
       */
-     this.processConfig = function(config)
+     this.processConfig = function (config)
      {
        var bindingsConfig;
        var builder;
@@ -136,7 +136,7 @@ window.vizit.builder = window.vizit.builder || {};
        }
      }
 
-     this.process = function(config)
+     this.process = function (config)
      {
        var nvisualizations;
 

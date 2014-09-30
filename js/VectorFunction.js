@@ -31,27 +31,27 @@ function VectorFunction(args, body)
   var modified;
   var name;
 
-  this.setModified        = function(modified_)
+  this.setModified        = function (modified_)
   {
     modified = modified_;
   }
 
-  this.isModified         = function()
+  this.isModified         = function ()
   {
     return modified;
   }
 
-  this.setName            = function(name_)
+  this.setName            = function (name_)
   {
     name = name_;
   }
 
-  this.getName            = function()
+  this.getName            = function ()
   {
     return name;
   }
 
-  this.shouldStop      = function(sgn, x, y, z)
+  this.shouldStop      = function (sgn, x, y, z)
   {
     var minR2;
 

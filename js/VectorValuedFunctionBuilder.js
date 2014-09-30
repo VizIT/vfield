@@ -20,7 +20,7 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build a vector valued function [f_x, f_y, f_z] = f.getField(x, y, z).
@@ -32,7 +32,7 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.VectorValuedFunctionBuilder = function(framework_)
+   ns.VectorValuedFunctionBuilder = function (framework_)
    {
      var errorMessage;
      var framework;
@@ -42,7 +42,7 @@ window.vizit.builder = window.vizit.builder || {};
       * Scan the function definitions to determine if these are explicit
       * functions or charges.
       */
-     this.build = function(config, renderer)
+     this.build = function (config, renderer)
      {
        var testConfig;
        var builder;

@@ -20,14 +20,14 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build charge distributions as described in the configuration object.
     *
     * @class
     */
-   ns.DistributionBuilder = function()
+   ns.DistributionBuilder = function ()
    {
      var chargeDensityRE;
      var errorMessage;
@@ -37,32 +37,32 @@ window.vizit.builder = window.vizit.builder || {};
      var zMin, zMax;
      var warningMessage;
       
-     this.getXMin = function()
+     this.getXMin = function ()
      {
        return xMin;
      }
 
-     this.getXMax = function()
+     this.getXMax = function ()
      {
        return xMax;
      }
       
-     this.getYMin = function()
+     this.getYMin = function ()
      {
        return yMin;
      }
 
-     this.getYMax = function()
+     this.getYMax = function ()
      {
        return yMax;
      }
       
-     this.getZMin = function()
+     this.getZMin = function ()
      {
        return zMin;
      }
 
-     this.getZMax = function()
+     this.getZMax = function ()
      {
        return zMax;
      }
@@ -75,7 +75,7 @@ window.vizit.builder = window.vizit.builder || {};
       *                 chargeDensity, field line density fieldLineDensity, and bounding box
       *                 {(x1, y1, z1), (x2, y2, z2), (x3, y3, z3), (x4, y4, z4)}.
       */
-     this.chargedPlaneBuilder      = function(config)
+     this.chargedPlaneBuilder      = function (config)
      {
        var chargedPlane;
        var property;
@@ -187,7 +187,7 @@ window.vizit.builder = window.vizit.builder || {};
       *                 radius r1. The section of the cylinder between (x0, y0, z0)
       *                 and (x1, y1, z1) is drawn.
       */
-     this.chargedCylinderBuilder   = function(config)
+     this.chargedCylinderBuilder   = function (config)
      {
        var chargedCylinder;
        // Charge density and field lines per unit charge.
@@ -275,7 +275,7 @@ window.vizit.builder = window.vizit.builder || {};
        return chargedCylinder;
      }
 
-     this.chargedLineBuilder       = function(config)
+     this.chargedLineBuilder       = function (config)
      {
        var chargedLine;
        var chargeDensity, fieldLineDensity;
@@ -351,7 +351,7 @@ window.vizit.builder = window.vizit.builder || {};
        return chargedLine;
      }
 
-     this.chargedSphereBuilder      = function(config)
+     this.chargedSphereBuilder      = function (config)
      {
        var chargedSphere;
        var charge;
@@ -427,7 +427,7 @@ window.vizit.builder = window.vizit.builder || {};
       * Peek at the type of charge distribution, and dispatch the
       * config to the appropriate builder.
       */
-     this.chargeDistributionBuilder = function(config)
+     this.chargeDistributionBuilder = function (config)
      {
        var chargedCylinderRE;
        var chargedLineRE;
@@ -476,7 +476,7 @@ window.vizit.builder = window.vizit.builder || {};
       * charge distribution attribute.
       * TODO: Repeated pattern, make use a pluggable strategy?
       */
-     this.build = function(config, charges, framework)
+     this.build = function (config, charges, framework)
      {
        var distribution;
        var name;

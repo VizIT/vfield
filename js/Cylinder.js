@@ -32,12 +32,12 @@ function Cylinder()
   /** Color object with red, green, blue, and alpha. */
   var color;
 
-  this.setColor            = function(color_)
+  this.setColor            = function (color_)
   {
     color = color_;
   }
 
-  this.getColor            = function()
+  this.getColor            = function ()
   {
     return color;
   }
@@ -55,7 +55,7 @@ function Cylinder()
    * @param {Double} phi    The angle of rotation about the y axis.
    * @param {Double} theta  The angle of rotation about the z axis.
    */
-  this.getCylinderModelView       = function(tx, ty, tz, height, r, phi, theta)
+  this.getCylinderModelView       = function (tx, ty, tz, height, r, phi, theta)
   {
     var cphi;
     var ctheta;
@@ -97,7 +97,7 @@ function Cylinder()
    * Transform a set of points by the same ModelView matrix as used by the cylinder.
    * Great for transforming automatically generated field start points.
    */
-  this.transformPoints       = function(modelView, h, r, points)
+  this.transformPoints       = function (modelView, h, r, points)
   {
     var npoints;
     var i;
@@ -140,7 +140,7 @@ function Cylinder()
     return points;
   }
 
-  this.setupBuffers          = function(glUtility,           surfaceProgram,       surfaceGeometryBuffer,
+  this.setupBuffers          = function (glUtility,           surfaceProgram,       surfaceGeometryBuffer,
 		                        surfaceNormalBuffer, surfaceIndicesBuffer)
   {
     var gl;
@@ -151,18 +151,18 @@ function Cylinder()
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
   }
 
-  this.drawCap               = function(gl, nindices, offset)
+  this.drawCap               = function (gl, nindices, offset)
   {
     gl.drawElements(gl.TRIANGLE_FAN, nindices, gl.UNSIGNED_SHORT, offset*2);
   }
 
-  this.drawSide              = function(gl, nindices, offset)
+  this.drawSide              = function (gl, nindices, offset)
   {
     gl.drawElements(gl.TRIANGLE_STRIP, nindices, gl.UNSIGNED_SHORT, offset*2);
 
   }
 
-  this.drawCylinder          = function(glUtility, surfaceProgram, modelView,
+  this.drawCylinder          = function (glUtility, surfaceProgram, modelView,
                                         nsegments, drawCaps)
   {
     var gl;
@@ -191,7 +191,7 @@ function Cylinder()
    * Render a full cylinder as an assemblage of parts, including rearward and forward facing halves,
    * multiple radii, and optionally end caps.
    */
-  this.fullRender                = function(glUtility, surfaceProgram, modelView, h, r0, r1, drawCaps)
+  this.fullRender                = function (glUtility, surfaceProgram, modelView, h, r0, r1, drawCaps)
   {
     var gl;
     var i;
@@ -262,7 +262,7 @@ function Cylinder()
   /**
    * Translates a cylinder to be centered at the origin.
    */
-  this.translateBounds = function(cylinder, x0, y0, z0, x1, y1, z1)
+  this.translateBounds = function (cylinder, x0, y0, z0, x1, y1, z1)
   {
 
     var tx, ty, tz;
@@ -289,7 +289,7 @@ function Cylinder()
             .setZ1(z1);
   }
 
-  this.sign             = function(x)
+  this.sign             = function (x)
   {
     return x < 0 ? -1 : 1;
   }
@@ -297,7 +297,7 @@ function Cylinder()
   /**
    * Find phi, the rotation about the z-axis.
    */
-  this.zAxisRotation        = function(cylinder, x0, y0, x1, y1)
+  this.zAxisRotation        = function (cylinder, x0, y0, x1, y1)
   {
     var deltax;
     var deltay;
@@ -325,7 +325,7 @@ function Cylinder()
    * Find and undo theta, the rotation about the y axis for a cylinder
    * centered at the origin;
    */
-  this.yAxisRotation    = function(cylinder, x0, y0, z0, x1, y1, z1)
+  this.yAxisRotation    = function (cylinder, x0, y0, z0, x1, y1, z1)
   {
     var r;
     var sgn;
@@ -350,7 +350,7 @@ function Cylinder()
   /**
    * Height scale - we already have the radius.
    */
-  this.scale            = function(cylinder, z0, z1)
+  this.scale            = function (cylinder, z0, z1)
   {
       var height;
       var sgn;

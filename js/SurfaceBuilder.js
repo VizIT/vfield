@@ -20,14 +20,14 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build one or more surface from a configuration.
     *
     * @class
     */
-   ns.SurfaceBuilder = function()
+   ns.SurfaceBuilder = function ()
    {
      var errorMessage;
      var xMin, xMax;
@@ -35,37 +35,37 @@ window.vizit.builder = window.vizit.builder || {};
      var zMin, zMax;
      var warningMessage;
 
-     this.getXMin = function()
+     this.getXMin = function ()
      {
        return xMin;
      }
 
-     this.getXMax = function()
+     this.getXMax = function ()
      {
        return xMax;
      }
       
-     this.getYMin = function()
+     this.getYMin = function ()
      {
        return yMin;
      }
 
-     this.getYMax = function()
+     this.getYMax = function ()
      {
        return yMax;
      }
       
-     this.getZMin = function()
+     this.getZMin = function ()
      {
        return zMin;
      }
 
-     this.getZMax = function()
+     this.getZMax = function ()
      {
        return zMax;
      }
 
-     this.gaussianCylinderBuilder = function(config)
+     this.gaussianCylinderBuilder = function (config)
      {
        var gaussianCylinder;
        /** The name of this element */
@@ -136,7 +136,7 @@ window.vizit.builder = window.vizit.builder || {};
      }
 
 
-     this.gaussianSphereBuilder = function(config)
+     this.gaussianSphereBuilder = function (config)
      {
        var gaussianSphere;
        var name;
@@ -187,7 +187,7 @@ window.vizit.builder = window.vizit.builder || {};
       * Build a single surface. Peek at the surface type and dispatch
       * the config to the appropriate builder.
       */
-     this.surfaceBuilder       = function(config)
+     this.surfaceBuilder       = function (config)
      {
        var gaussianCylinderRE;
        var gaussianSphereRE;
@@ -227,7 +227,7 @@ window.vizit.builder = window.vizit.builder || {};
       * @param   {object|Array} Configuraction object fo a single surface or
       *                         array of surfaces.
       */
-     this.build      = function(config, renderer, framework)
+     this.build      = function (config, renderer, framework)
      {
        var surface;
        var nsurfaces;

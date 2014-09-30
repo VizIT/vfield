@@ -32,7 +32,7 @@ function ChargeGenerator(charges_)
   var chargesArray;
   var ncharges;
 
-  this.setCharges      = function(charges_)
+  this.setCharges      = function (charges_)
   {
     charges      = charges_;
     // iff we need a larger array to hold the charge vertices, build it
@@ -42,17 +42,17 @@ function ChargeGenerator(charges_)
     }
   }
 
-  this.getCharges      = function()
+  this.getCharges      = function ()
   {
     return charges;
   }
 
-  this.getChargesArray = function()
+  this.getChargesArray = function ()
   {
     return chargesArray;
   }
 
-  this.getNcharges     = function()
+  this.getNcharges     = function ()
   {
     return ncharges;
   }
@@ -60,7 +60,7 @@ function ChargeGenerator(charges_)
   /**
    * 
    */
-  this.generate        = function()
+  this.generate        = function ()
   {
     var charge;
     var offset;

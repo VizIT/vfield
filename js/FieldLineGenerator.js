@@ -52,23 +52,23 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowHeadSize_, arrowSpac
     // The maximum number of points along the line to trace.
     var maxPoints;
 
-    this.setCharges   = function(charges_)
+    this.setCharges   = function (charges_)
     {
       charges = charges_;
       return this;
     }
 
-    this.getCharges   = function()
+    this.getCharges   = function ()
     {
       return charges;
     }
 
-    this.getArrows    = function()
+    this.getArrows    = function ()
     {
       return arrows;
     }
 
-    this.setMaxPoints = function(maxPoints_)
+    this.setMaxPoints = function (maxPoints_)
     {
       if (maxPoints_ > maxpoints)
       {
@@ -78,40 +78,40 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowHeadSize_, arrowSpac
       return this;
     }
 
-    this.getMaxPoints = function()
+    this.getMaxPoints = function ()
     {
       return maxPoints;
     }
 
-    this.setArrowHeadSize    = function(size)
+    this.setArrowHeadSize    = function (size)
     {
       arrowHeadSize = size;
       return this;
     }
 
-    this.getArrowHeadSize    = function()
+    this.getArrowHeadSize    = function ()
     {
       return arrowHeadSize;
     }
 
-    this.setArrowSpacing = function(spacing)
+    this.setArrowSpacing = function (spacing)
     {
       arrowSpacing = spacing;
       return this;
     }
 
-    this.getArrowSpacing = function()
+    this.getArrowSpacing = function ()
     {
       return arrowSpacing;
     }
 
-    this.setDs           = function(ds_)
+    this.setDs           = function (ds_)
     {
       ds = ds_;
       return this;
     }
 
-    this.getDs           = function()
+    this.getDs           = function ()
     {
       return ds;
     }
@@ -120,7 +120,7 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowHeadSize_, arrowSpac
      * Generate two lines as an arrow head along the field line indicating the
      * direction of the electric field.
      */
-    this.drawArrow          = function(x0, y0, z0, field, f, arrowHeadSize, fieldLine)
+    this.drawArrow          = function (x0, y0, z0, field, f, arrowHeadSize, fieldLine)
     {
       var asx;
       var asy;
@@ -197,7 +197,7 @@ function FieldLineGenerator(charges_, maxPoints_, ds_, arrowHeadSize_, arrowSpac
    * @parma {double} sgn  Whether to trace the line along (+1.0) or
    *                      in opposition to (-1.0) the electric field.
    */
-  this.generate = function(x0, y0, z0, sgn)
+  this.generate = function (x0, y0, z0, sgn)
   {
     // The distance traversed along the field line since the last arrow was drawn.
     var deltaS;

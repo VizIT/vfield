@@ -38,7 +38,7 @@ function FieldLineRenderer(glUtility_)
   /** WebGL GLint handle on the projectionMatrix uniform */
   var projectionMatrixHandle;
 
-  this.createProgram  = function(gl)
+  this.createProgram  = function (gl)
   {
     var fragmentShaderSource;
     var program;
@@ -71,7 +71,7 @@ function FieldLineRenderer(glUtility_)
     return program;
   }
 
-  this.render = function(projectionMatrix, modelViewMatrix, color, fieldLineVBOs)
+  this.render = function (projectionMatrix, modelViewMatrix, color, fieldLineVBOs)
   {
     var fieldLineVBO;
     var nlines;

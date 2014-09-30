@@ -20,7 +20,7 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build an electric field and accompanying visualization according to the
@@ -28,7 +28,7 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.ElectricFieldBuilder = function(framework_)
+   ns.ElectricFieldBuilder = function (framework_)
    {
      var errorMessage;
      var framework;
@@ -38,7 +38,7 @@ window.vizit.builder = window.vizit.builder || {};
      var zMin, zMax;
      var warningMessage;
 
-     this.build = function(config)
+     this.build = function (config)
      {
        var arrowHeadSize;
        var arrowSpacing;

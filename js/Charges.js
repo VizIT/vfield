@@ -42,60 +42,60 @@ function Charge(x_, y_, z_, charge_, fieldLineDensity_, nfieldLines_, name_)
     var fieldLineDensity;
     var r2;
 
-    this.setCharge          = function(charge_)
+    this.setCharge          = function (charge_)
     {
       charge   = charge_;
       modified = true;
     }
 
-    this.getCharge          = function()
+    this.getCharge          = function ()
     {
       return charge;
     }
 
-    this.setPosition        = function(position)
+    this.setPosition        = function (position)
     {
       position = position;
       modified = true;
     }
 
-    this.getPosition        = function()
+    this.getPosition        = function ()
     {
       return position;
     }
 
-    this.setNfieldLines     = function(n)
+    this.setNfieldLines     = function (n)
     {
       nfieldLines = n;
       modified    = true;
     }
 
-    this.getNfieldLines     = function()
+    this.getNfieldLines     = function ()
     {
       return nfieldLines;
     }
 
-    this.setModified        = function(modified_)
+    this.setModified        = function (modified_)
     {
       modified = modified_;
     }
 
-    this.isModified         = function()
+    this.isModified         = function ()
     {
       return modified;
     }
 
-    this.setName            = function(name_)
+    this.setName            = function (name_)
     {
       name = name_;
     }
 
-    this.getName            = function()
+    this.getName            = function ()
     {
       return name;
     }
 
-    this.getField           = function(x, y, z)
+    this.getField           = function (x, y, z)
     {
       var deltaX;
       var deltaY;
@@ -132,7 +132,7 @@ function Charge(x_, y_, z_, charge_, fieldLineDensity_, nfieldLines_, name_)
      * 
      * @param {Integer} pho The densiy of field lines per unit charge.
      */
-    this.getFieldSeedPointsI = function(fieldLineDensity)
+    this.getFieldSeedPointsI = function (fieldLineDensity)
     {
       var increment;
       var nlines;
@@ -169,7 +169,7 @@ function Charge(x_, y_, z_, charge_, fieldLineDensity_, nfieldLines_, name_)
      * @param {Double} phi0   The angle about the z axis for the first start point.
      * @param {Double} radius The distance from the center for the start points.
      */
-    this.getStartPoints = function(phi0, radius)
+    this.getStartPoints = function (phi0, radius)
     {
       var nlines;
       var phi;
@@ -205,7 +205,7 @@ function Charge(x_, y_, z_, charge_, fieldLineDensity_, nfieldLines_, name_)
       return seedPoints;
     }
 
-    this.shouldStop      = function(sgn, x, y, z)
+    this.shouldStop      = function (sgn, x, y, z)
     {
       var minR2;
 
@@ -242,7 +242,7 @@ function Charges()
      * Add a charge to the configuration of charges represented by
      * this object. Defined here so we can use it in the constructor.
      */
-    this.addCharge = function(charge)
+    this.addCharge = function (charge)
     {
       ncharges = charges.push(charge);
       return this;
@@ -255,33 +255,33 @@ function Charges()
       this.addCharge(arguments[i]);
     }
 
-    this.getNcharges = function()
+    this.getNcharges = function ()
     {
       return ncharges;
     }
 
-    this.getCharges = function()
+    this.getCharges = function ()
     {
       return charges;
     }
 
-    this.addDistribution = function(distribution)
+    this.addDistribution = function (distribution)
     {
       ndistributions = distributions.push(distribution);
       return this;
     }
 
-    this.getNdistributions = function()
+    this.getNdistributions = function ()
     {
       return ndistributions;
     }
 
-    this.getDistributions  = function()
+    this.getDistributions  = function ()
     {
       return distributions;
     }
 
-    this.chargesModified   = function()
+    this.chargesModified   = function ()
     {
       var modified;
 
@@ -295,7 +295,7 @@ function Charges()
       return modified;
     }
 
-    this.distributionsModified = function()
+    this.distributionsModified = function ()
     {
       var modified;
 
@@ -309,12 +309,12 @@ function Charges()
       return modified;
     }
 
-    this.isModified            = function()
+    this.isModified            = function ()
     {
       return this.chargesModified() || this.distributionsModified();
     }
 
-    this.setModified         = function(modified)
+    this.setModified         = function (modified)
     {
       for (i=0; i<ncharges; i++)
       {
@@ -330,7 +330,7 @@ function Charges()
     /**
      * Get start points using, for now, preset values of phi0 and r
      */
-    this.getStartPoints = function(phi0, r0)
+    this.getStartPoints = function (phi0, r0)
     {
       var i;
       var phi    = phi0;
@@ -357,7 +357,7 @@ function Charges()
      * Comnpute the field at x, y, z resulting from our charge
      * configuration.
      */
-    this.getField = function(x, y, z)
+    this.getField = function (x, y, z)
     {
       var charge;
       // Field from the current charge
@@ -398,7 +398,7 @@ function Charges()
      * @param {double} z
      *
      */
-    this.shouldStop    = function(sgn, x, y, z)
+    this.shouldStop    = function (sgn, x, y, z)
     {
       var charge;
       var should;

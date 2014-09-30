@@ -40,7 +40,7 @@ function LineRenderer(glUtility_)
   /** WebGL GLint handle on the projectionMatrix uniform */
   var projectionMatrixHandle;
 
-  this.createProgram      = function()
+  this.createProgram      = function ()
   {
     var fragmentShaderSource;
     var program;
@@ -89,7 +89,7 @@ function LineRenderer(glUtility_)
    *                                                    the indices. Also contains the number of indices.
    *
    */
-  this.drawIndexedLines   = function(projectionMatrix, modelViewMatrix, color, indexedBuffers)
+  this.drawIndexedLines   = function (projectionMatrix, modelViewMatrix, color, indexedBuffers)
   {
     var indexedBuffer;
     var nbuffers;

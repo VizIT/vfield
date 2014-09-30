@@ -20,14 +20,14 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build one or more point charges as defined on a configuration object.
     *
     * @class
     */
-   ns.ChargesBuilder = function()
+   ns.ChargesBuilder = function ()
    {
      var errorMessage;
      var fieldLineDensityRE;
@@ -36,32 +36,32 @@ window.vizit.builder = window.vizit.builder || {};
      var zMin, zMax;
      var warningMessage;
 
-     this.getXMin = function()
+     this.getXMin = function ()
      {
        return xMin;
      }
 
-     this.getXMax = function()
+     this.getXMax = function ()
      {
        return xMax;
      }
       
-     this.getYMin = function()
+     this.getYMin = function ()
      {
        return yMin;
      }
 
-     this.getYMax = function()
+     this.getYMax = function ()
      {
        return yMax;
      }
       
-     this.getZMin = function()
+     this.getZMin = function ()
      {
        return zMin;
      }
 
-     this.getZMax = function()
+     this.getZMax = function ()
      {
        return zMax;
      }
@@ -72,7 +72,7 @@ window.vizit.builder = window.vizit.builder || {};
       * @param {object} config The portion of a visualization configuration
       *                        defining a single point charge.
       */
-     this.chargeBuilder = function(config)
+     this.chargeBuilder = function (config)
      {
        var charge;
        /** Error message why the error flag was set. */
@@ -204,7 +204,7 @@ window.vizit.builder = window.vizit.builder || {};
       *
       * @returns {Charges}
       */
-     this.build = function(config, charges, framework)
+     this.build = function (config, charges, framework)
      {
        var charge;
        var name;

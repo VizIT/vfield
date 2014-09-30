@@ -49,57 +49,57 @@ function VectorFieldGenerator(f_, maxVectors_, arrowHeadSize_, arrowHeadWidth_, 
   /**
    * @param startPoints A set of start points (x,y,z,sgn) from which field lines are traced.
    */
-  this.setStartPoints = function(points)
+  this.setStartPoints = function (points)
   {
     startPoints = points;
     return this;
   }
 
-  this.getStartPoints = function()
+  this.getStartPoints = function ()
   {
     return startPoints;
   }
 
-  this.setMaxVectors = function(maxVectors_)
+  this.setMaxVectors = function (maxVectors_)
   {
     maxVectors = maxVectors_;
     return this;
   }
 
-  this.getMaxVectors = function()
+  this.getMaxVectors = function ()
   {
     return maxVectors;
   }
 
-  this.setArrowHeadSize = function(size)
+  this.setArrowHeadSize = function (size)
   {
     arrowHeadSize = size;
     return this;
   }
 
-  this.getArrowHeadSize = function()
+  this.getArrowHeadSize = function ()
   {
     return arrowHeadSize;
   }
 
-  this.setVectorSpacing = function(spacing)
+  this.setVectorSpacing = function (spacing)
   {
     vectorSpacing = spacing;
     return this;
   }
 
-  this.getVectorSpacing = function()
+  this.getVectorSpacing = function ()
   {
     return vectorSpacing;
   }
 
-  this.setDs           = function(ds_)
+  this.setDs           = function (ds_)
   {
     ds = ds_;
     return this;
   }
 
-  this.getDs           = function()
+  this.getDs           = function ()
   {
     return ds;
   }
@@ -117,7 +117,7 @@ function VectorFieldGenerator(f_, maxVectors_, arrowHeadSize_, arrowHeadWidth_, 
    * 
    * @param arrowHeadSize A scale factor for the arrow head.
    */
-  this.generateVector      = function(x0, y0, z0, field, f, arrowHeadSize, arrowHeadWidth, narrows, arrowSize, indexedVertices)
+  this.generateVector      = function (x0, y0, z0, field, f, arrowHeadSize, arrowHeadWidth, narrows, arrowSize, indexedVertices)
   {
     /** The component of the arrow head along the vector. */
     var asx, asy, asz;
@@ -260,7 +260,7 @@ function VectorFieldGenerator(f_, maxVectors_, arrowHeadSize_, arrowHeadWidth_, 
    *
    * @param {IndexedVertices} indexedVertices An object holding a vertex list and index list.
    */
-  this.trace = function(f, x0, y0, z0, sign, maxVectors, priorVectors, arrowSize, indexedVertices)
+  this.trace = function (f, x0, y0, z0, sign, maxVectors, priorVectors, arrowSize, indexedVertices)
   {
     // The distance traversed along the field line.
     var S;
@@ -313,7 +313,7 @@ function VectorFieldGenerator(f_, maxVectors_, arrowHeadSize_, arrowHeadWidth_, 
     return nvectors;
   }
 
-  this.generateField = function()
+  this.generateField = function ()
   {
     var i;
     var indexedVertices;

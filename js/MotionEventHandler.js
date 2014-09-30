@@ -47,7 +47,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
   target        = target_;
   utility       = utility_;
 
-  this.findTouchByIdentifier = function(identifier_)
+  this.findTouchByIdentifier = function (identifier_)
   {
     var i;
     var identifier;
@@ -65,7 +65,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     return -1;
   }
 
-  this.handleTouchStart = function(event)
+  this.handleTouchStart = function (event)
   {
     var i;
     var touch;
@@ -96,7 +96,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     }
   }
 
-  this.handleTouchEnd = function(event)
+  this.handleTouchEnd = function (event)
   {
     var i;
     var index;
@@ -130,7 +130,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
    * Touch move events when there is one active touch are delegated
    * to this method. These move events are translated into a rotation.
    */
-  this.handleOneActiveMove = function(event)
+  this.handleOneActiveMove = function (event)
   {
     var deltaX;
     var deltaY;
@@ -175,7 +175,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
    * Handle a move event with two active touches. This will correspond to
    * a scale event.
    */
-  this.handleTwoActiveMove = function(event)
+  this.handleTwoActiveMove = function (event)
   {
     var deltaScale;
     var deltaX;
@@ -233,7 +233,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     }
   }
 
-  this.handleTouchMove = function(event)
+  this.handleTouchMove = function (event)
   {
     if (activeTouches.length === 1)
     {
@@ -246,19 +246,19 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     return true;
   }
 
-  this.handleMouseDown = function(event)
+  this.handleMouseDown = function (event)
   {
     inprogress = true;
     lastX      = event.clientX;
     lastY      = event.clientY;
   }
 
-  this.handleMouseUp  = function(event)
+  this.handleMouseUp  = function (event)
   {
     inprogress = false;
   }
 
-  this.handleMouseMove = function(event)
+  this.handleMouseMove = function (event)
   {
     if (!inprogress)
     {
@@ -284,7 +284,7 @@ function MotionEventHandler(target_, utility_, mouseScale_, pinchScale_)
     lastY = newY;
   }
 
-  this.handleMouseWheel = function(event_)
+  this.handleMouseWheel = function (event_)
   {
     var event;
 

@@ -35,71 +35,71 @@ function GaussianSphere(x_, y_, z_, r_, name_)
   var y0;
   var z0;
 
-  this.setColor            = function(color_)
+  this.setColor            = function (color_)
   {
     color = color_;
   }
 
-  this.getColor            = function()
+  this.getColor            = function ()
   {
     return color;
   }
 
-  this.setX               = function(x_)
+  this.setX               = function (x_)
   {
     x0 = x_;
     return this;
   }
 
-  this.getX               = function()
+  this.getX               = function ()
   {
     return x0;
   }
 
-  this.setY               = function(y_)
+  this.setY               = function (y_)
   {
     y0 = y_;
     return this;
   }
 
-  this.getY               = function()
+  this.getY               = function ()
   {
     return y0;
   }
 
-  this.setZ               = function(z_)
+  this.setZ               = function (z_)
   {
     z0 = z_;
     return this;
   }
 
-  this.getZ               = function()
+  this.getZ               = function ()
   {
     return z0;
   }
 
-  this.setRadius          = function(r_)
+  this.setRadius          = function (r_)
   {
     radius = r_;
     return this;
   }
 
-  this.getRadius          = function()
+  this.getRadius          = function ()
   {
     return radius;
   }
 
-  this.setName            = function(name_)
+  this.setName            = function (name_)
   {
     name = name_;
   }
 
-  this.getName            = function()
+  this.getName            = function ()
   {
     return name;
   }
 
-  this.getModelView       = function(scale)
+  this.getModelView       = function (scale)
   {
     if (typeof scale === "undefined")
     {
@@ -134,7 +134,7 @@ function GaussianSphere(x_, y_, z_, r_, name_)
     return modelViewMatrix;
   }
 
-  this.drawFullSurface      = function(glUtility,           program,              surfaceGeometryBuffer,
+  this.drawFullSurface      = function (glUtility,           program,              surfaceGeometryBuffer,
                                        surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
   {
     var gl;
@@ -147,7 +147,7 @@ function GaussianSphere(x_, y_, z_, r_, name_)
     gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
   }
 
-  this.render      = function(glUtility, program)
+  this.render      = function (glUtility, program)
   {
     var gl;
     var intrinsicRadius;

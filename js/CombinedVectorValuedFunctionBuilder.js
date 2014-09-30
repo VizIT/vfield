@@ -20,7 +20,7 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build a vector valued function [f_x, f_y, f_z] = f.getField(x, y, z).
@@ -28,13 +28,13 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.CombinedVectorValuedFunctionBuilder = function(framework_)
+   ns.CombinedVectorValuedFunctionBuilder = function (framework_)
    {
      var errorMessage;
      var framework;
      var warningMessage;
 
-     this.buildFunction = function(config)
+     this.buildFunction = function (config)
      {
        // The arguments (input) the the vector function;
        var args;
@@ -86,7 +86,7 @@ window.vizit.builder = window.vizit.builder || {};
        return f;
      }
 
-     this.build = function(config)
+     this.build = function (config)
      {
        var f;
        var functions;

@@ -75,203 +75,203 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_,
   var mag10;
 
 
-  this.setHeight           = function(height_)
+  this.setHeight           = function (height_)
   {
     height   = height_;
     modified = true;
   }
 
-  this.getHeight           = function()
+  this.getHeight           = function ()
   {
     return height;
   }
 
-  this.setTx               = function(t)
+  this.setTx               = function (t)
   {
     tx       = t;
     modified = true;
     return this;
   }
 
-  this.getTx               = function()
+  this.getTx               = function ()
   {
     return tx;
   }
 
-  this.setTy               = function(t)
+  this.setTy               = function (t)
   {
     ty       = t;
     modified = true;
     return this;
   }
 
-  this.getTy               = function()
+  this.getTy               = function ()
   {
     return ty;
   }
 
-  this.setTz               = function(t)
+  this.setTz               = function (t)
   {
     tz       = t;
     modified = true;
     return this;
   }
 
-  this.getTz               = function()
+  this.getTz               = function ()
   {
     return tz;
   }
 
-  this.setX0               = function(x_)
+  this.setX0               = function (x_)
   {
     x0       = x_;
     modified = true;
     return this;
   }
 
-  this.getX0               = function()
+  this.getX0               = function ()
   {
     return x0;
   }
 
-  this.setY0               = function(y_)
+  this.setY0               = function (y_)
   {
     y0       = y_;
     modified = true;
     return this;
   }
 
-  this.getY0               = function()
+  this.getY0               = function ()
   {
     return y0;
   }
 
-  this.setZ0               = function(z_)
+  this.setZ0               = function (z_)
   {
     z0       = z_;
     modified = true;
     return this;
   }
 
-  this.getZ0               = function()
+  this.getZ0               = function ()
   {
     return z0;
   }
 
-  this.setX1               = function(x_)
+  this.setX1               = function (x_)
   {
     x1       = x_;
     modified = true;
     return this;
   }
 
-  this.getX1               = function()
+  this.getX1               = function ()
   {
     return x1;
   }
 
-  this.setY1               = function(y_)
+  this.setY1               = function (y_)
   {
     y1       = y_;
     modified = true;
     return this;
   }
 
-  this.getY1               = function()
+  this.getY1               = function ()
   {
     return y1;
   }
 
-  this.setZ1               = function(z_)
+  this.setZ1               = function (z_)
   {
     z1       = z_;
     modified = true;
     return this;
   }
 
-  this.getZ1               = function()
+  this.getZ1               = function ()
   {
     return z1;
   }
 
-  this.setR0               = function(r_)
+  this.setR0               = function (r_)
   {
     r0       = r_;
     modified = true;
     return this;
   }
 
-  this.getR0               = function()
+  this.getR0               = function ()
   {
     return r0;
   }
 
-  this.setR1               = function(r_)
+  this.setR1               = function (r_)
   {
     r1       = r_;
     modified = true;
     return this;
   }
 
-  this.getR1               = function()
+  this.getR1               = function ()
   {
     return r1;
   }
 
-  this.setPhi              = function(phi_)
+  this.setPhi              = function (phi_)
   {
     phi      = phi_;
     modified = true;
     return this;
   }
 
-  this.getPhi              = function()
+  this.getPhi              = function ()
   {
     return phi;
   }
 
-  this.setTheta            = function(theta_)
+  this.setTheta            = function (theta_)
   {
     theta    = theta_;
     modified = true;
     return this;
   }
 
-  this.getTheta           = function()
+  this.getTheta           = function ()
   {
     return theta;
   }
 
-  this.setNfieldLines     = function(n)
+  this.setNfieldLines     = function (n)
   {
     nfieldLines = n;
     modified    = true;
     return this;
   }
 
-  this.getNfieldLines     = function()
+  this.getNfieldLines     = function ()
   {
     return nfieldLines;
   }
 
-  this.setModified        = function(modified_)
+  this.setModified        = function (modified_)
   {
     modified = modified_;
     return this;
   }
 
-  this.isModified         = function()
+  this.isModified         = function ()
   {
     return modified;
   }
 
-  this.setName            = function(name_)
+  this.setName            = function (name_)
   {
     name = name_;
     return this;
   }
 
-  this.getName            = function()
+  this.getName            = function ()
   {
     return name;
   }
@@ -280,7 +280,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_,
    * Create a set of start points along the base line charge, then transform them
    * with the model view to get the tru location in the scene.
    */
-  this.getStartPoints     = function()
+  this.getStartPoints     = function ()
   {
     /** The separation between sets of field lines. */
     var ds;
@@ -332,7 +332,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_,
    * computes the field repeatedly, for example at every point along
    * a field line.
    */
-  this.getNormal          = function(x2, y2, z2)
+  this.getNormal          = function (x2, y2, z2)
   {
     // The normal from the line to P2
     var n;
@@ -362,7 +362,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_,
     return n;
   }
 
-  this.getField            = function(x, y, z)
+  this.getField            = function (x, y, z)
   {
     var f, fmag;
     var lambda;
@@ -396,7 +396,7 @@ function ChargedCylinder(x0_, y0_, z0_, x1_, y1_, z1_, r0_, r1_,
     return f;
   }
 
-  this.render                 = function(glUtility, surfaceProgram)
+  this.render                 = function (glUtility, surfaceProgram)
   {
       this.fullRender(glUtility,                   surfaceProgram,          modelViewMatrix,
                       height/this.getBaseHeight(), r0/this.getBaseRadius(), r1/this.getBaseRadius(),

@@ -29,7 +29,7 @@ function CombinedVectorFunctions()
     /**
      * Add a function to the collection.
      */
-    this.addFunction = function(f)
+    this.addFunction = function (f)
     {
       nfunctions = functions.push(f);
       return this;
@@ -42,17 +42,17 @@ function CombinedVectorFunctions()
       this.addFunction(arguments[i]);
     }
 
-    this.getNfunctions = function()
+    this.getNfunctions = function ()
     {
       return nfunctions;
     }
 
-    this.getFunctions = function()
+    this.getFunctions = function ()
     {
       return functions;
     }
 
-    this.isModified   = function()
+    this.isModified   = function ()
     {
       var modified;
 
@@ -66,7 +66,7 @@ function CombinedVectorFunctions()
       return modified;
     }
 
-    this.setModified         = function(modified)
+    this.setModified         = function (modified)
     {
       for (i=0; i<nfunctions; i++)
       {
@@ -77,7 +77,7 @@ function CombinedVectorFunctions()
     /**
      * Get start points using, for now, preset values of phi0 and r
      */
-    this.getStartPoints = function()
+    this.getStartPoints = function ()
     {
       var i;
       var r0     = 6.0;
@@ -99,7 +99,7 @@ function CombinedVectorFunctions()
     /**
      * Comnpute the field at x, y, z by summing contributions from each function.
      */
-    this.getField = function(x, y, z)
+    this.getField = function (x, y, z)
     {
       // Field from the current function
       var currentField;
@@ -129,7 +129,7 @@ function CombinedVectorFunctions()
      * @param {double} z
      *
      */
-    this.shouldStop    = function(sgn, x, y, z)
+    this.shouldStop    = function (sgn, x, y, z)
     {
       var should;
 

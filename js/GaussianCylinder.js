@@ -46,37 +46,37 @@ function GaussianCylinder(x_, y_, z_, h_, r_, phi_, theta_, name_)
   var y0;
   var z0;
 
-  this.setX               = function(x_)
+  this.setX               = function (x_)
   {
     x0                  = x_;
     modelViewMatrix[12] = x0;
     return this;
   }
-  this.getX               = function()
+  this.getX               = function ()
   {
     return x0;
   }
 
-  this.setY               = function(y_)
+  this.setY               = function (y_)
   {
     y0                  = y_;
     modelViewMatrix[13] = y0;
     return this;
   }
 
-  this.getY               = function()
+  this.getY               = function ()
   {
     return y0;
   }
 
-  this.setZ               = function(z_)
+  this.setZ               = function (z_)
   {
     z0                  = z_;
     modelViewMatrix[14] = z0;
     return this;
   }
 
-  this.getZ               = function()
+  this.getZ               = function ()
   {
     return z0;
   }
@@ -84,72 +84,72 @@ function GaussianCylinder(x_, y_, z_, h_, r_, phi_, theta_, name_)
   /**
    * Shorthand invocation to set each of x0, y0, z0 from array elements
    */
-  this.setOrigin          = function(origin)
+  this.setOrigin          = function (origin)
   {
     this.setX(origin[0]);
     this.setY(origin[1]);
     return this.setZ(origin[2]);
   }
 
-  this.getOrigin          = function()
+  this.getOrigin          = function ()
   {
     return [x0, y0, z0];
   }
 
-  this.setRadius          = function(r_)
+  this.setRadius          = function (r_)
   {
     radius = r_;
     return this;
   }
-  this.getRadius          = function()
+  this.getRadius          = function ()
   {
     return radius;
   }
 
-  this.setHeight          = function(h_)
+  this.setHeight          = function (h_)
   {
     height = h_;
     return this;
   }
 
-  this.getHeight          = function()
+  this.getHeight          = function ()
   {
     return height;
   }
 
-  this.setTheta           = function(t_)
+  this.setTheta           = function (t_)
   {
     theta = t_;
     return this;
   }
 
-  this.getTheta           = function()
+  this.getTheta           = function ()
   {
     return theta;
   }
 
-  this.setPhi             = function(p_)
+  this.setPhi             = function (p_)
   {
     phi = p_;
     return this;
   }
 
-  this.getPhi             = function()
+  this.getPhi             = function ()
   {
     return phi;
   }
 
-  this.setName            = function(name_)
+  this.setName            = function (name_)
   {
     name = name_;
   }
 
-  this.getName            = function()
+  this.getName            = function ()
   {
     return name;
   }
 
-  this.render                 = function(glUtility, surfaceProgram)
+  this.render                 = function (glUtility, surfaceProgram)
   {
     this.fullRender(glUtility, surfaceProgram, modelViewMatrix, height, radius, radius, true);
   }

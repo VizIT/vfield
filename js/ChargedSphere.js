@@ -74,7 +74,7 @@ function ChargedSphere(x_, y_, z_, a_, b_,
   y0               = y_;
   z0               = z_;
 
-  this.setA               = function(a_)
+  this.setA               = function (a_)
   {
     a        = a_;
     a2       = a*a;
@@ -83,12 +83,12 @@ function ChargedSphere(x_, y_, z_, a_, b_,
     return this;
   }
 
-  this.getA               = function()
+  this.getA               = function ()
   {
     return a;
   }
 
-  this.setB               = function(b_)
+  this.setB               = function (b_)
   {
     b        = b_;
     b3       = b*b*b;
@@ -96,47 +96,47 @@ function ChargedSphere(x_, y_, z_, a_, b_,
     return this;
   }
 
-  this.getB               = function()
+  this.getB               = function ()
   {
     return b;
   }
 
-  this.setNindices        = function(n)
+  this.setNindices        = function (n)
   {
     nindices = n;
     return this;
   }
 
-  this.setModified        = function(modified_)
+  this.setModified        = function (modified_)
   {
     modified = modified_;
     return this;
   }
 
-  this.isModified         = function()
+  this.isModified         = function ()
   {
     return modified;
   }
 
-  this.setNfieldLines     = function(n)
+  this.setNfieldLines     = function (n)
   {
     nfieldLines = n;
     modified    = true;
     return this;
   }
 
-  this.getNfieldLines     = function()
+  this.getNfieldLines     = function ()
   {
     return nfieldLines;
   }
 
-  this.setName            = function(name_)
+  this.setName            = function (name_)
   {
     name = name_;
     return this;
   }
 
-  this.getName            = function()
+  this.getName            = function ()
   {
     return name;
   }
@@ -147,7 +147,7 @@ function ChargedSphere(x_, y_, z_, a_, b_,
    * TODO: make the start point distribution vary with r as the charge.
    * TODO: use a better distribution - this spiral is not so good to illustrate physics.
    */
-  this.getStartPoints = function()
+  this.getStartPoints = function ()
   {
     var nlines;
     var phi;
@@ -182,7 +182,7 @@ function ChargedSphere(x_, y_, z_, a_, b_,
    * Compute the electric field at any point (x,y,x) due to this
    * charge distribution.
    */
-  this.getField           = function(x, y, z)
+  this.getField           = function (x, y, z)
   {
       var deltaX;
       var deltaY;
@@ -224,7 +224,7 @@ function ChargedSphere(x_, y_, z_, a_, b_,
       return field;
   }
 
-  this.getModelView       = function(scale)
+  this.getModelView       = function (scale)
   {
     if (typeof scale === "undefined")
     {
@@ -259,7 +259,7 @@ function ChargedSphere(x_, y_, z_, a_, b_,
     return modelViewMatrix;
   }
 
-  this.drawFullSurface      = function(glUtility,           surfaceProgram,       surfaceGeometryBuffer,
+  this.drawFullSurface      = function (glUtility,           surfaceProgram,       surfaceGeometryBuffer,
                                        surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
   {
     var gl;
@@ -272,7 +272,7 @@ function ChargedSphere(x_, y_, z_, a_, b_,
     gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
   }
 
-  this.render             = function(glUtility, surfaceProgram)
+  this.render             = function (glUtility, surfaceProgram)
   {
     var intrinsicRadius;
     var gl;

@@ -96,36 +96,36 @@ function ChargedPlane(x0, y0, z0,
   var workingBoundingBox;
   var xside;
 
-  this.setNfieldLines     = function(n)
+  this.setNfieldLines     = function (n)
   {
     nfieldLines = n;
     modified    = true;
     return this;
   }
 
-  this.getNfieldLines     = function()
+  this.getNfieldLines     = function ()
   {
     return nfieldLines;
   }
 
-  this.setModified        = function(modified_)
+  this.setModified        = function (modified_)
   {
     modified = modified_;
     return this;
   }
 
-  this.isModified         = function()
+  this.isModified         = function ()
   {
     return modified;
   }
 
-  this.setName            = function(name_)
+  this.setName            = function (name_)
   {
     name = name_;
     return this;
   }
 
-  this.getName            = function()
+  this.getName            = function ()
   {
     return name;
   }
@@ -135,7 +135,7 @@ function ChargedPlane(x0, y0, z0,
    * transforming it by the model view matrix should also yield a unit
    * vector.
    */
-  this.calculateNormal  = function(boundingBox)
+  this.calculateNormal  = function (boundingBox)
   {
     var n, n2, normal;
 
@@ -161,7 +161,7 @@ function ChargedPlane(x0, y0, z0,
    * Apply the MV matrix to each start point for a field line
    * to map them onto the actual rectangle.
    */
-  this.adjustStartPoints  = function(startPoints)
+  this.adjustStartPoints  = function (startPoints)
   {
     var npoints;
     var point;
@@ -188,7 +188,7 @@ function ChargedPlane(x0, y0, z0,
   /**
    * TODO - does this need to be done on the unit rectangle than transformed?
    */
-  this.getStartPoints     = function()
+  this.getStartPoints     = function ()
   {
     var a, ax, ay;
     var bottom;
@@ -249,7 +249,7 @@ function ChargedPlane(x0, y0, z0,
    * Compute the electric field at any point (x,y,z) due to this
    * charge distribution.
    */
-  this.getField           = function(x, y, z)
+  this.getField           = function (x, y, z)
   {
      var d, E, EField;
 
@@ -287,7 +287,7 @@ function ChargedPlane(x0, y0, z0,
   /**
    * Translates a rectangle to be centered at the origin.
    */
-  this.translateBoundingBox = function(boundingBox)
+  this.translateBoundingBox = function (boundingBox)
   {
     tx = (x0 + x2) / 2;
     ty = (y0 + y2) / 2;
@@ -309,7 +309,7 @@ function ChargedPlane(x0, y0, z0,
     return boundingBox;
   }
 
-  this.zAxisRotation        = function(boundingBox)
+  this.zAxisRotation        = function (boundingBox)
   {
     var dx0, dx1;
     /** Slope of two adjacent sides, the smaller of which is parallel to the x axis */
@@ -399,7 +399,7 @@ function ChargedPlane(x0, y0, z0,
    * @returns {Array} boundingBox The original bounding box rotated around the x axis
    *                              by b radians.
    */
-  this.xAxisRotation           = function(boundingBox, xside)
+  this.xAxisRotation           = function (boundingBox, xside)
   {
     var deltay, deltaz;
     var tmpy,   tmpz;
@@ -453,7 +453,7 @@ function ChargedPlane(x0, y0, z0,
    * @returns {Array} boundingBox The original bounding box rotated around the y axis
    *                              by a radians.
    */
-  this.yAxisRotation           = function(boundingBox, xside)
+  this.yAxisRotation           = function (boundingBox, xside)
   {
     var deltax, deltaz;
     var tmpx,   tmpz;
@@ -515,7 +515,7 @@ function ChargedPlane(x0, y0, z0,
    *
    * @returns {Array} boundingBox The original bounding box scaled to a unit square.
    */
-  this.scaleBoundingbox           = function(boundingBox, xside)
+  this.scaleBoundingbox           = function (boundingBox, xside)
   {
     if (xside === 1)
     {
@@ -544,12 +544,12 @@ function ChargedPlane(x0, y0, z0,
     return boundingBox;
   }
 
-  this.getModelView       = function()
+  this.getModelView       = function ()
   {
     return modelView;
   }
 
-  this.drawFullSurface      = function(glUtility,           program,              surfaceGeometryBuffer,
+  this.drawFullSurface      = function (glUtility,           program,              surfaceGeometryBuffer,
                                        surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
   {
     var gl;
@@ -562,7 +562,7 @@ function ChargedPlane(x0, y0, z0,
     gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
   }
 
-  this.render                = function(glUtility, program)
+  this.render                = function (glUtility, program)
   {
     var gl;
     var nindices;

@@ -20,46 +20,46 @@ function Color(red, green, blue, alpha)
 {
   var r, g, b, a;
 
-  this.setRed       = function(red)
+  this.setRed       = function (red)
   {
     r = red;
     return this;
   }
 
-  this.getRed       = function()
+  this.getRed       = function ()
   {
     return r;
   }
 
-  this.setGreen     = function(green)
+  this.setGreen     = function (green)
   {
     g = green;
     return this;
   }
 
-  this.getGreen     = function()
+  this.getGreen     = function ()
   {
     return g;
   }
 
-  this.setBlue      = function(blue)
+  this.setBlue      = function (blue)
   {
     b = blue;
     return this;
   }
 
-  this.getBlue      = function()
+  this.getBlue      = function ()
   {
     return b;
   }
 
-  this.setAlpha     = function(alpha)
+  this.setAlpha     = function (alpha)
   {
     a = alpha;
     return this;
   }
 
-  this.getAlpha     = function()
+  this.getAlpha     = function ()
   {
      return a;
   }

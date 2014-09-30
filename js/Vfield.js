@@ -51,12 +51,12 @@ function FieldRenderer(drawingSurface_)
   /** Start points for tracing field lines. */
   var startPoints;
 
-  this.getContext          = function()
+  this.getContext          = function ()
   {
     return glUtility.getGLContext();
   }
 
-  this.setRenderer         = function(renderer_)
+  this.setRenderer         = function (renderer_)
   {
     renderer = renderer_;
     renderer.setGlUtility(glUtility);
@@ -64,18 +64,18 @@ function FieldRenderer(drawingSurface_)
     renderer.setProjectionMatrix(projectionMatrix);
   }
 
-  this.setModelViewMatrix = function(modelViewMatrix_)
+  this.setModelViewMatrix = function (modelViewMatrix_)
   {
     modelViewMatrix = modelViewMatrix_;
     renderer.setModelViewMatrix(modelViewMatrix);
   }
 
-  this.getModelViewMatrix = function()
+  this.getModelViewMatrix = function ()
   {
     return modelViewMatrix;
   }
 
-  this.requestRender      = function()
+  this.requestRender      = function ()
   {
     if (!rendering)
     {
@@ -85,18 +85,18 @@ function FieldRenderer(drawingSurface_)
 
   }
 
-  this.render             = function()
+  this.render             = function ()
   {
     renderer.render();
     rendering = false;
   }
 
-  this.start              = function()
+  this.start              = function ()
   {
     renderer.start();
   }
 
-  this.setScale           = function(scale_)
+  this.setScale           = function (scale_)
   {
     scale = scale_;
     if (scale < 1)
@@ -109,17 +109,17 @@ function FieldRenderer(drawingSurface_)
     this.render();
   }
 
-  this.zoomBy = function(delta)
+  this.zoomBy = function (delta)
   {
     this.setScale(scale+delta);
   }
 
-  this.setElementName     = function(element, name)
+  this.setElementName     = function (element, name)
   {
     elementNames[name] = element;
   }
 
-  this.getElementByName   = function(name)
+  this.getElementByName   = function (name)
   {
     var element;
 

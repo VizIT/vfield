@@ -38,52 +38,52 @@ function SurfaceGeometry(nvertices_, nindices_)
   indices   = new Uint16Array(nindices_);
   normals   = new Float32Array(3*nvertices_);
 
-  this.setNindices        = function(n)
+  this.setNindices        = function (n)
   {
     nindices = n;
   }
 
-  this.getNindices        = function()
+  this.getNindices        = function ()
   {
     return nindices;
   }
 
-  this.setNvertices       = function(n)
+  this.setNvertices       = function (n)
   {
     nvertices = n;
   }
 
-  this.getNvertices       = function()
+  this.getNvertices       = function ()
   {
     return nvertices;
   }
 
-  this.setVerticies = function(geometry)
+  this.setVerticies = function (geometry)
   {
     vertices = geometry;
   }
 
-  this.getVertices = function()
+  this.getVertices = function ()
   {
     return vertices;
   }
 
-  this.setIndices  = function(indices)
+  this.setIndices  = function (indices)
   {
     indices = indices;
   }
 
-  this.getIndices = function()
+  this.getIndices = function ()
   {
     return indices;
   }
 
-  this.setNormals = function(normals)
+  this.setNormals = function (normals)
   {
    normals = normals;
   }
 
-  this.getNormals = function()
+  this.getNormals = function ()
   {
     return normals;
   }
@@ -113,7 +113,7 @@ function SurfaceGeometry(nvertices_, nindices_)
    * of different sizes. This structure is analogous to Java's static method.
    * Type is expected to be an instance of GeometryEngine.Shapes
    */
-  GeometryEngine.VertexRegistry  = function()
+  GeometryEngine.VertexRegistry  = function ()
   {
     var registry;
 
@@ -122,7 +122,7 @@ function SurfaceGeometry(nvertices_, nindices_)
     /**
      * Register a set of vertex buffers for a given shape.
      */
-    this.registerVertices = function(type, vertices)
+    this.registerVertices = function (type, vertices)
     {
       if (registry.hasOwnProperty(type))
       {
@@ -131,12 +131,12 @@ function SurfaceGeometry(nvertices_, nindices_)
       registry[type] = vertices;
     }
 
-    this.hasVertices = function(type)
+    this.hasVertices = function (type)
     {
       return registry.hasOwnProperty(type);
     }
 
-    this.retrieveVertices = function(type)
+    this.retrieveVertices = function (type)
     {
       return registry[type];
     }
@@ -150,7 +150,7 @@ function SurfaceGeometry(nvertices_, nindices_)
    * Rebuild this as a cube with the first four indices forming a unit square
    * centered at the origin.
    */
-  GeometryEngine.Square          = function()
+  GeometryEngine.Square          = function ()
   {
     var bottom;
     /**
@@ -176,7 +176,7 @@ function SurfaceGeometry(nvertices_, nindices_)
     // The normal is a unit vector in the z direction.
     normal      = new Array(0,0,1);
 
-    this.getNindices = function()
+    this.getNindices = function ()
     {
       // TODO: Magic number!
       return 6;
@@ -186,7 +186,7 @@ function SurfaceGeometry(nvertices_, nindices_)
      * Fill in the vertices, normals and indices for a unit square
      * about the origin.
      */
-    this.computeGeometry  = function(surfaceGeometry, boundingBox)
+    this.computeGeometry  = function (surfaceGeometry, boundingBox)
     {
       var indices;
       var normals;
@@ -217,7 +217,7 @@ function SurfaceGeometry(nvertices_, nindices_)
      * otherwise build and register them. Depends on the a VertexRegistry
      * prototype.
      */
-    this.getVertexBuffers    = function(glUtility)
+    this.getVertexBuffers    = function (glUtility)
     {
       var geometry;
       var vertices;
@@ -249,7 +249,7 @@ function SurfaceGeometry(nvertices_, nindices_)
   /**
    * A unit cylinder centered about the origin, and oriented along the z-axis.
    */
-  GeometryEngine.Cylinder          = function()
+  GeometryEngine.Cylinder          = function ()
   {
     var baseHeight;
     var baseRadius;
@@ -265,22 +265,22 @@ function SurfaceGeometry(nvertices_, nindices_)
     shape       = GeometryEngine.Shapes.CYLINDER;
     top         = baseHeight/2;
 
-    this.getBaseHeight = function()
+    this.getBaseHeight = function ()
     {
       return baseHeight;
     }
 
-    this.getBaseRadius = function()
+    this.getBaseRadius = function ()
     {
       return baseRadius;
     }
 
-    this.getShape  = function()
+    this.getShape  = function ()
     {
       return shape;;
     }
 
-    this.getNindices = function()
+    this.getNindices = function ()
     {
       return 4*nslices+6;
     }
@@ -293,7 +293,7 @@ function SurfaceGeometry(nvertices_, nindices_)
      *        and indices for the surface. Expected to have 4*nslices entries for
      *        each of these.
      */
-    this.computeGeometry  = function(surfaceGeometry)
+    this.computeGeometry  = function (surfaceGeometry)
     {
       /** The index for populating the vertex array for the bottom cap. */
       var bottomIndex;
@@ -392,7 +392,7 @@ function SurfaceGeometry(nvertices_, nindices_)
      * Retrieve vertex buffers from the registry if they already exist,
      * otherwise build and register them.
      */
-    this.getVertexBuffers    = function(glUtility)
+    this.getVertexBuffers    = function (glUtility)
     {
       var geometry;
       var vertices;
@@ -422,7 +422,7 @@ function SurfaceGeometry(nvertices_, nindices_)
   /**
    * A fixed radius sphere. Use the model view matrix to position and scale it.
    */
-  GeometryEngine.Sphere  = function()
+  GeometryEngine.Sphere  = function ()
   {
     var nlatitude;
     var nlongitude;
@@ -434,17 +434,17 @@ function SurfaceGeometry(nvertices_, nindices_)
     intrinsicRadius = 30;
     shape           = GeometryEngine.Shapes.SPHERE;
 
-    this.getIntrinsicRadius = function()
+    this.getIntrinsicRadius = function ()
     {
       return intrinsicRadius;
     }
 
-    this.getShape  = function()
+    this.getShape  = function ()
     {
       return shape;;
     }
 
-    this.getNindices = function()
+    this.getNindices = function ()
     {
       return 6*nlatitude*nlongitude;
     }
@@ -453,7 +453,7 @@ function SurfaceGeometry(nvertices_, nindices_)
      * Compute the vertices, normal and indices for a spherical surface of
      * radius r, divided into nlatitude and nlongitude pieces.
      */
-    this.computeGeometry  = function(surfaceGeometry, r, nlatitude, nlongitude)
+    this.computeGeometry  = function (surfaceGeometry, r, nlatitude, nlongitude)
     {
       var cosPhi;
       var cosTheta;
@@ -534,7 +534,7 @@ function SurfaceGeometry(nvertices_, nindices_)
      * Retrieve vertex buffers from the registry if they already exist,
      * otherwise build and register them.
      */
-    this.getVertexBuffers    = function(glUtility)
+    this.getVertexBuffers    = function (glUtility)
     {
       var geometry;
       var vertices;

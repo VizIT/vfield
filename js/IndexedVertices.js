@@ -32,57 +32,57 @@ function IndexedVertices(maxVertices_, maxIndices_)
   var nvertices;
   var vertices;
 
-  this.setNindices        = function(n)
+  this.setNindices        = function (n)
   {
     nindices = n;
   }
 
-  this.getNindices        = function()
+  this.getNindices        = function ()
   {
     return nindices;
   }
 
-  this.setNvertices       = function(n)
+  this.setNvertices       = function (n)
   {
     nvertices = n;
   }
 
-  this.getNvertices       = function()
+  this.getNvertices       = function ()
   {
     return nvertices;
   }
 
-  this.setVerticies = function(geometry)
+  this.setVerticies = function (geometry)
   {
     vertices = geometry;
   }
 
-  this.getVertices = function()
+  this.getVertices = function ()
   {
     return vertices;
   }
 
-  this.setVerticies = function(geometry)
+  this.setVerticies = function (geometry)
   {
     vertices = geometry;
   }
 
-  this.getVertices = function()
+  this.getVertices = function ()
   {
     return vertices;
   }
 
-  this.pushVertex  = function(vertex)
+  this.pushVertex  = function (vertex)
   {
     vertices[nvertices++] = vertex;
   }
 
-  this.setIndices  = function(indices)
+  this.setIndices  = function (indices)
   {
     indices = indices;
   }
 
-  this.getIndices = function()
+  this.getIndices = function ()
   {
     return indices;
   }
@@ -90,7 +90,7 @@ function IndexedVertices(maxVertices_, maxIndices_)
   /**
    * Push an index onto the end of the list while incrementing the nindices count.
    */
-  this.pushIndex  = function(index)
+  this.pushIndex  = function (index)
   {
     indices[nindices++] = index;
   }

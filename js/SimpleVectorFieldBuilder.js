@@ -20,7 +20,7 @@
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
 
-(function(ns)
+(function (ns)
  {
    /**
     * Build a simple vector field, that is drawing vectors along field lines.
@@ -30,13 +30,13 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.SimpleVectorFieldBuilder = function(framework_)
+   ns.SimpleVectorFieldBuilder = function (framework_)
    {
      var errorMessage;
      var framework;
      var warningMessage;
 
-     this.build = function(config)
+     this.build = function (config)
      {
        var arrowHeadSize;
        var arrowHeadWidth;
