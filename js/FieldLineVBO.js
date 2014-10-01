@@ -16,37 +16,44 @@
  *    limitations under the License.
  */
 
-/**
- * Container for the line and direction indicators for a field line.
- * NOTE: Consider combining these into a single VBO.
- */
-function FieldLineVBO(glUtility, fieldLine)
-{
-  this.disable = function ()
-  {
-    this.enabled = false;
-  }
+// Define the global namespaces iff not already defined.
+window.vizit               = window.vizit               || {};
+window.vizit.electricfield = window.vizit.electricfield || {};
 
-  this.isEnabled = function ()
-  {
-    return this.enabled;
-  }
+(function (ns)
+ {
+   /**
+    * Container for the line and direction indicators for a field line.
+    * NOTE: Consider combining these into a single VBO.
+    */
+   ns.FieldLineVBO = function (glUtility, fieldLine)
+   {
+     this.disable = function ()
+     {
+       this.enabled = false;
+     }
 
-  /**
-   *
-   */
-  this.reload = function (glUtility, fieldLine)
-  {
-    glUtility.loadData(this.fieldLineBufferHandle, fieldLine.getPoints());
-    this.npoints                    = fieldLine.getNpoints();
-    glUtility.loadData(this.fieldDirectionBufferHandle, fieldLine.getArrows());
-    this.narrows                    = fieldLine.getNarrows();
-    this.enabled                    = true;
-  }
+     this.isEnabled = function ()
+     {
+       return this.enabled;
+     }
 
-  this.fieldLineBufferHandle      = glUtility.createBuffer(fieldLine.getPoints());
-  this.npoints                    = fieldLine.getNpoints();
-  this.fieldDirectionBufferHandle = glUtility.createBuffer(fieldLine.getArrows());
-  this.narrows                    = fieldLine.getNarrows();
-  this.enabled                    = true;
-}
+     /**
+      *
+      */
+     this.reload = function (glUtility, fieldLine)
+     {
+       glUtility.loadData(this.fieldLineBufferHandle, fieldLine.getPoints());
+       this.npoints                    = fieldLine.getNpoints();
+       glUtility.loadData(this.fieldDirectionBufferHandle, fieldLine.getArrows());
+       this.narrows                    = fieldLine.getNarrows();
+       this.enabled                    = true;
+     }
+
+     this.fieldLineBufferHandle      = glUtility.createBuffer(fieldLine.getPoints());
+     this.npoints                    = fieldLine.getNpoints();
+     this.fieldDirectionBufferHandle = glUtility.createBuffer(fieldLine.getArrows());
+     this.narrows                    = fieldLine.getNarrows();
+     this.enabled                    = true;
+   }
+ }(window.vizit.electricfield));

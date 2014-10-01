@@ -166,14 +166,14 @@ window.vizit.builder = window.vizit.builder || {};
        zMin = Math.min(zMin, z0, z1, z2, z3);
        zMax = Math.max(zMax, z0, z1, z2, z3);
 
-       chargedPlane = new ChargedPlane(x0, y0, z0,
-                                       x1, y1, z1,
-                                       x2, y2, z2,
-                                       x3, y3, z3,
-                                       chargeDensity,
-                                       fieldLineDensity,
-                                       nfieldLines,
-                                       name);
+       chargedPlane = new vizit.electricfield.ChargedPlane(x0, y0, z0,
+                                                           x1, y1, z1,
+                                                           x2, y2, z2,
+                                                           x3, y3, z3,
+                                                           chargeDensity,
+                                                           fieldLineDensity,
+                                                           nfieldLines,
+                                                           name);
 
        return chargedPlane;
      }
@@ -264,13 +264,13 @@ window.vizit.builder = window.vizit.builder || {};
        zMin = Math.min(zMin, z0, z1);
        zMax = Math.max(zMax, z0, z1);
 
-       chargedCylinder = new ChargedCylinder(x0, y0, z0,
-                                             x1, y1, z1,
-                                             r0, r1,
-                                             chargeDensity,
-                                             fieldLineDensity,
-                                             nfieldLines,
-                                             name);
+       chargedCylinder = new vizit.electricfield.ChargedCylinder(x0, y0, z0,
+                                                                 x1, y1, z1,
+                                                                 r0, r1,
+                                                                 chargeDensity,
+                                                                 fieldLineDensity,
+                                                                 nfieldLines,
+                                                                 name);
 
        return chargedCylinder;
      }
@@ -341,12 +341,12 @@ window.vizit.builder = window.vizit.builder || {};
        zMin = Math.min(zMin, z0, z1);
        zMax = Math.max(zMax, z0, z1);
 
-       chargedLine = new ChargedLine(x0, y0, z0,
-                                     x1, y1, z1,
-                                     chargeDensity,
-                                     fieldLineDensity,
-                                     nfieldLines,
-                                     name);
+       chargedLine = new vizit.electricfield.ChargedLine(x0, y0, z0,
+                                                         x1, y1, z1,
+                                                         chargeDensity,
+                                                         fieldLineDensity,
+                                                         nfieldLines,
+                                                         name);
 
        return chargedLine;
      }
@@ -413,12 +413,12 @@ window.vizit.builder = window.vizit.builder || {};
        zMin = Math.min(zMin, z-b);
        zMax = Math.max(zMax, z+b);
 
-       chargedSphere = new ChargedSphere(x, y, z,
-                                         a, b,
-                                         charge,
-                                         fieldLineDensity,
-                                         nfieldLines,
-                                         name);
+       chargedSphere = new vizit.electricfield.ChargedSphere(x, y, z,
+                                                             a, b,
+                                                             charge,
+                                                             fieldLineDensity,
+                                                             nfieldLines,
+                                                             name);
 
        return chargedSphere;
      }

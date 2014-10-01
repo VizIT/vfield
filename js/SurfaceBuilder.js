@@ -127,10 +127,10 @@ window.vizit.builder = window.vizit.builder || {};
        zMin = Math.min(zMin, z-h, z+h);
        zMax = Math.max(zMax, z-h, z+h);
 
-       gaussianCylinder = new GaussianCylinder(x, y, z,
-                                               h, r,
-                                               phi, theta,
-                                               name);
+       gaussianCylinder = new vizit.electricfield.GaussianCylinder(x, y, z,
+                                                                   h, r,
+                                                                   phi, theta,
+                                                                   name);
 
        return gaussianCylinder;
      }
@@ -178,7 +178,7 @@ window.vizit.builder = window.vizit.builder || {};
        zMin = Math.min(zMin, z-r, z+r);
        zMax = Math.max(zMax, z-r, z+r);
 
-       gaussianSphere = new GaussianSphere(x, y, z, r, name);
+       gaussianSphere = new vizit.electricfield.GaussianSphere(x, y, z, r, name);
 
        return gaussianSphere;
      }

@@ -14,27 +14,33 @@
  *    limitations under the License.
  */
 
-/**
- * Wait for count invocations of the countDown method, then invoke onDone.
- * For example, wait for resources and invocation of renderer start method
- * before starting rendering.
- */
-function CountdownLatch(count_, onDone_)
-{
-  var count  = count_;
-  var onDone = onDone_;
+window.vizit         = window.vizit         || {};
+window.vizit.utility = window.vizit.utility || {};
 
-  /**
-   * Decrement the count of items we are waiting on. Proceed when the count
-   * drops to zero.
-   * @callback latchCallback
-   */
-  this.countDown = function ()
-  {
-    count--;
-    if (count <= 0)
-    {
-      onDone();
-    }
-  }
-}
+(function (ns)
+ {
+   /**
+    * Wait for count invocations of the countDown method, then invoke onDone.
+    * For example, wait for resources and invocation of renderer start method
+    * before starting rendering.
+    */
+   ns.CountdownLatch = function (count_, onDone_)
+   {
+     var count  = count_;
+     var onDone = onDone_;
+
+     /**
+      * Decrement the count of items we are waiting on. Proceed when the count
+      * drops to zero.
+      * @callback latchCallback
+      */
+     this.countDown = function ()
+     {
+       count--;
+       if (count <= 0)
+       {
+	 onDone();
+       }
+     }
+   }
+}(window.vizit.utility));

@@ -16,173 +16,178 @@
  *    limitations under the License.
  */
 
-/**
- * Represent a Gaussian sphere. This is a Gaussian surface, it will be drawn but will
- * have no effect on the field. The sphere of radius r is centered at (x, y, z).
- *
- * @param {string} [name]            A unique identifier for this element of the
- *                                   visualization.
- *
- * @class
- */
-function GaussianSphere(x_, y_, z_, r_, name_)
-{
-  var color;
-  var modelViewMatrix;
-  var name;
-  var radius;
-  var x0;
-  var y0;
-  var z0;
+window.vizit               = window.vizit               || {};
+window.vizit.electricfield = window.vizit.electricfield || {};
 
-  this.setColor            = function (color_)
-  {
-    color = color_;
-  }
+(function (ns)
+ {
+   /**
+    * Represent a Gaussian sphere. This is a Gaussian surface, it will be drawn but will
+    * have no effect on the field. The sphere of radius r is centered at (x, y, z).
+    *
+    * @param {string} [name]            A unique identifier for this element of the
+    *                                   visualization.
+    *
+    * @class
+    */
+   ns.GaussianSphere = function (x_, y_, z_, r_, name_)
+   {
+     var color;
+     var modelViewMatrix;
+     var name;
+     var radius;
+     var x0;
+     var y0;
+     var z0;
 
-  this.getColor            = function ()
-  {
-    return color;
-  }
+     this.setColor            = function (color_)
+     {
+       color = color_;
+     }
 
-  this.setX               = function (x_)
-  {
-    x0 = x_;
-    return this;
-  }
+     this.getColor            = function ()
+     {
+       return color;
+     }
 
-  this.getX               = function ()
-  {
-    return x0;
-  }
+     this.setX               = function (x_)
+     {
+       x0 = x_;
+       return this;
+     }
 
-  this.setY               = function (y_)
-  {
-    y0 = y_;
-    return this;
-  }
+     this.getX               = function ()
+     {
+       return x0;
+     }
 
-  this.getY               = function ()
-  {
-    return y0;
-  }
+     this.setY               = function (y_)
+     {
+       y0 = y_;
+       return this;
+     }
 
-  this.setZ               = function (z_)
-  {
-    z0 = z_;
-    return this;
-  }
+     this.getY               = function ()
+     {
+       return y0;
+     }
 
-  this.getZ               = function ()
-  {
-    return z0;
-  }
+     this.setZ               = function (z_)
+     {
+       z0 = z_;
+       return this;
+     }
 
-  this.setRadius          = function (r_)
-  {
-    radius = r_;
-    return this;
-  }
+     this.getZ               = function ()
+     {
+       return z0;
+     }
 
-  this.getRadius          = function ()
-  {
-    return radius;
-  }
+     this.setRadius          = function (r_)
+     {
+       radius = r_;
+       return this;
+     }
 
-  this.setName            = function (name_)
-  {
-    name = name_;
-  }
+     this.getRadius          = function ()
+     {
+       return radius;
+     }
 
-  this.getName            = function ()
-  {
-    return name;
-  }
+     this.setName            = function (name_)
+     {
+       name = name_;
+     }
 
-  this.getModelView       = function (scale)
-  {
-    if (typeof scale === "undefined")
-    {
-      scale = 1.0;
-    }
-    if (modelViewMatrix === null)
-    {
-      modelViewMatrix     = new Float32Array(16);
-      modelViewMatrix[0]  = scale;
-      modelViewMatrix[1]  = 0.0;
-      modelViewMatrix[2]  = 0.0;
-      modelViewMatrix[3]  = 0.0;
-      modelViewMatrix[4]  = 0.0;
-      modelViewMatrix[5]  = scale;
-      modelViewMatrix[6]  = 0.0;
-      modelViewMatrix[7]  = 0.0;
-      modelViewMatrix[8]  = 0.0;
-      modelViewMatrix[9]  = 0.0;
-      modelViewMatrix[10] = scale;
-      modelViewMatrix[11] = 0.0;
-      modelViewMatrix[12] = x0;
-      modelViewMatrix[13] = y0;
-      modelViewMatrix[14] = z0;
-      modelViewMatrix[15] = 1.0;
-    }
-    else
-    {
-      modelViewMatrix[0]  = scale;
-      modelViewMatrix[5]  = scale;
-      modelViewMatrix[10] = scale;
-    }
-    return modelViewMatrix;
-  }
+     this.getName            = function ()
+     {
+       return name;
+     }
 
-  this.drawFullSurface      = function (glUtility,           program,              surfaceGeometryBuffer,
-                                       surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
-  {
-    var gl;
+     this.getModelView       = function (scale)
+     {
+       if (typeof scale === "undefined")
+       {
+	 scale = 1.0;
+       }
+       if (modelViewMatrix === null)
+       {
+	 modelViewMatrix     = new Float32Array(16);
+	 modelViewMatrix[0]  = scale;
+	 modelViewMatrix[1]  = 0.0;
+	 modelViewMatrix[2]  = 0.0;
+	 modelViewMatrix[3]  = 0.0;
+	 modelViewMatrix[4]  = 0.0;
+	 modelViewMatrix[5]  = scale;
+	 modelViewMatrix[6]  = 0.0;
+	 modelViewMatrix[7]  = 0.0;
+	 modelViewMatrix[8]  = 0.0;
+	 modelViewMatrix[9]  = 0.0;
+	 modelViewMatrix[10] = scale;
+	 modelViewMatrix[11] = 0.0;
+	 modelViewMatrix[12] = x0;
+	 modelViewMatrix[13] = y0;
+	 modelViewMatrix[14] = z0;
+	 modelViewMatrix[15] = 1.0;
+       }
+       else
+       {
+	 modelViewMatrix[0]  = scale;
+	 modelViewMatrix[5]  = scale;
+	 modelViewMatrix[10] = scale;
+       }
+       return modelViewMatrix;
+     }
 
-    gl       = glUtility.getGLContext();
-    glUtility.bindBuffer(surfaceGeometryBuffer, program.getPositionHandle(), 3, gl.FLOAT, 0, 0);
-    glUtility.bindBuffer(surfaceNormalBuffer,   program.getNormalHandle(),   3, gl.FLOAT, 0, 0);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
+     this.drawFullSurface      = function (glUtility,           program,              surfaceGeometryBuffer,
+					  surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
+     {
+       var gl;
 
-    gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
-  }
+       gl       = glUtility.getGLContext();
+       glUtility.bindBuffer(surfaceGeometryBuffer, program.getPositionHandle(), 3, gl.FLOAT, 0, 0);
+       glUtility.bindBuffer(surfaceNormalBuffer,   program.getNormalHandle(),   3, gl.FLOAT, 0, 0);
+       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
 
-  this.render      = function (glUtility, program)
-  {
-    var gl;
-    var intrinsicRadius;
-    var vertices;
+       gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
+     }
 
-    gl              = glUtility.getGLContext();
-    intrinsicRadius = this.getIntrinsicRadius();
-    vertices        = this.getVertexBuffers(glUtility);
+     this.render      = function (glUtility, program)
+     {
+       var gl;
+       var intrinsicRadius;
+       var vertices;
 
-    gl.uniformMatrix4fv(program.getModelViewMatrixHandle(), false, this.getModelView(radius/intrinsicRadius));
+       gl              = glUtility.getGLContext();
+       intrinsicRadius = this.getIntrinsicRadius();
+       vertices        = this.getVertexBuffers(glUtility);
 
-    gl.uniform4f(program.getSurfaceColorHandle(), color.getRed(),
-                 color.getGreen(),                       color.getBlue(), color.getAlpha());
+       gl.uniformMatrix4fv(program.getModelViewMatrixHandle(), false, this.getModelView(radius/intrinsicRadius));
 
-    gl.cullFace(gl.FRONT);
-    this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
-                         vertices.indices, this.getNindices());
+       gl.uniform4f(program.getSurfaceColorHandle(), color.getRed(),
+		    color.getGreen(),                       color.getBlue(), color.getAlpha());
 
-    gl.cullFace(gl.BACK);
-    this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
-                         vertices.indices, this.getNindices());
-  }
+       gl.cullFace(gl.FRONT);
+       this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
+			    vertices.indices, this.getNindices());
 
-  // Gaussian (neutral) surfaces are grey
-  color  = new Color(0.5, 0.5, 0.5, 0.50);
-  name   = name_;
-  radius = r_;
-  x0     = x_;
-  y0     = y_;
-  z0     = z_;
-}
+       gl.cullFace(gl.BACK);
+       this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
+			    vertices.indices, this.getNindices());
+     }
 
-/**
- * gaussianSphere extends the GeometryEngine.sphere class.
- */
-GaussianSphere.prototype = new GeometryEngine.Sphere();
+     // Gaussian (neutral) surfaces are grey
+     color  = new Color(0.5, 0.5, 0.5, 0.50);
+     name   = name_;
+     radius = r_;
+     x0     = x_;
+     y0     = y_;
+     z0     = z_;
+   }
 
+   /**
+    * gaussianSphere extends the GeometryEngine.sphere class.
+    */
+   ns.GaussianSphere.prototype = new GeometryEngine.Sphere();
 
+}(window.vizit.electricfield));

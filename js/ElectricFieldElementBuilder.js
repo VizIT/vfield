@@ -101,7 +101,7 @@ window.vizit.builder = window.vizit.builder || {};
        var charges;
        var nelements;
 
-       charges = new Charges();
+       charges = new vizit.electricfield.Charges();
 
        if (!!config)
        {

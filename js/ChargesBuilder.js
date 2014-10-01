@@ -187,7 +187,7 @@ window.vizit.builder = window.vizit.builder || {};
            zMax = z;
          }
 
-         charge = new Charge(x, y, z, q, fieldLineDensity, nfieldLines, name);
+         charge = new vizit.electricfield.Charge(x, y, z, q, fieldLineDensity, nfieldLines, name);
        }
 
        return charge;

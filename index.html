@@ -210,11 +210,11 @@
 
       // Each charge has a charge, then x, y, z coordinates.
       // Each of these is a floating point number.
-      charge1 = new Charge(  20.0, -50.0,   0.0, 0.0, 1.0);
-      charge2 = new Charge(  20.0,  50.0,   0.0, 0.0, 1.0);
-      charge3 = new Charge(  20.0,   0.0,  50.0, 0.0, 1.0);
+      charge1 = new vizit.electricfield.Charge(  20.0, -50.0,   0.0, 0.0, 1.0);
+      charge2 = new vizit.electricfield.Charge(  20.0,  50.0,   0.0, 0.0, 1.0);
+      charge3 = new vizit.electricfield.Charge(  20.0,   0.0,  50.0, 0.0, 1.0);
 
-      charges = new Charges();
+      charges = new vizit.electricfield.Charges();
       charges.addCharge(charge1);
       charges.addCharge(charge2);
       charges.addCharge(charge3);
@@ -224,7 +224,7 @@
 
     drawingSurface = document.getElementById('drawingSurface');
     // Charge, position, vector density in lines/unit charge.
-    f              = new Charge(0.0, 0.0, 0.0, +5.0, 5.0);
+    f              = new vizit.electricfield.Charge(0.0, 0.0, 0.0, +5.0, 5.0);
     //f              = placeCharges();
     // Vector field, f, and scale factor.
     renderer       = new SimpleVectorField(f, 1.0);

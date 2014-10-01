@@ -71,7 +71,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
-       renderer = new ElectricField();
+       renderer = new vizit.electricfield.ElectricField();
 
        if(typeof maxVectors !== "undefined")
        {

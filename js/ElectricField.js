@@ -16,310 +16,318 @@
  *    limitations under the License.
  */
 
-/**
- * Representation of charges and their associated field lines. Given a set of charges
- * draw the field lines along with directional arrows from the given start points.
- *
- * @param {string}  [home_ = .]     A string giving the path to the efield
- *                                  home directory if not the directory the
- *                                  page is loaded from.
- *
- * @class
- */
-function ElectricField(home_)
-{
-  /** General size parameter for the arrowheads. */
-  var arrowHeadSize;
-  /** The sum of ds along the path increments by this much between arrows. */
-  var arrowSpacing;
-  var chargeBuffer;
-  var chargeGenerator;
-  var chargeRenderer;
-  /** The charges generate the field. */
-  var charges;
-  var color;
-  var ds;
-  var fieldLineVBOs;
-  // Probably not have multiple Gaussian surfaces, but allow the rendering
-  // method to take arrays of surfaces.
-  var gaussianSurfaces;
-  /** A wrapper around the WebGL context, gl. */
-  var glUtility;
-  /** Home directory for resource loading. */
-  var home;
-  /** Wait for the setup to finish before rendering the first frame. */
-  var latch;
-  /** The max number of points while tracing out a field line. */
-  var maxPoints;
-  /** The maximum number of vectors to be drawn per field line. */
-  var maxVectors;
-  var normalMatrix;
-  /** Given a charge configuration, draws field lines. */
-  var fieldLineGenerator;
-  /** Actually draws the electric field */
-  var fieldLineRenderer;
-  // Model-View matrix for use in all programs.
-  var modelViewMatrix;
-  var projectionMatrix;
-  var explicitStartPoints;
-  // Has this renderer started - do not render in response to events if not.
-  var started;
-  var surfaceRenderer;
+// Define the global namespaces iff not already defined.
+window.vizit               = window.vizit               || {};
+window.vizit.electricfield = window.vizit.electricfield || {};
 
-  this.setArrowSpacing       = function (spacing)
-  {
-    arrowSpacing = spacing;
-    if (typeof fieldLineGenerator !== "undefined")
-    {
-      fieldLineGenerator.setArrowSpacing(spacing);
-    }
-  }
+(function (ns)
+ {
+   /**
+    * Representation of charges and their associated field lines. Given a set of charges
+    * draw the field lines along with directional arrows from the given start points.
+    *
+    * @param {string}  [home_ = .]     A string giving the path to the efield
+    *                                  home directory if not the directory the
+    *                                  page is loaded from.
+    *
+    * @class
+    */
+   ns.ElectricField = function (home_)
+   {
+     /** General size parameter for the arrowheads. */
+     var arrowHeadSize;
+     /** The sum of ds along the path increments by this much between arrows. */
+     var arrowSpacing;
+     var chargeBuffer;
+     var chargeGenerator;
+     var chargeRenderer;
+     /** The charges generate the field. */
+     var charges;
+     var color;
+     var ds;
+     var fieldLineVBOs;
+     // Probably not have multiple Gaussian surfaces, but allow the rendering
+     // method to take arrays of surfaces.
+     var gaussianSurfaces;
+     /** A wrapper around the WebGL context, gl. */
+     var glUtility;
+     /** Home directory for resource loading. */
+     var home;
+     /** Wait for the setup to finish before rendering the first frame. */
+     var latch;
+     /** The max number of points while tracing out a field line. */
+     var maxPoints;
+     /** The maximum number of vectors to be drawn per field line. */
+     var maxVectors;
+     var normalMatrix;
+     /** Given a charge configuration, draws field lines. */
+     var fieldLineGenerator;
+     /** Actually draws the electric field */
+     var fieldLineRenderer;
+     // Model-View matrix for use in all programs.
+     var modelViewMatrix;
+     var projectionMatrix;
+     var explicitStartPoints;
+     // Has this renderer started - do not render in response to events if not.
+     var started;
+     var surfaceRenderer;
 
-  this.getArrowSpacing       = function ()
-  {
-    return arrowSpacing;
-  }
+     this.setArrowSpacing       = function (spacing)
+     {
+       arrowSpacing = spacing;
+       if (typeof fieldLineGenerator !== "undefined")
+       {
+         fieldLineGenerator.setArrowSpacing(spacing);
+       }
+     }
 
-  this.setArrowHeadSize      = function (size)
-  {
-    arrowHeadSize = size;
-    if (typeof fieldLineGenerator !== "undefined")
-    {
-      fieldLineGenerator.setArrowHeadSize(size);
-    }
-  }
+     this.getArrowSpacing       = function ()
+     {
+       return arrowSpacing;
+     }
 
-  this.getArrowHeadSize    = function ()
-  {
-    return arrowHeadSize;
-  }
+     this.setArrowHeadSize      = function (size)
+     {
+       arrowHeadSize = size;
+       if (typeof fieldLineGenerator !== "undefined")
+       {
+         fieldLineGenerator.setArrowHeadSize(size);
+       }
+     }
 
-  this.setColor            = function (color_)
-  {
-    color = color_;
-  }
+     this.getArrowHeadSize    = function ()
+     {
+       return arrowHeadSize;
+     }
 
-  this.getColor            = function ()
-  {
-    return color;
-  }
+     this.setColor            = function (color_)
+     {
+       color = color_;
+     }
 
-  /**
-   * @param {Charges} charges_ Set of point and distributed charges. It must
-   *                           impliment getField(x, y, z).
-   */
-  this.setCharges          = function (charges_)
-  {
-    charges = charges_;
-  }
+     this.getColor            = function ()
+     {
+       return color;
+     }
 
-  this.getCharges          = function ()
-  {
-    return charges;
-  }
+     /**
+      * @param {Charges} charges_ Set of point and distributed charges. It must
+      *                           impliment getField(x, y, z).
+      */
+     this.setCharges          = function (charges_)
+     {
+       charges = charges_;
+     }
 
-  this.addGaussianSurface  = function (surface)
-  {
-    gaussianSurfaces.push(surface);
-  }
+     this.getCharges          = function ()
+     {
+       return charges;
+     }
 
-  /**
-   * Return the set of gaussian surfaces for this electric field model.
-   * Usually 0 or 1 surfaces.
-   */
-  this.getGaussianSurfaces = function ()
-  {
-    return gaussianSurfaces;
-  }
+     this.addGaussianSurface  = function (surface)
+     {
+       gaussianSurfaces.push(surface);
+     }
 
-  this.setGlUtility        = function (glUtility_)
-  {
-    glUtility = glUtility_;
-  }
+     /**
+      * Return the set of gaussian surfaces for this electric field model.
+      * Usually 0 or 1 surfaces.
+      */
+     this.getGaussianSurfaces = function ()
+     {
+       return gaussianSurfaces;
+     }
 
-  this.getGlUtility        = function ()
-  {
-    return glUtility;
-  }
+     this.setGlUtility        = function (glUtility_)
+     {
+       glUtility = glUtility_;
+     }
 
-  this.setMaxVectors       = function (max)
-  {
-    maxVectors = max;
-  }
+     this.getGlUtility        = function ()
+     {
+       return glUtility;
+     }
 
-  this.getMaxVectors       = function ()
-  {
-    return maxVectors;
-  }
+     this.setMaxVectors       = function (max)
+     {
+       maxVectors = max;
+     }
 
-  this.setModelViewMatrix  = function (modelViewMatrix_)
-  {
-    modelViewMatrix = modelViewMatrix_;
-    // This straight copy of the modelView matrix into the normalMatrix
-    // is only valid when we are restricted to translations and rotations.
-    // Scale can be handled by renormalizing - the introduction of shearing
-    // or non-uniform scaling would require the use of (M^-1)^T.
-    // See gl-matrix's mat3.normalFromMat4
-    normalMatrix    = glUtility.extractRotationPart(modelViewMatrix, normalMatrix);
-  }
+     this.getMaxVectors       = function ()
+     {
+       return maxVectors;
+     }
 
-  this.getModelViewMatrix  = function ()
-  {
-    return modelViewMatrix;
-  }
+     this.setModelViewMatrix  = function (modelViewMatrix_)
+     {
+       modelViewMatrix = modelViewMatrix_;
+       // This straight copy of the modelView matrix into the normalMatrix
+       // is only valid when we are restricted to translations and rotations.
+       // Scale can be handled by renormalizing - the introduction of shearing
+       // or non-uniform scaling would require the use of (M^-1)^T.
+       // See gl-matrix's mat3.normalFromMat4
+       normalMatrix    = glUtility.extractRotationPart(modelViewMatrix, normalMatrix);
+     }
 
-  this.setProjectionMatrix = function (projectionMatrix_)
-  {
-    projectionMatrix = projectionMatrix_;
-  }
+     this.getModelViewMatrix  = function ()
+     {
+       return modelViewMatrix;
+     }
 
-  this.addStartPoint  = function (x_, y_, z_, sgn_)
-  {
-    explicitStartPoints.push(new Array(x_, y_, z_, sgn_));
-    return this;
-  }
+     this.setProjectionMatrix = function (projectionMatrix_)
+     {
+       projectionMatrix = projectionMatrix_;
+     }
 
-  this.addStartPoints = function (startPoints)
-  {
-    explicitStartPoints = explicitStartPoints.concat(startPoints)
-  }
+     this.addStartPoint  = function (x_, y_, z_, sgn_)
+     {
+       explicitStartPoints.push(new Array(x_, y_, z_, sgn_));
+       return this;
+     }
 
-  this.getStartPoints = function ()
-  {
-    return explicitStartPoints;
-  }
+     this.addStartPoints = function (startPoints)
+     {
+       explicitStartPoints = explicitStartPoints.concat(startPoints)
+     }
 
-  this.render              = function ()
-  {
-    if (started)
-    {
-      var gl;
+     this.getStartPoints = function ()
+     {
+       return explicitStartPoints;
+     }
 
-      gl = glUtility.getGLContext();
+     this.render              = function ()
+     {
+       if (started)
+       {
+         var gl;
 
-      if (charges.chargesModified())
-      {
-        this.setupCharges();
-        this.setupFieldLines();
-      }
-      else if (charges.distributionsModified())
-      {
-        this.setupFieldLines();
-      }
+         gl = glUtility.getGLContext();
 
-      glUtility.clear();
-      fieldLineRenderer.render(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
-      chargeRenderer.render(projectionMatrix, modelViewMatrix, chargeBuffer, charges);
+         if (charges.chargesModified())
+         {
+           this.setupCharges();
+           this.setupFieldLines();
+         }
+         else if (charges.distributionsModified())
+         {
+           this.setupFieldLines();
+         }
 
-      // Charge distributions and Gaussian surfaces have transparent elements.
-      gl.enable(gl.BLEND);
-      gl.enable(gl.CULL_FACE);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      surfaceRenderer.render(projectionMatrix, modelViewMatrix, normalMatrix, charges.getDistributions());
-      // Gaussian surfaces may cross charge distributions, draw them regardless of existing charges.
-      gl.disable(gl.DEPTH_TEST);
-      surfaceRenderer.render(projectionMatrix, modelViewMatrix, normalMatrix, gaussianSurfaces);
-      gl.enable(gl.DEPTH_TEST);
-      gl.disable(gl.BLEND);
-      gl.disable(gl.CULL_FACE);
+         glUtility.clear();
+         fieldLineRenderer.render(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
+         chargeRenderer.render(projectionMatrix, modelViewMatrix, chargeBuffer, charges);
 
-      charges.setModified(false);
-    }
-  }
+         // Charge distributions and Gaussian surfaces have transparent elements.
+         gl.enable(gl.BLEND);
+         gl.enable(gl.CULL_FACE);
+         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+         surfaceRenderer.render(projectionMatrix, modelViewMatrix, normalMatrix, charges.getDistributions());
+         // Gaussian surfaces may cross charge distributions, draw them regardless of existing charges.
+         gl.disable(gl.DEPTH_TEST);
+         surfaceRenderer.render(projectionMatrix, modelViewMatrix, normalMatrix, gaussianSurfaces);
+         gl.enable(gl.DEPTH_TEST);
+         gl.disable(gl.BLEND);
+         gl.disable(gl.CULL_FACE);
 
-  this.setupCharges        = function (charges)
-  {
-    var chargesArray;
-    var gl;
+         charges.setModified(false);
+       }
+     }
 
-    if (!chargeBuffer)
-    {
-      gl = glUtility.getGLContext();
-      chargeBuffer = gl.createBuffer();
-    }
-    chargesArray = chargeGenerator.generate();
-    glUtility.loadData(chargeBuffer, chargesArray);
-  }
+     this.setupCharges        = function (charges)
+     {
+       var chargesArray;
+       var gl;
 
-  /**
-   * Setup and render a set of field lines. Each field line is computed, then set as a VBO
-   * on the GPU, minimizing the client side JS storage.
-   */
-  this.setupFieldLines     = function ()
-  {
-    var fieldLine;
-    var i;
-    var nstartPoints;
-    var nVBOs;
-    var point;
-    var startPoints;
-    var tmp;
+       if (!chargeBuffer)
+       {
+         gl = glUtility.getGLContext();
+         chargeBuffer = gl.createBuffer();
+       }
+       chargesArray = chargeGenerator.generate();
+       glUtility.loadData(chargeBuffer, chargesArray);
+     }
 
-    startPoints  = new Array();
-    // Get start points defined implicitly by fieldLineDensity in charges.
-    startPoints  = startPoints.concat(charges.getStartPoints(0, 5.0));
-    // Add any explicitly defined start points.
-    startPoints  = startPoints.concat(explicitStartPoints);
+     /**
+      * Setup and render a set of field lines. Each field line is computed, then set as a VBO
+      * on the GPU, minimizing the client side JS storage.
+      */
+     this.setupFieldLines     = function ()
+     {
+       var fieldLine;
+       var i;
+       var nstartPoints;
+       var nVBOs;
+       var point;
+       var startPoints;
+       var tmp;
 
-    nstartPoints = startPoints.length;
-    nVBOs        = fieldLineVBOs.length;
-    tmp          = Math.min(nstartPoints, nVBOs);
+       startPoints  = new Array();
+       // Get start points defined implicitly by fieldLineDensity in charges.
+       startPoints  = startPoints.concat(charges.getStartPoints(0, 5.0));
+       // Add any explicitly defined start points.
+       startPoints  = startPoints.concat(explicitStartPoints);
 
-    for (i=0; i<tmp; ++i)
-    {
-      point     = startPoints[i];
-      fieldLine = fieldLineGenerator.generate(point[0], point[1], point[2], point[3]);
-      fieldLineVBOs[i].reload(glUtility, fieldLine)
-    }
+       nstartPoints = startPoints.length;
+       nVBOs        = fieldLineVBOs.length;
+       tmp          = Math.min(nstartPoints, nVBOs);
 
-    for (; i<nVBOs; ++i)
-    {
-      fieldLineVBOs[i].disable();
-    }
+       for (i=0; i<tmp; ++i)
+       {
+         point     = startPoints[i];
+         fieldLine = fieldLineGenerator.generate(point[0], point[1], point[2], point[3]);
+         fieldLineVBOs[i].reload(glUtility, fieldLine)
+       }
 
-    for (; i<nstartPoints; ++i)
-    {
-      point     = startPoints[i];
-      fieldLine = fieldLineGenerator.generate(point[0], point[1], point[2], point[3]);
-      fieldLineVBOs.push(new FieldLineVBO(glUtility, fieldLine));
-    }
-  }
+       for (; i<nVBOs; ++i)
+       {
+         fieldLineVBOs[i].disable();
+       }
 
-  this.started             = function ()
-  {
-    started           = true;
-    this.render();
-  }
+       for (; i<nstartPoints; ++i)
+       {
+         point     = startPoints[i];
+         fieldLine = fieldLineGenerator.generate(point[0], point[1], point[2], point[3]);
+         fieldLineVBOs.push(new vizit.electricfield.FieldLineVBO(glUtility, fieldLine));
+       }
+     }
 
-  this.start               = function ()
-  {
-    glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
-    fieldLineRenderer  = new FieldLineRenderer(glUtility);
-    chargeGenerator    = new ChargeGenerator(charges);
-    fieldLineGenerator = new FieldLineGenerator(charges, maxPoints, ds, arrowHeadSize, arrowSpacing);
-    this.setupFieldLines(charges, maxPoints, ds, arrowHeadSize, arrowSpacing);
-    chargeRenderer     = new ChargeRenderer(glUtility, latch.countDown, home);
-    this.setupCharges(charges);
-    surfaceRenderer    = new SurfaceRenderer(glUtility);
-    latch.countDown();
-  }
+     this.started             = function ()
+     {
+       started           = true;
+       this.render();
+     }
+
+     this.start               = function ()
+     {
+       glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
+       fieldLineRenderer  = new vizit.electricfield.FieldLineRenderer(glUtility);
+       chargeGenerator    = new vizit.electricfield.ChargeGenerator(charges);
+       fieldLineGenerator = new vizit.electricfield.FieldLineGenerator(charges, maxPoints, ds,
+                                                                       arrowHeadSize, arrowSpacing);
+       this.setupFieldLines(charges, maxPoints, ds, arrowHeadSize, arrowSpacing);
+       chargeRenderer     = new vizit.electricfield.ChargeRenderer(glUtility, latch.countDown, home);
+       this.setupCharges(charges);
+       surfaceRenderer    = new vizit.electricfield.SurfaceRenderer(glUtility);
+       latch.countDown();
+     }
   
-  arrowHeadSize       = 0.3;
-  arrowSpacing        = 1.2;
-  /* Default color */
-  color               = new Float32Array([0.8, 0.3, 0.3, 1]);
-  ds                  = 0.6;
-  fieldLineVBOs       = new Array();
-  gaussianSurfaces    = new Array();
-  // Use ./ if home_ is undefined
-  home                = typeof home_ === 'undefined' ? "./" : home_;
-  // Wait for two textures to load, and this renderer to be started.
-  latch               = new CountdownLatch(3, this.started.bind(this));
-  maxPoints           = 3000;
-  maxVectors          = 5;
-  normalMatrix        = new Float32Array([1, 0, 0,
-                                          0, 1, 0,
-                                          0, 0, 1]);
-  explicitStartPoints = new Array();
-  started             = false;
-}
+     arrowHeadSize       = 0.3;
+     arrowSpacing        = 1.2;
+     /* Default color */
+     color               = new Float32Array([0.8, 0.3, 0.3, 1]);
+     ds                  = 0.6;
+     fieldLineVBOs       = new Array();
+     gaussianSurfaces    = new Array();
+     // Use ./ if home_ is undefined
+     home                = typeof home_ === 'undefined' ? "./" : home_;
+     // Wait for three things total. Two textures to load, and this renderer to be started.
+     latch               = new vizit.utility.CountdownLatch(3, this.started.bind(this));
+     maxPoints           = 3000;
+     maxVectors          = 5;
+     normalMatrix        = new Float32Array([1, 0, 0,
+                                             0, 1, 0, 
+                                             0, 0, 1]);
+     explicitStartPoints = new Array();
+     started             = false;
+   }
+ }(window.vizit.electricfield));

@@ -16,74 +16,80 @@
  *    limitations under the License.
  */
 
-/**
- * Map a set of point charges into a vertex array drawable by the
- * ChargeRenderer. Currently addition or removal of charges is not
- * expected.
- *
- * @param {Charges} charges      A collection of point charges and charge
- *                               distributions.
- *
- */
-function ChargeGenerator(charges_)
-{
-  // The charge configuration we are drawing
-  var charges;
-  var chargesArray;
-  var ncharges;
+// Define the global namespaces iff not already defined.
+window.vizit               = window.vizit               || {};
+window.vizit.electricfield = window.vizit.electricfield || {};
 
-  this.setCharges      = function (charges_)
-  {
-    charges      = charges_;
-    // iff we need a larger array to hold the charge vertices, build it
-    if (4*charges.getCharges().length > chargesArray.length)
-    {
-       chargesArray = new Float32Array(4*charges.getCharges().length);
-    }
-  }
+(function (ns)
+ {
+   /**
+    * Map a set of point charges into a vertex array drawable by the
+    * ChargeRenderer. Currently addition or removal of charges is not
+    * expected.
+    *
+    * @param {Charges} charges      A collection of point charges and charge
+    *                               distributions.
+    *
+    */
+   ns.ChargeGenerator = function (charges_)
+   {
+     // The charge configuration we are drawing
+     var charges;
+     var chargesArray;
+     var ncharges;
 
-  this.getCharges      = function ()
-  {
-    return charges;
-  }
+     this.setCharges      = function (charges_)
+     {
+       charges      = charges_;
+       // iff we need a larger array to hold the charge vertices, build it
+       if (4*charges.getCharges().length > chargesArray.length)
+       {
+	  chargesArray = new Float32Array(4*charges.getCharges().length);
+       }
+     }
 
-  this.getChargesArray = function ()
-  {
-    return chargesArray;
-  }
+     this.getCharges      = function ()
+     {
+       return charges;
+     }
 
-  this.getNcharges     = function ()
-  {
-    return ncharges;
-  }
+     this.getChargesArray = function ()
+     {
+       return chargesArray;
+     }
 
-  /**
-   * 
-   */
-  this.generate        = function ()
-  {
-    var charge;
-    var offset;
-    var position;
-    var theCharges;
-     
-    theCharges   = charges.getCharges();
-    ncharges     = theCharges.length;
-    offset       = 0;
+     this.getNcharges     = function ()
+     {
+       return ncharges;
+     }
 
-    for(var i=0; i<ncharges; i++)
-    {
-      charge                 = theCharges[i];
-      position               = charge.getPosition();
-      chargesArray[offset++] = position[0];
-      chargesArray[offset++] = position[1];
-      chargesArray[offset++] = position[2];
-      chargesArray[offset++] = charge.getCharge();
-    }
-    return chargesArray;
-  }
+     /**
+      * 
+      */
+     this.generate        = function ()
+     {
+       var charge;
+       var offset;
+       var position;
+       var theCharges;
 
-  charges      = charges_;
-  chargesArray = new Float32Array(4*charges.getCharges().length);
-}
+       theCharges   = charges.getCharges();
+       ncharges     = theCharges.length;
+       offset       = 0;
 
+       for(var i=0; i<ncharges; i++)
+       {
+	 charge                 = theCharges[i];
+	 position               = charge.getPosition();
+	 chargesArray[offset++] = position[0];
+	 chargesArray[offset++] = position[1];
+	 chargesArray[offset++] = position[2];
+	 chargesArray[offset++] = charge.getCharge();
+       }
+       return chargesArray;
+     }
+
+     charges      = charges_;
+     chargesArray = new Float32Array(4*charges.getCharges().length);
+   }
+ }(window.vizit.electricfield));

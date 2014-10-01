@@ -71,10 +71,10 @@
 
         // Each charge has a charge, then x, y, z coordinates.
         // Each of these is a floating point number.
-        charge1 = new Charge(-20.0,   0.0, 0.0,  20.0, 0.7);
-        charge2 = new Charge( 20.0,   0.0, 0.0, -20.0, 0.7);
+        charge1 = new vizit.electricfield.Charge(-20.0,   0.0, 0.0,  20.0, 0.7);
+        charge2 = new vizit.electricfield.Charge( 20.0,   0.0, 0.0, -20.0, 0.7);
 
-        charges = new Charges();
+        charges = new vizit.electricfield.Charges();
         charges.addCharge(charge1);
         charges.addCharge(charge2);
 
@@ -83,7 +83,7 @@
 
       drawingSurface = document.getElementById('drawingSurface');
 
-      renderer       = new ElectricField();
+      renderer       = new vizit.electricfield.ElectricField();
 
       charges        = placeCharges();
       renderer.setCharges(charges);
