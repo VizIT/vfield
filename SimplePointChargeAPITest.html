@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Field Line Dipole API Test</title>
+    <title>Simple Point Charge API Test</title>
     <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="vfield.css" type="text/css" />
 
     <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
     <script type="text/javascript"    src="../lesson/js/DirectEventHandler.js"></script>
@@ -50,51 +52,78 @@
     <script type="text/javascript"    src="js/VizBuilder.js"></script>
   </head>
   <body>
-    <canvas id="drawingSurface" width="300" height="300"></canvas>
+    <figure class="left">
+      <!--A blank area we can draw on with JavaScript. -->
+      <canvas id="drawingSurface" width="300" height="300"></canvas>
+      <figcaption>The electric field from a point charge represented as a vector field.</figcaption>
+    </figure>
 
-    <!-- Make explicit API calls rather than use a configuration. -->
     <script type="text/javascript">
 
-      var charges;
-      var framework;
-      var drawingSurface;
-      var renderer;
+    var f;
+    var framework;
+    var drawingSurface;
+    var renderer;
 
-      /*
-       * Create the charges and package them into a charges collection. Edit this
-       * to change the charge configuration modeled in this illustration.
-       */
-      function placeCharges(fieldRenderer)
+    /*
+     * Create the charges and package them into a charges collection. Edit this
+     * to change the charge configuration modeled in this illustration.
+     */
+    function placeCharges(fieldRenderer)
+    {
+      var charge1;
+
+      // Each charge has x, y, z coordinates, then the charge and field line density.
+      // Each of these is a floating point number.
+      charge1 = new vizit.electricfield.Charge(0.0, 0.0, 0.0, +5.0, 5.0);
+
+      charges = new vizit.electricfield.Charges();
+      charges.addCharge(charge1);
+
+      return charges;
+    }
+
+    drawingSurface = document.getElementById('drawingSurface');
+
+    f              = placeCharges();
+    // Vector field, f, and scale factor.
+    renderer       = new SimpleVectorField(f, 1.0);
+    renderer.setMaxVectors(30);
+
+    framework      = new FieldRenderer(drawingSurface);
+    framework.setRenderer(renderer);
+    framework.setScale(5);
+
+    framework.start();
+  </script>
+  <script type="text/javascript">
+    "use strict";
+    var error;
+    var txt;
+    var canvasSupported = !!window.HTMLCanvasElement;
+    if (canvasSupported)
+    { 
+      var myCanvas       = document.createElement('canvas');
+      var gl             = myCanvas.getContext("experimental-webgl")
+                           || myCanvas.getContext("webgl");
+      if (!gl)
       {
-        var charge1;
-        var charge2;
-
-        // Each charge has a charge, then x, y, z coordinates.
-        // Each of these is a floating point number.
-        charge1 = new vizit.electricfield.Charge(-20.0,   0.0, 0.0,  20.0, 0.7);
-        charge2 = new vizit.electricfield.Charge( 20.0,   0.0, 0.0, -20.0, 0.7);
-
-        charges = new vizit.electricfield.Charges();
-        charges.addCharge(charge1);
-        charges.addCharge(charge2);
-
-        return charges;
+        txt = "Your browser supports the HTML5 canvas, but does not support WebGL."
       }
+    }
+    else
+    {
+      txt = "Your browser does not support the HTML5 canvas, which is required for WebGL."
+    }
 
-      drawingSurface = document.getElementById('drawingSurface');
-
-      renderer       = new vizit.electricfield.ElectricField();
-
-      charges        = placeCharges();
-      renderer.setCharges(charges);
-      renderer.setArrowHeadSize(1.5);
-      renderer.setArrowSpacing(14.0);
-
-      framework      = new FieldRenderer(drawingSurface);
-      framework.setRenderer(renderer);
-      framework.setScale(50.0);
-
-      framework.start();
+    if (txt != null)
+    {
+        txt += " To see the examples on this page, please get a <a href"
+            +  "= 'http://get.webgl.org/'>browser that supports WebGL</a>.";
+        error = document.getElementById("nowebgl");
+        error.innerHTML=txt;
+        error.style.display="block";
+    }
   </script>
 </body>
 </html>

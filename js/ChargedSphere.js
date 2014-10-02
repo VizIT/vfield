@@ -331,6 +331,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    /**
     * ChargedSphere extends the GeometryEngine.Sphere class.
     */
-   ns.ChargedSphere.prototype = new GeometryEngine.Sphere();
+   ns.ChargedSphere.prototype = new vizit.geometry.Sphere();
 
 }(window.vizit.electricfield));

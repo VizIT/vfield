@@ -178,6 +178,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    /**
     * gaussianCylinderextends cylinder.
     */
-   ns.GaussianCylinder.prototype = new Cylinder();
+   ns.GaussianCylinder.prototype = new vizit.utility.Cylinder();
 
 }(window.vizit.electricfield));

@@ -188,6 +188,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    /**
     * gaussianSphere extends the GeometryEngine.sphere class.
     */
-   ns.GaussianSphere.prototype = new GeometryEngine.Sphere();
+   ns.GaussianSphere.prototype = new vizit.geometry.Sphere();
 
 }(window.vizit.electricfield));

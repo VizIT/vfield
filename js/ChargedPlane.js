@@ -661,6 +661,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    /**
     * chargedPlane extends the GeometryEngine.square class.
     */
-   ns.ChargedPlane.prototype = new GeometryEngine.Square();
+   ns.ChargedPlane.prototype = new vizit.geometry.Square();
 
 }(window.vizit.electricfield));

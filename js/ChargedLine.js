@@ -438,6 +438,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    /**
     * chargedLine extends cylinder.
     */
-   ns.ChargedLine.prototype = new Cylinder();
+   ns.ChargedLine.prototype = new vizit.utility.Cylinder();
 
 }(window.vizit.electricfield));

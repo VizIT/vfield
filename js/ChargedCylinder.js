@@ -461,7 +461,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    /**
     * chargedCylinder extends cylinder.
     */
-   ns.ChargedCylinder.prototype = new Cylinder();
+   ns.ChargedCylinder.prototype = new vizit.utility.Cylinder();
 
 }(window.vizit.electricfield));
 
