@@ -92,16 +92,16 @@ window.vizit.builder = window.vizit.builder || {};
          
          if (drawingSurface)
          {
-           framework = new FieldRenderer(drawingSurface);
+           framework = new vizit.field.FieldRenderer(drawingSurface);
 
            if (type.match(electricFieldRE))
            {
-             builder  = new window.vizit.builder.ElectricFieldBuilder(framework);
+             builder  = new vizit.builder.ElectricFieldBuilder(framework);
              renderer = builder.build(config);
            }
            else if (type.match(simpleVectorFieldRE))
            {
-             builder  = new window.vizit.builder.SimpleVectorFieldBuilder(framework);
+             builder  = new vizit.builder.SimpleVectorFieldBuilder(framework);
              renderer = builder.build(config);
            }
            else
@@ -115,7 +115,7 @@ window.vizit.builder = window.vizit.builder || {};
              {
                // This builder will lookup elements of the visualization by name
                // from the framework.
-               builder = new window.vizit.builder.BindingBuilder();
+               builder = new vizit.builder.BindingBuilder();
                builder.build(bindingsConfig, framework)
              }
 

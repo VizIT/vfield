@@ -1,6 +1,6 @@
 "use strict";
 
-/**
+/*
  * Copyright 2013-2014 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -78,7 +78,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
 	 if (maxPoints_ > maxpoints)
 	 {
-	   fieldLine     = new FieldLine(maxPoints);
+	   fieldLine     = new vizit.electricfield.FieldLine(maxPoints);
 	 }
 	 maxPoints = maxPoints_;
 	 return this;

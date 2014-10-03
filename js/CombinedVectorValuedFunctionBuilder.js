@@ -81,7 +81,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
-       f = new VectorFunction(agrs, body);
+       f = new vizit.vectorfield.VectorFunction(agrs, body);
 
        return f;
      }
@@ -95,7 +95,7 @@ window.vizit.builder = window.vizit.builder || {};
 
        if (!!config)
        {
-         functions = new CombinedVectorFunctions();
+         functions = new vizit.vectorfield.CombinedVectorFunctions();
          if (Array.isArray(config))
          {
            nfunctions = config.length;

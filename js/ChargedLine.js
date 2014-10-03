@@ -387,16 +387,16 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
      if (chargeDensity > 0)
      {
-       color = new Color(0.05, 0.05, 0.8, 0.80);
+       color = new vizit.utility.Color(0.05, 0.05, 0.8, 0.80);
      }
      else if (chargeDensity < 0)
      {
-       color = new Color(0.8, 0.05, 0.05, 0.80);
+       color = new vizit.utility.Color(0.8, 0.05, 0.05, 0.80);
      }
      else
      {
        // Neutral surfaces are grey
-       color = new Color(0.5, 0.5, 0.5, 0.80);
+       color = new vizit.utility.Color(0.5, 0.5, 0.5, 0.80);
      }
 
      this.setColor(color);

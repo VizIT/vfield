@@ -108,39 +108,39 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      {
        if (typeof scale === "undefined")
        {
-	 scale = 1.0;
+         scale = 1.0;
        }
        if (modelViewMatrix === null)
        {
-	 modelViewMatrix     = new Float32Array(16);
-	 modelViewMatrix[0]  = scale;
-	 modelViewMatrix[1]  = 0.0;
-	 modelViewMatrix[2]  = 0.0;
-	 modelViewMatrix[3]  = 0.0;
-	 modelViewMatrix[4]  = 0.0;
-	 modelViewMatrix[5]  = scale;
-	 modelViewMatrix[6]  = 0.0;
-	 modelViewMatrix[7]  = 0.0;
-	 modelViewMatrix[8]  = 0.0;
-	 modelViewMatrix[9]  = 0.0;
-	 modelViewMatrix[10] = scale;
-	 modelViewMatrix[11] = 0.0;
-	 modelViewMatrix[12] = x0;
-	 modelViewMatrix[13] = y0;
-	 modelViewMatrix[14] = z0;
-	 modelViewMatrix[15] = 1.0;
+         modelViewMatrix     = new Float32Array(16);
+         modelViewMatrix[0]  = scale;
+         modelViewMatrix[1]  = 0.0;
+         modelViewMatrix[2]  = 0.0;
+         modelViewMatrix[3]  = 0.0;
+         modelViewMatrix[4]  = 0.0;
+         modelViewMatrix[5]  = scale;
+         modelViewMatrix[6]  = 0.0;
+         modelViewMatrix[7]  = 0.0;
+         modelViewMatrix[8]  = 0.0;
+         modelViewMatrix[9]  = 0.0;
+         modelViewMatrix[10] = scale;
+         modelViewMatrix[11] = 0.0;
+         modelViewMatrix[12] = x0;
+         modelViewMatrix[13] = y0;
+         modelViewMatrix[14] = z0;
+         modelViewMatrix[15] = 1.0;
        }
        else
        {
-	 modelViewMatrix[0]  = scale;
-	 modelViewMatrix[5]  = scale;
-	 modelViewMatrix[10] = scale;
+         modelViewMatrix[0]  = scale;
+         modelViewMatrix[5]  = scale;
+         modelViewMatrix[10] = scale;
        }
        return modelViewMatrix;
      }
 
      this.drawFullSurface      = function (glUtility,           program,              surfaceGeometryBuffer,
-					  surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
+                                           surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
      {
        var gl;
 
@@ -165,19 +165,19 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        gl.uniformMatrix4fv(program.getModelViewMatrixHandle(), false, this.getModelView(radius/intrinsicRadius));
 
        gl.uniform4f(program.getSurfaceColorHandle(), color.getRed(),
-		    color.getGreen(),                       color.getBlue(), color.getAlpha());
+                    color.getGreen(),                color.getBlue(), color.getAlpha());
 
        gl.cullFace(gl.FRONT);
        this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
-			    vertices.indices, this.getNindices());
+                            vertices.indices, this.getNindices());
 
        gl.cullFace(gl.BACK);
        this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
-			    vertices.indices, this.getNindices());
+                            vertices.indices, this.getNindices());
      }
 
      // Gaussian (neutral) surfaces are grey
-     color  = new Color(0.5, 0.5, 0.5, 0.50);
+     color  = new vizit.utility.Color(0.5, 0.5, 0.5, 0.50);
      name   = name_;
      radius = r_;
      x0     = x_;

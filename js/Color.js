@@ -16,56 +16,62 @@
  *    limitations under the License.
  */
 
-function Color(red, green, blue, alpha)
-{
-  var r, g, b, a;
+window.vizit         = window.vizit         || {};
+window.vizit.utility = window.vizit.utility || {};
 
-  this.setRed       = function (red)
-  {
-    r = red;
-    return this;
-  }
+(function (ns)
+ {
+   ns.Color = function (red, green, blue, alpha)
+   {
+     var r, g, b, a;
 
-  this.getRed       = function ()
-  {
-    return r;
-  }
+     this.setRed       = function (red)
+     {
+       r = red;
+       return this;
+     }
 
-  this.setGreen     = function (green)
-  {
-    g = green;
-    return this;
-  }
+     this.getRed       = function ()
+     {
+       return r;
+     }
 
-  this.getGreen     = function ()
-  {
-    return g;
-  }
+     this.setGreen     = function (green)
+     {
+       g = green;
+       return this;
+     }
 
-  this.setBlue      = function (blue)
-  {
-    b = blue;
-    return this;
-  }
+     this.getGreen     = function ()
+     {
+       return g;
+     }
 
-  this.getBlue      = function ()
-  {
-    return b;
-  }
+     this.setBlue      = function (blue)
+     {
+       b = blue;
+       return this;
+     }
 
-  this.setAlpha     = function (alpha)
-  {
-    a = alpha;
-    return this;
-  }
+     this.getBlue      = function ()
+     {
+       return b;
+     }
 
-  this.getAlpha     = function ()
-  {
-     return a;
-  }
+     this.setAlpha     = function (alpha)
+     {
+       a = alpha;
+       return this;
+     }
 
-  this.setRed(red)
-      .setGreen(green)
-      .setBlue(blue)
-      .setAlpha(alpha);
-}
+     this.getAlpha     = function ()
+     {
+       return a;
+     }
+
+     this.setRed(red)
+         .setGreen(green)
+         .setBlue(blue)
+         .setAlpha(alpha);
+   }
+}(window.vizit.utility));

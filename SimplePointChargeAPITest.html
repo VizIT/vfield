@@ -87,10 +87,10 @@
 
     f              = placeCharges();
     // Vector field, f, and scale factor.
-    renderer       = new SimpleVectorField(f, 1.0);
+    renderer       = new vizit.vectorfield.SimpleVectorField(f, 1.0);
     renderer.setMaxVectors(30);
 
-    framework      = new FieldRenderer(drawingSurface);
+    framework      = new vizit.field.FieldRenderer(drawingSurface);
     framework.setRenderer(renderer);
     framework.setScale(5);
 

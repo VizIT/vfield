@@ -227,13 +227,13 @@
     f              = new vizit.electricfield.Charge(0.0, 0.0, 0.0, +5.0, 5.0);
     //f              = placeCharges();
     // Vector field, f, and scale factor.
-    renderer       = new SimpleVectorField(f, 1.0);
+    renderer       = new vizit.vectorfield.SimpleVectorField(f, 1.0);
     renderer.setMaxVectors(30);
     renderer.addStartPoints(f.getStartPoints(0,               2.0));
     //renderer.addStartPoints(f.getStartPoints(    Math.PI / 4, 3.0));
     //renderer.addStartPoints(f.getStartPoints(    Math.PI / 2, 3.0));
     //renderer.addStartPoints(f.getStartPoints(3 * Math.PI / 4, 3.0));
-    framework      = new FieldRenderer(drawingSurface);
+    framework      = new vizit.field.FieldRenderer(drawingSurface);
     framework.setRenderer(renderer);
     framework.setScale(5);
 

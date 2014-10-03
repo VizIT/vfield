@@ -16,55 +16,61 @@
  *  limitations under the License.
  */
 
-/**
- * A skeleton providing base functionality for a vector function with an assignable
- * function.
- *
- * @param {string} args     The input arguments to the function body. Usually x, y, z. Eventually
- *                          support r, theta, phi.
- * @param {string} body     The body of the function, must return a three dimensional array.
- *
- * @class
- */
-function VectorFunction(args, body)
-{
-  var modified;
-  var name;
+window.vizit             = window.vizit             || {};
+window.vizit.vectorfield = window.vizit.vectorfield || {};
 
-  this.setModified        = function (modified_)
-  {
-    modified = modified_;
-  }
+(function (ns)
+ {
+   /**
+    * A skeleton providing base functionality for a vector function with an assignable
+    * function.
+    *
+    * @param {string} args     The input arguments to the function body. Usually x, y, z. Eventually
+    *                          support r, theta, phi.
+    * @param {string} body     The body of the function, must return a three dimensional array.
+    *
+    * @class
+    */
+   ns.VectorFunction = function (args, body)
+   {
+     var modified;
+     var name;
 
-  this.isModified         = function ()
-  {
-    return modified;
-  }
+     this.setModified        = function (modified_)
+     {
+       modified = modified_;
+     }
 
-  this.setName            = function (name_)
-  {
-    name = name_;
-  }
+     this.isModified         = function ()
+     {
+       return modified;
+     }
 
-  this.getName            = function ()
-  {
-    return name;
-  }
+     this.setName            = function (name_)
+     {
+       name = name_;
+     }
 
-  this.shouldStop      = function (sgn, x, y, z)
-  {
-    var minR2;
+     this.getName            = function ()
+     {
+       return name;
+     }
 
-    minR2  = 4;
+     this.shouldStop      = function (sgn, x, y, z)
+     {
+       var minR2;
 
-    // If we are tracing a field line forward to a positive charge
-    // or backwards to a negative charge, skip the computation.
-    // This corresponds to tracing a field line from a negative charge
-    // to a negative charge, or from a positive charge to a positive
-    // charge - where the field line should not terminate.
-      
-    return sgn * Q < 0.0 && r2 < minR2;
-  }
+       minR2  = 4;
 
-  this.getField = new Function(args, body);
-}
+       // If we are tracing a field line forward to a positive charge
+       // or backwards to a negative charge, skip the computation.
+       // This corresponds to tracing a field line from a negative charge
+       // to a negative charge, or from a positive charge to a positive
+       // charge - where the field line should not terminate.
+
+       return sgn * Q < 0.0 && r2 < minR2;
+     }
+
+     this.getField = new Function(args, body);
+   }
+}(window.vizit.vectorfield));

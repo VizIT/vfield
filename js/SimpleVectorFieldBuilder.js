@@ -86,7 +86,7 @@ window.vizit.builder = window.vizit.builder || {};
          vectorValuedFunction = builder.build(vectorValuedFunctionConfig);
        }
         
-       renderer = new SimpleVectorField(vectorValuedFunction, arrowSize);
+       renderer = new vizit.vectorfield.SimpleVectorField(vectorValuedFunction, arrowSize);
 
        if(typeof maxVectors !== "undefined")
        {

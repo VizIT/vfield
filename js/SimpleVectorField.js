@@ -16,194 +16,201 @@
  *    limitations under the License.
  */
 
-/**
- * Wrapper for a simple vector field, rendered in the simplest way possible.
- *
- * @param {VectorFunction} f_         A vector function. It must impliment getField(x, y, z)
- * @param {Double}         arrowSize_ The length of the vector is scaled b y this factor before
- *                                    drawing to the screen. It represents the comparative scale
- *                                    of the vector field to physical coordinates as drawn on
- *                                    the screen.
- *
- * @class
- */
-function SimpleVectorField(f_, arrowSize_)
-{
-  /** General size parameter for the arrowheads. */
-  var arrowHeadSize;
-  /** How the normal to the arrow shaft scales with the length of the vector. */
-  var arrowHeadWidth;
-  var color;
-  var explicitStartPoints;
-  /** The vector field */
-  var f;
-  var generator;
-  /** A wrapper around the WebGL context, gl. */
-  var glUtility;
-  var indexedBuffers;
-  /** The maximum number of vectors to be drawn per field line. */
-  var maxVectors;
-  var modelViewMatrix;
-  /** Actually draws the vector field */
-  var renderer;
-  // Model-View matrix for use in all programs.
-  var projectionMatrix;
-  var arrowSize;
-  // Has this renderer started - do not render in response to events if not.
-  var started;
+window.vizit             = window.vizit             || {};
+window.vizit.vectorfield = window.vizit.vectorfield || {};
 
-  this.setArrowHeadWidth   = function (width)
-  {
-    arrowHeadWidth = width;
-    return this;
-  }
+(function (ns)
+ {
+   /**
+    * Wrapper for a simple vector field, rendered in the simplest way possible.
+    *
+    * @param {VectorFunction} f_         A vector function. It must impliment getField(x, y, z)
+    * @param {Double}         arrowSize_ The length of the vector is scaled b y this factor before
+    *                                    drawing to the screen. It represents the comparative scale
+    *                                    of the vector field to physical coordinates as drawn on
+    *                                    the screen.
+    *
+    * @class
+    */
+   ns.SimpleVectorField = function (f_, arrowSize_)
+   {
+     /** General size parameter for the arrowheads. */
+     var arrowHeadSize;
+     /** How the normal to the arrow shaft scales with the length of the vector. */
+     var arrowHeadWidth;
+     var color;
+     var explicitStartPoints;
+     /** The vector field */
+     var f;
+     var generator;
+     /** A wrapper around the WebGL context, gl. */
+     var glUtility;
+     var indexedBuffers;
+     /** The maximum number of vectors to be drawn per field line. */
+     var maxVectors;
+     var modelViewMatrix;
+     /** Actually draws the vector field */
+     var renderer;
+     // Model-View matrix for use in all programs.
+     var projectionMatrix;
+     var arrowSize;
+     // Has this renderer started - do not render in response to events if not.
+     var started;
 
-  this.getArrowHeadWidth   = function ()
-  {
-    return arrowHeadWidth;
-  }
+     this.setArrowHeadWidth   = function (width)
+     {
+       arrowHeadWidth = width;
+       return this;
+     }
 
-  this.setArrowHeadSize    = function (size)
-  {
-    arrowHeadSize = size;
-    return this;
-  }
+     this.getArrowHeadWidth   = function ()
+     {
+       return arrowHeadWidth;
+     }
 
-  this.getArrowHeadSize    = function ()
-  {
-    return arrowHeadSize;
-  }
+     this.setArrowHeadSize    = function (size)
+     {
+       arrowHeadSize = size;
+       return this;
+     }
 
-  this.setColor            = function (color_)
-  {
-    color = color_;
-    return this;
-  }
+     this.getArrowHeadSize    = function ()
+     {
+       return arrowHeadSize;
+     }
 
-  this.getColor            = function ()
-  {
-    return color;
-  }
+     this.setColor            = function (color_)
+     {
+       color = color_;
+       return this;
+     }
 
-  this.setGlUtility        = function (glUtility_)
-  {
-    glUtility = glUtility_;
-    return this;
-  }
+     this.getColor            = function ()
+     {
+       return color;
+     }
 
-  this.getGlUtility        = function ()
-  {
-    return glUtility;
-  }
+     this.setGlUtility        = function (glUtility_)
+     {
+       glUtility = glUtility_;
+       return this;
+     }
 
-  this.setMaxVectors       = function (max)
-  {
-    maxVectors = max;
-    return this;
-  }
+     this.getGlUtility        = function ()
+     {
+       return glUtility;
+     }
 
-  this.getMaxVectors       = function ()
-  {
-    return maxVectors;
-  }
+     this.setMaxVectors       = function (max)
+     {
+       maxVectors = max;
+       return this;
+     }
 
-  this.setModelViewMatrix  = function (modelViewMatrix_)
-  {
-    modelViewMatrix = modelViewMatrix_;
-    return this;
-  }
+     this.getMaxVectors       = function ()
+     {
+       return maxVectors;
+     }
 
-  this.getModelViewMatrix  = function ()
-  {
-    return modelViewMatrix;
-  }
+     this.setModelViewMatrix  = function (modelViewMatrix_)
+     {
+       modelViewMatrix = modelViewMatrix_;
+       return this;
+     }
 
-  this.setProjectionMatrix = function (projectionMatrix_)
-  {
-    projectionMatrix = projectionMatrix_;
-    return this;
-  }
+     this.getModelViewMatrix  = function ()
+     {
+       return modelViewMatrix;
+     }
 
-  this.addStartPoints = function (startPoints_)
-  {
-    explicitStartPoints = explicitStartPoints.concat(startPoints_)
-    return this;
-  }
+     this.setProjectionMatrix = function (projectionMatrix_)
+     {
+       projectionMatrix = projectionMatrix_;
+       return this;
+     }
 
-  this.getStartPoints = function ()
-  {
-    return explicitStartPoints;
-  }
+     this.addStartPoints = function (startPoints_)
+     {
+       explicitStartPoints = explicitStartPoints.concat(startPoints_)
+       return this;
+     }
 
-  this.setupVectorField    = function ()
-  {
-    var indexedBuffer;
-    var indexedVertices;
-    var startPoints;
+     this.getStartPoints = function ()
+     {
+       return explicitStartPoints;
+     }
 
-    // Include start points defined implicitly in vector function, if any.
-    if (typeof f.getStartPoints === "function")
-    {
-      startPoints = explicitStartPoints.concat(f.getStartPoints(0, 2.0));
-    }
-    else
-    {
-      startPoints = explicitStartPoints;
-    }
+     this.setupVectorField    = function ()
+     {
+       var indexedBuffer;
+       var indexedVertices;
+       var startPoints;
 
-    generator.setStartPoints(startPoints);
+       // Include start points defined implicitly in vector function, if any.
+       if (typeof f.getStartPoints === "function")
+       {
+         startPoints = explicitStartPoints.concat(f.getStartPoints(0, 2.0));
+       }
+       else
+       {
+         startPoints = explicitStartPoints;
+       }
 
-    indexedBuffer          = new Object();
+       generator.setStartPoints(startPoints);
 
-    // TODO IndexedBuffer here?
-    indexedVertices        = generator.generateField();
+       indexedBuffer          = new Object();
 
-    indexedBuffer.vertices = glUtility.createBuffer(indexedVertices.getVertices());
-    indexedBuffer.indices  = glUtility.createIndexBuffer(indexedVertices.getIndices());
-    indexedBuffer.nindices = indexedVertices.getNindices();
+       // TODO IndexedBuffer here?
+       indexedVertices        = generator.generateField();
 
-    indexedBuffers[0]      = indexedBuffer;
+       indexedBuffer.vertices = glUtility.createBuffer(indexedVertices.getVertices());
+       indexedBuffer.indices  = glUtility.createIndexBuffer(indexedVertices.getIndices());
+       indexedBuffer.nindices = indexedVertices.getNindices();
 
-    return indexedBuffers;
-  }
+       indexedBuffers[0]      = indexedBuffer;
 
-  this.render              = function ()
-  {
-    if (started)
-    {
-      if (f.isModified())
-      {
-        indexedBuffers = this.setupVectorField();
-      }
+       return indexedBuffers;
+     }
 
-      glUtility.clear();
-      renderer.drawIndexedLines(projectionMatrix, modelViewMatrix, color, indexedBuffers);
-      f.setModified(false);
-    }
-  }
+     this.render              = function ()
+     {
+       if (started)
+       {
+         if (f.isModified())
+         {
+           indexedBuffers = this.setupVectorField();
+         }
 
-  this.start               = function ()
-  {
-    var indexedBuffer;
-    var indexedVertices;
+         glUtility.clear();
+         renderer.drawIndexedLines(projectionMatrix, modelViewMatrix, color, indexedBuffers);
+         f.setModified(false);
+       }
+     }
 
-    renderer       = new LineRenderer(glUtility);
-    // Introduce variables and defaults for maxVectors and arrowHeadSize.
-    generator      = new VectorFieldGenerator(f, maxVectors, arrowHeadSize, arrowHeadWidth, arrowSize);
+     this.start               = function ()
+     {
+       var indexedBuffer;
+       var indexedVertices;
 
-    started        = true;
+       renderer       = new vizit.vectorfield.LineRenderer(glUtility);
+       // Introduce variables and defaults for maxVectors and arrowHeadSize.
+       generator      = new vizit.vectorfield.VectorFieldGenerator(f, maxVectors, arrowHeadSize,
+                                                                   arrowHeadWidth, arrowSize);
 
-    this.render();
-  }
-  
-  arrowHeadWidth      = 0.5;
-  arrowHeadSize       = 0.3;
-  f                   = f_;
-  indexedBuffers      = new Array();
-  /* Default color */
-  color               = new Float32Array([0.8, 0.3, 0.3, 1]);
-  maxVectors          = 5;
-  arrowSize           = typeof arrowSize_ === "undefined" ? 1.0 : arrowSize_;
-  explicitStartPoints = new Array();
-  started             = false;
-}
+       started        = true;
+
+       this.render();
+     }
+
+     arrowHeadWidth      = 0.5;
+     arrowHeadSize       = 0.3;
+     f                   = f_;
+     indexedBuffers      = new Array();
+     /* Default color */
+     color               = new Float32Array([0.8, 0.3, 0.3, 1]);
+     maxVectors          = 5;
+     arrowSize           = typeof arrowSize_ === "undefined" ? 1.0 : arrowSize_;
+     explicitStartPoints = new Array();
+     started             = false;
+   }
+}(window.vizit.vectorfield));

@@ -160,7 +160,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      }
 
      // Gaussian (neutral) surfaces are grey
-     color  = new Color(0.5, 0.5, 0.5, 0.50);
+     color  = new vizit.utility.Color(0.5, 0.5, 0.5, 0.50);
      height = h_;
      name   = name_;
      phi    = phi_;

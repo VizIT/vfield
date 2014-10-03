@@ -16,104 +16,110 @@
  *    limitations under the License.
  */
 
-/**
- * Javascript object to render simple lines. Will track VBOs for the lines, load the line drawing
- * vector and fragment shaders, and map the Float32Arrays describing the vertices to the shaders.
- * Used, for example, in the vector field rendering.
- *
- * @param {GLUtility} GLUtility_ A wrapper around the WebGLRenderingContext, gl.
- *
- * @constructor
- */
-function LineRenderer(glUtility_)
-{
-  /** WebGL GLint handle on the color attribute */
-  var colorHandle;
-  /** WebGLRenderingContext */
-  var gl;
-  var glUtility;
-  /** WebGL GLint handle on the position attribute */
-  var positionHandle;
-  var program;
-  /** WebGL GLint handle on the modelViewMatrix uniform */
-  var modelViewMatrixHandle;
-  /** WebGL GLint handle on the projectionMatrix uniform */
-  var projectionMatrixHandle;
+window.vizit             = window.vizit             || {};
+window.vizit.vectorfield = window.vizit.vectorfield || {};
 
-  this.createProgram      = function ()
-  {
-    var fragmentShaderSource;
-    var program;
-    var vertexShaderSource;
+(function (ns)
+ {
+   /**
+    * Javascript object to render simple lines. Will track VBOs for the lines, load the line drawing
+    * vector and fragment shaders, and map the Float32Arrays describing the vertices to the shaders.
+    * Used, for example, in the vector field rendering.
+    *
+    * @param {GLUtility} GLUtility_ A wrapper around the WebGLRenderingContext, gl.
+    *
+    * @constructor
+    */
+   ns.LineRenderer = function (glUtility_)
+   {
+     /** WebGL GLint handle on the color attribute */
+     var colorHandle;
+     /** WebGLRenderingContext */
+     var gl;
+     var glUtility;
+     /** WebGL GLint handle on the position attribute */
+     var positionHandle;
+     var program;
+     /** WebGL GLint handle on the modelViewMatrix uniform */
+     var modelViewMatrixHandle;
+     /** WebGL GLint handle on the projectionMatrix uniform */
+     var projectionMatrixHandle;
 
-    vertexShaderSource   = "attribute vec3 position;"
-                           + "uniform   mat4 modelViewMatrix;"
-                           + "uniform   mat4 projectionMatrix;"
-                           + ""
-                           + "void main()"
-                           + "{"
-                           + "    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);"
-                           + "}";
+     this.createProgram      = function ()
+     {
+       var fragmentShaderSource;
+       var program;
+       var vertexShaderSource;
 
-    // For now use a constant color for all lines. Later consider color derived from field strength.
-    fragmentShaderSource = "precision mediump float;"
-                           + "uniform   vec4 color;"
-                           + ""
-                           + "void main()"
-                           + "{"
-                           + "    gl_FragColor = color;"
-                           + "}";
+       vertexShaderSource   = "attribute vec3 position;"
+			      + "uniform   mat4 modelViewMatrix;"
+			      + "uniform   mat4 projectionMatrix;"
+			      + ""
+			      + "void main()"
+			      + "{"
+			      + "    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);"
+			      + "}";
 
-    // Compile and link the shader program
-    program                = glUtility.createProgram(vertexShaderSource, fragmentShaderSource);
+       // For now use a constant color for all lines. Later consider color derived from field strength.
+       fragmentShaderSource = "precision mediump float;"
+			      + "uniform   vec4 color;"
+			      + ""
+			      + "void main()"
+			      + "{"
+			      + "    gl_FragColor = color;"
+			      + "}";
 
-    // Fetch handles for the attributes and uniforms - reuse on each rendering.
-    colorHandle            = glUtility.getUniformLocation(program, "color");
-    positionHandle         = glUtility.getAttribLocation(program,  "position");
-    modelViewMatrixHandle  = glUtility.getUniformLocation(program, "modelViewMatrix");
-    projectionMatrixHandle = glUtility.getUniformLocation(program, "projectionMatrix");
+       // Compile and link the shader program
+       program                = glUtility.createProgram(vertexShaderSource, fragmentShaderSource);
 
-    return program;
-  }
+       // Fetch handles for the attributes and uniforms - reuse on each rendering.
+       colorHandle            = glUtility.getUniformLocation(program, "color");
+       positionHandle         = glUtility.getAttribLocation(program,  "position");
+       modelViewMatrixHandle  = glUtility.getUniformLocation(program, "modelViewMatrix");
+       projectionMatrixHandle = glUtility.getUniformLocation(program, "projectionMatrix");
 
-  /**
-   * Draw lines from a set of indexed buffers.
-   *
-   * @param projectionMatrix {Float32Array(16)}         Projection from view to screen space.
-   *
-   * @param modelViewMatrix  {Float32Array(16)}         Positions the lines into view space.
-   *
-   * @param color            {Float32Array(4): r,g,b,a} The color with which the lines will be drawn.
-   *
-   * @param indexedBuffers   {Object}                   Contains two WebGLBuffers, one the verticies, the other
-   *                                                    the indices. Also contains the number of indices.
-   *
-   */
-  this.drawIndexedLines   = function (projectionMatrix, modelViewMatrix, color, indexedBuffers)
-  {
-    var indexedBuffer;
-    var nbuffers;
+       return program;
+     }
 
-    gl.useProgram(program);
-    gl.lineWidth(1);
+     /**
+      * Draw lines from a set of indexed buffers.
+      *
+      * @param projectionMatrix {Float32Array(16)}         Projection from view to screen space.
+      *
+      * @param modelViewMatrix  {Float32Array(16)}         Positions the lines into view space.
+      *
+      * @param color            {Float32Array(4): r,g,b,a} The color with which the lines will be drawn.
+      *
+      * @param indexedBuffers   {Object}                   Contains two WebGLBuffers, one the verticies, the other
+      *                                                    the indices. Also contains the number of indices.
+      *
+      */
+     this.drawIndexedLines   = function (projectionMatrix, modelViewMatrix, color, indexedBuffers)
+     {
+       var indexedBuffer;
+       var nbuffers;
 
-    gl.uniform4fv(colorHandle, color);
-    gl.uniformMatrix4fv(modelViewMatrixHandle,  false, modelViewMatrix);
-    gl.uniformMatrix4fv(projectionMatrixHandle, false, projectionMatrix);
+       gl.useProgram(program);
+       gl.lineWidth(1);
 
-    nbuffers = indexedBuffers.length;
+       gl.uniform4fv(colorHandle, color);
+       gl.uniformMatrix4fv(modelViewMatrixHandle,  false, modelViewMatrix);
+       gl.uniformMatrix4fv(projectionMatrixHandle, false, projectionMatrix);
 
-    for(var i=0; i<nbuffers; i++)
-    {
-      indexedBuffer = indexedBuffers[i];
-      // Bind the buffer to the positon attribute
-      glUtility.bindBuffer(indexedBuffer.vertices, positionHandle,  3, gl.FLOAT, 12, 0);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexedBuffer.indices);
-      gl.drawElements(gl.LINES, indexedBuffer.nindices, gl.UNSIGNED_SHORT, 0);
-    }
-  }
+       nbuffers = indexedBuffers.length;
 
-  glUtility = glUtility_;
-  gl        = glUtility.getGLContext();
-  program   = this.createProgram();
-}
+       for(var i=0; i<nbuffers; i++)
+       {
+	 indexedBuffer = indexedBuffers[i];
+	 // Bind the buffer to the positon attribute
+	 glUtility.bindBuffer(indexedBuffer.vertices, positionHandle,  3, gl.FLOAT, 12, 0);
+	 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexedBuffer.indices);
+	 gl.drawElements(gl.LINES, indexedBuffer.nindices, gl.UNSIGNED_SHORT, 0);
+       }
+     }
+
+     glUtility = glUtility_;
+     gl        = glUtility.getGLContext();
+     program   = this.createProgram();
+   }
+}(window.vizit.vectorfield));
