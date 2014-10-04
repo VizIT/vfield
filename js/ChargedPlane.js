@@ -41,11 +41,11 @@ window.vizit.electricfield = window.vizit.electricfield || {};
     * @class
     */
    ns.ChargedPlane = function (x0, y0, z0,
-			       x1, y1, z1,
-			       x2, y2, z2,
-			       x3, y3, z3,
-			       chargeDensity_, fieldLineDensity_,
-			       nfieldLines_,   name_)
+                               x1, y1, z1,
+                               x2, y2, z2,
+                               x3, y3, z3,
+                               chargeDensity_, fieldLineDensity_,
+                               nfieldLines_,   name_)
    {
      /**
       * a: angle about the y axis
@@ -146,11 +146,11 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        normal    = new Array(3);
        normal[0] = (boundingBox[4]-boundingBox[1])*(boundingBox[11]-boundingBox[2])
-		  -(boundingBox[5]-boundingBox[2])*(boundingBox[10]-boundingBox[1]);
+                  -(boundingBox[5]-boundingBox[2])*(boundingBox[10]-boundingBox[1]);
        normal[1] = (boundingBox[5]-boundingBox[2])*(boundingBox[9]-boundingBox[0])
-		  -(boundingBox[3]-boundingBox[0])*(boundingBox[11]-boundingBox[2]);
+                  -(boundingBox[3]-boundingBox[0])*(boundingBox[11]-boundingBox[2]);
        normal[2] = (boundingBox[3]-boundingBox[0])*(boundingBox[10]-boundingBox[1])
-		  -(boundingBox[4]-boundingBox[1])*(boundingBox[9]-boundingBox[0]);
+                  -(boundingBox[4]-boundingBox[1])*(boundingBox[9]-boundingBox[0]);
 
        n2        = normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2];
        n         = Math.sqrt(n2);
@@ -178,14 +178,14 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        for(var i=0; i<npoints; i++)
        {
-	 point = startPoints[i];
-	 x        = point[0];
-	 y        = point[1];
-	 z        = point[2];
+         point = startPoints[i];
+         x        = point[0];
+         y        = point[1];
+         z        = point[2];
 
-	 point[0] = tx + cg*(sx*x*ca + z*sa) + sg*(-sy*y*cb+sb*(-sx*x*sa + z*ca));
-	 point[1] = ty + cg*(sy*y*cb + sb*(sx*x*sa - z*ca)) + sg*(sx*x*ca + z*sa);
-	 point[2] = tz + sy*y*sb + cb*(-sx*x*sa + z*ca);
+         point[0] = tx + cg*(sx*x*ca + z*sa) + sg*(-sy*y*cb+sb*(-sx*x*sa + z*ca));
+         point[1] = ty + cg*(sy*y*cb + sb*(sx*x*sa - z*ca)) + sg*(sx*x*ca + z*sa);
+         point[2] = tz + sy*y*sb + cb*(-sx*x*sa + z*ca);
        }
        return startPoints;
      }
@@ -208,44 +208,44 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        var xpoint, ypoint;
 
        d           = Math.abs(chargeDensity*fieldLineDensity)
-		    + nfieldLines/Math.abs(sx*sy);
+                    + nfieldLines/Math.abs(sx*sy);
        startPoints = new Array();
 
        if (d>0)
        {
-	 a           = Math.sqrt(1/d);
-	 // Now scale it to the unit square
-	 ax          = a/Math.abs(sx);
-	 ay          = a/Math.abs(sy);
-	 done        = false;
-	 sgn         = chargeDensity > 0 ? 1 : -1;
-	 top         =  0.5;
-	 bottom      = -0.5;
-	 left        = -0.5;
-	 right       =  0.5;
-	 xpoint      = Math.min(left   + ax/2, (right-left)/2);
-	 ypoint      = Math.min(bottom + ay/2, (top-bottom)/2);
+         a           = Math.sqrt(1/d);
+         // Now scale it to the unit square
+         ax          = a/Math.abs(sx);
+         ay          = a/Math.abs(sy);
+         done        = false;
+         sgn         = chargeDensity > 0 ? 1 : -1;
+         top         =  0.5;
+         bottom      = -0.5;
+         left        = -0.5;
+         right       =  0.5;
+         xpoint      = Math.min(left   + ax/2, (right-left)/2);
+         ypoint      = Math.min(bottom + ay/2, (top-bottom)/2);
 
-	 while (!done)
-	 {
-	   startPoints.push(new Array(xpoint, ypoint,  .4, sgn));
-	   startPoints.push(new Array(xpoint, ypoint, -.4, sgn));
+         while (!done)
+         {
+           startPoints.push(new Array(xpoint, ypoint,  .4, sgn));
+           startPoints.push(new Array(xpoint, ypoint, -.4, sgn));
 
-	   ypoint += ay;
-	   if (ypoint > top)
-	   {
-	     ypoint  = top - (ypoint - top);
-	     xpoint += ax;
-	     ay      = -ay;
-	   }
-	   else if  (ypoint < bottom)
-	   {
-	     ypoint  = bottom - (ypoint - bottom);
-	     xpoint += ax;
-	     ay      = -ay;
-	   }
-	   done = xpoint > right;
-	 }
+           ypoint += ay;
+           if (ypoint > top)
+           {
+             ypoint  = top - (ypoint - top);
+             xpoint += ax;
+             ay      = -ay;
+           }
+           else if  (ypoint < bottom)
+           {
+             ypoint  = bottom - (ypoint - bottom);
+             xpoint += ax;
+             ay      = -ay;
+           }
+           done = xpoint > right;
+         }
        }
        return this.adjustStartPoints(startPoints);
      }
@@ -256,37 +256,37 @@ window.vizit.electricfield = window.vizit.electricfield || {};
       */
      this.getField           = function (x, y, z)
      {
-	var d, E, EField;
+       var d, E, EField;
 
-	EField = new Array(3);
+       EField = new Array(3);
 
-	// Dot product of the unit normal with the vector from point 1 in the
-	// bounding box to the given point. If positive, E is in the direction
-	// of the normal. If negative E is in the opposite direction.
-	d =  (x-boundingBox[0])*normal[0]
-	   + (y-boundingBox[1])*normal[1]
-	   + (z-boundingBox[2])*normal[2]
+       // Dot product of the unit normal with the vector from point 1 in the
+       // bounding box to the given point. If positive, E is in the direction
+       // of the normal. If negative E is in the opposite direction.
+       d =  (x-boundingBox[0])*normal[0]
+           + (y-boundingBox[1])*normal[1]
+           + (z-boundingBox[2])*normal[2]
 
-	E = twoPi*chargeDensity;
-	if (d === 0)
-	{
-	   EField[0] = 0;
-	   EField[1] = 0;
-	   EField[2] = 0;
-	}
-	if (d > 0)
-	{
-	   EField[0] = E*normal[0];
-	   EField[1] = E*normal[1];
-	   EField[2] = E*normal[2];
-	}
-	else
-	{
-	   EField[0] = -E*normal[0];
-	   EField[1] = -E*normal[1];
-	   EField[2] = -E*normal[2];
-	}
-	return EField;
+       E = twoPi*chargeDensity;
+       if (d === 0)
+       {
+         EField[0] = 0;
+         EField[1] = 0;
+         EField[2] = 0;
+       }
+       if (d > 0)
+       {
+         EField[0] = E*normal[0];
+         EField[1] = E*normal[1];
+         EField[2] = E*normal[2];
+       }
+       else
+       {
+         EField[0] = -E*normal[0];
+         EField[1] = -E*normal[1];
+         EField[2] = -E*normal[2];
+       }
+       return EField;
      }
 
      /**
@@ -328,50 +328,50 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        if (dx0 === 0 || dx1 === 0)
        {
-	 // If either side is already parallel to the X axis
-	 // suppress rotation about the z axis.
-	 g     = 0;
+         // If either side is already parallel to the X axis
+         // suppress rotation about the z axis.
+         g     = 0;
 
-	 if (dx0 === 0 && dx1 === 0)
-	 {
-	   // Both dx0 and dx1 are zero - rectangle is in the Y-Z plane.
-	   // If side 1 is not along the y axis
-	   if (boundingBox[4] - boundingBox[1] === 0)
-	   {
-	     // It will be rotated onto the x axis later.
-	     xside = 1;
-	   }
-	   else
-	   {
-	     xside = 2;
-	   }
-	 }
-	 else if (dx0 === 0)
-	 {
-	   // Side 1 is already parallel to the x-axis.
-	   xside = 1;
-	 }
-	 else
-	 {
-	   // Side 2 must be parallel to the x-axis.
-	   xside = 2;
-	 }
+         if (dx0 === 0 && dx1 === 0)
+         {
+           // Both dx0 and dx1 are zero - rectangle is in the Y-Z plane.
+           // If side 1 is not along the y axis
+           if (boundingBox[4] - boundingBox[1] === 0)
+           {
+             // It will be rotated onto the x axis later.
+             xside = 1;
+           }
+           else
+           {
+             xside = 2;
+           }
+         }
+         else if (dx0 === 0)
+         {
+           // Side 1 is already parallel to the x-axis.
+           xside = 1;
+          }
+         else
+         {
+           // Side 2 must be parallel to the x-axis.
+           xside = 2;
+         }
        }
        else
        {
-	 s1 = (y1-y0)/dx0;
-	 s2 = (y2-y1)/dx1;
+         s1 = (y1-y0)/dx0;
+         s2 = (y2-y1)/dx1;
 
-	 if (Math.abs(s1) < Math.abs(s2))
-	 {
-	   g     = Math.atan(s1);
-	   xside = 1;
-	 }
-	 else
-	 {
-	   g     = Math.atan(s2);
-	   xside = 2;
-	 }
+         if (Math.abs(s1) < Math.abs(s2))
+         {
+           g     = Math.atan(s1);
+           xside = 1;
+         }
+         else
+         {
+           g     = Math.atan(s2);
+           xside = 2;
+         }
        }
 
        cg = Math.cos(g);
@@ -380,13 +380,13 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        // Compute new x and y positions for each bounding box point
        for(var point=0; point<4; point++)
        {
-	 // x' = xCos[g]−ySin[g]
-	 tmpx = cg*boundingBox[3*point] - sg*boundingBox[3*point+1];
-	 // y' = xSin[g]+yCos[g]
-	 tmpy = sg*boundingBox[3*point] + cg*boundingBox[3*point+1];
+         // x' = xCos[g]−ySin[g]
+         tmpx = cg*boundingBox[3*point] - sg*boundingBox[3*point+1];
+         // y' = xSin[g]+yCos[g]
+         tmpy = sg*boundingBox[3*point] + cg*boundingBox[3*point+1];
 
-	 boundingBox[3*point]   = tmpx;
-	 boundingBox[3*point+1] = tmpy;
+         boundingBox[3*point]   = tmpx;
+         boundingBox[3*point+1] = tmpy;
        }
 
        return boundingBox;
@@ -411,13 +411,13 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        if (xside === 1)
        {
-	 deltay = boundingBox[1] - boundingBox[10];
-	 deltaz = boundingBox[2] - boundingBox[11];
+         deltay = boundingBox[1] - boundingBox[10];
+         deltaz = boundingBox[2] - boundingBox[11];
        }
        else
        {
-	 deltay = boundingBox[4] - boundingBox[1];
-	 deltaz = boundingBox[5] - boundingBox[2];
+         deltay = boundingBox[4] - boundingBox[1];
+         deltaz = boundingBox[5] - boundingBox[2];
        }
 
        b  = 0;
@@ -426,22 +426,22 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        if (deltaz !== 0 && deltay !== 0)
        {
-	 b = Math.atan(deltaz/deltay)
+         b = Math.atan(deltaz/deltay)
 
-	 sb = Math.sin(b);
-	 cb = Math.cos(b);
+         sb = Math.sin(b);
+         cb = Math.cos(b);
 
-	 // Compute new x and y positions for each bounding box point
-	 for(var point=0; point<4; point++)
-	 {
-	   // y' = yCos[b]-zSin[b]
-	   tmpy = cb*boundingBox[3*point+1] - sb*boundingBox[3*point+2];
-	   // z' = ySin[b]+zCos[b]
-	   tmpz = sb*boundingBox[3*point+1] + cb*boundingBox[3*point+2];
+         // Compute new x and y positions for each bounding box point
+         for(var point=0; point<4; point++)
+         {
+           // y' = yCos[b]-zSin[b]
+           tmpy = cb*boundingBox[3*point+1] - sb*boundingBox[3*point+2];
+           // z' = ySin[b]+zCos[b]
+           tmpz = sb*boundingBox[3*point+1] + cb*boundingBox[3*point+2];
 
-	   boundingBox[3*point+1] = tmpy;
-	   boundingBox[3*point+2] = tmpz;
-	 }
+           boundingBox[3*point+1] = tmpy;
+           boundingBox[3*point+2] = tmpz;
+         }
        }
        return boundingBox;
      }
@@ -465,13 +465,13 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        if (xside === 1)
        {
-	 deltax = boundingBox[0] - boundingBox[9];
-	 deltaz = boundingBox[2] - boundingBox[11];
+         deltax = boundingBox[0] - boundingBox[9];
+         deltaz = boundingBox[2] - boundingBox[11];
        }
        else
        {
-	 deltax = boundingBox[3] - boundingBox[0];
-	 deltaz = boundingBox[5] - boundingBox[2];
+         deltax = boundingBox[3] - boundingBox[0];
+         deltaz = boundingBox[5] - boundingBox[2];
        }
 
        a  = 0;
@@ -480,31 +480,31 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        if (deltaz !== 0)
        {
-	 if (deltax !== 0)
-	 {
-	   a  = Math.atan(deltaz/deltax)
-	   sa =  Math.sin(a);
-	   ca =  Math.cos(a);
-	 }
-	 else
-	 {
-	   // Pi/2
-	   a  = 1.57079632679489662;
-	   sa = 1;
-	   ca = 0;
-	 }
+         if (deltax !== 0)
+         {
+           a  = Math.atan(deltaz/deltax)
+           sa =  Math.sin(a);
+           ca =  Math.cos(a);
+         }
+         else
+         {
+           // Pi/2
+           a  = 1.57079632679489662;
+           sa = 1;
+           ca = 0;
+         }
 
-	 // Compute new x and z positions for each bounding box point
-	 for(var point=0; point<4; point++)
-	 {
-	   // x' = xCos[a]+zSin[a]
-	   tmpx =  ca*boundingBox[3*point] + sa*boundingBox[3*point+2];
-	   // z' = -xSin[a]+zCos[a]
-	   tmpz = -sa*boundingBox[3*point] + ca*boundingBox[3*point+2];
+         // Compute new x and z positions for each bounding box point
+         for(var point=0; point<4; point++)
+         {
+           // x' = xCos[a]+zSin[a]
+           tmpx =  ca*boundingBox[3*point] + sa*boundingBox[3*point+2];
+           // z' = -xSin[a]+zCos[a]
+           tmpz = -sa*boundingBox[3*point] + ca*boundingBox[3*point+2];
 
-	   boundingBox[3*point]   = tmpx;
-	   boundingBox[3*point+2] = tmpz;
-	 }
+           boundingBox[3*point]   = tmpx;
+           boundingBox[3*point+2] = tmpz;
+         }
        }
 
        return boundingBox;
@@ -524,27 +524,27 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      {
        if (xside === 1)
        {
-	 sx = boundingBox[0] - boundingBox[9];
-	 sy = boundingBox[4] - boundingBox[1];
+         sx = boundingBox[0] - boundingBox[9];
+         sy = boundingBox[4] - boundingBox[1];
        }
        else
        {
-	 sx = boundingBox[3] - boundingBox[0];
-	 sy = boundingBox[1] - boundingBox[10];
+         sx = boundingBox[3] - boundingBox[0];
+         sy = boundingBox[1] - boundingBox[10];
        }
 
        // Compute new x and y positions for each bounding box point
        for(var point=0; point<4; point++)
        {
-	 if (sx !== 0)
-	 {
-	   boundingBox[3*point] /= sx;
-	 }
+         if (sx !== 0)
+         {
+           boundingBox[3*point] /= sx;
+         }
 
-	 if (sy !== 0)
-	 {
-	   boundingBox[3*point+1] /= sy;
-	 }
+         if (sy !== 0)
+         {
+           boundingBox[3*point+1] /= sy;
+         }
        }
        return boundingBox;
      }
@@ -555,7 +555,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      }
 
      this.drawFullSurface      = function (glUtility,           program,              surfaceGeometryBuffer,
-					  surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
+                                           surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
      {
        var gl;
 
@@ -579,16 +579,16 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        // RGBA positive (blue) or negative (red) charge
        if (chargeDensity > 0)
        {
-	 // Switch to uniform4fv ?
-	 gl.uniform4f(program.getSurfaceColorHandle(), 0.05, 0.05, 0.8,  0.40);
+         // Switch to uniform4fv ?
+         gl.uniform4f(program.getSurfaceColorHandle(), 0.05, 0.05, 0.8,  0.40);
        }
        else if (chargeDensity < 0)
        {
-	 gl.uniform4f(program.getSurfaceColorHandle(), 0.8,  0.05, 0.05, 0.40);
+         gl.uniform4f(program.getSurfaceColorHandle(), 0.8,  0.05, 0.05, 0.40);
        }
        else
        {
-	 gl.uniform4f(program.getSurfaceColorHandle(), 0.5,  0.5,  0.5,  0.2);
+         gl.uniform4f(program.getSurfaceColorHandle(), 0.5,  0.5,  0.5,  0.2);
        }
 
        nindices = this.getNindices();
@@ -596,7 +596,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        gl.disable(gl.CULL_FACE);
        this.drawFullSurface(glUtility,      program,          vertices.vertices,
-			    vertices.normals, vertices.indices, nindices);
+                            vertices.normals, vertices.indices, nindices);
        gl.enable(gl.CULL_FACE);
      }
 
@@ -607,9 +607,9 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      fieldLineDensity = typeof fieldLineDensity_ === 'undefined' ? 0 : fieldLineDensity_;
      nfieldLines      = typeof nfieldLines_      === 'undefined' ? 0 : nfieldLines_;
      boundingBox      = new Array(x0, y0, z0,
-				  x1, y1, z1,
-				  x2, y2, z2,
-				  x3, y3, z3);
+                                  x1, y1, z1,
+                                  x2, y2, z2,
+                                  x3, y3, z3);
 
      workingBoundingBox = boundingBox.slice(0);
 

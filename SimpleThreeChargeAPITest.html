@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple Point Charge API Test</title>
+    <title>Simple Triple Point Charge API Test</title>
     <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
     <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
@@ -66,12 +66,12 @@
      See the License for the specific language governing permissions and
      limitations under the License. -->
 
-    <h1>Simple Point Charge API Test</h1>
-
+    <h1>Simple Triple Point Charge API Test</h1>
+        
     <figure class="left">
       <!--A blank area we can draw on with JavaScript. -->
       <canvas id="drawingSurface" width="300" height="300"></canvas>
-      <figcaption>The electric field from a point charge represented as a vector field.</figcaption>
+      <figcaption>The electric field from three point charges represented as a vector field.</figcaption>
     </figure>
 
     <script type="text/javascript">
@@ -88,27 +88,32 @@
     function placeCharges(fieldRenderer)
     {
       var charge1;
+      var charge2;
+      var charge3;
+      var charges;
 
       // Each charge has x, y, z coordinates, then the charge and field line density.
-      // Each of these is a floating point number.
-      charge1 = new vizit.electricfield.Charge(0.0, 0.0, 0.0, +5.0, 5.0);
+      charge1 = new vizit.electricfield.Charge(-50.0,  0.0, 0.0, 20.0, 1.0);
+      charge2 = new vizit.electricfield.Charge( 50.0,  0.0, 0.0, 20.0, 1.0);
+      charge3 = new vizit.electricfield.Charge(  0.0, 50.0, 0.0, 20.0, 1.0);
 
       charges = new vizit.electricfield.Charges();
       charges.addCharge(charge1);
+      charges.addCharge(charge2);
+      charges.addCharge(charge3);
 
       return charges;
     }
 
     drawingSurface = document.getElementById('drawingSurface');
-
     f              = placeCharges();
     // Vector field, f, and scale factor.
-    renderer       = new vizit.vectorfield.SimpleVectorField(f, 1.0);
-    renderer.setMaxVectors(30);
+    renderer       = new vizit.vectorfield.SimpleVectorField(f, 2.0);
+    renderer.setMaxVectors(70);
 
     framework      = new vizit.field.FieldRenderer(drawingSurface);
     framework.setRenderer(renderer);
-    framework.setScale(5);
+    framework.setScale(70.0);
 
     framework.start();
   </script>
@@ -141,5 +146,6 @@
         error.style.display="block";
     }
   </script>
+    <script type="text/javascript" src="../../js/vizit.js"></script>
 </body>
 </html>

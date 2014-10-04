@@ -110,7 +110,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          scale = 1.0;
        }
-       if (modelViewMatrix === null)
+       if (typeof modelViewMatrix === "undefined")
        {
          modelViewMatrix     = new Float32Array(16);
          modelViewMatrix[0]  = scale;
