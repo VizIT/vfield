@@ -10,3 +10,9 @@ aside p
   font-style: italic;
   color: green;
 }
+
+/* Turn off border for Google prettyprint */
+pre.prettyprint
+{
+  border: none !important;
+}
