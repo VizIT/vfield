@@ -1,14 +1,20 @@
-aside
+div.steppedExample
 {
-  padding-right: 10px;
-  float:         left;
-  width:         220px;
+  margin-left:  10%;
+  margin-right: 10%;
 }
-aside p
+
+div.step div.explanation
 {
-  font-size: larger;
-  font-style: italic;
-  color: green;
+  float:  right;
+  width:  30%;
+}
+
+/* A Kludge allowing me to put the content on a new line. */
+pre.prettyprint::first-line
+{
+  line-height: 0.0;
+  z-index:     -1;
 }
 
 /* Turn off border for Google prettyprint */

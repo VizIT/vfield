@@ -4,10 +4,11 @@
     <title>Vector Field Visualization</title>
     <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/index.html" />
     <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
     <link   rel="stylesheet"          href="vfield.css" type="text/css" />
-    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-    <script type="text/javascript"    src="js/VField.min.js"></script>
+    <script src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
+    <script src=http://vizit.github.io/vfield/js/VField.min.js></script>
     <script type="text/javascript">
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
@@ -25,8 +26,9 @@
               f:  {
                     type: "charge",  charge:  5.0,
                     x: 0.0, y: 0.0, z: 0.0,
-                    nfieldLines: 25.0, name: "charge1"}
-                  };
+                    nfieldLines: 25.0, name: "charge1"
+                  }
+            };
     </script>
     <script type="text/javascript"
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -83,10 +85,22 @@
         </figure>
 
         <div class="steppedExample">
-          <div class="code">
+          <div class="step">
+            <div class="explanation">
+              Include VField on your page.
+            </div>
             <pre class="prettyprint"><code class="language-js">
-&lt;script type="text/javascript"    src="js/VField.min.js"&gt;&lt;/script&gt;
+&lt;script src=http://vizit.github.io/vfield/js/VField.min.js&gt;&lt;/script&gt;
             </code></pre>
+          </div>
+          <div class="step">
+            <div class="explanation">
+              Configure the visualization. A simple vector field traces field
+              lines and draws vectors at several points along the field lines.
+              The function defining the vector field, f, is a point charge at
+              the origin. The visualization is drawn on a canvas with the
+              given id chargeCanvas.
+            </div>
             <pre class="prettyprint"><code class="language-js">
 &lt;script type="text/javascript"&gt;
   // This object is loaded by the VizBuilder on the DOMReady event.
@@ -105,18 +119,28 @@
           f:  {
                 type: "charge",  charge:  5.0,
                 x: 0.0, y: 0.0, z: 0.0,
-                nfieldLines: 25.0, name: "charge1"}
-              };
+                nfieldLines: 25.0, name: "charge1"
+              }
+        };
 &lt;/script&gt;
             </code></pre>
+          </div>
+          <div class="step">
+            <div class="explanation">
+              Give a place to draw the visualization. The canvas with an id matching
+              the canvas id genven in the visualization configuration is the only
+              requirement. Wrapping it with a fugure element gives a more polished
+              appearance for the visualization and the caption.
+            </div>
             <pre class="prettyprint"><code class="language-js">
-    &lt;figure class="center"&gt;
-      &lt;!--This is the canvas for our visualization. --&gt;
-      &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
-      &lt;figcaption&gt;The electric field from a point charge represented
-                  as a vector field.&lt;/figcaption&gt;
-    &lt;/figure&gt;
+&lt;figure class="center"&gt;
+  &lt;!--This is the canvas for our visualization. --&gt;
+  &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
+  &lt;figcaption&gt;The electric field from a point charge represented
+              as a vector field.&lt;/figcaption&gt;
+&lt;/figure&gt;
             </code></pre>
+          </div>
           </div>
         </div>
       </div>
