@@ -1,24 +1,48 @@
-div.steppedExample
+div.steppedExample div.step
 {
-  margin-left:  10%;
-  margin-right: 10%;
+  width:         100%;
+  overflow:      auto;
 }
 
 div.step div.explanation
 {
-  float:  right;
-  width:  30%;
+  overflow:      hidden;
+}
+
+@media (min-width: 1150px)
+{
+  div.step pre.prettyprint
+  {
+    float:         left;
+    margin-right:  5%;
+    margin-top:    0;
+  }
+}
+
+/* Calls out the association between the description and the code. */
+div.step:hover
+{
+  filter:         drop-shadow(4px 4px 2px #bbb);
+  -webkit-filter: drop-shadow(4px 4px 2px #bbb);
+  -moz-filter:    drop-shadow(4px 4px 2px #bbb);
+  -o-filter:      drop-shadow(4px 4px 2px #bbb);
+  -ms-filter:     drop-shadow(4px 4px 2px #bbb);
+}
+
+div.explanation p:first-of-type
+{
+  margin-top:    0;
+  margin-bottom: 0;
 }
 
 /* A Kludge allowing me to put the content on a new line. */
 pre.prettyprint::first-line
 {
-  line-height: 0.0;
-  z-index:     -1;
+  line-height:   0.0;
 }
 
 /* Turn off border for Google prettyprint */
 pre.prettyprint
 {
-  border: none !important;
+  border:        none !important;
 }

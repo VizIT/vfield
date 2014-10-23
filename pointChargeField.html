@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Vector Field Visualization</title>
+    <title>Field Lines For a Point Charge</title>
     <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
     <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/index.html" />
     <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
     <link   rel="stylesheet"          href="vfield.css" type="text/css" />
-    <link   rel="next"                href="pointChargeField.html">
+    <link   rel="prev"                href="index.html">
     <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
     <script async src="http://vizit.github.io/vfield/js/VField.min.js">
     </script>
@@ -15,20 +15,21 @@
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
           = {
-              // This is a simple vector field, so we draw
-              // vectors representing the field along the field lines.
-              type:      "simple vector field",
+              // The electric field graph displays charges,
+              // field lines and gaussian surfaces.
+              type:      "electric field",
               // The id of the canvas we draw into
               canvas:    "chargeCanvas",
-              arrowSize: 1.0,
-              scale:     5.0,
-              // f is a vector valued function.
-              // In this case the electric field from a single charge.
-              f:  {
-                    type: "charge",  charge:  5.0,
-                    x: 0.0, y: 0.0, z: 0.0,
-                    nfieldLines: 25.0, name: "charge1"
-                  }
+              arrowHeadSize: 1.0,
+              arrowSpacing: 15,
+              scale:     50.0,
+              // Position a single charge at the origin
+              elements:
+                {
+                  type: "charge",  charge:  5.0,
+                  x: 0.0, y: 0.0, z: 0.0,
+                  fieldLineDensity: 5.0, name: "charge1"
+                }
             };
     </script>
   </head>
@@ -58,7 +59,7 @@
         </ul>
       </div>
     <div class="content">
-        <h1>Vector Field Visualization</h1>
+        <h1>Field Lines For a Point Charge</h1>
         <p id="nowebgl" class="error"></p>
         <p class="abstract">
           &nbsp;
@@ -70,16 +71,9 @@
         </p>-->
 
         <p>
-          VField produces powerful interactive visualizations from simple configurations.
-          These visualizations and their interactions are designed to integrate seamlessly
-          with your content, and not pull the student out of the flow of the content. This
-          contrasts sharply with most other interactive toolkits that provide prepackaged
-          content blocks that may not match the content or style of your presentation.
-        </p>
-        <p>
-          Most visualizations can be built diectly from configurations that describe a physical
-          charge configuration, or a mathematical function. The following pages describe how to
-          build several examples and how to add additional interactivity.
+          Field lines are another common way of visuzlizing vector fields.
+         This time we show field lines eminating out from the same positive
+         charge as the first example. We also draw the charge itself.
         </p>
 
         <figure class="center">
@@ -92,12 +86,12 @@
         <div class="steppedExample">
           <div class="step">
             <pre class="prettyprint"><code class="language-js">
-&lt;script async src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;script async src=http://vizit.github.io/vfield/js/VField.min.js&gt;
 &lt;/script&gt;
             </code></pre>
             <div class="explanation">
               <p>
-                Include VField on your page.
+                Include the same VField package on your page.
               </p>
             </div>
           </div>
@@ -107,30 +101,36 @@
   // This object is loaded by the VizBuilder on the DOMReady event.
   var VISUALIZATION_CONFIG
       = {
-          // This is a simple vector field, so we draw
-          // vectors representing the field along the field lines.
-          type:      "simple vector field",
+          // The electric field graph displays charges,
+          // field lines and gaussian surfaces.
+          type:      "electric field",
           // The id of the canvas we draw into
           canvas:    "chargeCanvas",
-          arrowSize: 1.0,
-          scale:     5.0,
-          // f is a vector valued function.
-          // In this case the electric field from a single charge.
-          f:  {
-                type: "charge",  charge:  5.0,
-                x: 0.0, y: 0.0, z: 0.0,
-                nfieldLines: 25.0, name: "charge1"
-              }
+          arrowHeadSize: 1.0,
+          arrowSpacing: 15,
+          scale:     50.0,
+          // Position a single charge at the origin
+          elements:
+            {
+              type: "charge",  charge:  5.0,
+              x: 0.0, y: 0.0, z: 0.0,
+              fieldLineDensity: 5.0, name: "charge1"
+            }
         };
 &lt;/script&gt;
             </code></pre>
             <div class="explanation">
               <p>
-                Configure the visualization. A simple vector field traces field
-                lines and draws vectors at several points along the field lines.
-                The function defining the vector field, f, is a point charge at
-                the origin. The visualization is drawn on a canvas with the
-                given id <code>chargeCanvas</code>.
+                The configuration, though, is different. This visualization is
+                an electric field diagram. The electric field diagrams draw the
+                charges and the resulting field lines. An interesting difference
+                is the use of <code>fieldLineDensity</code> to determine the
+                number of field lines that are drawn. This is because field
+                line diagrams indicate the strength of the field by changing
+                the field line density. So that increasing the charge increases
+                the number of field lines. We will see how to dynamically
+                change the charge in a later example. The visualization is
+                drawn on a canvas with the given id <code>chargeCanvas</code>.
               </p>
             </div>
           </div>
@@ -152,19 +152,14 @@
               </p>
             </div>
           </div>
-          </div>
-          <br class="clear">
-          <p>
-           These are exactly the steps used to create the example at the top of the page,
-           as I encourage you to verify with <samp>view source</samp>.
-           They can be included in any order on any web page to produce the same result.
-          </p>
-          <p>
-            As an alternative, we can display the field lines. This uses a different type
-            of graph, which we show <a href = "pointChargeField.html">next</a>.
-          </p>
+        </div>
+        <br class="clear">
+        <p>
+          Once again this is exactly the markup used to generate the example on this
+          page.
+        </p>
       </div>
     </div>
-  <script type="text/javascript" src="../../js/vizit.js"></script>
+    <script type="text/javascript" src="../../js/vizit.js"></script>
   </body>
 </html>
