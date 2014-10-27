@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Field Lines For a Point Charge</title>
+    <title>Field Lines From a Point Charge</title>
     <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
-    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/index.html" />
+    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/pointChargeField.html" />
     <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
     <link   rel="stylesheet"          href="vfield.css" type="text/css" />
     <link   rel="prev"                href="index.html">
+    <link   rel="next"                href="sideBySide.html">
     <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
     <script async src="http://vizit.github.io/vfield/js/VField.min.js">
     </script>
@@ -59,7 +60,7 @@
         </ul>
       </div>
     <div class="content">
-        <h1>Field Lines For a Point Charge</h1>
+        <h1>Field Lines From a Point Charge</h1>
         <p id="nowebgl" class="error"></p>
         <p class="abstract">
           &nbsp;
@@ -71,8 +72,8 @@
         </p>-->
 
         <p>
-          Field lines are another common way of visuzlizing vector fields.
-         This time we show field lines eminating out from the same positive
+          Field lines are another common way of visualizing vector fields.
+         This time we show field lines emanating from the same positive
          charge as the first example. We also draw the charge itself.
         </p>
 
@@ -80,7 +81,7 @@
           <!--This is the canvas for our electric field visualization. -->
           <canvas id="chargeCanvas" width="300" height="300"></canvas>
           <figcaption>The electric field from a point charge represented
-                      as a vector field.</figcaption>
+                      as a set of field lines.</figcaption>
         </figure>
 
         <div class="steppedExample">
@@ -140,14 +141,14 @@
   &lt;!--This is the canvas for our visualization. --&gt;
   &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
   &lt;figcaption&gt;The electric field from a point charge represented
-              as a vector field.&lt;/figcaption&gt;
+              as a set of field lines.&lt;/figcaption&gt;
 &lt;/figure&gt;
             </code></pre>
             <div class="explanation">
               <p>
                 Give a place to draw the visualization. The canvas with an id matching
-                the canvas id ginven in the visualization configuration is the only
-                requirement. Wrapping it with a fugure element gives a more polished
+                the canvas id given in the visualization configuration is the only
+                requirement. Wrapping it with a figure element gives a more polished
                 appearance for the visualization and the caption.
               </p>
             </div>
@@ -156,7 +157,8 @@
         <br class="clear">
         <p>
           Once again this is exactly the markup used to generate the example on this
-          page.
+          page. Our next example shows how to put <a href = "sideBySide.html">multiple
+          visualizations on a page</a>.
         </p>
       </div>
     </div>

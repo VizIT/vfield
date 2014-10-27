@@ -1,3 +1,17 @@
+section.examples
+{
+  overflow:      hidden;
+  width:         100%;
+}
+
+section.examples div.example
+{
+  width:         50%;
+  padding-left:  5%;
+  padding-right: 5%;
+  margin:        0%;
+}
+
 div.steppedExample div.step
 {
   width:         100%;
