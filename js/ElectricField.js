@@ -53,8 +53,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      var glUtility;
      /** Home directory for resource loading. */
      var home;
-     /** Wait for the setup to finish before rendering the first frame. */
-     var latch;
      /** The max number of points while tracing out a field line. */
      var maxPoints;
      /** The maximum number of vectors to be drawn per field line. */
@@ -214,8 +212,8 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          }
 
          glUtility.clear();
-         fieldLineRenderer.render(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
          chargeRenderer.render(projectionMatrix, modelViewMatrix, chargeBuffer, charges);
+         fieldLineRenderer.render(projectionMatrix, modelViewMatrix, color, fieldLineVBOs);
 
          // Charge distributions and Gaussian surfaces have transparent elements.
          gl.enable(gl.BLEND);
@@ -291,12 +289,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        }
      }
 
-     this.started             = function ()
-     {
-       started           = true;
-       this.render();
-     }
-
      this.start               = function ()
      {
        glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
@@ -305,10 +297,12 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        fieldLineGenerator = new vizit.electricfield.FieldLineGenerator(charges, maxPoints, ds,
                                                                        arrowHeadSize, arrowSpacing);
        this.setupFieldLines(charges, maxPoints, ds, arrowHeadSize, arrowSpacing);
-       chargeRenderer     = new vizit.electricfield.ChargeRenderer(glUtility, latch.countDown, home);
+       chargeRenderer     = new vizit.electricfield.ChargeRenderer(glUtility);
        this.setupCharges(charges);
        surfaceRenderer    = new vizit.electricfield.SurfaceRenderer(glUtility);
-       latch.countDown();
+
+       started           = true;
+       this.render();
      }
   
      arrowHeadSize       = 0.3;
@@ -320,8 +314,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      gaussianSurfaces    = new Array();
      // Use ./ if home_ is undefined
      home                = typeof home_ === 'undefined' ? "./" : home_;
-     // Wait for three things total. Two textures to load, and this renderer to be started.
-     latch               = new vizit.utility.CountdownLatch(3, this.started.bind(this));
+
      maxPoints           = 3000;
      maxVectors          = 5;
      normalMatrix        = new Float32Array([1, 0, 0,

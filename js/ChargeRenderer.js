@@ -22,38 +22,29 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 (function (ns)
  {
    /**
-    * Render flux lines described by a combination of lines and line strips. Will
-    * track VBOs for the lines, load the line rendering vector and fragment shaders,
-    * and map the Float32Arrays describing the vertices to the shaders. Used, for
-    * example, in field line rendering.
+    * Render points in a given color. Tracks VBO for the point positions and colors.
+    * Load the point rendering vector and fragment shaders, and map the Float32Arrays
+    * describing the points to the shaders. Used, for example, to render point charges.
     *
     * @param {GLUtility}     GLUtility_ A wrapper around the WebGLRenderingContext, gl.
     *
-    * @param {latchCallback} callback   Invoked when each texture resource is loaded.
-    *
-    * @constructor
+    * @class
     */
-   ns.ChargeRenderer = function (glUtility_, callback, home)
+   ns.ChargeRenderer = function (glUtility_)
    {
-     var boundTextures;
-     var chargeHandle;
+     var colorHandle;
      /** WebGLRenderingContext */
      var gl;
      var glUtility;
      /** WebGL GLint handle on the modelViewMatrix uniform */
      var modelViewMatrixHandle;
-     var negativeChargeHandle;
-     var negativeChargeIndex;
-     var negativeChargeTexture;
      var positionHandle;
-     var positiveChargeHandle;
-     var positiveChargeIndex;
-     var positiveChargeTexture;
      var program;
      /** WebGL GLint handle on the projectionMatrix uniform */
      var projectionMatrixHandle;
+     var sizeHandle;
 
-     this.createProgram  = function (gl)
+     this.createProgram  = function ()
      {
        var fragmentShaderSource;
        var program;
@@ -61,77 +52,49 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        vertexShaderSource    = "precision highp float;"
 			       + "attribute vec3  position;"
-			       + "attribute float charge;"
-			       + "varying   float vCharge;"
+			       + "attribute vec4  color;"
+                               + "attribute float size;"
+                               + ""
 			       + "uniform   mat4  modelViewMatrix;"
 			       + "uniform   mat4  projectionMatrix;"
 			       + ""
+                               + "varying vec4 vColor;"
+                               + ""
 			       + "void main()"
 			       + "{"
 			       + "    gl_Position  = projectionMatrix * modelViewMatrix * vec4(position, 1);"
-			       + "    gl_PointSize = 16.0;"
-			       + "    vCharge      = charge;"
+			       + "    gl_PointSize = size;"
+			       + "    vColor       = color;"
 			       + "}";
 
-       // TODO Look for a non texture way to handle this
+       // TODO Continue to improve with lighting & highlights
        fragmentShaderSource  =   "precision lowp float;"
-			       + "varying float     vCharge;"
-			       + "uniform sampler2D positiveChargeSampler;"
-			       + "uniform sampler2D negativeChargeSampler;"
-			       + ""
-			       + "vec4   textureColor;"
+			       + "varying vec4 vColor;"
 			       + ""
 			       + " void main()"
 			       + " {"
-			       + "   if (vCharge > 0.0)"
-			       + "   {"
-			       + "       textureColor = texture2D(positiveChargeSampler, gl_PointCoord);"
-			       + "   }"
-			       + "   else"
-			       + "   {"
-			       + "       textureColor = texture2D(negativeChargeSampler, gl_PointCoord);"
-			       + "   }"
-			       + ""
-			       + "   if (textureColor.a > 0.5)"
-			       + "   {"
-			       + "       gl_FragColor = textureColor;"
-			       + "   }"
-			       + "   else"
-			       + "   {"
-			       + "       discard;"
-			       + "   }"
+			       + "   float dist = distance( vec2(0.5,0.5), gl_PointCoord );"
+                               + "   if ( dist > 0.5 )"
+                               + "     discard;"
+                               + "   gl_FragColor = vColor;"
 			       + " }";
 
 
        // Compile and link the shader program
        program                = glUtility.createProgram(vertexShaderSource, fragmentShaderSource);
 
-       chargeHandle           = glUtility.getAttribLocation(program,  "charge");
+       colorHandle            = glUtility.getAttribLocation(program,  "color");
        modelViewMatrixHandle  = glUtility.getUniformLocation(program, "modelViewMatrix");
-       negativeChargeHandle   = glUtility.getUniformLocation(program, "negativeChargeSampler");
        positionHandle         = glUtility.getAttribLocation(program,  "position");
-       positiveChargeHandle   = glUtility.getUniformLocation(program, "positiveChargeSampler");
        projectionMatrixHandle = glUtility.getUniformLocation(program, "projectionMatrix");
+       sizeHandle             = glUtility.getAttribLocation(program,  "size");
+
+       // Enable the attribute to take array input (see render)
+       gl.enableVertexAttribArray(colorHandle);
+       gl.enableVertexAttribArray(positionHandle);
+       gl.enableVertexAttribArray(sizeHandle);
 
        return program;
-     }
-
-     /**
-      * Replace these with computed gradients.
-      */
-     this.loadTextures = function (home, callback)
-     {
-       // The texture number
-       negativeChargeIndex   = 0;
-       negativeChargeTexture = glUtility.loadTexture(home + "images/negativeCharge.png", negativeChargeIndex, callback);
-       positiveChargeIndex   = 1;
-       positiveChargeTexture = glUtility.loadTexture(home + "images/positiveCharge.png", positiveChargeIndex, callback);
-     }
-
-     this.bindTextures = function ()
-     {
-       glUtility.bindTexture(program, negativeChargeTexture, negativeChargeIndex, negativeChargeHandle);
-       glUtility.bindTexture(program, positiveChargeTexture, positiveChargeIndex, positiveChargeHandle);
      }
 
      this.render       = function (projectionMatrix, modelViewMatrix, chargeBuffer, charges)
@@ -139,28 +102,28 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        // Make this the currently active program
        gl.useProgram(program);
 
-       if (!boundTextures)
-       {
-	 this.bindTextures();
-       }
-
        // TODO These only need be set when they change
        gl.uniformMatrix4fv(modelViewMatrixHandle,  false, modelViewMatrix);
        gl.uniformMatrix4fv(projectionMatrixHandle, false, projectionMatrix);
 
+       // Binding an object in Open GL makes it the target of subsequent operations.
+       gl.bindBuffer(gl.ARRAY_BUFFER, chargeBuffer);
+
        // Charge buffer positions to the position attribute
-       // Stride of 16 because there is an extra float for the charge
-       glUtility.bindBuffer(chargeBuffer, positionHandle, 3, gl.FLOAT, 16, 0);
-       // First Q is after the first position, 12 bytes into the array.
-       glUtility.bindBuffer(chargeBuffer, chargeHandle,   1, gl.FLOAT, 16, 12);
+       // Stride of 20 because there is an extra float for the charge, four bytes for color
+       gl.vertexAttribPointer(positionHandle, 3, gl.FLOAT,         false, 20, 0);
+
+       // First size entry is after the first position, 12 bytes into the array, all should be the same
+       gl.vertexAttribPointer(sizeHandle,     1, gl.FLOAT,         false, 20, 12);
+
+       // Each color is four normalized, unsigned bytes
+       gl.vertexAttribPointer(colorHandle,    4, gl.UNSIGNED_BYTE, true,  20, 16);
 
        gl.drawArrays(gl.POINTS, 0, charges.getNcharges());
      }
 
-     boundTextures = false;
      glUtility     = glUtility_;
      gl            = glUtility.getGLContext();
      program       = this.createProgram();
-     this.loadTextures(home, callback);
    }
 }(window.vizit.electricfield));
