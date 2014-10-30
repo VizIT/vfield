@@ -64,37 +64,37 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        //                     Directional lighting helps bring out the shape of surfaces
        // directionalColor the color for the directional lighting
        vertexShaderSource = "attribute vec3 normal;"
-			  + "attribute vec3 position;"
-			  + ""
-			  + "uniform   vec3 ambientLighting;"
-			  + "uniform   vec3 directionalLighting;"
-			  + "uniform   vec3 directionalColor;"
-			  + "uniform   mat4 modelViewMatrix;"
-			  + "uniform   mat4 globalModelViewMatrix;"
-			  + "uniform   mat3 normalMatrix;"
-			  + "uniform   mat4 projectionMatrix;"
-			  + ""
-			  + "varying   vec3 lighting;"
-			  + ""
-			  + "void main(void)"
-			  + "{"
-			  + "  gl_Position = projectionMatrix * globalModelViewMatrix * modelViewMatrix * vec4(position, 1.0);"
-			  + ""
-			  + "  vec3  transformedNormal         = normalMatrix * normal;"
-			  + "  float directionalLightWeighting = max(dot(transformedNormal, directionalLighting), 0.0);"
-			  + "  lighting                        = ambientLighting + directionalColor * directionalLightWeighting;"
-			  + "}";
+                          + "attribute vec3 position;"
+                          + ""
+                          + "uniform   vec3 ambientLighting;"
+                          + "uniform   vec3 directionalLighting;"
+                          + "uniform   vec3 directionalColor;"
+                          + "uniform   mat4 modelViewMatrix;"
+                          + "uniform   mat4 globalModelViewMatrix;"
+                          + "uniform   mat3 normalMatrix;"
+                          + "uniform   mat4 projectionMatrix;"
+                          + ""
+                          + "varying   vec3 lighting;"
+                          + ""
+                          + "void main(void)"
+                          + "{"
+                          + "  gl_Position = projectionMatrix * globalModelViewMatrix * modelViewMatrix * vec4(position, 1.0);"
+                          + ""
+                          + "  vec3  transformedNormal         = normalMatrix * normal;"
+                          + "  float directionalLightWeighting = max(dot(transformedNormal, directionalLighting), 0.0);"
+                          + "  lighting                        = ambientLighting + directionalColor * directionalLightWeighting;"
+                          + "}";
 
 
        fragmentShaderSource = "precision mediump float;"
-			    + ""
-			    + "uniform vec4 surfaceColor;"
-			    + "varying vec3 lighting;"
-			    + ""
-			    + "void main(void)"
-			    + "{"
-			    + "  gl_FragColor = vec4(surfaceColor.rgb * lighting, surfaceColor.a);"
-			    + "}";
+                            + ""
+                            + "uniform vec4 surfaceColor;"
+                            + "varying vec3 lighting;"
+                            + ""
+                            + "void main(void)"
+                            + "{"
+                            + "  gl_FragColor = vec4(surfaceColor.rgb * lighting, surfaceColor.a);"
+                            + "}";
 
        // Compile and link the shader program
        program                     = glUtility.createProgram(vertexShaderSource, fragmentShaderSource);
@@ -166,29 +166,29 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      // TODO Consider adding drawSurfaces, where surface=>surfaces, an array of surfaces.
      // TODO Consider including enable gl.BLEND code
      this.render      = function (projectionMatrix, globalModelViewMatrix,
-				 normalMatrix,     surfaces)
+                                 normalMatrix,     surfaces)
      {
        var nsurfaces;
        nsurfaces = surfaces.length;
 
        if (nsurfaces > 0)
        {
-	 // Make this the currently active program
-	 gl.useProgram(program);
+         // Make this the currently active program
+         gl.useProgram(program);
 
-	 gl.uniformMatrix4fv(globalModelViewMatrixHandle, false, globalModelViewMatrix);
-	 gl.uniformMatrix3fv(normalMatrixHandle,          false, normalMatrix);
-	 gl.uniformMatrix4fv(projectionMatrixHandle,      false, projectionMatrix);
+         gl.uniformMatrix4fv(globalModelViewMatrixHandle, false, globalModelViewMatrix);
+         gl.uniformMatrix3fv(normalMatrixHandle,          false, normalMatrix);
+         gl.uniformMatrix4fv(projectionMatrixHandle,      false, projectionMatrix);
 
-	 gl.uniform3f(ambientLightingHandle,     0.3, 0.3, 0.3);
-	 gl.uniform3f(directionalLightingHandle, 1.0, 1.0, 1.0);
-	 gl.uniform3f(directionalColorHandle,    0.4, 0.4, 0.4);
+         gl.uniform3f(ambientLightingHandle,     0.3, 0.3, 0.3);
+         gl.uniform3f(directionalLightingHandle, 1.0, 1.0, 1.0);
+         gl.uniform3f(directionalColorHandle,    0.4, 0.4, 0.4);
 
-	 for (var i=0; i<nsurfaces; i++)
-	 {
-	   // Each surface renders itself differently.
-	   surfaces[i].render(glUtility, this);
-	 }
+         for (var i=0; i<nsurfaces; i++)
+         {
+           // Each surface renders itself differently.
+           surfaces[i].render(glUtility, this);
+         }
        }
      }
 

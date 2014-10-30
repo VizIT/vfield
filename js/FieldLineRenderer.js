@@ -51,21 +51,21 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        var vertexShaderSource;
 
        vertexShaderSource   = "attribute vec3 position;"
-			    + "uniform   mat4 modelViewMatrix;"
-			    + "uniform   mat4 projectionMatrix;"
-			    + ""
-			    + "void main()"
-			    + "{"
-			    + "  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);"
-			    + "}";
+                            + "uniform   mat4 modelViewMatrix;"
+                            + "uniform   mat4 projectionMatrix;"
+                            + ""
+                            + "void main()"
+                            + "{"
+                            + "  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);"
+                            + "}";
 
        // For now use a constant color for the field lines. Later consider color derived from field strength.
        fragmentShaderSource = "precision mediump float;"
-			      + ""
-			      + "void main()"
-			      + "{"
-			      + "  gl_FragColor = vec4(0.8,0.3,0.3,1.0);"
-			      + "}";
+                              + ""
+                              + "void main()"
+                              + "{"
+                              + "  gl_FragColor = vec4(0.8,0.3,0.3,1.0);"
+                              + "}";
 
        // Compile and link the shader program
        program                = glUtility.createProgram(vertexShaderSource, fragmentShaderSource);
@@ -85,27 +85,27 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        nlines = fieldLineVBOs.length;
        if (nlines > 0)
        {
-	 // Make this the currently active program
-	 gl.useProgram(program);
-	 gl.lineWidth(1);
+         // Make this the currently active program
+         gl.useProgram(program);
+         gl.lineWidth(1);
 
-	 // TODO These only need be set when they change
-	 gl.uniformMatrix4fv(modelViewMatrixHandle,       false, modelViewMatrix);
-	 gl.uniformMatrix4fv(projectionMatrixHandle,      false, projectionMatrix);
+         // TODO These only need be set when they change
+         gl.uniformMatrix4fv(modelViewMatrixHandle,       false, modelViewMatrix);
+         gl.uniformMatrix4fv(projectionMatrixHandle,      false, projectionMatrix);
 
-	 for(var i=0; i<nlines; i++)
-	 {
-	   fieldLineVBO = fieldLineVBOs[i];
-	   if (!fieldLineVBO.isEnabled())
-	   {
-	     break;
-	   }
-	   // Bind the buffer to the positon attribute
-	   glUtility.bindBuffer(fieldLineVBO.fieldLineBufferHandle,      positionHandle, 3, gl.FLOAT, 12, 0);
-	   gl.drawArrays(gl.LINE_STRIP, 0, fieldLineVBO.npoints);
-	   glUtility.bindBuffer(fieldLineVBO.fieldDirectionBufferHandle, positionHandle, 3, gl.FLOAT, 12, 0);
-	   gl.drawArrays(gl.LINES, 0, fieldLineVBO.narrows);
-	 }
+         for(var i=0; i<nlines; i++)
+         {
+           fieldLineVBO = fieldLineVBOs[i];
+           if (!fieldLineVBO.isEnabled())
+           {
+             break;
+           }
+           // Bind the buffer to the positon attribute
+           glUtility.bindBuffer(fieldLineVBO.fieldLineBufferHandle,      positionHandle, 3, gl.FLOAT, 12, 0);
+           gl.drawArrays(gl.LINE_STRIP, 0, fieldLineVBO.npoints);
+           glUtility.bindBuffer(fieldLineVBO.fieldDirectionBufferHandle, positionHandle, 3, gl.FLOAT, 12, 0);
+           gl.drawArrays(gl.LINES, 0, fieldLineVBO.narrows);
+         }
        }
      }
 
