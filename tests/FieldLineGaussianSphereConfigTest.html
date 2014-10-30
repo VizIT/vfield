@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>Field Line Gaussian Cylinder Config Test</title>
+    <script type="text/javascript">
+      var VISUALIZATION_CONFIG =  {
+                                    type:   "electric field",
+                                    canvas: "chargeCanvas",
+                                    scale:  100.0,
+                                    elements: 
+                                              {
+                                                type:"gaussian sphere",
+                                                x:      0.0, y:   0.0, z: 0.0,
+                                                r:     50.0
+                                              }
+                                  };
+    </script>
+    <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
+    <script type="text/javascript"    src="../../lesson/js/DirectEventHandler.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/MappingEventHandler.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/Lesson.js"></script>
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Geometry.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
+    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLine.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/Cylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
+    <script type="text/javascript"    src="../js/ChargedLine.js"></script>
+    <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
+    <script type="text/javascript"    src="../js/ChargedSphere.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
+    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
+    <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
+    <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VizBuilder.js"></script>
+  </head>
+  <body>
+    <!--This is the target for our point charge rendering. -->
+    <canvas id="chargeCanvas" width="300" height="300"></canvas>
+  </body>
+</html>

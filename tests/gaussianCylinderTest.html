@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gaussian Cylinder Test</title>
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Geometry.js"></script>
+    <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
+    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLine.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/Cylinder.js"></script>
+    <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
+    <script type="text/javascript"    src="../js/ChargedLine.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
+    <script type="text/javascript"    src="../js/VectorField.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
+    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <link rel="canonical"   href="http://www.vizitsolutions.com/portfolio/efield/gaussianCylinderTest.html" />
+  </head>
+  <body>
+    <h1>Gaussian Cylinder Test</h2>
+        <figure class="right">
+          <!--A blank area we can draw on with JavaScript. -->
+          <canvas id="drawingSurfaceI" width="300" height="300"></canvas>
+          <figcaption>First test of a charged plane.</figcaption>
+        </figure>
+
+    <script type="text/javascript">
+      var charges;
+      var drawingSurface;
+      var framework;
+      var renderer;
+      var surface;
+
+      /*
+       * Create the charges and package them into a charges collection. Edit this
+       * to change the charge configuration modeled in this illustration.
+       */
+      function placeCharges()
+      {
+        var charge;
+        var chargedPlane;
+
+        chargedPlane = new ChargedPlane( .01, .03,
+                                         -49.5006781186547524,    5.71067811865475232, -105.710678118654753,
+                                          91.9206781186547524,  105.710678118654752,     -5.71067811865475249,
+                                          91.9206781186547524,  -35.7106781186547523,   135.710678118654753,
+                                         -49.5006781186547524, -135.710678118654752,     35.7106781186547525);
+
+
+        charges = new Charges();
+        charges.addDistribution(chargedPlane);
+
+        return charges;
+      }
+
+      drawingSurface = document.getElementById('drawingSurfaceI');
+
+      charges        = placeCharges();
+      surface        = new GaussianCylinder(21.21, -15.0, 15.0, 30, 55, 2.5307806170144, 1.0485904877995598);
+
+      renderer       = new ElectricField(charges);
+      renderer.setMaxVectors(30);
+      renderer.setArrowSize(3.0);
+      renderer.setArrowSpacing(30.0);
+      renderer.addStartPoints(charges.getStartPoints(0.0, 2.0));
+      renderer.addGaussianSurface(surface);
+
+      framework      = new vizit.field.FieldRenderer(drawingSurface, renderer);
+      framework.setScale(120.0);
+
+      framework.start();
+    </script>
+  </body>
+</html>

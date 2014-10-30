@@ -1,0 +1,88 @@
+<html >
+  <head>
+    <title>Simple Point Charge Config Test</title>
+    <!-- Lesson.js uses these styles -->
+    <link   rel="stylesheet" type="text/css" href="../../lesson/css/Lesson.css">
+    <script type="text/javascript">
+      // This object is loaded by the VizBuilder on the DOMReady event.
+      var VISUALIZATION_CONFIG = [
+                                  {
+                                    // This is a simple vector field, so we draw vectors representing the field along the field lines.
+                                    type:      "simple vector field",
+                                    // The id of the canvas we draw into
+                                    canvas:    "chargeCanvas",
+                                    arrowSize: 2.0,
+                                    scale:     7.0,
+                                    // One or more charges, acting as the source for the field.
+                                    // f is a vector valued function. In this case the electric field from a single charge.
+                                    f:  {type: "charge",  charge:  2.0,
+                                         x: 0.0, y: 0.0, z: 0.0,
+                                         nfieldLines: 20.0, name: "charge1"},
+                                    // The charge of the target named charge1 is set to the value q1 when it changes.
+                                    bindings: {target: "charge1", set: "charge", from: "q1"}
+                                  }
+                                 ];
+    </script>
+    <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
+    <script type="text/javascript"    src="../../lesson/js/DirectEventHandler.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/MappingEventHandler.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/IdRegistry.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/RangedSource.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/LessonBuilder.js"></script>
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Geometry.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
+    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLine.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/Cylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
+    <script type="text/javascript"    src="../js/ChargedLine.js"></script>
+    <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
+    <script type="text/javascript"    src="../js/ChargedSphere.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
+    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
+    <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
+    <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VizBuilder.js"></script>
+    
+  </head>
+  <body>
+    <!--This is the canvas for our electric field visualization. -->
+    <canvas id="chargeCanvas" width="300" height="300"></canvas>
+
+    <!-- This will allow manipulation of q1, ranging from -2 to 2 with an initial value of 2 -->
+    <!-- This q1 matches the q1 in the binding in VISUALIZATION_CONFIG. -->
+    <!-- bindings: {target: "charge1", set: "q", from: "q1"} -->
+    <span class="lessonElement"
+          data-type="rangedSource"
+          data-name="q1"
+          data-value="2.0"
+          data-min="-2.0"
+          data-max="2.0"
+          data-step="0.2"></span>
+  </body>
+</html>

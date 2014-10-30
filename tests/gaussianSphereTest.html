@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gaussian Sphere Test</title>
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Geometry.js"></script>
+    <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
+    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLine.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/Cylinder.js"></script>
+    <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/ChargedLine.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
+    <script type="text/javascript"    src="../js/VectorField.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
+    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <link rel="canonical"   href="http://www.vizitsolutions.com/portfolio/efield/gaussianCylinderTest.html" />
+  </head>
+  <body>
+    <h1>Gaussian Sphere Test</h2>
+        <figure class="right">
+          <!--A blank area we can draw on with JavaScript. -->
+          <canvas id="drawingSurfaceI" width="300" height="300"></canvas>
+          <figcaption>First test of a charged plane.</figcaption>
+        </figure>
+
+    <script type="text/javascript">
+      var charges;
+      var drawingSurface;
+      var framework;
+      var renderer;
+      var surface;
+
+      /*
+       * Create the charges and package them into a charges collection. Edit this
+       * to change the charge configuration modeled in this illustration.
+       */
+      function placeCharges()
+      {
+        var charge;
+        var charges;
+
+        charge = new Charge(1.0, 0.0, 0.0, 0.0);
+
+        charges = new Charges();
+        charges.addCharge(charge);
+
+        return charges;
+      }
+
+      function placeStartPoints(fieldRenderer)
+      {
+        fieldRenderer.addStartPoint( 2.0,  0.0,  0.0,    1.0)
+                     .addStartPoint(-2.0,  0.0,  0.0,    1.0)
+                     .addStartPoint( 0.0,  2.0,  0.0,    1.0)
+                     .addStartPoint( 0.0, -2.0,  0.0,    1.0)
+                     .addStartPoint( 1.0,  1.0,  1.4142, 1.0)
+                     .addStartPoint( 1.0,  1.0, -1.4142, 1.0)
+                     .addStartPoint( 1.0, -1.0,  1.4142, 1.0)
+                     .addStartPoint( 1.0, -1.0, -1.4142, 1.0)
+                     .addStartPoint(-1.0,  1.0,  1.4142, 1.0)
+                     .addStartPoint(-1.0,  1.0, -1.4142, 1.0)
+                     .addStartPoint(-1.0, -1.0,  1.4142, 1.0)
+                     .addStartPoint(-1.0, -1.0, -1.4142, 1.0);
+
+        return fieldRenderer;
+      }
+
+      drawingSurface = document.getElementById('drawingSurfaceI');
+
+      charges        = placeCharges();
+      surface        = new GaussianSphere(0.0, 0.0, 0.0, 40.0);
+
+      renderer       = new ElectricField(charges);
+      renderer.setMaxVectors(30);
+      renderer.setArrowSize(3.0);
+      renderer.setArrowSpacing(30.0);
+      placeStartPoints(renderer);
+      renderer.addGaussianSurface(surface);
+
+      framework      = new vizit.field.FieldRenderer(drawingSurface, renderer);
+      framework.setScale(120.0);
+
+      framework.start();
+    </script>
+  </body>
+</html>
