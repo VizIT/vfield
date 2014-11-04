@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Deeper Interactivity</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/index.html" />
+    <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="vfield.css" type="text/css" />
+    <!-- Lesson.js uses these styles -->
+    <link   rel="stylesheet" type="text/css" 
+            href="http://vizit.github.io/lesson/css/Lesson.css">
+    <link   rel="next"                href="pointChargeField.html">
+    <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
+    <script defer src="http://vizit.github.io/lesson/js/lesson.min.js">
+    </script>
+    <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
+    </script>
+    <script type="text/javascript">
+      // This object is loaded by the VizBuilder on the DOMReady event.
+      var VISUALIZATION_CONFIG
+          = {
+              // This is a simple vector field, so we draw
+              // vectors representing the field along the field lines.
+              type:      "simple vector field",
+              // The id of the canvas we draw into
+              canvas:    "chargeCanvas",
+              arrowSize: 1.0,
+              scale:     5.0,
+              // f is a vector valued function.
+              // In this case the electric field from a single charge.
+              f:
+                {
+                  type: "charge",  charge:  5.0,
+                  x: 0.0, y: 0.0, z: 0.0,
+                  nfieldLines: 25.0, name: "charge1"
+                },
+              // Set the charge on charge1 to q1 when it changes.
+              bindings:
+                {
+                  target: "charge1", set: "charge", from: "q1"
+                }
+            };
+    </script>
+  </head>
+  <body>
+<!-- Copyright 2013-2014 Vizit Solutions
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License. -->
+    <div class="wrapper">
+    <div id="main">
+      <div id="header">
+        <span class="logo2 Fell drawOnResize"><a href = "http://www.vizitsolutions.com/">Vizit Solutions</a></span>
+        <ul>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/catalog/" title="Catalog">Catalog</a></li>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/" title="Portfolio">Portfolio</a></li>
+          <li class="drawOnResize"><a href="http://blog.vizitsolutions.com/" title="Blog">Blog</a></li>
+          <li class="drawOnResize"><a href="mailto:akluge@vizitsolutions.com?subject=Vector+Fields" title="akluge@vizitsolutions.com">Contact</a></li>
+        </ul>
+      </div>
+    <div class="content">
+        <h1>Deeper Interactivity</h1>
+        <p id="nowebgl" class="error"></p>
+        <p class="abstract">
+          &nbsp;
+        </p>
+        
+        <p
+          Effective use of technology in education invites the learner to explore,
+          to ask what if, and to see the results of their curiosity. These tools
+          make it not only possible, but comparitively easy to build this type of
+          content.
+        </p>
+
+        <figure class="center">
+          <!--This is the canvas for our electric field visualization. -->
+          <canvas id="chargeCanvas" width="300" height="300"></canvas>
+          <!-- This lesson element controls q1 ranging from -5 to 5 in steps of .2 -->
+          <figcaption>The electric field from a <span class="lessonElement"
+                                                      data-type="rangedSource"
+                                                      data-name="q1"
+                                                      data-value="5.0"
+                                                      data-min="-5.0"
+                                                      data-max="5.0"
+                                                      data-step="0.2"></span>
+                      statC<sup>1</sup> charge .</figcaption>
+        </figure>
+
+        <p>
+          Let's look at how we did this.
+        </p>
+
+        <div class="steppedExample">
+          <div class="step">
+            <pre class="prettyprint"><code class="language-js">
+&lt;!-- Lesson.js uses these styles --&gt;
+&lt;link rel="stylesheet" type="text/css" 
+      href="http://vizit.github.io/lesson/css/Lesson.css"&gt;
+&lt;script defer src="http://vizit.github.io/lesson/js/lesson.min.js"&gt;
+&lt;/script&gt;
+&lt;script async src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;/script&gt;
+            </code></pre>
+            <div class="explanation">
+              <p>
+                In addition to VField we also include two other files, the lesson
+                JavaScript library and its supporting Lesson.css. The lesson library
+                addresses a more general question of how to write interactive content
+                and so is the home for functionality that we want, but is not
+                specifically associated with vector fields.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <pre class="prettyprint"><code class="language-js">
+&lt;script type="text/javascript"&gt;
+      // This object is loaded by the VizBuilder on the DOMReady event.
+      var VISUALIZATION_CONFIG
+          = {
+              // This is a simple vector field, so we draw
+              // vectors representing the field along the field lines.
+              type:      "simple vector field",
+              // The id of the canvas we draw into
+              canvas:    "chargeCanvas",
+              arrowSize: 1.0,
+              scale:     5.0,
+              // f is a vector valued function.
+              // In this case the electric field from a single charge.
+              f:
+                {
+                  type: "charge",  charge:  5.0,
+                  x: 0.0, y: 0.0, z: 0.0,
+                  nfieldLines: 25.0, name: "charge1"
+                },
+              // Set the charge on charge1 to q1 when it changes.
+              bindings:
+                {
+                  target: "charge1", set: "charge", from: "q1"
+                }
+            };
+&lt;/script&gt;
+            </code></pre>
+            <div class="explanation">
+              <p>
+                This is the same configuration as the first example, with
+                one exception. Again we draw a simple vector field generated
+                by a point charge at the origin onto the <code>chargeCanvas</code>.
+                But this time we add a binding, that sets the charge on
+                <code>charge1</code> from the variable <code>q1</code>. This
+                means that when a <code>q1Changed</code> event happens, the
+                charge on <code>f</code>, which is named <code>charge1</code>
+                is set to the new value for <code>q1</code>. This does not care
+                how the <code>q1Changed</code>
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <pre class="prettyprint"><code class="language-html">
+&lt;figure class="center"&gt;
+  &lt;!--This is the canvas for our electric field visualization. --&gt;
+  &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
+  &lt;!-- This lesson element controls q1 ranging from -5 to 5 in steps of .2 --&gt;
+  &lt;figcaption&gt;The electric field from a &lt;span class="lessonElement"
+                                              data-type="rangedSource"
+                                              data-name="q1"
+                                              data-value="5.0"
+                                              data-min="-5.0"
+                                              data-max="5.0"
+                                              data-step="0.2"&gt;&lt;/span&gt;
+              statC&lt;sup&gt;1&lt;/sup&gt; charge .&lt;/figcaption&gt;
+&lt;/figure&gt;
+            </code></pre>
+            <div class="explanation">
+              <p>
+                This is where the lesson library comes into play. The lesson library helps build
+                interactive instructions, that is lessons. Elements of a lesson have the html
+                class <code>lessonElement</code>, and their functionality is described by
+                <a href
+                   = "https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes">HTML5
+                data attributes</a>.  The span <code>class="lessonElement"</code> controls the variable
+                q1, which ranges from -5.0 to 5.0 in steps of 0.2 and an initial value of 5.0. A full
+                description of the attributes:
+              </p>
+              <table class="explanation">
+                <tr>
+                  <th>attribute</th><th>meaning</th><th>example</th>
+                </tr>
+                <tr>
+                  <td>class</td><td>Identifies a component of a lesson.</td><td><code>lessonElement</code></td>
+                </tr>
+                <tr>
+                  <td>data-type</td><td>The type of component.</td><td><code>data-type="rangedSource"</code></td>
+                </tr>
+                <tr>
+                  <td>data-name</td><td>The name of the variable that this component effects.</td><td><code>data-name="q1"</code></td>
+                </tr>
+                <tr>
+                  <td>data-value</td><td>The initial value.</td><td><code>data-value="5.0"</code></td>
+                </tr>
+                <tr>
+                  <td>data-min</td><td>The min value for the control.</td><td><code>data-min="-5.0"</code></td>
+                </tr>
+                <tr>
+                  <td>data-max</td><td>The max value for the control.</td><td><code>data-max="5.0"</code></td>
+                </tr>
+                <tr>
+                  <td>data-step</td><td>The variable changes by this amount as the control is moved.</td><td><code>data-step="0.2"</code></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          </div>
+          <br class="clear">
+          <p>
+            This example incorporates the control into the figure caption. You are free to place it
+            anywhere in your content as it best meets your goals.
+          </p>
+
+          <div class="footnote">
+            <ol>
+              <li>
+                <a href = "http://en.wikipedia.org/wiki/Gaussian_units#Unit_of_charge">statC,
+                rationalized cgs unit of charge.</a>
+              </li>
+              <li>
+                <a href = "https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent">HTML5
+                custom events</a>
+              </li>
+            <br>
+            
+          </div>
+
+      </div>
+    </div>
+  <script type="text/javascript" src="../../js/vizit.js"></script>
+  </body>
+</html>
