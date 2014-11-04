@@ -9,7 +9,7 @@
     <link   rel="stylesheet"          href="vfield.css" type="text/css" />
     <link   rel="next"                href="pointChargeField.html">
     <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
-    <script async src="http://vizit.github.io/vfield/js/VField.min.js">
+    <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
     </script>
     <script type="text/javascript">
       // This object is loaded by the VizBuilder on the DOMReady event.
@@ -76,11 +76,12 @@
           contrasts sharply with most other interactive toolkits that provide prepackaged
           content blocks that may not match the content or style of your presentation.
         </p>
+
         <p>
           Most visualizations can be built directly from configurations that describe a
           physical charge arrangement, or that describe a mathematical function. The
-          following pages describe how to build several examples and how to add additional
-          interactivity.
+          following pages describe how to build several examples and show how to add
+          additional interactivity.
         </p>
 
         <figure class="center">
@@ -90,10 +91,13 @@
                       as a vector field.</figcaption>
         </figure>
 
+        <p>
+          We produce this with three simple steps.
+        </p>
         <div class="steppedExample">
           <div class="step">
             <pre class="prettyprint"><code class="language-js">
-&lt;script async src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;script defer src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
 &lt;/script&gt;
             </code></pre>
             <div class="explanation">

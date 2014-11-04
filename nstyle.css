@@ -177,7 +177,8 @@ div.content
   min-height:         7in;
   overflow:           visible;
   font-size:          larger;
-  font-family:        HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+  font-family:        verdana, arial, sans-serif;
+ /*HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; */
 }
 
 div.content,

@@ -23,6 +23,35 @@ div.step div.explanation
   overflow:      hidden;
 }
 
+table.explanation
+{
+  margin-right:     auto;
+  margin-left:      auto;
+  font-family:      verdana, arial, sans-serif;
+  color:            #000066;
+  border-width:     1px;
+  border-color:     #666666;
+  border-collapse:  collapse;
+}
+
+table.explanation th
+{
+  border-width:     1px;
+  padding:          8px;
+  border-style:     solid;
+  border-color:     #666666;
+  background-color: #dedede;
+}
+table.explanation td
+{
+  text-align:       left;
+  border-width:     1px;
+  padding:          8px;
+  border-style:     solid;
+  border-color:     #666666;
+}
+
+/*
 @media (min-width: 1150px)
 {
   div.step pre.prettyprint
@@ -32,6 +61,7 @@ div.step div.explanation
     margin-top:    0;
   }
 }
+*/
 
 /* Calls out the association between the description and the code. */
 div.step:hover
@@ -43,11 +73,13 @@ div.step:hover
   -ms-filter:     drop-shadow(4px 4px 2px #bbb);
 }
 
+/*
 div.explanation p:first-of-type
 {
   margin-top:    0;
   margin-bottom: 0;
 }
+*/
 
 /* A Kludge allowing me to put the content on a new line. */
 pre.prettyprint::first-line
