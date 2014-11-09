@@ -83,13 +83,13 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        return z0;
      }
 
-     this.setRadius          = function (r_)
+     this.setR               = function (r_)
      {
        radius = r_;
        return this;
      }
 
-     this.getRadius          = function ()
+     this.getR               = function ()
      {
        return radius;
      }

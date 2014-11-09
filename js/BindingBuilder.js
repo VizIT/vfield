@@ -118,7 +118,7 @@ window.vizit.builder = window.vizit.builder || {};
            nbindings = config.length;
            for (var i=0; i<nbindings; ++i)
            {
-             binding = this.bindingBuilder(config, framework);
+             binding = this.bindingBuilder(config[i], framework);
            }
          }
          else
