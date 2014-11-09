@@ -145,8 +145,8 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      pointSize      = 16;
 
      // TODO Set standard colors on the color utility
-     negativeColor  = [204, 13,  13, 77];
-     positiveColor  = [13,  13, 204, 77];
+     negativeColor  = [204, 13,  13, 255];
+     positiveColor  = [13,  13, 204, 255];
      neutralColor   = [13,  13,  13, 51];
    }
  }(window.vizit.electricfield));

@@ -185,7 +185,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 var y;
 
 	 sgn        = charge > 0 ? 1 : charge < 0 ? -1 : 0;
-	 nlines     = Math.round(fieldLineDensity * charge * sgn) - 1 + nfieldLines;
+	 nlines     = Math.round(fieldLineDensity * charge * sgn) + 1 + nfieldLines;
 	 s          = 3.6 / Math.sqrt(nlines);
 	 phi        = typeof phi0   === 'undefined' ? Math.PI / 2 : phi0;
 	 radius     = typeof radius === 'undefined' ? 1           : radius;
