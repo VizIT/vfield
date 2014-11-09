@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interactive Field Lines</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/tests/FieldLineGaussianSphereWithChargeConfigTest.html" />
+    <link   rel="stylesheet"          href="../nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="../vfield.css" type="text/css" />
+    <!-- Lesson.js uses these styles -->
+    <link   rel="stylesheet" type="text/css" 
+            href="http://vizit.github.io/lesson/css/Lesson.css">
+    <script defer src="http://vizit.github.io/lesson/js/lesson.min.js">
+    </script>
+    <script type="text/javascript">
+      // This object is loaded by the VizBuilder on the DOMReady event.
+      var VISUALIZATION_CONFIG
+          = {
+              // The electric field graph displays charges,
+              // field lines and gaussian surfaces.
+              type:      "electric field",
+              // The id of the canvas we draw into
+              canvas:    "chargeCanvas",
+              arrowHeadSize:  1.0,
+              arrowSpacing:  15.0,
+              scale:         50.0,
+              // Position a single charge at the origin
+              elements:
+                [
+                  {
+                    type: "charge",  charge:  5.0,
+                    x: 0.0, y: 0.0, z: 0.0,
+                    fieldLineDensity: 5.0, name: "charge1"
+                  },
+                  {
+                    type:"gaussian sphere",
+                    x:      0.0, y:   0.0, z: 0.0,
+                    r:     20.0, name: "sphere"
+                  }
+                ],
+              // Set the charge on charge1 to q1 when it changes.
+              bindings:
+                [
+                  {
+                    target: "charge1", set: "charge", from: "q1"
+                  },
+                  {
+                    target: "sphere", set: "r", from: "r"
+                  }
+                ]
+            };
+    </script>
+    <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Geometry.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
+    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLine.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/Cylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
+    <script type="text/javascript"    src="../js/ChargedLine.js"></script>
+    <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
+    <script type="text/javascript"    src="../js/ChargedSphere.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
+    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
+    <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
+    <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VizBuilder.js"></script>
+  </head>
+  <body>
+    <figure class="center">
+      <!--This is the canvas for our electric field visualization. -->
+      <canvas id="chargeCanvas" width="300" height="300"></canvas>
+      <!-- This lesson element controls q1 ranging from -5 to 5 in steps of .2 -->
+      <figcaption>The electric field from a <span class="lessonElement"
+                                                  data-type="rangedSource"
+                                                  data-name="q1"
+                                                  data-value="5.0"
+                                                  data-min="-5.0"
+                                                  data-max="5.0"
+                                                  data-step="0.2"></span>
+                  statC<sup>1</sup> charge .</figcaption>
+    </figure>
+    <p>
+      The point charge is surrounded by a gaussian surface of radius <span class="lessonElement"
+                                                                           data-type="rangedSource"
+                                                                           data-name="r"
+                                                                           data-value="20.0"
+                                                                           data-min="10.0"
+                                                                           data-max="30.0"
+                                                                           data-step="1.0"></span>cm.
+    </p>
+  </body>
+</html>
