@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Deeper Interactivity</title>
+    <title>Interactive Field Lines</title>
     <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
-    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/interactivity.html" />
+    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/interactiveField.html" />
     <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
     <link   rel="stylesheet"          href="vfield.css" type="text/css" />
     <!-- Lesson.js uses these styles -->
     <link   rel="stylesheet" type="text/css" 
             href="http://vizit.github.io/lesson/css/Lesson.css">
-    <link   rel="prev"                href="sideBySide.html">
-    <link   rel="next"                href="interactiveField.html">
+    <link   rel="prev"                href="interactivity.html">
     <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
     <script defer src="http://vizit.github.io/lesson/js/lesson.min.js">
     </script>
@@ -21,22 +20,22 @@
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
           = {
-              // This is a simple vector field, so we draw
-              // vectors representing the field along the field lines.
-              type:      "simple vector field",
+              // The electric field graph displays charges,
+              // field lines and gaussian surfaces.
+              type:      "electric field",
               // The id of the canvas we draw into
               canvas:    "chargeCanvas",
-              arrowSize: 1.0,
-              scale:     5.0,
-              // f is a vector valued function.
-              // In this case the electric field from a single charge.
-              f:
+              arrowHeadSize:  1.0,
+              arrowSpacing:  15.0,
+              scale:         50.0,
+              // Position a single charge at the origin
+              elements:
                 {
                   type: "charge",  charge:  5.0,
                   x: 0.0, y: 0.0, z: 0.0,
-                  nfieldLines: 25.0, name: "charge1"
+                  fieldLineDensity: 5.0, name: "charge1"
                 },
-              // Set the charge on charge1 to q1 when q1 changes.
+              // Set the charge on charge1 to q1 when it changes.
               bindings:
                 {
                   target: "charge1", set: "charge", from: "q1"
@@ -70,18 +69,21 @@
         </ul>
       </div>
     <div class="content">
-        <h1>Deeper Interactivity</h1>
+        <h1>Interactive Field Lines</h1>
         <p id="nowebgl" class="error"></p>
         <p class="abstract">
           &nbsp;
         </p>
         
         <p>
-          Effective use of technology in education invites the learner to explore,
-          to ask what if, and to see the results of their curiosity. These tools
-          make it not only possible, but comparatively easy to build this type of
-          content. Try clicking and dragging to adjust the charge in the figure
-          caption.
+          This time we <a href
+           = "http://apcentral.collegeboard.com/apc/public/repository/Physics_Multiple_Representations_of_Knowledge_SF.pdf">represent</a>
+          the electric field with field lines. The number of field lines increases as
+          the field becomes stronger, and decreases as the field becomes weaker. This
+          is a standard way of representing electric fields. Indeed, one of the driving
+          forces behind this project is to improve on the standard, static, two dimensional
+          presentation of these field lines. Try adjusting the charge by clicking and
+          dragging the charge in the figure caption.
         </p>
 
         <figure class="center">
@@ -100,7 +102,7 @@
         </figure>
 
         <p>
-          Let's look at how we did this.
+          The setup for this shoud be starting to look familiar.
         </p>
 
         <div class="steppedExample">
@@ -116,11 +118,9 @@
             </code></pre>
             <div class="explanation">
               <p>
-                In addition to VField we also include two other files, the lesson
-                JavaScript library and its supporting Lesson.css. The lesson library
-                addresses a more general question of how to write interactive content
-                and so is the home for functionality that we want, but is not
-                specifically associated with vector fields.
+                Once again we use VField for the electric field, and lesson for
+                interactivity. So far we have only seen a little of what these
+                libraries are capable of.
               </p>
             </div>
           </div>
@@ -130,22 +130,22 @@
   // This object is loaded by the VizBuilder on the DOMReady event.
   var VISUALIZATION_CONFIG
       = {
-          // This is a simple vector field, so we draw
-          // vectors representing the field along the field lines.
-          type:      "simple vector field",
+          // The electric field graph displays charges,
+          // field lines and gaussian surfaces.
+          type:      "electric field",
           // The id of the canvas we draw into
           canvas:    "chargeCanvas",
-          arrowSize: 1.0,
-          scale:     5.0,
-          // f is a vector valued function.
-          // In this case the electric field from a single charge.
-          f:
+          arrowHeadSize: 1.0,
+          arrowSpacing: 15.0,
+          scale:        50.0,
+          // Position a single charge at the origin
+          elements:
             {
               type: "charge",  charge:  5.0,
               x: 0.0, y: 0.0, z: 0.0,
-              nfieldLines: 25.0, name: "charge1"
+              fieldLineDensity: 5.0, name: "charge1"
             },
-          // Set the charge on charge1 to q1 when q1 changes.
+          // Set the charge on charge1 to q1 when it changes.
           bindings:
             {
               target: "charge1", set: "charge", from: "q1"
@@ -155,17 +155,22 @@
             </code></pre>
             <div class="explanation">
               <p>
-                This is the same configuration as the first example, with
-                one exception. Again we draw a simple vector field generated
-                by a point charge at the origin onto the <code>chargeCanvas</code>.
-                But this time we add a binding, that sets the charge on
-                <code>charge1</code> from the variable <code>q1</code>. This
-                means that when a <code>q1Changed</code> event happens, the
-                charge on <code>f</code>, which is named <code>charge1</code>
-                is set to the new value for <code>q1</code>. This does not care
-                how the <code>q1Changed</code> event is generated, or even if
-                is generated at all. This means that the event can be generated
-                by any of several lesson components, or even by your own code.
+               Start with the visualization of the electric field from a point
+               charge at the origin and add a binding, so that changes in
+               <code>q1</code> produce changes in the <code>chagre</code> of
+               <code>charge1</code>. The field then changes to reflect the
+               new charge.
+              </p>
+
+              <p>
+               Interestingly, these last two visualizations both bind
+               <code>q1</code> to their <code>charge</code>. If they are
+               placed on the same page, they will always show matching
+               representations of the same field. One using a vector
+               representation, the other using field lines. This shows
+               how the building block approach fits in well with the
+               concept of multiple representations, while also encouraging
+               you to make the design decisions for the overall content.
               </p>
             </div>
           </div>
@@ -177,25 +182,20 @@
   &lt;!-- This lesson element controls q1 ranging from -5 to 5 in steps of .2 --&gt;
   &lt;figcaption&gt;The electric field from a
               &lt;span class="lessonElement"
-                       data-type="rangedSource"
-                       data-name="q1"
-                       data-value="5.0"
-                       data-min="-5.0"
-                       data-max="5.0"
-                       data-step="0.2"&gt;&lt;/span&gt;
+                    data-type="rangedSource"
+                    data-name="q1"
+                    data-value="5.0"
+                    data-min="-5.0"
+                    data-max="5.0"
+                    data-step="0.2"&gt;&lt;/span&gt;
               statC&lt;sup&gt;1&lt;/sup&gt; charge .&lt;/figcaption&gt;
 &lt;/figure&gt;
             </code></pre>
             <div class="explanation">
               <p>
-                This is where the lesson library comes into play. The lesson library helps build
-                interactive instructions, that is lessons. Elements of a lesson have the html
-                class <code>lessonElement</code>, and their functionality is described by
-                <a href
-                   = "https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes">HTML5
-                data attributes</a>.  The <code>span class="lessonElement"</code> controls the variable
-                <code>q1</code>, which ranges from -5.0 to 5.0 in steps of 0.2 and an initial value of 5.0.
-                A full description of the attributes:
+                There is no need to change the caption or the controlling lesson element.
+                We keep the <code>lessonElement</code>, which controls the <code>q1</code>,
+                ranging from -5.0 to 5.0 in steps of 0.2. A full description of the attributes:
               </p>
               <table class="explanation">
                 <tr>
@@ -228,14 +228,9 @@
           </div>
           <br class="clear">
           <p>
-            This example incorporates the control into the figure caption. You are free to place it
-            anywhere in your content as it best meets your goals.
-          </p>
-
-          <p>
-            Let's take a look at what happens when we provide this same <a href
-            = "interactiveField.html">interactivity to the second example</a>, the field lines for
-            our point charge.
+            This example incorporates the control into the figure caption. It is just an HTML
+            element that you are free to place anywhere in your content according to your design
+            goals.
           </p>
 
           <div class="footnote">

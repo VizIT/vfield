@@ -123,15 +123,19 @@
             <div class="explanation">
               <p>
                 The configuration, though, is different. This visualization is
-                an electric field diagram. The electric field diagrams draw the
+                an electric field diagram. Electric field diagrams draw the
                 charges and the resulting field lines. An interesting difference
                 is the use of <code>fieldLineDensity</code> to determine the
                 number of field lines that are drawn. This is because field
                 line diagrams indicate the strength of the field by changing
-                the field line density. So that increasing the charge increases
-                the number of field lines. We will see how to dynamically
-                change the charge in a later example. The visualization is
-                drawn on a canvas with the given id <code>chargeCanvas</code>.
+                the number of field lines. Increasing the charge increases
+                the number of field lines, while decreasing the charge
+                decreases the number of field lines. VField uses the
+                <code>fieldLineDensity</code> and the <code>charge</code> to
+                determine the number of field lines to draw, so that the number
+                of field lines is <code>fieldLineDensity * charge</code>. A later
+                example shows how to dynamically change the charge. This visualization
+                also targets the <code>chargeCanvas</code> canvas.
               </p>
             </div>
           </div>
@@ -147,9 +151,9 @@
             <div class="explanation">
               <p>
                 Give a place to draw the visualization. The canvas with an id matching
-                the canvas id given in the visualization configuration is the only
-                requirement. Wrapping it with a figure element gives a more polished
-                appearance for the visualization and the caption.
+                the canvas id given in the configuration is the only requirement. Wrapping
+                it with a figure element gives a more polished appearance for the
+                visualization and the caption.
               </p>
             </div>
           </div>

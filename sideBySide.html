@@ -35,9 +35,9 @@
                 type:      "electric field",
                 // The id of the canvas we draw into
                 canvas:    "chargeCanvasII",
-                arrowHeadSize: 1.0,
-                arrowSpacing: 15,
-                scale:     50.0,
+                arrowHeadSize:  1.0,
+                arrowSpacing:  15.0,
+                scale:         50.0,
                 // Position a single charge at the origin
                 elements:
                   {
@@ -129,48 +129,49 @@
           <div class="step">
             <pre class="prettyprint"><code class="language-js">
 &lt;script type="text/javascript"&gt;
-      // This time VISUALIZATION_CONFIG is an array
-      var VISUALIZATION_CONFIG
-          = [
+  // This time VISUALIZATION_CONFIG is an array
+  var VISUALIZATION_CONFIG
+      = [
+          {
+            // The first entry is a simple vector field
+            type:      "simple vector field",
+            // The id of the canvas we draw into
+            canvas:    "chargeCanvasI",
+            arrowSize: 1.0,
+            scale:     5.0,
+            // f is a vector valued function.
+            f:  {
+                  type: "charge",  charge:  5.0,
+                  x: 0.0, y: 0.0, z: 0.0,
+                  nfieldLines: 25.0, name: "charge1"
+                }
+          },
+          {
+            // The second entry is an electric field.
+            type:      "electric field",
+            // The id of the canvas we draw into
+            canvas:    "chargeCanvasII",
+            arrowHeadSize:  1.0,
+            arrowSpacing:  15.0,
+            scale:         50.0,
+            // Position a single charge at the origin
+            elements:
               {
-                // The first entry is a simple vector field
-                type:      "simple vector field",
-                // The id of the canvas we draw into
-                canvas:    "chargeCanvasI",
-                arrowSize: 1.0,
-                scale:     5.0,
-                // f is a vector valued function.
-                f:  {
-                      type: "charge",  charge:  5.0,
-                      x: 0.0, y: 0.0, z: 0.0,
-                      nfieldLines: 25.0, name: "charge1"
-                    }
-              },
-              {
-                // The second entry is an electric field.
-                type:      "electric field",
-                // The id of the canvas we draw into
-                canvas:    "chargeCanvasII",
-                arrowHeadSize: 1.0,
-                arrowSpacing: 15,
-                scale:     50.0,
-                // Position a single charge at the origin
-                elements:
-                  {
-                    type: "charge",  charge:  5.0,
-                    x: 0.0, y: 0.0, z: 0.0,
-                    fieldLineDensity: 5.0, name: "charge2"
-                  }
+                type: "charge",  charge:  5.0,
+                x: 0.0, y: 0.0, z: 0.0,
+                fieldLineDensity: 5.0, name: "charge2"
               }
-            ];
+          }
+        ];
 &lt;/script&gt;
             </code></pre>
             <div class="explanation">
               <p>
                 This new configuration contains both of the prior examples. Each
-               of the prior examples is an entry in the array which makes up the
+               of the examples is an entry in the array which makes up the
                new configuration. Each entry renders to a different canvas,
-               <code>chargeCanvasI</code> and <code>chargeCanvasII</code>.
+               the first to <code>chargeCanvasI</code>, and the second to
+               <code>chargeCanvasII</code>.
               </p>
             </div>
           </div>
@@ -210,7 +211,7 @@
         <p>
           Next, we return to the first example, the field from a point charge, and add
           more <a href = "interactivity.html">interactivity</a>. This showcases the small
-          building block approach, and how it is able to integrate into your content, and
+          building block approach, how it is able to integrate into your content, and
           allows you to express your style of content.
         </p>
       </div>
