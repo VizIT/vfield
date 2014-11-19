@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gaussian Surface and a Point Charge</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/gaussianSurface.html" />
+    <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="vfield.css" type="text/css" />
+    <!-- Lesson.js uses these styles -->
+    <link   rel="stylesheet" type="text/css" 
+            href="http://vizit.github.io/lesson/css/Lesson.css">
+    <link   rel="prev"                href="interactiveField.html">
+    <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
+    <script defer src="http://vizit.github.io/lesson/js/lesson.min.js">
+    </script>
+    <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
+    </script>
+    <script type="text/javascript">
+      // This object is loaded by the VizBuilder on the DOMReady event.
+      var VISUALIZATION_CONFIG
+          = {
+              // The electric field graph displays charges,
+              // field lines and gaussian surfaces.
+              type:      "electric field",
+              // The id of the canvas we draw into
+              canvas:    "chargeCanvas",
+              arrowHeadSize:  1.0,
+              arrowSpacing:  15.0,
+              scale:         50.0,
+              // Position a single charge at the origin
+              elements:
+                [
+                  {
+                    type: "charge",  charge:  5.0,
+                    x: 0.0, y: 0.0, z: 0.0,
+                    fieldLineDensity: 5.0, name: "charge1"
+                  },
+                  {
+                    type: "gaussian sphere",
+                    x:      0.0, y:   0.0, z: 0.0,
+                    r:     20.0, name: "sphere"
+                  }
+                ],
+              // Set the charge on charge1 to q1 when it changes.
+              bindings:
+                [
+                  {
+                    target: "charge1", set: "charge", from: "q1"
+                  },
+                  {
+                    target: "sphere", set: "r", from: "r"
+                  }
+                ]
+            };
+    </script>
+  </head>
+  <body>
+<!-- Copyright 2013-2014 Vizit Solutions
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License. -->
+    <div class="wrapper">
+    <div id="main">
+      <div id="header">
+        <span class="logo2 Fell drawOnResize"><a href = "http://www.vizitsolutions.com/">Vizit Solutions</a></span>
+        <ul>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/catalog/" title="Catalog">Catalog</a></li>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/" title="Portfolio">Portfolio</a></li>
+          <li class="drawOnResize"><a href="http://blog.vizitsolutions.com/" title="Blog">Blog</a></li>
+          <li class="drawOnResize"><a href="mailto:akluge@vizitsolutions.com?subject=Vector+Fields" title="akluge@vizitsolutions.com">Contact</a></li>
+        </ul>
+      </div>
+    <div class="content">
+        <h1>Gaussian Surface and a Point Charge</h1>
+        <p id="nowebgl" class="error"></p>
+        <p class="abstract">
+          &nbsp;
+        </p>
+
+        <p>
+         Examining field lines passing through a surface is a <a href
+         = "http://www.vizitsolutions.com/portfolio/gausslaw/">powerful tool</a> for understanding
+         the electric field. This is an application where VField's electric field visualization
+         excels. We create a point charge surrounded by a spherical surface, and setup controls
+         for both the charge and the radius of the surface. There will be two controls for the
+         charge, automatically bound to the same events that they generate, so they remain in sync.
+         What other variables might it be interesting to make interactive<sup>1</sup>?
+        </p>        
+
+        <figure class="center">
+          <!--This is the canvas for our electric field visualization. -->
+          <canvas id="chargeCanvas" width="300" height="300"></canvas>
+          <!-- This lesson element controls q1 ranging from -5 to 5 in steps of .2 -->
+          <figcaption>The electric field from a <span class="lessonElement"
+                                                      data-type="rangedSource"
+                                                      data-name="q1"
+                                                      data-value="5.0"
+                                                      data-min="-5.0"
+                                                      data-max="5.0"
+                                                      data-step="0.2"></span>
+                      statC charge.</figcaption>
+        </figure>
+
+        <p>
+          This <span class="lessonElement"
+                     data-type="rangedSource"
+                     data-name="q1"
+                     data-value="5.0"
+                     data-min="-5.0"
+                     data-max="5.0"
+                     data-step="0.2"></span> statC charge is surrounded
+          by a sphere of radius <span class="lessonElement"
+                                      data-type="rangedSource"
+                                      data-name="r"
+                                      data-value="20.0"
+                                      data-min="10.0"
+                                      data-max="30.0"
+                                      data-step="1.0"></span>cm.
+        </p>
+
+        <p>
+          This should definitely be familiar. Perhaps lesson and VField will merge into a
+          single file eventually, but for now they remain separate.
+        </p>
+
+        <div class="steppedExample">
+          <div class="step">
+            <pre class="prettyprint"><code class="language-js">
+&lt;!-- Lesson.js uses these styles --&gt;
+&lt;link rel="stylesheet" type="text/css" 
+      href="http://vizit.github.io/lesson/css/Lesson.css"&gt;
+&lt;script defer src="http://vizit.github.io/lesson/js/lesson.min.js"&gt;
+&lt;/script&gt;
+&lt;script async src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;/script&gt;
+            </code></pre>
+            <div class="explanation">
+              <p>
+                We demonstrate a little more of what the combination of VField
+                and lesson are capable of.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <pre class="prettyprint"><code class="language-js">
+&lt;script type="text/javascript"&gt;
+  // This object is loaded by the VizBuilder on the DOMReady event.
+  var VISUALIZATION_CONFIG
+      = {
+          // The electric field graph displays charges,
+          // field lines and gaussian surfaces.
+          type:      "electric field",
+          // The id of the canvas we draw into
+          canvas:    "chargeCanvas",
+          arrowHeadSize:  1.0,
+          arrowSpacing:  15.0,
+          scale:         50.0,
+          // Position a single charge at the origin
+          elements:
+            [
+              {
+                type: "charge",  charge:  5.0,
+                x: 0.0, y: 0.0, z: 0.0,
+                fieldLineDensity: 5.0, name: "charge1"
+              },
+              {
+                type: "gaussian sphere",
+                x:      0.0, y:   0.0, z: 0.0,
+                r:     20.0, name: "sphere"
+              }
+            ],
+          // Set the charge on charge1 to q1 when it changes.
+          bindings:
+            [
+              {
+                target: "charge1", set: "charge", from: "q1"
+              },
+              {
+                target: "sphere", set: "r", from: "r"
+              }
+            ]
+        };
+&lt;/script&gt;
+            </code></pre>
+            <div class="explanation">
+              <p>
+                Both the elements and the bindings are now arrays. They can be single
+                items or arrays, with the use of arrays required to contain multiple
+                entries. 
+              </p>
+
+              <p>
+                The point charge at the origin is joined by a sphere, also centered
+                at the origin.
+              </p>
+
+              <p>
+                <code>q1</code> remains bound to the <code>chagre</code>
+                of <code>charge1</code>, and <code>r</code> is bound to
+                <code>r</code> of the sphere.
+              </p>
+
+              <p>
+                Manipulating the charge shows that the number of field lines crossing
+                the sphere changes in direct proportion to the change in the charge.
+                Manipulating the radius of the sphere illustrates how the space between
+                the field lines increases with r<sup>2</sup>.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <pre class="prettyprint"><code class="language-html">
+&lt;figure class="center"&gt;
+  &lt;!--This is the canvas for our electric field visualization. --&gt;
+  &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
+  &lt;!-- This lesson element controls q1 ranging from -5 to 5 in steps of .2 --&gt;
+  &lt;figcaption&gt;The electric field from a &lt;span class="lessonElement"
+                                              data-type="rangedSource"
+                                              data-name="q1"
+                                              data-value="5.0"
+                                              data-min="-5.0"
+                                              data-max="5.0"
+                                              data-step="0.2"&gt;&lt;/span&gt;
+              statC charge.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;
+  This &lt;span class="lessonElement"
+             data-type="rangedSource"
+             data-name="q1"
+             data-value="5.0"
+             data-min="-5.0"
+             data-max="5.0"
+             data-step="0.2"&gt;&lt;/span&gt; statC charge is surrounded
+  by a sphere of radius &lt;span class="lessonElement"
+                              data-type="rangedSource"
+                              data-name="r"
+                              data-value="20.0"
+                              data-min="10.0"
+                              data-max="30.0"
+                              data-step="1.0"&gt;&lt;/span&gt;cm.
+&lt;/p&gt;
+            </code></pre>
+            <div class="explanation">
+              <p>
+               There are three lesson elements, one for the radius of the sphere, and two for
+               charge. The lesson elements are also HTML elements, and so fit into the flow of
+               the page, and can be styled by CSS.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="footnote">
+          <ol>
+            <li>
+              What about the position of the charge, or of the sphere, so that the charge
+              moves within the sphere, perhaps even moving outside of the sphere?
+            </li>
+          <br>
+        </div>
+      </div>
+    </div>
+  <script type="text/javascript" src="../../js/vizit.js"></script>
+  </body>
+</html>
