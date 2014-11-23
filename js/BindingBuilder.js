@@ -92,11 +92,11 @@ window.vizit.builder = window.vizit.builder || {};
 
        if (mapping)
        {
-         binding = new MappingEventHandler(updater, from, mapping, framework);
+         binding = new window.vizit.lesson.MappingEventHandler(updater, from, mapping, framework);
        }
        else
        {
-         binding = new DirectEventHandler(updater, framework);
+         binding = new window.vizit.lesson.DirectEventHandler(updater, framework);
        }
        // By convention in the lesson framework changes in var are named varChanged.
        document.addEventListener(from + "Changed", binding.handleUpdate.bind(binding),   false);
