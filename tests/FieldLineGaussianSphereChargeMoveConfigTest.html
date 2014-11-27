@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Field Line Gaussian Sphere Charge Move Config Test</title>
+    <meta   http-equiv="Content-Type"        content="text/html;charset=utf-8" >
+    <meta   name="viewport"                  content="width=device-width, initial-scale=1.0">
+    <link   rel="next"                       href="pointCharge.html">
+    <link   rel="stylesheet" type="text/css" href="../../../nstyle.css">
+    <!-- Lesson css and scripts -->
+    <link   rel="stylesheet" type="text/css" href="../../lesson/css/Lesson.css">
+    <script defer type="text/javascript"     src="../../lesson/js/IdRegistry.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/DirectEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/DotRAdapter.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/GaussianSurfaceRChangedEventListiner.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonContentEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonContentEventSource.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonControlEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/MappingEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/ModelImageEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/RadialDependencyAdaptor.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/RangedSource.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/Setter.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/SurfaceExtensionEventListiner.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/ToExpression.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/XvsYController.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonBuilder.js"></script>
+    <!-- VField Scripts -->
+    <script type="text/javascript"    src="../js/EnsureNumber.js"></script>
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Geometry.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
+    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLine.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/Cylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
+    <script type="text/javascript"    src="../js/ChargedLine.js"></script>
+    <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
+    <script type="text/javascript"    src="../js/ChargedSphere.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
+    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
+    <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
+    <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VizBuilder.js"></script>
+    <link   href='http://fonts.googleapis.com/css?family=IM+Fell+French+Canon:400italic' rel='stylesheet' type='text/css'>
+    <script type="text/x-mathjax-config">
+      /**
+       * MathJax custom configuration. Faster inline like this than as a config=... file
+       */
+      MathJax.Hub.Config({
+        displayAlign: "left",
+        "HTML-CSS": {
+          styles: {
+            ".MathJax_Display": {
+              "text-align": "left",
+              margin:       "0em 0em 0em 3em"
+            }
+          }
+        },
+        imageFont: null
+      }); 
+    </script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML">
+    </script>
+    <script type="text/javascript">
+      // This object is loaded by the VizBuilder on the DOMReady event.
+      var VISUALIZATION_CONFIG
+          = {
+              // The electric field graph displays charges,
+              // field lines and gaussian surfaces.
+              type:      "electric field",
+              // The id of the canvas we draw into
+              canvas:    "chargeCanvas",
+              arrowHeadSize:  1.0,
+              arrowSpacing:  15.0,
+              scale:         50.0,
+              // Position a single charge at the origin
+              elements:
+                [
+                  {
+                    type: "charge",  charge:  5.0,
+                    x: 0.0, y: 0.0, z: 0.0,
+                    fieldLineDensity: 5.0, name: "charge"
+                  },
+                  {
+                    type: "gaussian sphere",
+                    x:      0.0, y:   0.0, z: 0.0,
+                    r:     20.0, name: "sphere"
+                  }
+                ],
+              // Set the charge on charge1 to q1 when it changes.
+              bindings:
+                [
+                  {
+                    target: "charge", set: "charge", from: "q"
+                  },
+                  {
+                    target: "sphere", set: "r", from: "r"
+                  },
+                  {
+                    target: "charge", set: "x", from: "x"
+                  },
+                  {
+                    target: "charge", set: "y", from: "y"
+                  }
+                ]
+            };
+    </script>
+  </head>
+  <body>
+    <!-- Copyright 2013 VizIT Solutions -->
+    <div class="wrapper">
+      <div id="main">
+        <div id="header">
+          <span class="logo2 Fell drawOnResize"><a href = "http://www.vizitsolutions.com/">Vizit Solutions</a></span>
+          <ul>
+            <li class="drawOnResize"><a href="../catalog/" title="Catalog">Catalog</a></li>
+            <li class="drawOnResize"><a href="../" title="Portfolio">Portfolio</a></li>
+            <li class="drawOnResize"><a href="http://blog.vizitsolutions.com/" title="Blog">Blog</a></li>
+            <li class="drawOnResize"><a href="mailto:akluge@vizitsolutions.com?subject=Visualization" title="akluge@vizitsolutions.com">Contact</a></li>
+          </ul>
+        </div>
+      <div class="content">
+        <h2 class="center">Field Line Gaussian Sphere Charge Move Config Test</h2>
+
+        <figure class="center">
+          <!--This is the canvas for our electric field visualization. -->
+          <canvas id="chargeCanvas" width="300" height="300"></canvas>
+          <!-- This lesson element controls q ranging from -5 to 5 in steps of .2 -->
+          <figcaption>The electric field from a <span class="lessonElement"
+                                                      data-type="rangedSource"
+                                                      data-name="q"
+                                                      data-value="5.0"
+                                                      data-min="-5.0"
+                                                      data-max="5.0"
+                                                      data-step="0.2"></span>
+                      statC charge.</figcaption>
+        </figure>
+        <section>
+          <p>
+            We see the electric field lines from the charge passing through the surface.
+            The is called the electric flux, <math><mi>&Phi;</mi></math>, through the surface.
+            How does the flux change when the charge moves?  <span class="lessonElement"
+                                                                   data-type="setter"
+                                                                   data-set="x=10"
+                                                                   data-html="x=10"
+                                                                   data-desc="Set x=10."></span>
+          </p>
+      </div>
+    </div>
+    <script type="text/javascript"         src="../../../js/vizit.js"></script>
+  </body>
+</html>

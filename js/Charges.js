@@ -49,7 +49,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        this.setCharge          = function (charge_)
        {
-	 charge   = charge_;
+         charge   = vizit.utility.ensureNumber(charge_);
 	 modified = true;
        }
 
@@ -60,7 +60,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        this.setX               = function(x)
        {
-         position[0] = x;
+         position[0] = vizit.utility.ensureNumber(x);
          modified    = true;
        }
 
@@ -71,7 +71,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        this.setY               = function(y)
        {
-         position[1] = y;
+         position[1] = vizit.utility.ensureNumber(y);
          modified    = true;
        }
 
@@ -82,7 +82,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        this.setZ               = function(z)
        {
-         position[2] = z;
+         position[2] = vizit.utility.ensureNumber(z);
          modified    = true;
        }
 
@@ -261,7 +261,9 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        charge           = charge_;
        modified         = true;
        name             = name_;
-       position         = new Array(x_, y_, z_);
+       position         = new Array(vizit.utility.ensureNumber(x_),
+                                    vizit.utility.ensureNumber(y_),
+                                    vizit.utility.ensureNumber(z_));
        fieldLineDensity = typeof fieldLineDensity_ === 'undefined' ? 0 : fieldLineDensity_;
        nfieldLines      = typeof nfieldLines_      === 'undefined' ? 0 : nfieldLines_;
    }
@@ -455,4 +457,4 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        charges       = new Array();
        distributions = new Array();
    }
-}(window.vizit.electricfield));
+ }(window.vizit.electricfield));
