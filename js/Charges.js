@@ -58,6 +58,39 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 return charge;
        }
 
+       this.setX               = function(x)
+       {
+         position[0] = x;
+         modified    = true;
+       }
+
+       this.getX               = function()
+       {
+         return position[0];
+       }
+
+       this.setY               = function(y)
+       {
+         position[1] = y;
+         modified    = true;
+       }
+
+       this.getY               = function()
+       {
+         return position[1];
+       }
+
+       this.setZ               = function(z)
+       {
+         position[2] = z;
+         modified    = true;
+       }
+
+       this.getZ               = function()
+       {
+         return position[2];
+       }
+
        this.setPosition        = function (position)
        {
 	 position = position;
