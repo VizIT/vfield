@@ -25,14 +25,9 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    /**
     * Representation of charges and their associated field lines. Given a set of charges
     * draw the field lines along with directional arrows from the given start points.
-    *
-    * @param {string}  [home_ = .]     A string giving the path to the efield
-    *                                  home directory if not the directory the
-    *                                  page is loaded from.
-    *
     * @class
     */
-   ns.ElectricField = function (home_)
+   ns.ElectricField = function()
    {
      /** General size parameter for the arrowheads. */
      var arrowHeadSize;
@@ -51,8 +46,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      var gaussianSurfaces;
      /** A wrapper around the WebGL context, gl. */
      var glUtility;
-     /** Home directory for resource loading. */
-     var home;
      /** The max number of points while tracing out a field line. */
      var maxPoints;
      /** The maximum number of vectors to be drawn per field line. */
@@ -312,9 +305,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      ds                  = 0.6;
      fieldLineVBOs       = new Array();
      gaussianSurfaces    = new Array();
-     // Use ./ if home_ is undefined
-     home                = typeof home_ === 'undefined' ? "./" : home_;
-
      maxPoints           = 3000;
      maxVectors          = 5;
      normalMatrix        = new Float32Array([1, 0, 0,
