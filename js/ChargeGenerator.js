@@ -51,22 +51,22 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          chargesArray = new ArrayBuffer(bytesPerVertex * charges.getCharges().length);
        }
-     }
+     };
 
      this.getCharges      = function ()
      {
        return charges;
-     }
+     };
 
      this.getChargesArray = function ()
      {
        return chargesArray;
-     }
+     };
 
      this.getNcharges     = function ()
      {
        return ncharges;
-     }
+     };
 
      /**
       * Populate the chargesArray with position, size, and color for each charge.
@@ -133,7 +133,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          colorView[index++]        = color[3];
        }
        return chargesArray;
-     }
+     };
 
      charges        = charges_;
 
@@ -148,5 +148,5 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      negativeColor  = [204, 13,  13, 255];
      positiveColor  = [13,  13, 204, 255];
      neutralColor   = [13,  13,  13, 51];
-   }
+   };
  }(window.vizit.electricfield));

@@ -31,15 +31,15 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.disable = function ()
      {
        this.enabled = false;
-     }
+     };
 
      this.isEnabled = function ()
      {
        return this.enabled;
-     }
+     };
 
      /**
-      *
+      * Load vector data onto GPU memory, recycling the existing VBO.
       */
      this.reload = function (glUtility, fieldLine)
      {
@@ -48,12 +48,12 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        glUtility.loadData(this.fieldDirectionBufferHandle, fieldLine.getArrows());
        this.narrows                    = fieldLine.getNarrows();
        this.enabled                    = true;
-     }
+     };
 
      this.fieldLineBufferHandle      = glUtility.createBuffer(fieldLine.getPoints());
      this.npoints                    = fieldLine.getNpoints();
      this.fieldDirectionBufferHandle = glUtility.createBuffer(fieldLine.getArrows());
      this.narrows                    = fieldLine.getNarrows();
      this.enabled                    = true;
-   }
+   };
  }(window.vizit.electricfield));

@@ -62,17 +62,17 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
 	 charges = charges_;
 	 return this;
-       }
+       };
 
        this.getCharges   = function ()
        {
 	 return charges;
-       }
+       };
 
        this.getArrows    = function ()
        {
 	 return arrows;
-       }
+       };
 
        this.setMaxPoints = function (maxPoints_)
        {
@@ -82,45 +82,45 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 }
 	 maxPoints = maxPoints_;
 	 return this;
-       }
+       };
 
        this.getMaxPoints = function ()
        {
 	 return maxPoints;
-       }
+       };
 
        this.setArrowHeadSize    = function (size)
        {
 	 arrowHeadSize = size;
 	 return this;
-       }
+       };
 
        this.getArrowHeadSize    = function ()
        {
 	 return arrowHeadSize;
-       }
+       };
 
        this.setArrowSpacing = function (spacing)
        {
 	 arrowSpacing = spacing;
 	 return this;
-       }
+       };
 
        this.getArrowSpacing = function ()
        {
 	 return arrowSpacing;
-       }
+       };
 
        this.setDs           = function (ds_)
        {
 	 ds = ds_;
 	 return this;
-       }
+       };
 
        this.getDs           = function ()
        {
 	 return ds;
-       }
+       };
 
        /**
 	* Generate two lines as an arrow head along the field line indicating the
@@ -192,7 +192,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 z2     = z0 - asz - nz;
 
 	 fieldLine.pushArrow(x1, y1, z1, x0, y0, z0, x2, y2, z2);
-       }
+       };
 
      /**
       * Trace a field line starting at the given x, y, z coordinates.
@@ -250,7 +250,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 shouldStop = charges.shouldStop(sgn, x, y, z);
        }
        return fieldLine;
-     }
+     };
 
      arrowHeadSize = arrowHeadSize_;
      arrowSpacing  = arrowSpacing_;
@@ -258,5 +258,5 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      ds            = ds_;
      maxPoints     = maxPoints_;
      fieldLine     = new vizit.electricfield.FieldLine(maxPoints);
-   }
+   };
  }(window.vizit.electricfield));

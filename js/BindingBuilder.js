@@ -36,6 +36,11 @@ window.vizit.builder = window.vizit.builder || {};
      /**
       * Build an event handler that bings an element of the visualization
       * the changes in a value from an external source.
+      * 
+      * @param {Object} config A JS object whose attributes describe one or more bindings.
+      * @param {ElectricField | SimpleVectorField}
+      *                 framework A JS container of the field defenitions, with
+      *                 which elements are registered by name.
       */
      this.bindingBuilder       = function (config, framework)
      {
@@ -84,7 +89,7 @@ window.vizit.builder = window.vizit.builder || {};
        methodName = "set" + set.charAt(0).toUpperCase();
        if (set.length > 1)
        {
-         methodName += set.slice(1)
+         methodName += set.slice(1);
        }
 
        element = framework.getElementByName(target);
@@ -100,11 +105,16 @@ window.vizit.builder = window.vizit.builder || {};
        }
        // By convention in the lesson framework changes in var are named varChanged.
        document.addEventListener(from + "Changed", binding.handleUpdate.bind(binding),   false);
-     }
+     };
 
      /**
       * Build one or more bindings as the config is a single object or an array
       * of objects.
+      * 
+      * @param {Object} config A JS object whose attributes describe one or more bindings.
+      * @param {ElectricField | SimpleVectorField}
+      *                 framework A JS container of the field defenitions, with
+      *                 which elements are registered by name.
       */
      this.build      = function (config, framework)
      {
@@ -126,9 +136,9 @@ window.vizit.builder = window.vizit.builder || {};
            binding = this.bindingBuilder(config, framework);
          }
        }
-     }
+     };
 
      errorMessage       = "";
      warningMessage     = "";
-   }
+   };
  }(window.vizit.builder));

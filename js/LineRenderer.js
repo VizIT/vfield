@@ -79,7 +79,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        projectionMatrixHandle = glUtility.getUniformLocation(program, "projectionMatrix");
 
        return program;
-     }
+     };
 
      /**
       * Draw lines from a set of indexed buffers.
@@ -116,10 +116,10 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
 	 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexedBuffer.indices);
 	 gl.drawElements(gl.LINES, indexedBuffer.nindices, gl.UNSIGNED_SHORT, 0);
        }
-     }
+     };
 
      glUtility = glUtility_;
      gl        = glUtility.getGLContext();
      program   = this.createProgram();
-   }
+   };
 }(window.vizit.vectorfield));

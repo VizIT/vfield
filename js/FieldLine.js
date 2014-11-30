@@ -48,12 +48,12 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 arrows    = new Float32Array(maxPoints);
        }
        return this;
-     }
+     };
 
      this.getMaxPoints = function ()
      {
        return maxPoints;
-     }
+     };
 
      this.pushPoint    = function (x, y, z)
      {
@@ -61,17 +61,17 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        points[pointsIndex++] = y;
        points[pointsIndex++] = z;
        npoints++;
-     }
+     };
 
      this.getPoints    = function ()
      {
        return points;
-     }
+     };
 
      this.getNpoints   = function ()
      {
        return npoints;
-     }
+     };
 
      this.pushArrow    = function (x1, y1, z1, x0, y0, z0, x2, y2, z2)
      {
@@ -88,17 +88,17 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        arrows[arrowIndex++] = y2;
        arrows[arrowIndex++] = z2;
        narrows++;
-     }
+     };
 
      this.getArrows    = function ()
      {
        return arrows;
-     }
+     };
 
      this.getNarrows   = function ()
      {
        return narrows;
-     }
+     };
 
      /**
       * Reset counters and pointer to the beginning of the arrays.
@@ -109,11 +109,11 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        narrows     = 0;
        npoints     = 0;
        pointsIndex = 0;
-     }
+     };
 
      points      = new Float32Array(3*maxPoints);
      arrows      = new Float32Array(maxPoints);
 
      this.reset();
-   }
+   };
 }(window.vizit.electricfield));

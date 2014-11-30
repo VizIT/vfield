@@ -94,7 +94,7 @@ window.vizit.builder = window.vizit.builder || {};
          renderer.setCharges(charges);
        }
        return renderer;
-     }
+     };
 
      errorMessage   = "";
      framework      = framework_;
@@ -105,5 +105,5 @@ window.vizit.builder = window.vizit.builder || {};
      zMin           = Number.POSITIVE_INFINITY;
      zMax           = Number.NEGATIVE_INFINITY;
      warningMessage = "";
-   }
+   };
  }(window.vizit.builder));

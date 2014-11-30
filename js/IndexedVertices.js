@@ -40,57 +40,57 @@ window.vizit.utility = window.vizit.utility || {};
      this.setNindices        = function (n)
      {
        nindices = n;
-     }
+     };
 
      this.getNindices        = function ()
      {
        return nindices;
-     }
+     };
 
      this.setNvertices       = function (n)
      {
        nvertices = n;
-     }
+     };
 
      this.getNvertices       = function ()
      {
        return nvertices;
-     }
+     };
 
      this.setVerticies = function (geometry)
      {
        vertices = geometry;
-     }
+     };
 
      this.getVertices = function ()
      {
        return vertices;
-     }
+     };
 
      this.setVerticies = function (geometry)
      {
        vertices = geometry;
-     }
+     };
 
      this.getVertices = function ()
      {
        return vertices;
-     }
+     };
 
      this.pushVertex  = function (vertex)
      {
        vertices[nvertices++] = vertex;
-     }
+     };
 
-     this.setIndices  = function (indices)
+     this.setIndices  = function (indices_)
      {
-       indices = indices;
-     }
+       indices = indices_;
+     };
 
      this.getIndices = function ()
      {
        return indices;
-     }
+     };
 
      /**
       * Push an index onto the end of the list while incrementing the nindices count.
@@ -98,7 +98,7 @@ window.vizit.utility = window.vizit.utility || {};
      this.pushIndex  = function (index)
      {
        indices[nindices++] = index;
-     }
+     };
 
      maxIndices  = maxIndices_;
      maxVertices = maxVertices_;
@@ -107,5 +107,5 @@ window.vizit.utility = window.vizit.utility || {};
 
      vertices    = new Float32Array(3*maxVertices);
      indices     = new Uint16Array(maxIndices);
-   }
+   };
 }(window.vizit.utility));

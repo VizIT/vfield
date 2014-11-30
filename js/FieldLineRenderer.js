@@ -75,7 +75,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        projectionMatrixHandle = glUtility.getUniformLocation(program, "projectionMatrix");
 
        return program;
-     }
+     };
 
      this.render = function (projectionMatrix, modelViewMatrix, color, fieldLineVBOs)
      {
@@ -107,10 +107,10 @@ window.vizit.electricfield = window.vizit.electricfield || {};
            gl.drawArrays(gl.LINES, 0, fieldLineVBO.narrows);
          }
        }
-     }
+     };
 
      glUtility            = glUtility_;
      gl                   = glUtility.getGLContext();
      program              = this.createProgram();
-   }
+   };
  }(window.vizit.electricfield));

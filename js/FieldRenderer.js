@@ -59,7 +59,7 @@ window.vizit.field = window.vizit.field || {};
      this.getContext          = function ()
      {
        return glUtility.getGLContext();
-     }
+     };
 
      this.setRenderer         = function (renderer_)
      {
@@ -67,18 +67,18 @@ window.vizit.field = window.vizit.field || {};
        renderer.setGlUtility(glUtility);
        renderer.setModelViewMatrix(modelViewMatrix);
        renderer.setProjectionMatrix(projectionMatrix);
-     }
+     };
 
      this.setModelViewMatrix = function (modelViewMatrix_)
      {
        modelViewMatrix = modelViewMatrix_;
        renderer.setModelViewMatrix(modelViewMatrix);
-     }
+     };
 
      this.getModelViewMatrix = function ()
      {
        return modelViewMatrix;
-     }
+     };
 
      this.requestRender      = function ()
      {
@@ -87,19 +87,18 @@ window.vizit.field = window.vizit.field || {};
 	 rendering = true;
 	 requestAnimationFrame(this.render);
        }
-
-     }
+     };
 
      this.render             = function ()
      {
        renderer.render();
        rendering = false;
-     }
+     };
 
      this.start              = function ()
      {
        renderer.start();
-     }
+     };
 
      this.setScale           = function (scale_)
      {
@@ -112,17 +111,17 @@ window.vizit.field = window.vizit.field || {};
        projectionMatrix     = glUtility.generateOrthographicMatrix(scale, scale, -scale, scale);
        renderer.setProjectionMatrix(projectionMatrix);
        this.render();
-     }
+     };
 
      this.zoomBy = function (delta)
      {
        this.setScale(scale+delta);
-     }
+     };
 
      this.setElementName     = function (element, name)
      {
        elementNames[name] = element;
-     }
+     };
 
      this.getElementByName   = function (name)
      {
@@ -134,7 +133,7 @@ window.vizit.field = window.vizit.field || {};
        }
 
        return element;
-     }
+     };
 
      drawingSurface   = drawingSurface_;
      elementNames     = new Object();
@@ -162,5 +161,5 @@ window.vizit.field = window.vizit.field || {};
      drawingSurface.addEventListener("touchstart", eventHandler.handleTouchStart.bind(eventHandler), false);
      drawingSurface.addEventListener("touchmove",  eventHandler.handleTouchMove.bind(eventHandler),  false);
      drawingSurface.addEventListener("touchend",   eventHandler.handleTouchEnd.bind(eventHandler),   false);
-   }
+   };
  }(window.vizit.field));

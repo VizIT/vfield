@@ -38,7 +38,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        {
          nfunctions = functions.push(f);
          return this;
-       }
+       };
 
        // If any functions are passed into the constructor, add them immediatly
        // to the set.
@@ -50,12 +50,12 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        this.getNfunctions = function ()
        {
          return nfunctions;
-       }
+       };
 
        this.getFunctions = function ()
        {
          return functions;
-       }
+       };
 
        this.isModified   = function ()
        {
@@ -69,7 +69,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
          }
 
          return modified;
-       }
+       };
 
        this.setModified         = function (modified)
        {
@@ -77,7 +77,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
          {
            functions[i].setModified(modified);
          }
-       }
+       };
 
        /**
         * Get start points using, for now, preset values of phi0 and r
@@ -99,7 +99,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
          }
 
          return points;
-       }
+       };
 
        /**
         * Comnpute the field at x, y, z by summing contributions from each function.
@@ -120,7 +120,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
          }
 
          return field;
-       }
+       };
 
        /**
         * Determine if tracing a field line should stop.
@@ -145,9 +145,9 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
            should = functions[i].shouldStop(sgn, x, y, z);
          }
          return should;
-       }
+       };
 
        nfunctions = 0;
        functions  = new Array();
-   }
+   };
 }(window.vizit.vectorfield));

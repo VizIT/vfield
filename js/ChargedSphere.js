@@ -86,12 +86,12 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        a3       = a2*a;
        modified = true;
        return this;
-     }
+     };
 
      this.getA               = function ()
      {
        return a;
-     }
+     };
 
      this.setB               = function (b_)
      {
@@ -99,52 +99,52 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        b3       = b*b*b;
        modified = true;
        return this;
-     }
+     };
 
      this.getB               = function ()
      {
        return b;
-     }
+     };
 
      this.setNindices        = function (n)
      {
        nindices = n;
        return this;
-     }
+     };
 
      this.setModified        = function (modified_)
      {
        modified = modified_;
        return this;
-     }
+     };
 
      this.isModified         = function ()
      {
        return modified;
-     }
+     };
 
      this.setNfieldLines     = function (n)
      {
        nfieldLines = n;
        modified    = true;
        return this;
-     }
+     };
 
      this.getNfieldLines     = function ()
      {
        return nfieldLines;
-     }
+     };
 
      this.setName            = function (name_)
      {
        name = name_;
        return this;
-     }
+     };
 
      this.getName            = function ()
      {
        return name;
-     }
+     };
 
     /**
       * Compute the start points for field lines due to the presence of this charge.
@@ -181,7 +181,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        }
 
        return seedPoints;
-     }
+     };
 
      /**
       * Compute the electric field at any point (x,y,x) due to this
@@ -227,7 +227,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 field[2]    = f * deltaZ / r;
 
 	 return field;
-     }
+     };
 
      this.getModelView       = function (scale)
      {
@@ -262,7 +262,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 modelViewMatrix[10] = scale;
        }
        return modelViewMatrix;
-     }
+     };
 
      this.drawFullSurface      = function (glUtility,           surfaceProgram,       surfaceGeometryBuffer,
 					  surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
@@ -275,7 +275,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
 
        gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
-     }
+     };
 
      this.render             = function (glUtility, surfaceProgram)
      {
@@ -325,8 +325,8 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 gl.uniformMatrix4fv(surfaceProgram.getModelViewMatrixHandle(), false, this.getModelView(scale));
        }
 
-     }
-   }
+     };
+   };
 
    /**
     * ChargedSphere extends the GeometryEngine.Sphere class.

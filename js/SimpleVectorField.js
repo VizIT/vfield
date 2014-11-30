@@ -61,84 +61,84 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
      {
        arrowHeadWidth = width;
        return this;
-     }
+     };
 
      this.getArrowHeadWidth   = function ()
      {
        return arrowHeadWidth;
-     }
+     };
 
      this.setArrowHeadSize    = function (size)
      {
        arrowHeadSize = size;
        return this;
-     }
+     };
 
      this.getArrowHeadSize    = function ()
      {
        return arrowHeadSize;
-     }
+     };
 
      this.setColor            = function (color_)
      {
        color = color_;
        return this;
-     }
+     };
 
      this.getColor            = function ()
      {
        return color;
-     }
+     };
 
      this.setGlUtility        = function (glUtility_)
      {
        glUtility = glUtility_;
        return this;
-     }
+     };
 
      this.getGlUtility        = function ()
      {
        return glUtility;
-     }
+     };
 
      this.setMaxVectors       = function (max)
      {
        maxVectors = max;
        return this;
-     }
+     };
 
      this.getMaxVectors       = function ()
      {
        return maxVectors;
-     }
+     };
 
      this.setModelViewMatrix  = function (modelViewMatrix_)
      {
        modelViewMatrix = modelViewMatrix_;
        return this;
-     }
+     };
 
      this.getModelViewMatrix  = function ()
      {
        return modelViewMatrix;
-     }
+     };
 
      this.setProjectionMatrix = function (projectionMatrix_)
      {
        projectionMatrix = projectionMatrix_;
        return this;
-     }
+     };
 
      this.addStartPoints = function (startPoints_)
      {
-       explicitStartPoints = explicitStartPoints.concat(startPoints_)
+       explicitStartPoints = explicitStartPoints.concat(startPoints_);
        return this;
-     }
+     };
 
      this.getStartPoints = function ()
      {
        return explicitStartPoints;
-     }
+     };
 
      this.setupVectorField    = function ()
      {
@@ -170,7 +170,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        indexedBuffers[0]      = indexedBuffer;
 
        return indexedBuffers;
-     }
+     };
 
      this.render              = function ()
      {
@@ -185,7 +185,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
          renderer.drawIndexedLines(projectionMatrix, modelViewMatrix, color, indexedBuffers);
          f.setModified(false);
        }
-     }
+     };
 
      this.start               = function ()
      {
@@ -200,7 +200,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        started        = true;
 
        this.render();
-     }
+     };
 
      arrowHeadWidth      = 0.5;
      arrowHeadSize       = 0.3;
@@ -212,5 +212,5 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
      arrowSize           = typeof arrowSize_ === "undefined" ? 1.0 : arrowSize_;
      explicitStartPoints = new Array();
      started             = false;
-   }
+   };
 }(window.vizit.vectorfield));

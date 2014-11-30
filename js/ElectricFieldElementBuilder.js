@@ -90,7 +90,7 @@ window.vizit.builder = window.vizit.builder || {};
        }
 
        return charges;
-     }
+     };
 
     /**
       * Build one or more elements of an electric field visualization
@@ -119,7 +119,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
        return charges;
-     }
+     };
 
 
      errorMessage   = "";
@@ -132,5 +132,5 @@ window.vizit.builder = window.vizit.builder || {};
      zMin           = Number.POSITIVE_INFINITY;
      zMax           = Number.NEGATIVE_INFINITY;
      warningMessage = "";
-   }
+   };
  }(window.vizit.builder));

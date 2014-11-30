@@ -63,7 +63,7 @@ window.vizit.builder = window.vizit.builder || {};
            // TODO merge these with some functions being renderable
            if (testConfig.type.toLowerCase() === "function")
            {
-             builder = new vizit.builder.CombinedVectorValuedFunctionBuilder(framework)
+             builder = new vizit.builder.CombinedVectorValuedFunctionBuilder(framework);
            }
            else
            {
@@ -72,11 +72,11 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
        return builder.build(config);
-     }
+     };
 
      errorMessage   = "";
      framework      = framework_;
      warningMessage = "";
-   }
+   };
  }(window.vizit.builder));
 

@@ -33,7 +33,7 @@ window.vizit.utility = window.vizit.utility || {};
 
      if (typeof value === "number")
      {
-       number = value
+       number = value;
      }
      else
      {
@@ -41,5 +41,5 @@ window.vizit.utility = window.vizit.utility || {};
      }
 
      return number;
-   }
+   };
  }(window.vizit.utility));

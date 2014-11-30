@@ -43,66 +43,66 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setColor            = function (color_)
      {
        color = color_;
-     }
+     };
 
      this.getColor            = function ()
      {
        return color;
-     }
+     };
 
      this.setX               = function (x_)
      {
        x0 = x_;
        return this;
-     }
+     };
 
      this.getX               = function ()
      {
        return x0;
-     }
+     };
 
      this.setY               = function (y_)
      {
        y0 = y_;
        return this;
-     }
+     };
 
      this.getY               = function ()
      {
        return y0;
-     }
+     };
 
      this.setZ               = function (z_)
      {
        z0 = z_;
        return this;
-     }
+     };
 
      this.getZ               = function ()
      {
        return z0;
-     }
+     };
 
      this.setR               = function (r_)
      {
        radius = r_;
        return this;
-     }
+     };
 
      this.getR               = function ()
      {
        return radius;
-     }
+     };
 
      this.setName            = function (name_)
      {
        name = name_;
-     }
+     };
 
      this.getName            = function ()
      {
        return name;
-     }
+     };
 
      this.getModelView       = function (scale)
      {
@@ -137,7 +137,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          modelViewMatrix[10] = scale;
        }
        return modelViewMatrix;
-     }
+     };
 
      this.drawFullSurface      = function (glUtility,           program,              surfaceGeometryBuffer,
                                            surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
@@ -150,7 +150,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
 
        gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
-     }
+     };
 
      this.render      = function (glUtility, program)
      {
@@ -174,7 +174,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        gl.cullFace(gl.BACK);
        this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
                             vertices.indices, this.getNindices());
-     }
+     };
 
      // Gaussian (neutral) surfaces are grey
      color  = new vizit.utility.Color(0.5, 0.5, 0.5, 0.50);
@@ -183,7 +183,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      x0     = x_;
      y0     = y_;
      z0     = z_;
-   }
+   };
 
    /**
     * gaussianSphere extends the GeometryEngine.sphere class.

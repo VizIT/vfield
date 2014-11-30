@@ -26,7 +26,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
     * Load the point rendering vector and fragment shaders, and map the Float32Arrays
     * describing the points to the shaders. Used, for example, to render point charges.
     *
-    * @param {GLUtility}     GLUtility_ A wrapper around the WebGLRenderingContext, gl.
+    * @param {GLUtility}     glUtility_ A wrapper around the WebGLRenderingContext, gl.
     *
     * @class
     */
@@ -95,7 +95,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        gl.enableVertexAttribArray(sizeHandle);
 
        return program;
-     }
+     };
 
      this.render       = function (projectionMatrix, modelViewMatrix, chargeBuffer, charges)
      {
@@ -120,10 +120,10 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        gl.vertexAttribPointer(colorHandle,    4, gl.UNSIGNED_BYTE, true,  20, 16);
 
        gl.drawArrays(gl.POINTS, 0, charges.getNcharges());
-     }
+     };
 
      glUtility     = glUtility_;
      gl            = glUtility.getGLContext();
      program       = this.createProgram();
-   }
+   };
 }(window.vizit.electricfield));

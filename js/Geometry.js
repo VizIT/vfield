@@ -46,53 +46,53 @@ window.vizit.geometry = window.vizit.geometry || {};
      this.setNindices        = function (n)
      {
        nindices = n;
-     }
+     };
 
      this.getNindices        = function ()
      {
        return nindices;
-     }
+     };
 
      this.setNvertices       = function (n)
      {
        nvertices = n;
-     }
+     };
 
      this.getNvertices       = function ()
      {
        return nvertices;
-     }
+     };
 
      this.setVerticies = function (geometry)
      {
        vertices = geometry;
-     }
+     };
 
      this.getVertices = function ()
      {
        return vertices;
-     }
+     };
 
-     this.setIndices  = function (indices)
+     this.setIndices  = function (indices_)
      {
-       indices = indices;
-     }
+       indices = indices_;
+     };
 
      this.getIndices = function ()
      {
        return indices;
-     }
+     };
 
-     this.setNormals = function (normals)
+     this.setNormals = function (normals_)
      {
-      normals = normals;
-     }
+      normals = normals_;
+     };
 
      this.getNormals = function ()
      {
        return normals;
-     }
-   }
+     };
+   };
 
    /**
     * An enum cataloging the known shapes.
@@ -130,18 +130,18 @@ window.vizit.geometry = window.vizit.geometry || {};
          throw "Vertex buffers already registered for " + type + ".";
        }
        registry[type] = vertices;
-     }
+     };
 
      this.hasVertices = function (type)
      {
        return registry.hasOwnProperty(type);
-     }
+     };
 
      this.retrieveVertices = function (type)
      {
        return registry[type];
-     }
-   }
+     };
+   };
 
    /**
     * Common prototype for each shape, allowing all instances of
@@ -184,7 +184,7 @@ window.vizit.geometry = window.vizit.geometry || {};
      {
        // TODO: Magic number!
        return 6;
-     }
+     };
 
      /**
       * Fill in the vertices, normals and indices for a unit square
@@ -215,7 +215,7 @@ window.vizit.geometry = window.vizit.geometry || {};
 
        surfaceGeometry.setNvertices(12);
        surfaceGeometry.setNindices(6);
-     }
+     };
 
      /**
       * Retrieve vertex buffers from the registry if they already exist,
@@ -246,8 +246,8 @@ window.vizit.geometry = window.vizit.geometry || {};
          this.registerVertices(shape.value, vertices);
        }
        return vertices;
-     }
-   }
+     };
+   };
 
    ns.Square.prototype = ns.vertexRegistry;
 
@@ -273,22 +273,22 @@ window.vizit.geometry = window.vizit.geometry || {};
      this.getBaseHeight = function ()
      {
        return baseHeight;
-     }
+     };
 
      this.getBaseRadius = function ()
      {
        return baseRadius;
-     }
+     };
 
      this.getShape  = function ()
      {
        return shape;;
-     }
+     };
 
      this.getNindices = function ()
      {
        return 4*nslices+6;
-     }
+     };
 
      /**
       * Generate vertices, normals and indices for the end caps and wall of the
@@ -357,9 +357,9 @@ window.vizit.geometry = window.vizit.geometry || {};
          bottomIndex            = i + 3*nslices+4;
          indices[bottomIndex]   = bottomIndex;
          bottomIndex           *= 3;
-         vertices[bottomIndex]  = vertices[topIndex++]
+         vertices[bottomIndex]  = vertices[topIndex++];
          normals[bottomIndex++] = 0;
-         vertices[bottomIndex]  = vertices[topIndex]
+         vertices[bottomIndex]  = vertices[topIndex];
          normals[bottomIndex++] = 0;
          vertices[bottomIndex]  = bottom;
          normals[bottomIndex]   = -1;
@@ -390,7 +390,7 @@ window.vizit.geometry = window.vizit.geometry || {};
        }
        surfaceGeometry.setNvertices(3*(4*nslices+6));
        surfaceGeometry.setNindices(4*nslices+6);
-     }
+     };
 
      /**
       * Retrieve vertex buffers from the registry if they already exist,
@@ -418,8 +418,8 @@ window.vizit.geometry = window.vizit.geometry || {};
          this.registerVertices(shape.value, vertices);
        }
        return vertices;
-     }
-   }
+     };
+   };
 
    ns.Cylinder.prototype = ns.vertexRegistry;
 
@@ -441,17 +441,17 @@ window.vizit.geometry = window.vizit.geometry || {};
      this.getIntrinsicRadius = function ()
      {
        return intrinsicRadius;
-     }
+     };
 
      this.getShape  = function ()
      {
        return shape;;
-     }
+     };
 
      this.getNindices = function ()
      {
        return 6*nlatitude*nlongitude;
-     }
+     };
 
      /**
       * Compute the vertices, normal and indices for a spherical surface of
@@ -480,7 +480,7 @@ window.vizit.geometry = window.vizit.geometry || {};
        var z;
 
        vertices  = surfaceGeometry.getVertices(); //new Float32Array(3*(nlatitude+1)*(nlongitude+1));
-       nindices  = 0
+       nindices  = 0;
        nvertices = 0;
        normals   = surfaceGeometry.getNormals();  //new Float32Array(3*(nlatitude+1)*(nlongitude+1));
 
@@ -532,7 +532,7 @@ window.vizit.geometry = window.vizit.geometry || {};
          }
        }
        surfaceGeometry.setNindices(--nindices);
-     }
+     };
 
      /**
       * Retrieve vertex buffers from the registry if they already exist,
@@ -560,8 +560,8 @@ window.vizit.geometry = window.vizit.geometry || {};
          this.registerVertices(shape.value, vertices);
        }
        return vertices;
-     }
-   }
+     };
+   };
 
    ns.Sphere.prototype = ns.vertexRegistry;
 

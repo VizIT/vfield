@@ -116,7 +116,7 @@ window.vizit.builder = window.vizit.builder || {};
                // This builder will lookup elements of the visualization by name
                // from the framework.
                builder = new vizit.builder.BindingBuilder();
-               builder.build(bindingsConfig, framework)
+               builder.build(bindingsConfig, framework);
              }
 
              framework.setRenderer(renderer);
@@ -134,7 +134,7 @@ window.vizit.builder = window.vizit.builder || {};
            alert("Can not find canvas with id=\"" + drawingSurfaceID + "\".");
          }
        }
-     }
+     };
 
      this.process = function (config)
      {
@@ -155,11 +155,11 @@ window.vizit.builder = window.vizit.builder || {};
            this.processConfig(config);
          }
        }
-     }
+     };
 
      errorMessage       = "";
      warningMessage     = "";
-   }
+   };
  }(window.vizit.builder));
 
 

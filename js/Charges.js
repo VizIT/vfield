@@ -51,87 +51,87 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          charge   = vizit.utility.ensureNumber(charge_);
 	 modified = true;
-       }
+       };
 
        this.getCharge          = function ()
        {
 	 return charge;
-       }
+       };
 
        this.setX               = function(x)
        {
          position[0] = vizit.utility.ensureNumber(x);
          modified    = true;
-       }
+       };
 
        this.getX               = function()
        {
          return position[0];
-       }
+       };
 
        this.setY               = function(y)
        {
          position[1] = vizit.utility.ensureNumber(y);
          modified    = true;
-       }
+       };
 
        this.getY               = function()
        {
          return position[1];
-       }
+       };
 
        this.setZ               = function(z)
        {
          position[2] = vizit.utility.ensureNumber(z);
          modified    = true;
-       }
+       };
 
        this.getZ               = function()
        {
          return position[2];
-       }
+       };
 
-       this.setPosition        = function (position)
+       this.setPosition        = function (position_)
        {
-	 position = position;
+	 position = position_;
 	 modified = true;
-       }
+       };
 
        this.getPosition        = function ()
        {
 	 return position;
-       }
+       };
 
        this.setNfieldLines     = function (n)
        {
 	 nfieldLines = n;
 	 modified    = true;
-       }
+       };
 
        this.getNfieldLines     = function ()
        {
 	 return nfieldLines;
-       }
+       };
 
        this.setModified        = function (modified_)
        {
 	 modified = modified_;
-       }
+       };
 
        this.isModified         = function ()
        {
 	 return modified;
-       }
+       };
 
        this.setName            = function (name_)
        {
 	 name = name_;
-       }
+       };
 
        this.getName            = function ()
        {
 	 return name;
-       }
+       };
 
        this.getField           = function (x, y, z)
        {
@@ -163,7 +163,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 field[2]    = f * deltaZ / r;
 
 	 return field;
-       }
+       };
 
        /**
 	* Compute the start points for field lines due to the presence of this charge.
@@ -181,7 +181,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 var sgn;
 	 var y;
 
-	 increment  = 2.39996323 //Math.PI * (3- Math.sqrt(5))
+	 increment  = 2.39996323; //Math.PI * (3- Math.sqrt(5))
 	 seedPoints = new Array();
 	 sgn        = charge > 0 ? 1 : charge < 0 ? -1 : 0;
 	 nlines     = Math.round(fieldLineDensity * charge * sgn);
@@ -199,7 +199,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 				     sgn));
 	 }
 	 return seedPoints;
-       }
+       };
 
        /**
 	* Compute the start points for field lines due to the presence of this charge.
@@ -241,7 +241,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 }
 
 	 return seedPoints;
-       }
+       };
 
        this.shouldStop      = function (sgn, x, y, z)
        {
@@ -256,7 +256,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 // charge - where the field line should not terminate.
 
 	 return sgn * charge < 0.0 && r2 < minR2;
-       }
+       };
 
        charge           = charge_;
        modified         = true;
@@ -266,7 +266,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
                                     vizit.utility.ensureNumber(z_));
        fieldLineDensity = typeof fieldLineDensity_ === 'undefined' ? 0 : fieldLineDensity_;
        nfieldLines      = typeof nfieldLines_      === 'undefined' ? 0 : nfieldLines_;
-   }
+   };
 
    /**
     * A collection of charges, both point charges and charge distributions.
@@ -286,7 +286,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
 	 ncharges = charges.push(charge);
 	 return this;
-       }
+       };
 
        // If any charges are passed into the constructor, add them immediatly
        // to the set.
@@ -298,28 +298,28 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        this.getNcharges = function ()
        {
 	 return ncharges;
-       }
+       };
 
        this.getCharges = function ()
        {
 	 return charges;
-       }
+       };
 
        this.addDistribution = function (distribution)
        {
 	 ndistributions = distributions.push(distribution);
 	 return this;
-       }
+       };
 
        this.getNdistributions = function ()
        {
 	 return ndistributions;
-       }
+       };
 
        this.getDistributions  = function ()
        {
 	 return distributions;
-       }
+       };
 
        this.chargesModified   = function ()
        {
@@ -333,7 +333,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 }
 
 	 return modified;
-       }
+       };
 
        this.distributionsModified = function ()
        {
@@ -347,12 +347,12 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 }
 
 	 return modified;
-       }
+       };
 
        this.isModified            = function ()
        {
 	 return this.chargesModified() || this.distributionsModified();
-       }
+       };
 
        this.setModified         = function (modified)
        {
@@ -365,7 +365,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 {
 	   distributions[i].setModified(modified);
 	 }
-       }
+       };
 
        /**
 	* Get start points using, for now, preset values of phi0 and r
@@ -391,7 +391,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 }
 
 	 return points;
-       }
+       };
 
        /**
 	* Comnpute the field at x, y, z resulting from our charge
@@ -424,7 +424,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	 }
 
 	 return field;
-       }
+       };
 
        /**
 	* Determine if tracing a field line should stop.
@@ -451,10 +451,10 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 	   should = charge.shouldStop(sgn, x, y, z);
 	 }
 	 return should;
-       }
+       };
 
        ncharges      = 0;
        charges       = new Array();
        distributions = new Array();
-   }
+   };
  }(window.vizit.electricfield));

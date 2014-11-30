@@ -27,7 +27,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
     * Float32Arrays describing the vertices to the shaders. Used, for example, in
     * the vector field rendering.
     *
-    * @param {GLUtility} GLUtility_ A wrapper around the WebGLRenderingContext, gl.
+    * @param {GLUtility} glUtility_ A wrapper around the WebGLRenderingContext, gl.
     *
     * @constructor
     */
@@ -111,62 +111,61 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        surfaceColorHandle          = glUtility.getUniformLocation(program, "surfaceColor");
 
        return program;
-     }
+     };
 
      this.getAmbientLightingHandle = function ()
      {
        return ambientLightingHandle;
-     }
+     };
 
      this.getDirectionalLightingHandle = function ()
      {
        return directionalLightingHandle;
-     }
+     };
 
      this.getDirectionalColorHandle = function ()
      {
        return directionalColorHandle;
-     }
+     };
 
      this.getModelViewMatrixHandle = function ()
      {
        return modelViewMatrixHandle;
-     }
+     };
 
      this.getGlobalModelViewMatrixHandle = function ()
      {
        return globalModelViewMatrixHandle;
-     }
+     };
 
      this.getNormalHandle = function ()
      {
        return normalHandle;
-     }
+     };
 
      this.getNormalMatrixHandle = function ()
      {
        return normalMatrixHandle;
-     }
+     };
 
      this.getPositionHandle = function ()
      {
        return positionHandle;
-     }
+     };
 
      this.getProjectionMatrixHandle = function ()
      {
        return projectionMatrixHandle;
-     }
+     };
 
      this.getSurfaceColorHandle     = function ()
      {
        return surfaceColorHandle;
-     }
+     };
 
-     // TODO Consider adding drawSurfaces, where surface=>surfaces, an array of surfaces.
      // TODO Consider including enable gl.BLEND code
      this.render      = function (projectionMatrix, globalModelViewMatrix,
-                                 normalMatrix,     surfaces)
+                                  normalMatrix,     surfaces)
      {
        var nsurfaces;
        nsurfaces = surfaces.length;
@@ -190,10 +189,10 @@ window.vizit.electricfield = window.vizit.electricfield || {};
            surfaces[i].render(glUtility, this);
          }
        }
-     }
+     };
 
      glUtility = glUtility_;
      gl        = glUtility.getGLContext();
      program   = this.createProgram();
-   }
+   };
  }(window.vizit.electricfield));

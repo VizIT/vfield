@@ -56,35 +56,35 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        x0                  = x_;
        modelViewMatrix[12] = x0;
        return this;
-     }
+     };
      this.getX               = function ()
      {
        return x0;
-     }
+     };
 
      this.setY               = function (y_)
      {
        y0                  = y_;
        modelViewMatrix[13] = y0;
        return this;
-     }
+     };
 
      this.getY               = function ()
      {
        return y0;
-     }
+     };
 
      this.setZ               = function (z_)
      {
        z0                  = z_;
        modelViewMatrix[14] = z0;
        return this;
-     }
+     };
 
      this.getZ               = function ()
      {
        return z0;
-     }
+     };
 
      /**
       * Shorthand invocation to set each of x0, y0, z0 from array elements
@@ -94,70 +94,71 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        this.setX(origin[0]);
        this.setY(origin[1]);
        return this.setZ(origin[2]);
-     }
+     };
 
      this.getOrigin          = function ()
      {
        return [x0, y0, z0];
-     }
+     };
 
      this.setR               = function (r_)
      {
        radius = r_;
        return this;
-     }
+     };
+     
      this.getR               = function ()
      {
        return radius;
-     }
+     };
 
      this.setHeight          = function (h_)
      {
        height = h_;
        return this;
-     }
+     };
 
      this.getHeight          = function ()
      {
        return height;
-     }
+     };
 
      this.setTheta           = function (t_)
      {
        theta = t_;
        return this;
-     }
+     };
 
      this.getTheta           = function ()
      {
        return theta;
-     }
+     };
 
      this.setPhi             = function (p_)
      {
        phi = p_;
        return this;
-     }
+     };
 
      this.getPhi             = function ()
      {
        return phi;
-     }
+     };
 
      this.setName            = function (name_)
      {
        name = name_;
-     }
+     };
 
      this.getName            = function ()
      {
        return name;
-     }
+     };
 
      this.render                 = function (glUtility, surfaceProgram)
      {
        this.fullRender(glUtility, surfaceProgram, modelViewMatrix, height, radius, radius, true);
-     }
+     };
 
      // Gaussian (neutral) surfaces are grey
      color  = new vizit.utility.Color(0.5, 0.5, 0.5, 0.50);
@@ -173,7 +174,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setColor(color);
 
      modelViewMatrix = this.getCylinderModelView(x0, y0, z0, this.getBaseHeight(), this.getBaseRadius(), phi, theta);
-   }
+   };
 
    /**
     * gaussianCylinderextends cylinder.

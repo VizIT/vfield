@@ -40,32 +40,32 @@ window.vizit.builder = window.vizit.builder || {};
      this.getXMin = function ()
      {
        return xMin;
-     }
+     };
 
      this.getXMax = function ()
      {
        return xMax;
-     }
+     };
       
      this.getYMin = function ()
      {
        return yMin;
-     }
+     };
 
      this.getYMax = function ()
      {
        return yMax;
-     }
+     };
       
      this.getZMin = function ()
      {
        return zMin;
-     }
+     };
 
      this.getZMax = function ()
      {
        return zMax;
-     }
+     };
 
      /**
       * Pull out elements from a charged plane configuration and
@@ -176,7 +176,7 @@ window.vizit.builder = window.vizit.builder || {};
                                                            name);
 
        return chargedPlane;
-     }
+     };
 
      /**
       * Pull out the elements from a charged clylinder configuration object, and
@@ -273,7 +273,7 @@ window.vizit.builder = window.vizit.builder || {};
                                                                  name);
 
        return chargedCylinder;
-     }
+     };
 
      this.chargedLineBuilder       = function (config)
      {
@@ -349,7 +349,7 @@ window.vizit.builder = window.vizit.builder || {};
                                                          name);
 
        return chargedLine;
-     }
+     };
 
      this.chargedSphereBuilder      = function (config)
      {
@@ -421,7 +421,7 @@ window.vizit.builder = window.vizit.builder || {};
                                                              name);
 
        return chargedSphere;
-     }
+     };
 
      /**
       * Peek at the type of charge distribution, and dispatch the
@@ -469,7 +469,7 @@ window.vizit.builder = window.vizit.builder || {};
        }
 
        return distribution;
-     }
+     };
 
      /**
       * Build one or more charge distributions as defined in a
@@ -497,7 +497,7 @@ window.vizit.builder = window.vizit.builder || {};
                name = distribution.getName();
                if (name)
                {
-                 framework.setElementName(distribution, name)
+                 framework.setElementName(distribution, name);
                }
              }
            }
@@ -512,17 +512,17 @@ window.vizit.builder = window.vizit.builder || {};
              name = distribution.getName();
              if (name)
              {
-               framework.setElementName(distribution, name)
+               framework.setElementName(distribution, name);
              }
            }
          }
        }
        return charges;
-     }
+     };
 
      // Common RE's acros multiple methods.
      chargeDensityRE    = /\s*charge\s*density\s*/i;
      fieldLineDensityRE = /\s*field\s*line\s*density\s*/i;
-   }
+   };
  }(window.vizit.builder));
 

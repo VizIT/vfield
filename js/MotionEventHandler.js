@@ -68,7 +68,7 @@ window.vizit.utility = window.vizit.utility || {};
        }
        // Never found a match
        return -1;
-     }
+     };
 
      this.handleTouchStart = function (event)
      {
@@ -99,7 +99,7 @@ window.vizit.utility = window.vizit.utility || {};
        {
 	   return false;
        }
-     }
+     };
 
      this.handleTouchEnd = function (event)
      {
@@ -129,7 +129,7 @@ window.vizit.utility = window.vizit.utility || {};
        {
 	   return false;
        }
-     }
+     };
 
      /*
       * Touch move events when there is one active touch are delegated
@@ -174,7 +174,7 @@ window.vizit.utility = window.vizit.utility || {};
        {
 	 return false;
        }
-     }
+     };
 
      /*
       * Handle a move event with two active touches. This will correspond to
@@ -236,7 +236,7 @@ window.vizit.utility = window.vizit.utility || {};
        {
 	 return false;
        }
-     }
+     };
 
      this.handleTouchMove = function (event)
      {
@@ -249,19 +249,19 @@ window.vizit.utility = window.vizit.utility || {};
 	 return this.handleTwoActiveMove(event);
        }
        return true;
-     }
+     };
 
      this.handleMouseDown = function (event)
      {
        inprogress = true;
        lastX      = event.clientX;
        lastY      = event.clientY;
-     }
+     };
 
      this.handleMouseUp  = function (event)
      {
        inprogress = false;
-     }
+     };
 
      this.handleMouseMove = function (event)
      {
@@ -285,9 +285,9 @@ window.vizit.utility = window.vizit.utility || {};
        target.setModelViewMatrix(modelViewMatrix);
        target.requestRender();
 
-       lastX = newX
+       lastX = newX;
        lastY = newY;
-     }
+     };
 
      this.handleMouseWheel = function (event_)
      {
@@ -307,6 +307,6 @@ window.vizit.utility = window.vizit.utility || {};
        {
 	   return false;
        }
-     }
-   }
+     };
+   };
 }(window.vizit.utility));

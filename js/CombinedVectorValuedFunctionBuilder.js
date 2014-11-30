@@ -61,7 +61,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
          else if (property.toLowerCase() === "body")
          {
-           body = config[property]
+           body = config[property];
          }
          else if (property.toLowerCase() ==="name")
          {
@@ -84,7 +84,7 @@ window.vizit.builder = window.vizit.builder || {};
        f = new vizit.vectorfield.VectorFunction(agrs, body);
 
        return f;
-     }
+     };
 
      this.build = function (config)
      {
@@ -109,7 +109,7 @@ window.vizit.builder = window.vizit.builder || {};
                name = f.getName();
                if (name)
                {
-                 framework.setElementName(f, name)
+                 framework.setElementName(f, name);
                }
              }
            }
@@ -124,17 +124,17 @@ window.vizit.builder = window.vizit.builder || {};
              name = f.getName();
              if (name)
              {
-               framework.setElementName(f, name)
+               framework.setElementName(f, name);
              }
            }
          }
        }
        return functions;
-     }
+     };
 
      errorMessage   = "";
      framework      = framework_;
      warningMessage = "";
-   }
+   };
  }(window.vizit.builder));
 

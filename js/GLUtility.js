@@ -61,17 +61,17 @@ window.vizit.utility = window.vizit.utility || {};
        }
 
        return gl;
-     }
+     };
 
      this.clearColor        = function (r, g, b, a)
      {
        gl.clearColor(r, g, b, a);
-     }
+     };
 
      this.clear             = function ()
      {
        gl.clear(gl.COLOR_BUFFER_BIT);
-     }
+     };
 
      /**
       * Create and compile a vertex or fragment shader as given by the shader type.
@@ -89,7 +89,7 @@ window.vizit.utility = window.vizit.utility || {};
        }
 
        return shader;
-     }
+     };
 
 
      /**
@@ -117,7 +117,7 @@ window.vizit.utility = window.vizit.utility || {};
        gl.linkProgram(program);
 
        return program;
-     }
+     };
 
      /**
       * Load data into an existing buffer - for animation
@@ -129,7 +129,7 @@ window.vizit.utility = window.vizit.utility || {};
        // loads the current buffer, the vertexBuffer found above, with the vertex data.
        // The gl bufer is strongly typed with 32 bit floating point data.
        gl.bufferData(gl.ARRAY_BUFFER, floatArray, gl.STATIC_DRAW);
-     }
+     };
 
      /**
       * Generate a buffer from a Float32Array
@@ -140,7 +140,7 @@ window.vizit.utility = window.vizit.utility || {};
        var vertexBuffer = gl.createBuffer();
        this.loadData(vertexBuffer, floatArray);
        return vertexBuffer;
-     }
+     };
 
      /**
       * Generate a buffer for a vertex array index from a Uint16Array
@@ -156,7 +156,7 @@ window.vizit.utility = window.vizit.utility || {};
        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, UintArray, gl.STATIC_DRAW);
 
        return indexBuffer;
-     }
+     };
 
      /**
       * Lookup a shader attribute location by name on the given program.
@@ -178,7 +178,7 @@ window.vizit.utility = window.vizit.utility || {};
        }
 
        return attributeLocation;
-     }
+     };
 
      /**
       * Bind a buffer to a vertex shader attribute,
@@ -205,7 +205,7 @@ window.vizit.utility = window.vizit.utility || {};
        // there are no array entries between attribute values, and the first element is at position
        //  0 in the array.
        gl.vertexAttribPointer(attribute, size, type, false, stride, offset);
-     }
+     };
 
      /**
       * Load an image from the givern source. Once the image is loaded, generate a texture.
@@ -223,7 +223,7 @@ window.vizit.utility = window.vizit.utility || {};
        image.src    = src;
 
        return texture;
-     }
+     };
 
      /**
       * Once the image is loaded bind it to a texture and set options
@@ -237,7 +237,7 @@ window.vizit.utility = window.vizit.utility || {};
        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
        gl.generateMipmap(gl.TEXTURE_2D);
        callback();
-     }
+     };
 
      /**
       * Bind a texture to a sampler
@@ -247,7 +247,7 @@ window.vizit.utility = window.vizit.utility || {};
        gl.activeTexture(gl.TEXTURE0+textureIndex);
        gl.bindTexture(gl.TEXTURE_2D, texture);
        gl.uniform1i(uniformSampler, textureIndex);
-     }
+     };
 
      this.generateModelViewMatrix = function (t)
      {
@@ -255,7 +255,7 @@ window.vizit.utility = window.vizit.utility || {};
                                 0, 1, 0, 0,
                                 0, 0, 1, 0,
                                 t, 0, 0, 1]);
-     }
+     };
 
      this.generatePerspectiveMatrix = function (x_scale, y_scale, z_near, z_far)
      {
@@ -263,7 +263,7 @@ window.vizit.utility = window.vizit.utility || {};
                                   0.0,       z_near/y_scale,                  0.0,                             0.0,
                                   0.0,             0.0,         -(z_far+z_near)/(z_far-z_near),               -1.0,
                                   0.0,             0.0,         -2*z_far*z_near/(z_far-z_near),                0.0]);
-     }
+     };
 
      this.generateOrthographicMatrix = function (x_scale, y_scale, z_near, z_far)
      {
@@ -271,7 +271,7 @@ window.vizit.utility = window.vizit.utility || {};
                                   0.0,          1/y_scale,                  0.0,                       0.0,
                                   0.0,             0.0,               -2/(z_far-z_near),               0.0,
                                   0.0,             0.0,          -(z_far+z_near)/(z_far-z_near),       1.0]);
-     }
+     };
 
 
      /**
@@ -293,7 +293,7 @@ window.vizit.utility = window.vizit.utility || {};
          alert('Can not find uniform' + name + '.');
        }
        return reference;
-     }
+     };
 
      /**
       * Lookup a uniform by name and load three floating point variables.
@@ -308,7 +308,7 @@ window.vizit.utility = window.vizit.utility || {};
          return;
        }
        gl.uniform3f(reference, x, y, z);
-     }
+     };
 
      /**
       * Lookup a uniform by name and load four floating point variables.
@@ -323,7 +323,7 @@ window.vizit.utility = window.vizit.utility || {};
          return;
        }
        gl.uniform4f(reference, r, b, g, a);
-     }
+     };
 
      /**
       * Lookup a uniform by name and load a 3x3 floating point matrix.
@@ -340,7 +340,7 @@ window.vizit.utility = window.vizit.utility || {};
 
        // Load the matrix into the shader
        gl.uniformMatrix3fv(reference, false, matrix);
-     }
+     };
 
      /**
       * Lookup a uniform by name and load a 4x4 floating point matrix.
@@ -357,7 +357,7 @@ window.vizit.utility = window.vizit.utility || {};
 
        // Load the matrix into the shader
        gl.uniformMatrix4fv(reference, false, matrix);
-     }
+     };
 
      /**
       * Generate a matrix for a rotation about the X axis by phi
@@ -375,7 +375,7 @@ window.vizit.utility = window.vizit.utility || {};
                                         0,                cosPhi,            sinPhi,   0,
                                  sinTheta,      -cosTheta*sinPhi,   cosPhi*cosTheta,   0,
                                         0,                     0,                 0,   1);
-     }
+     };
 
      /**
       * Take an existing transformation matrix, and apply an additional rotation
@@ -426,7 +426,7 @@ window.vizit.utility = window.vizit.utility || {};
        M[13] =  h1*spst + h2*cp - h3*ctsp;
        M[14] = -h1*cpst + h2*sp + h3*cpct;
        // M[15] = M[15];
-     }
+     };
 
      /*
       * Extract the upper 3x3 rectangular rotation matrix from a 4x4 homogeneous
@@ -441,9 +441,9 @@ window.vizit.utility = window.vizit.utility || {};
       mat3.set(mat4.subarray(8,11), 6);
 
       return mat3;
-    }
+    };
 
     drawingSurface = drawingSurface_;
     gl             = this.getGLContext();
-   }
+   };
 }(window.vizit.utility));

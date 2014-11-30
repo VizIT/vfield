@@ -70,12 +70,12 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          fieldLineGenerator.setArrowSpacing(spacing);
        }
-     }
+     };
 
      this.getArrowSpacing       = function ()
      {
        return arrowSpacing;
-     }
+     };
 
      this.setArrowHeadSize      = function (size)
      {
@@ -84,22 +84,22 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          fieldLineGenerator.setArrowHeadSize(size);
        }
-     }
+     };
 
      this.getArrowHeadSize    = function ()
      {
        return arrowHeadSize;
-     }
+     };
 
      this.setColor            = function (color_)
      {
        color = color_;
-     }
+     };
 
      this.getColor            = function ()
      {
        return color;
-     }
+     };
 
      /**
       * @param {Charges} charges_ Set of point and distributed charges. It must
@@ -108,17 +108,17 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setCharges          = function (charges_)
      {
        charges = charges_;
-     }
+     };
 
      this.getCharges          = function ()
      {
        return charges;
-     }
+     };
 
      this.addGaussianSurface  = function (surface)
      {
        gaussianSurfaces.push(surface);
-     }
+     };
 
      /**
       * Return the set of gaussian surfaces for this electric field model.
@@ -127,27 +127,27 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.getGaussianSurfaces = function ()
      {
        return gaussianSurfaces;
-     }
+     };
 
      this.setGlUtility        = function (glUtility_)
      {
        glUtility = glUtility_;
-     }
+     };
 
      this.getGlUtility        = function ()
      {
        return glUtility;
-     }
+     };
 
      this.setMaxVectors       = function (max)
      {
        maxVectors = max;
-     }
+     };
 
      this.getMaxVectors       = function ()
      {
        return maxVectors;
-     }
+     };
 
      this.setModelViewMatrix  = function (modelViewMatrix_)
      {
@@ -158,33 +158,33 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        // or non-uniform scaling would require the use of (M^-1)^T.
        // See gl-matrix's mat3.normalFromMat4
        normalMatrix    = glUtility.extractRotationPart(modelViewMatrix, normalMatrix);
-     }
+     };
 
      this.getModelViewMatrix  = function ()
      {
        return modelViewMatrix;
-     }
+     };
 
      this.setProjectionMatrix = function (projectionMatrix_)
      {
        projectionMatrix = projectionMatrix_;
-     }
+     };
 
      this.addStartPoint  = function (x_, y_, z_, sgn_)
      {
        explicitStartPoints.push(new Array(x_, y_, z_, sgn_));
        return this;
-     }
+     };
 
      this.addStartPoints = function (startPoints)
      {
-       explicitStartPoints = explicitStartPoints.concat(startPoints)
-     }
+       explicitStartPoints = explicitStartPoints.concat(startPoints);
+     };
 
      this.getStartPoints = function ()
      {
        return explicitStartPoints;
-     }
+     };
 
      this.render              = function ()
      {
@@ -222,7 +222,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
          charges.setModified(false);
        }
-     }
+     };
 
      this.setupCharges        = function (charges)
      {
@@ -236,7 +236,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        }
        chargesArray = chargeGenerator.generate();
        glUtility.loadData(chargeBuffer, chargesArray);
-     }
+     };
 
      /**
       * Setup and render a set of field lines. Each field line is computed, then set as a VBO
@@ -266,7 +266,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          point     = startPoints[i];
          fieldLine = fieldLineGenerator.generate(point[0], point[1], point[2], point[3]);
-         fieldLineVBOs[i].reload(glUtility, fieldLine)
+         fieldLineVBOs[i].reload(glUtility, fieldLine);
        }
 
        for (; i<nVBOs; ++i)
@@ -280,7 +280,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          fieldLine = fieldLineGenerator.generate(point[0], point[1], point[2], point[3]);
          fieldLineVBOs.push(new vizit.electricfield.FieldLineVBO(glUtility, fieldLine));
        }
-     }
+     };
 
      this.start               = function ()
      {
@@ -296,7 +296,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        started           = true;
        this.render();
-     }
+     };
   
      arrowHeadSize       = 0.3;
      arrowSpacing        = 1.2;
@@ -312,5 +312,5 @@ window.vizit.electricfield = window.vizit.electricfield || {};
                                              0, 0, 1]);
      explicitStartPoints = new Array();
      started             = false;
-   }
+   };
  }(window.vizit.electricfield));

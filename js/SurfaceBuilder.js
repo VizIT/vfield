@@ -38,32 +38,32 @@ window.vizit.builder = window.vizit.builder || {};
      this.getXMin = function ()
      {
        return xMin;
-     }
+     };
 
      this.getXMax = function ()
      {
        return xMax;
-     }
+     };
       
      this.getYMin = function ()
      {
        return yMin;
-     }
+     };
 
      this.getYMax = function ()
      {
        return yMax;
-     }
+     };
       
      this.getZMin = function ()
      {
        return zMin;
-     }
+     };
 
      this.getZMax = function ()
      {
        return zMax;
-     }
+     };
 
      this.gaussianCylinderBuilder = function (config)
      {
@@ -133,7 +133,7 @@ window.vizit.builder = window.vizit.builder || {};
                                                                    name);
 
        return gaussianCylinder;
-     }
+     };
 
 
      this.gaussianSphereBuilder = function (config)
@@ -181,7 +181,7 @@ window.vizit.builder = window.vizit.builder || {};
        gaussianSphere = new vizit.electricfield.GaussianSphere(x, y, z, r, name);
 
        return gaussianSphere;
-     }
+     };
 
      /**
       * Build a single surface. Peek at the surface type and dispatch
@@ -217,7 +217,7 @@ window.vizit.builder = window.vizit.builder || {};
        }
 
        return surface;
-     }
+     };
 
      /**
       * Build one or more surfaces according to whether the config is an
@@ -247,7 +247,7 @@ window.vizit.builder = window.vizit.builder || {};
                name = surface.getName();
                if (name)
                {
-                 framework.setElementName(surface, name)
+                 framework.setElementName(surface, name);
                }
              }
            }
@@ -263,12 +263,12 @@ window.vizit.builder = window.vizit.builder || {};
              if (name)
              {
                // TODO Error handling if name already defined.
-               framework.setElementName(surface, name)
+               framework.setElementName(surface, name);
              }
            }
          }
        }
        return renderer;
-     }
-   }
+     };
+   };
  }(window.vizit.builder));

@@ -39,22 +39,22 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
      this.setModified        = function (modified_)
      {
        modified = modified_;
-     }
+     };
 
      this.isModified         = function ()
      {
        return modified;
-     }
+     };
 
      this.setName            = function (name_)
      {
        name = name_;
-     }
+     };
 
      this.getName            = function ()
      {
        return name;
-     }
+     };
 
      this.shouldStop      = function (sgn, x, y, z)
      {
@@ -69,8 +69,8 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        // charge - where the field line should not terminate.
 
        return sgn * Q < 0.0 && r2 < minR2;
-     }
+     };
 
      this.getField = new Function(args, body);
-   }
+   };
 }(window.vizit.vectorfield));

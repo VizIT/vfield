@@ -102,11 +102,11 @@ window.vizit.builder = window.vizit.builder || {};
        }
 
        return renderer;
-     }
+     };
 
      errorMessage   = "";
      framework      = framework_;
      warningMessage = "";
-   }
+   };
  }(window.vizit.builder));
 

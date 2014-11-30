@@ -106,34 +106,34 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        nfieldLines = n;
        modified    = true;
        return this;
-     }
+     };
 
      this.getNfieldLines     = function ()
      {
        return nfieldLines;
-     }
+     };
 
      this.setModified        = function (modified_)
      {
        modified = modified_;
        return this;
-     }
+     };
 
      this.isModified         = function ()
      {
        return modified;
-     }
+     };
 
      this.setName            = function (name_)
      {
        name = name_;
        return this;
-     }
+     };
 
      this.getName            = function ()
      {
        return name;
-     }
+     };
 
      /**
       * Calculate a normal to the plane. Takeing the unit vector k and
@@ -160,7 +160,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        normal[2] /= n;
 
        return normal;
-     }
+     };
 
      /**
       * Apply the MV matrix to each start point for a field line
@@ -188,7 +188,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          point[2] = tz + sy*y*sb + cb*(-sx*x*sa + z*ca);
        }
        return startPoints;
-     }
+     };
 
      /**
       * TODO - does this need to be done on the unit rectangle than transformed?
@@ -248,7 +248,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          }
        }
        return this.adjustStartPoints(startPoints);
-     }
+     };
 
      /**
       * Compute the electric field at any point (x,y,z) due to this
@@ -265,7 +265,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        // of the normal. If negative E is in the opposite direction.
        d =  (x-boundingBox[0])*normal[0]
            + (y-boundingBox[1])*normal[1]
-           + (z-boundingBox[2])*normal[2]
+           + (z-boundingBox[2])*normal[2];
 
        E = twoPi*chargeDensity;
        if (d === 0)
@@ -287,7 +287,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          EField[2] = -E*normal[2];
        }
        return EField;
-     }
+     };
 
      /**
       * Translates a rectangle to be centered at the origin.
@@ -312,7 +312,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        boundingBox[11] -= tz;
 
        return boundingBox;
-     }
+     };
 
      this.zAxisRotation        = function (boundingBox)
      {
@@ -390,7 +390,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        }
 
        return boundingBox;
-     }
+     };
 
      /**
       * For rotation about the x-axis, rotate by -atan(delta-z/delta-y) along the 
@@ -426,7 +426,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
        if (deltaz !== 0 && deltay !== 0)
        {
-         b = Math.atan(deltaz/deltay)
+         b = Math.atan(deltaz/deltay);
 
          sb = Math.sin(b);
          cb = Math.cos(b);
@@ -444,7 +444,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          }
        }
        return boundingBox;
-     }
+     };
 
      /**
       * For rotation about the y-axis, rotate by -atan(delta-z/delta-x) along the 
@@ -482,7 +482,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          if (deltax !== 0)
          {
-           a  = Math.atan(deltaz/deltax)
+           a  = Math.atan(deltaz/deltax);
            sa =  Math.sin(a);
            ca =  Math.cos(a);
          }
@@ -508,7 +508,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        }
 
        return boundingBox;
-     }
+     };
 
      /**
       * Scale the rectangle to a unit square.
@@ -547,12 +547,12 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          }
        }
        return boundingBox;
-     }
+     };
 
      this.getModelView       = function ()
      {
        return modelView;
-     }
+     };
 
      this.drawFullSurface      = function (glUtility,           program,              surfaceGeometryBuffer,
                                            surfaceNormalBuffer, surfaceIndicesBuffer, nindices)
@@ -565,7 +565,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
 
        gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
-     }
+     };
 
      this.render                = function (glUtility, program)
      {
@@ -598,7 +598,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        this.drawFullSurface(glUtility,      program,          vertices.vertices,
                             vertices.normals, vertices.indices, nindices);
        gl.enable(gl.CULL_FACE);
-     }
+     };
 
      modified         = true;
      name             = name_;
@@ -636,27 +636,27 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      //  Column 1:
      modelView[0]  =  sx*(ca*cg - sa*sb*sg);
      modelView[1]  =  sx*(ca*sg + cg*sa*sb);
-     modelView[2]  = -sx*cb*sa
-     modelView[3]  =  0
+     modelView[2]  = -sx*cb*sa;
+     modelView[3]  =  0;
 
      // column 2:
-     modelView[4]  = -sy*cb*sg
-     modelView[5]  =  sy*cb*cg
-     modelView[6]  =  sy*sb
-     modelView[7]  =  0
+     modelView[4]  = -sy*cb*sg;
+     modelView[5]  =  sy*cb*cg;
+     modelView[6]  =  sy*sb;
+     modelView[7]  =  0;
 
      // column 3:
-     modelView[8]  =  (sb*sg*ca + sa*cg)
-     modelView[9]  = -(sb*ca*cg - sa*sg)
-     modelView[10] =  ca*cb
-     modelView[11] =  0
+     modelView[8]  =  (sb*sg*ca + sa*cg);
+     modelView[9]  = -(sb*ca*cg - sa*sg);
+     modelView[10] =  ca*cb;
+     modelView[11] =  0;
 
      // column 4:
      modelView[12] = tx;
      modelView[13] = ty;
      modelView[14] = tz;
      modelView[15] = 1;
-   }
+   };
 
    /**
     * chargedPlane extends the GeometryEngine.square class.

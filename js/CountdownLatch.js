@@ -41,6 +41,6 @@ window.vizit.utility = window.vizit.utility || {};
        {
 	 onDone();
        }
-     }
-   }
+     };
+   };
 }(window.vizit.utility));

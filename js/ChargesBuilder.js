@@ -39,32 +39,32 @@ window.vizit.builder = window.vizit.builder || {};
      this.getXMin = function ()
      {
        return xMin;
-     }
+     };
 
      this.getXMax = function ()
      {
        return xMax;
-     }
+     };
       
      this.getYMin = function ()
      {
        return yMin;
-     }
+     };
 
      this.getYMax = function ()
      {
        return yMax;
-     }
+     };
       
      this.getZMin = function ()
      {
        return zMin;
-     }
+     };
 
      this.getZMax = function ()
      {
        return zMax;
-     }
+     };
       
      /**
       * Build a single point charge from the charges section of the config object.
@@ -191,7 +191,7 @@ window.vizit.builder = window.vizit.builder || {};
        }
 
        return charge;
-     }
+     };
 
      /**
       * Process one or more charges provided in a visualization configuration into
@@ -225,7 +225,7 @@ window.vizit.builder = window.vizit.builder || {};
                name = charge.getName();
                if (name)
                {
-                 framework.setElementName(charge, name)
+                 framework.setElementName(charge, name);
                }
              }
            }
@@ -240,13 +240,13 @@ window.vizit.builder = window.vizit.builder || {};
              name = charge.getName();
              if (name)
              {
-               framework.setElementName(charge, name)
+               framework.setElementName(charge, name);
              }
            }
          }
        }
        return charges;
-     }
+     };
      errorMessage   = "";
      xMin           = Number.POSITIVE_INFINITY;
      xMax           = Number.NEGATIVE_INFINITY;
@@ -255,5 +255,5 @@ window.vizit.builder = window.vizit.builder || {};
      zMin           = Number.POSITIVE_INFINITY;
      zMax           = Number.NEGATIVE_INFINITY;
      warningMessage = "";
-   }
+   };
  }(window.vizit.builder));

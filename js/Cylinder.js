@@ -40,12 +40,12 @@ window.vizit.utility = window.vizit.utility || {};
      this.setColor            = function (color_)
      {
        color = color_;
-     }
+     };
 
      this.getColor            = function ()
      {
        return color;
-     }
+     };
 
      /**
       * Generate a model view matrix to place the standard unit cylinder model 
@@ -96,7 +96,7 @@ window.vizit.utility = window.vizit.utility || {};
        modelViewMatrix[15] = 1.0;
 
        return modelViewMatrix;
-     }
+     };
 
      /**
       * Transform a set of points by the same ModelView matrix as used by the cylinder.
@@ -143,7 +143,7 @@ window.vizit.utility = window.vizit.utility || {};
        }
 
        return points;
-     }
+     };
 
      this.setupBuffers          = function (glUtility,           surfaceProgram,       surfaceGeometryBuffer,
 					   surfaceNormalBuffer, surfaceIndicesBuffer)
@@ -154,18 +154,18 @@ window.vizit.utility = window.vizit.utility || {};
        glUtility.bindBuffer(surfaceGeometryBuffer, surfaceProgram.getPositionHandle(), 3, gl.FLOAT, 0, 0);
        glUtility.bindBuffer(surfaceNormalBuffer,   surfaceProgram.getNormalHandle(),   3, gl.FLOAT, 0, 0);
        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
-     }
+     };
 
      this.drawCap               = function (gl, nindices, offset)
      {
        gl.drawElements(gl.TRIANGLE_FAN, nindices, gl.UNSIGNED_SHORT, offset*2);
-     }
+     };
 
      this.drawSide              = function (gl, nindices, offset)
      {
        gl.drawElements(gl.TRIANGLE_STRIP, nindices, gl.UNSIGNED_SHORT, offset*2);
 
-     }
+     };
 
      this.drawCylinder          = function (glUtility, surfaceProgram, modelView,
 					   nsegments, drawCaps)
@@ -190,7 +190,7 @@ window.vizit.utility = window.vizit.utility || {};
 	 // This draws the bottom cap
 	 this.drawCap(gl, nsegments+2, 3*nsegments+4);
        }
-     }
+     };
 
      /**
       * Render a full cylinder as an assemblage of parts, including rearward and forward facing halves,
@@ -262,7 +262,7 @@ window.vizit.utility = window.vizit.utility || {};
 
 	 this.drawCylinder(glUtility, surfaceProgram, modelViewWorking, nsegments, drawCaps);
        }
-     }
+     };
 
      /**
       * Translates a cylinder to be centered at the origin.
@@ -292,12 +292,12 @@ window.vizit.utility = window.vizit.utility || {};
 	       .setX1(x1)
 	       .setY1(y1)
 	       .setZ1(z1);
-     }
+     };
 
      this.sign             = function (x)
      {
        return x < 0 ? -1 : 1;
-     }
+     };
 
      /**
       * Find phi, the rotation about the z-axis.
@@ -324,7 +324,7 @@ window.vizit.utility = window.vizit.utility || {};
 	       .setX1(x1)
 	       .setY1(y1)
 	       .setPhi(phi);
-     }
+     };
 
      /**
       * Find and undo theta, the rotation about the y axis for a cylinder
@@ -350,7 +350,7 @@ window.vizit.utility = window.vizit.utility || {};
 	       .setX0(x0)
 	       .setX1(x1)
 	       .setTheta(theta);
-     }
+     };
 
      /**
       * Height scale - we already have the radius.
@@ -365,11 +365,11 @@ window.vizit.utility = window.vizit.utility || {};
 	 cylinder.setZ0(-sgn*0.5)
 		 .setZ1( sgn*0.5)
 		 .setHeight(height);
-     }
+     };
 
      // populated in the rendering method
      modelViewWorking = new Float32Array(16);
-   }
+   };
 
    /**
     * Cylinder extends the GeometryEngine.cylinder class.

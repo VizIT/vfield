@@ -59,56 +59,56 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
      {
        startPoints = points;
        return this;
-     }
+     };
 
      this.getStartPoints = function ()
      {
        return startPoints;
-     }
+     };
 
      this.setMaxVectors = function (maxVectors_)
      {
        maxVectors = maxVectors_;
        return this;
-     }
+     };
 
      this.getMaxVectors = function ()
      {
        return maxVectors;
-     }
+     };
 
      this.setArrowHeadSize = function (size)
      {
        arrowHeadSize = size;
        return this;
-     }
+     };
 
      this.getArrowHeadSize = function ()
      {
        return arrowHeadSize;
-     }
+     };
 
      this.setVectorSpacing = function (spacing)
      {
        vectorSpacing = spacing;
        return this;
-     }
+     };
 
      this.getVectorSpacing = function ()
      {
        return vectorSpacing;
-     }
+     };
 
      this.setDs           = function (ds_)
      {
        ds = ds_;
        return this;
-     }
+     };
 
      this.getDs           = function ()
      {
        return ds;
-     }
+     };
 
      /**
       * Generate a vector with four lines as an arrow head along the field line
@@ -246,7 +246,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        indexedVertices.pushVertex(z5);
        indexedVertices.pushIndex(narrows*6+5);
        indexedVertices.pushIndex(nexusIndex);
-     }
+     };
 
      /**
       * Trace a field line starting at the given x, y, z coordinates, generating
@@ -319,7 +319,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
 	 // console.log("S: " + S + " Next: " + nextVector + " fx: " + field[0] + " fy: " + field[1] + " fz: " + field[2] + " stop: " + shouldStop);
        }
        return nvectors;
-     }
+     };
 
      this.generateField = function ()
      {
@@ -343,7 +343,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        }
 
        return indexedVertices;
-     }
+     };
 
      arrowHeadWidth = arrowHeadWidth_;
      arrowHeadSize  = arrowHeadSize_;
@@ -351,7 +351,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
      f              = f_;
      maxVectors     = maxVectors_;
      arrowSize      = arrowSize_;
-   }
+   };
 }(window.vizit.vectorfield));
 
 
