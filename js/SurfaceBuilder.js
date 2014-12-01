@@ -68,20 +68,22 @@ window.vizit.builder = window.vizit.builder || {};
      this.gaussianCylinderBuilder = function (config)
      {
        var gaussianCylinder;
-       /** The name of this element */
-       var name;
-       var property;
-       /** The coordinates of the center of the cylinder */
-       var x, y, z;
+       var enabled;
        /** Its height. */
-       var h;
-       /** The radius. */
-       var r;
+       var h;       /** The name of this element */
+       var name;
        /** The angle of rotation about the y axis. */
        var phi;
+       var property;
+       /** The radius. */
+       var r;
+       /** The coordinates of the center of the cylinder */
        /** The angle of rotation about the z axis. */
        var theta;
-
+       var x, y, z;
+       
+       enabled = true;
+       
        for (property in config)
        {
          if (property.toLowerCase() === "x")
@@ -116,6 +118,10 @@ window.vizit.builder = window.vizit.builder || {};
          {
            name = config[property];
          }
+         else if (property.toLowerCase() === "enabled")
+         {
+           enabled = config[property];
+         }
        }
 
        xMin = Math.min(xMin, x-r, x+r);
@@ -131,6 +137,10 @@ window.vizit.builder = window.vizit.builder || {};
                                                                    h, r,
                                                                    phi, theta,
                                                                    name);
+       if (!enabled)
+       {
+         gaussianCylinder.setEnabled(enabled);
+       }
 
        return gaussianCylinder;
      };
@@ -139,13 +149,16 @@ window.vizit.builder = window.vizit.builder || {};
      this.gaussianSphereBuilder = function (config)
      {
        var gaussianSphere;
+       var enabled;
        var name;
        var property;
-       /** The coordinates of the center of the sphere. */
-       var x, y, z;
        /** The radius of the sphere. */
        var r;
+       /** The coordinates of the center of the sphere. */
+       var x, y, z;
 
+       enabled = true;
+       
        for (property in config)
        {
          if (property.toLowerCase() === "x")
@@ -168,6 +181,10 @@ window.vizit.builder = window.vizit.builder || {};
          {
            name = config[property];
          }
+         else if (property.toLowerCase() === "enabled")
+         {
+           enabled = config[property];
+         }
        }
        xMin = Math.min(xMin, x-r, x+r);
        xMax = Math.max(xMax, x-r, x+r);
@@ -179,6 +196,12 @@ window.vizit.builder = window.vizit.builder || {};
        zMax = Math.max(zMax, z-r, z+r);
 
        gaussianSphere = new vizit.electricfield.GaussianSphere(x, y, z, r, name);
+       
+       if (!enabled)
+       {
+         gaussianSphere.setEnabled(enabled);
+       }
+
 
        return gaussianSphere;
      };
