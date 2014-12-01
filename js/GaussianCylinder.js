@@ -41,6 +41,8 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    ns.GaussianCylinder = function (x_, y_, z_, h_, r_, phi_, theta_, name_)
    {
      var color;
+     /** Whether or nor we should be rendered. */
+     var enabled;
      var height;
      var modelViewMatrix;
      var name;
@@ -50,6 +52,16 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      var x0;
      var y0;
      var z0;
+     
+     this.setEnabled = function(enabled_)
+     {
+       enabled = vizit.utility.toBoolean(enabled_);
+     };
+     
+     this.isEnabled = function()
+     {
+       return enabled;
+     };
 
      this.setX               = function (x_)
      {
@@ -157,19 +169,23 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
      this.render                 = function (glUtility, surfaceProgram)
      {
-       this.fullRender(glUtility, surfaceProgram, modelViewMatrix, height, radius, radius, true);
+       if (enabled)
+       {
+         this.fullRender(glUtility, surfaceProgram, modelViewMatrix, height, radius, radius, true);
+       }
      };
 
      // Gaussian (neutral) surfaces are grey
-     color  = new vizit.utility.Color(0.5, 0.5, 0.5, 0.50);
-     height = h_;
-     name   = name_;
-     phi    = phi_;
-     radius = r_;
-     theta  = theta_;
-     x0     = x_;
-     y0     = y_;
-     z0     = z_;
+     color   = new vizit.utility.Color(0.5, 0.5, 0.5, 0.50);
+     enabled = true;
+     height  = h_;
+     name    = name_;
+     phi     = phi_;
+     radius  = r_;
+     theta   = theta_;
+     x0      = x_;
+     y0      = y_;
+     z0      = z_;
 
      this.setColor(color);
 

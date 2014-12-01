@@ -33,6 +33,8 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    ns.GaussianSphere = function (x_, y_, z_, r_, name_)
    {
      var color;
+     /** Whether we should render this surface. */
+     var enabled;
      var modelViewMatrix;
      var name;
      var radius;
@@ -48,6 +50,16 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.getColor            = function ()
      {
        return color;
+     };
+     
+     this.setEnabled = function(enabled_)
+     {
+         enabled = vizit.utility.toBoolean(enabled_);
+     };
+     
+     this.isEnabled = function()
+     {
+         return enabled;
      };
 
      this.setX               = function (x_)
@@ -154,35 +166,39 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
      this.render      = function (glUtility, program)
      {
-       var gl;
-       var intrinsicRadius;
-       var vertices;
+       if (enabled)
+       {
+         var gl;
+         var intrinsicRadius;
+         var vertices;
 
-       gl              = glUtility.getGLContext();
-       intrinsicRadius = this.getIntrinsicRadius();
-       vertices        = this.getVertexBuffers(glUtility);
+         gl              = glUtility.getGLContext();
+        intrinsicRadius = this.getIntrinsicRadius();
+         vertices        = this.getVertexBuffers(glUtility);
 
-       gl.uniformMatrix4fv(program.getModelViewMatrixHandle(), false, this.getModelView(radius/intrinsicRadius));
+         gl.uniformMatrix4fv(program.getModelViewMatrixHandle(), false, this.getModelView(radius/intrinsicRadius));
 
-       gl.uniform4f(program.getSurfaceColorHandle(), color.getRed(),
-                    color.getGreen(),                color.getBlue(), color.getAlpha());
+         gl.uniform4f(program.getSurfaceColorHandle(), color.getRed(),
+                      color.getGreen(),                color.getBlue(), color.getAlpha());
 
-       gl.cullFace(gl.FRONT);
-       this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
-                            vertices.indices, this.getNindices());
+         gl.cullFace(gl.FRONT);
+         this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
+                              vertices.indices, this.getNindices());
 
-       gl.cullFace(gl.BACK);
-       this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
-                            vertices.indices, this.getNindices());
+         gl.cullFace(gl.BACK);
+         this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
+                              vertices.indices, this.getNindices());
+       }
      };
 
      // Gaussian (neutral) surfaces are grey
-     color  = new vizit.utility.Color(0.5, 0.5, 0.5, 0.50);
-     name   = name_;
-     radius = r_;
-     x0     = x_;
-     y0     = y_;
-     z0     = z_;
+     color   = new vizit.utility.Color(0.5, 0.5, 0.5, 0.50);
+     enabled = true;
+     name    = name_;
+     radius  = r_;
+     x0      = x_;
+     y0      = y_;
+     z0      = z_;
    };
 
    /**
