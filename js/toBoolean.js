@@ -46,6 +46,7 @@ window.vizit.utility = window.vizit.utility || {};
            case "no":
            case "0":
            case "": result = false;
+                    break;
            default: result = true;
        }
      }
