@@ -59,12 +59,12 @@ window.vizit.utility = window.vizit.utility || {};
 
        for (i=0; i<activeTouches.length; i++)
        {
-	 identifier = activeTouches[i].identifier;
+         identifier = activeTouches[i].identifier;
 
-	 if (identifier === identifier_)
-	 {
-	   return i;
-	 }
+         if (identifier === identifier_)
+         {
+           return i;
+         }
        }
        // Never found a match
        return -1;
@@ -82,22 +82,22 @@ window.vizit.utility = window.vizit.utility || {};
 
        for (i=0; i<touches.length; i++)
        {
-	 touch = touches[i];
-	 if (this.findTouchByIdentifier(touch.identifier) === -1)
-	 {
-	   activeTouches.push(touch);
-	 }
+         touch = touches[i];
+         if (this.findTouchByIdentifier(touch.identifier) === -1)
+         {
+           activeTouches.push(touch);
+         }
 
        }
 
        // Indicate we have done all needed processing on this event
        if (event.preventDefault)
        {
-	   event.preventDefault();
+         event.preventDefault();
        }
        else
        {
-	   return false;
+         return false;
        }
      };
 
@@ -112,22 +112,22 @@ window.vizit.utility = window.vizit.utility || {};
 
        for(i=0; i<touches.length; i++)
        {
-	 index = this.findTouchByIdentifier(touches[i].identifier);
-	 if (index !== -1)
-	 {
-	   // Remove the one entry at index from the array.
-	   activeTouches.splice(index, 1);
-	 }
+         index = this.findTouchByIdentifier(touches[i].identifier);
+         if (index !== -1)
+         {
+           // Remove the one entry at index from the array.
+           activeTouches.splice(index, 1);
+         }
        }
 
        // Indicate we have done all needed processing on this event
        if (event.preventDefault)
        {
-	   event.preventDefault();
+         event.preventDefault();
        }
        else
        {
-	   return false;
+         return false;
        }
      };
 
@@ -147,32 +147,32 @@ window.vizit.utility = window.vizit.utility || {};
        oldTouch = activeTouches[0];
        if (oldTouch !== null)
        {
-	 deltaX   = newTouch.pageX - oldTouch.pageX;
-	 deltaY   = newTouch.pageY - oldTouch.pageY;
+         deltaX   = newTouch.pageX - oldTouch.pageX;
+         deltaY   = newTouch.pageY - oldTouch.pageY;
 
-	 modelViewMatrix = target.getModelViewMatrix();
-	 // Rotate the model view by phi radians about the X axis
-	 // an theta radians about the Y axis.
-	 utility.rotateBy(modelViewMatrix, deltaY/150, deltaX/150);
-	 target.setModelViewMatrix(modelViewMatrix);
-	 target.requestRender();
+         modelViewMatrix = target.getModelViewMatrix();
+         // Rotate the model view by phi radians about the X axis
+         // an theta radians about the Y axis.
+         utility.rotateBy(modelViewMatrix, deltaY/150, deltaX/150);
+         target.setModelViewMatrix(modelViewMatrix);
+         target.requestRender();
 
-	 // Replace the old touch with the new touch, and hence new location.
-	 activeTouches.splice(0, 1, newTouch); 
+         // Replace the old touch with the new touch, and hence new location.
+         activeTouches.splice(0, 1, newTouch); 
        }
        else
        {
-	 activeTouches.push(newTouch);
+         activeTouches.push(newTouch);
        }
 
        // Indicate we have done all needed processing on this event
        if (event.preventDefault)
        {
-	   event.preventDefault();
+         event.preventDefault();
        }
        else
        {
-	 return false;
+         return false;
        }
      };
 
@@ -204,19 +204,19 @@ window.vizit.utility = window.vizit.utility || {};
 
        for(i=0; i<touches.length; i++)
        {
-	 touch      = touches[i];
-	 identifier = touch.identifier;
-	 // Replace the touch that matches the identifier of the changed touch
-	 if (touch0.identifier === identifier)
-	 {
-	   touch0 = touch;
-	   activeTouches.splice(0, 1, touch);
-	 }
-	 else if (touch1.identifier === identifier)
-	 {
-	   touch1 = touch;
-	   activeTouches.splice(1, 1, touch);
-	 }
+         touch      = touches[i];
+         identifier = touch.identifier;
+         // Replace the touch that matches the identifier of the changed touch
+         if (touch0.identifier === identifier)
+         {
+           touch0 = touch;
+           activeTouches.splice(0, 1, touch);
+         }
+         else if (touch1.identifier === identifier)
+         {
+           touch1 = touch;
+           activeTouches.splice(1, 1, touch);
+         }
        }
 
        deltaX     = touch1.pageX - touch0.pageX;
@@ -230,11 +230,11 @@ window.vizit.utility = window.vizit.utility || {};
        // Indicate we have done all needed processing on this event
        if (event.preventDefault)
        {
-	 event.preventDefault();
+         event.preventDefault();
        }
        else
        {
-	 return false;
+         return false;
        }
      };
 
@@ -242,11 +242,11 @@ window.vizit.utility = window.vizit.utility || {};
      {
        if (activeTouches.length === 1)
        {
-	 return this.handleOneActiveMove(event);
+         return this.handleOneActiveMove(event);
        }
        else if (activeTouches.length === 2)
        {
-	 return this.handleTwoActiveMove(event);
+         return this.handleTwoActiveMove(event);
        }
        return true;
      };
@@ -267,7 +267,7 @@ window.vizit.utility = window.vizit.utility || {};
      {
        if (!inprogress)
        {
-	 return;
+         return;
        }
 
        var modelViewMatrix;
@@ -301,11 +301,11 @@ window.vizit.utility = window.vizit.utility || {};
        // Indicate we have done all needed processing on this event
        if (event.preventDefault)
        {
-	   event.preventDefault();
+         event.preventDefault();
        }
        else
        {
-	   return false;
+         return false;
        }
      };
    };
