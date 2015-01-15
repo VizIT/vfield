@@ -38,11 +38,7 @@ window.vizit.field = window.vizit.field || {};
      var elementNames;
      /** Event handler for standard mouse and touch events */
      var eventHandler;
-     /** [Vx, Vy, Vz] = f(x, y, z) */
-     var f;
      var glUtility;
-     /** Do not rerender in response to an event until after we are initialized. */
-     var initialized;
      /** Model-View matrix for use in all programs. */
      var modelViewMatrix;
      /** The specific program that controls the OpenGL. */
@@ -53,8 +49,6 @@ window.vizit.field = window.vizit.field || {};
      var rendering;
      /** Scale sets the bounds used in the projection matrix. */
      var scale;
-     /** Start points for tracing field lines. */
-     var startPoints;
 
      this.getContext          = function ()
      {
