@@ -210,8 +210,10 @@ window.vizit.builder = window.vizit.builder || {};
       * Build a single surface. Peek at the surface type and dispatch
       * the config to the appropriate builder.
       */
-     this.surfaceBuilder       = function (config)
+     this.surfaceBuilder       = function (config, framework)
      {
+       /** Config for binding the charge to external variable changes. */
+       var binding;
        var gaussianCylinderRE;
        var gaussianSphereRE;
        var property;
@@ -226,7 +228,10 @@ window.vizit.builder = window.vizit.builder || {};
          if(property.toLowerCase() === "type")
          {
            type = config[property];
-           break;
+         }
+         else if (property.toLowerCase() === "bind")
+         {
+           binding = config[property];
          }
        }
 
@@ -237,6 +242,11 @@ window.vizit.builder = window.vizit.builder || {};
        else if (type.match(gaussianSphereRE))
        {
          surface = this.gaussianSphereBuilder(config);
+       }
+
+       if (typeof binding !== "undefined" && surface !== "undefined")
+       {
+         this.bind(surface, binding, framework);
        }
 
        return surface;
@@ -277,7 +287,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
          else
          {
-           surface = this.surfaceBuilder(config);
+           surface = this.surfaceBuilder(config, framework);
            // Only add surface if surfaceBuilder was successful
            if (!!surface)
            {
@@ -294,4 +304,6 @@ window.vizit.builder = window.vizit.builder || {};
        return renderer;
      };
    };
+
+   ns.SurfaceBuilder.prototype = ns.bindingBuilder;
  }(window.vizit.builder));

@@ -219,8 +219,6 @@ p,
   text-rendering: optimizeLegibility;
 }
 
-
-
 div.portfolio
 {
   text-align:     justify;
@@ -259,13 +257,18 @@ div.project
 
 .example
 {
-   margin-left:       2%;
+  margin-left:       2%;
+}
+
+div.exemplar
+{
+  margin:            1em 4em;
 }
 
 div.codeExample
 {
-   height:            3in;
-   overflow:          auto;
+  height:            3in;
+  overflow:          auto;
 }
 
 .largeCode
@@ -290,7 +293,7 @@ div#right
 
 
 p.first:first-letter
- {
+{
   font-size:     2.5em;
   margin:        0 -7px 3px 0;
 }
@@ -298,32 +301,32 @@ p.first:first-letter
 
 figure.center img, figure.center canvas,  figure.center applet, figure.center embed, figure.center iframe, math.center
 {
-    display:      block;
-    margin-right: auto;
-    margin-left:  auto;
+  display:      block;
+  margin-right: auto;
+  margin-left:  auto;
 }
 
 .right
 {
-    float: right;
+  float: right;
 }
 
 .left
 {
-    float: left;
+  float: left;
 }
 
 figure figcaption
 {
-    font-size:  smaller;
-    font-style: italic;
-    text-align: center;
+  font-size:  smaller;
+  font-style: italic;
+  text-align: center;
 }
 
-table.center
+table.center, div.center
 {
-    margin-right: auto;
-    margin-left:  auto;
+  margin-right: auto;
+  margin-left:  auto;
 }
 
 div.figure
@@ -366,6 +369,16 @@ summary.faqElement
    font-weight: normal;
    color:       #0050B2;
    background:  transparent;
+}
+
+.license
+{
+  color:          #000066;
+  font-size:      small;
+  font-style:     italic;
+  text-align:     center;
+  padding:        1em;
+  max-width:      75%;
 }
 
 p.error

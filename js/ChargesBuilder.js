@@ -72,8 +72,11 @@ window.vizit.builder = window.vizit.builder || {};
       * @param {object} config The portion of a visualization configuration
       *                        defining a single point charge.
       */
-     this.chargeBuilder = function (config)
+     this.chargeBuilder = function (config, framework)
      {
+       /** Config for binding the charge to external variable changes. */
+       var binding;
+       /** The charge built from the config. */
        var charge;
        /** Error message why the error flag was set. */
        var message;
@@ -119,6 +122,10 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.toLowerCase() === "nfieldlines")
          {
            nfieldLines = config[property];
+         }
+         else if (property.toLowerCase() === "bind")
+         {
+           binding = config[property];
          }
          else if (property.toLowerCase() === "name")
          {
@@ -188,6 +195,11 @@ window.vizit.builder = window.vizit.builder || {};
          }
 
          charge = new vizit.electricfield.Charge(x, y, z, q, fieldLineDensity, nfieldLines, name);
+
+         if (typeof binding !== "undefined")
+         {
+           this.bind(charge, binding, framework);
+         }
        }
 
        return charge;
@@ -217,7 +229,7 @@ window.vizit.builder = window.vizit.builder || {};
            ncharges = config.length;
            for (var i=0; i<ncharges; ++i)
            {
-             charge = this.chargeBuilder(config[i]);
+             charge = this.chargeBuilder(config[i], framework);
              // Only add the charge if chargeBuilder returns a non null result.
              if (!!charge)
              {
@@ -232,7 +244,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
          else
          {
-           charge = this.chargeBuilder(config);
+           charge = this.chargeBuilder(config, framework);
            // Only add the charge if chargeBuilder returns a non null result.
            if (!!charge)
            {
@@ -256,4 +268,6 @@ window.vizit.builder = window.vizit.builder || {};
      zMax           = Number.NEGATIVE_INFINITY;
      warningMessage = "";
    };
+
+   ns.ChargesBuilder.prototype = ns.bindingBuilder;
  }(window.vizit.builder));

@@ -427,8 +427,10 @@ window.vizit.builder = window.vizit.builder || {};
       * Peek at the type of charge distribution, and dispatch the
       * config to the appropriate builder.
       */
-     this.chargeDistributionBuilder = function (config)
+     this.chargeDistributionBuilder = function (config, framework)
      {
+       /** Config for binding the charge to external variable changes. */
+       var binding;
        var chargedCylinderRE;
        var chargedLineRE;
        var chargedPlaneRE;
@@ -447,7 +449,10 @@ window.vizit.builder = window.vizit.builder || {};
          if(property.toLowerCase() === "type")
          {
            type = config[property];
-           break;
+         }
+         else if (property.toLowerCase() === "bind")
+         {
+           binding = config[property];
          }
        }
 
@@ -466,6 +471,11 @@ window.vizit.builder = window.vizit.builder || {};
        else if (type.match(chargedSphereRE))
        {
          distribution = this.chargedSphereBuilder(config);
+       }
+
+       if (typeof binding !== "undefined" && distribution !== "undefined")
+       {
+         this.bind(distribution, binding, framework);
        }
 
        return distribution;
@@ -489,7 +499,7 @@ window.vizit.builder = window.vizit.builder || {};
            ndistributions = config.length;
            for (var i=0; i<ndistributions; ++i)
            {
-             distribution = this.chargeDistributionBuilder(config[i]);
+	       distribution = this.chargeDistributionBuilder(config[i], framework);
              // Only add the charge if chargeBuilder returns a non null result.
              if (!!distribution)
              {
@@ -504,7 +514,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
          else
          {
-           distribution = this.chargeDistributionBuilder(config);
+	     distribution = this.chargeDistributionBuilder(config, framework);
            // Only add the charge if chargeBuilder returns a non null result.
            if (!!distribution)
            {
@@ -524,5 +534,7 @@ window.vizit.builder = window.vizit.builder || {};
      chargeDensityRE    = /\s*charge\s*density\s*/i;
      fieldLineDensityRE = /\s*field\s*line\s*density\s*/i;
    };
+
+   ns.DistributionBuilder.prototype = ns.bindingBuilder;
  }(window.vizit.builder));
 

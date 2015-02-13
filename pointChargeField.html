@@ -9,45 +9,34 @@
     <link   rel="stylesheet"          href="vfield.css" type="text/css" />
     <link   rel="prev"                href="index.html">
     <link   rel="next"                href="sideBySide.html">
-    <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
+    <link   rel="stylesheet" type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
+    <script async src=https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js></script>
     <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
     </script>
-    <script type="text/javascript">
+    <script>
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
           = {
               // The electric field graph displays charges,
               // field lines and gaussian surfaces.
-              type:      "electric field",
+              type:          "electric field",
               // The id of the canvas we draw into
-              canvas:    "chargeCanvas",
+              canvas:        "chargeCanvas",
+              scale:         50.0,
               arrowHeadSize: 1.0,
-              arrowSpacing: 15,
-              scale:     50.0,
+              arrowSpacing:  15,
               // Position a single charge at the origin
               elements:
                 {
                   type: "charge",  charge:  5.0,
                   x: 0.0, y: 0.0, z: 0.0,
-                  fieldLineDensity: 5.0, name: "charge1"
+                  fieldLineDensity: 5.0
                 }
             };
     </script>
   </head>
-  <body>
-<!-- Copyright 2013-2014 Vizit Solutions
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License. -->
+  <body onload="prettyPrint()">
     <div class="wrapper">
     <div id="main">
       <div id="header">
@@ -62,19 +51,19 @@
     <div class="content">
         <h1>Field Lines From a Point Charge</h1>
         <p id="nowebgl" class="error"></p>
-        <p class="abstract">
-          &nbsp;
-        </p>
-        
-        <!--<p>
-          Progress in mathematics, physics or engineering at the college level requires a strong
-         understanding of mathematics.
-        </p>-->
 
         <p>
-          Field lines are another common way of visualizing vector fields.
-         This time we show field lines emanating from the same positive
-         charge as the first example. We also draw the charge itself.
+          Field lines are another common way of visualizing vector fields,
+         especially electric fields.  This time we show the field lines emanating
+         from the same positive charge as the first example. We also draw the
+         charge itself, as is traditional with this representation of the field.
+        </p>
+
+        <p>
+          To produce a graph of field lines we use a different type of graph,
+          <samp>electric field</samp>, which is particularly built for electrostatics
+          problems. The <samp>electric field</samp> graph has slightly different,
+          but very similar, properties from the <samp>simple vector field</samp>.
         </p>
 
         <figure class="center">
@@ -84,88 +73,164 @@
                       as a set of field lines.</figcaption>
         </figure>
 
-        <div class="steppedExample">
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
+        <p>
+          We follow the same steps as the first example.
+        </p>
+
+        <ul>
+          <li>Include VField on your page.</li>
+          <li>Configure the visualization.</li>
+          <li>Give a place to draw the visualization.</li>
+        </ul>
+
+        <h3>Include VField</h3>
+        <pre class="prettyprint"><code class="language-js">
 &lt;script defer src=http://vizit.github.io/vfield/js/VField.min.js&gt;
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                Include the same VField package on your page.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
-&lt;script type="text/javascript"&gt;
+        </code></pre>
+
+        <p>
+          We use slightly different features from the VField package, so the script
+          tag is the same. Remember that VField is an <a href
+          = "https://github.com/VizIT/vfield">open source project</a> and that we
+          encourage your feedback, especially if you encounter trouble or problems.
+          Help us help you, leave a comment or open an issue.
+        </p>
+
+
+          <h3>Configure the visualization</h3>
+         <pre class="prettyprint"><code class="language-js">
+&lt;script&gt;
   // This object is loaded by the VizBuilder on the DOMReady event.
   var VISUALIZATION_CONFIG
       = {
           // The electric field graph displays charges,
           // field lines and gaussian surfaces.
-          type:      "electric field",
+          type:          "electric field",
           // The id of the canvas we draw into
-          canvas:    "chargeCanvas",
+          canvas:        "chargeCanvas",
+          scale:         50.0,
           arrowHeadSize: 1.0,
-          arrowSpacing: 15,
-          scale:     50.0,
+          arrowSpacing:  15,
           // Position a single charge at the origin
           elements:
             {
               type: "charge",  charge:  5.0,
               x: 0.0, y: 0.0, z: 0.0,
-              fieldLineDensity: 5.0, name: "charge1"
+              fieldLineDensity: 5.0
             }
         };
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                The configuration, though, is different. This visualization is
-                an electric field diagram. Electric field diagrams draw the
-                charges and the resulting field lines. An interesting difference
-                is the use of <code>fieldLineDensity</code> to determine the
-                number of field lines that are drawn. This is because field
-                line diagrams indicate the strength of the field by changing
-                the number of field lines. Increasing the charge increases
-                the number of field lines, while decreasing the charge
-                decreases the number of field lines. VField uses the
-                <code>fieldLineDensity</code> and the <code>charge</code> to
-                determine the number of field lines to draw, so that the number
-                of field lines is <code>fieldLineDensity * charge</code>. A later
-                example shows how to dynamically change the charge. This visualization
-                also targets the <code>chargeCanvas</code> canvas.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-html">
+         </code></pre>
+
+         <p>
+           The configuration, though, is different. This visualization is
+           an <samp>electric field</samp> diagram. <samp>Electric field</samp>
+           diagrams draw the charges and the resulting field lines.
+         </p>
+
+         <p>
+           We reuse the the <code>canvas</code> id since we are on a new page. 
+           It is the same figure & canvas setup, we simply changed the figure caption.
+         </p>
+
+         <p>
+           The scale controls the region that is drawn to the screen. Here, the scale
+           is <samp>50</samp> so we draw the region where <code>x</code>, <code>y</code>
+           and <code>z</code> each range from <samp>-50</samp> to <samp>+50</samp>.
+           VField uses orthographic projection in case you are curious, this means we do
+           not generate any perspective.
+         </p>
+
+         <p>
+           The <code>arrowHeadSize</code> directly controls the size of the arrowheads,
+           or directional indicators, on the field lines. There is no association between
+           the arrowhead size and the field strength. Choose the arrowhead size so the
+           arrowheads are clearly visible at the intended scale.
+         </p>
+
+         <p>
+           The <code>arrowSpacing</code> directly controls the spacing between the
+           direction indicators. Choose a smaller spacing for field lines with a strong
+           curvature, and a large spacing for straighter field lines such as those for
+           a point charge or charged plane.
+         </p>
+
+         <p>
+           The <code>elements</code> are the charge configuration that generates the
+           electric field, or surfaces that illustrate things about the field. Further
+           examples will show different configurations including multiple charges,
+           charged planes, charged spheres, charged cylinders, and charged lines and
+           Gaussian surfaces.
+         </p>
+
+         <p>
+           This example contains a single element of <code>type</code> <samp>charge</samp>,
+           which corresponds to a point charge, whose electric we draw. All of the charges
+           from the <samp>electric field</samp> can also be used in the <samp>simple vector
+           field</samp>. The simple vector field also allows vector valued functions to be
+           used.
+         </p>
+
+         <p>
+           The magnitude of the charge is given by <code>charge</code>. The charge units are
+           <a href = "http://en.wikipedia.org/wiki/Statcoulomb">statC</a>. However, we draw
+           no axes, and allow you to control the size of the vectors, so you could consider
+           the charge to be any units you choose. The actual units are only clear on examination
+           of the code.
+         </p>
+
+         <p>
+           The position of the charge is pretty straightforward. There is a property for each
+           coordinate <code>x</code>, <code>y</code> and <code>z</code>. The units are treated
+           as cm in the code, but as with the charge you can chose any that are consistent with
+           your content. In this case, <code>x</code>, <code>y</code> and <code>z</code> are all
+           <samp>0.0</samp> so the units are unlikely to gain any notice.
+         </p>
+
+         <p>
+           An interesting difference is the use of <code>fieldLineDensity</code> to determine
+           the number of field lines that are drawn. VField uses the <code>fieldLineDensity</code>
+           and the <code>charge</code> to determine the number of field lines to draw, so that
+           the number of field lines is <code>fieldLineDensity * charge</code>.  This is because
+           field line diagrams indicate the strength of the field by changing the number of field
+           lines. Increasing the charge increases the number of field lines, while decreasing the
+           charge decreases the number of field lines. A later example shows how to dynamically
+           change the charge.
+         </p>
+
+         <h3>Give a place to draw</h3>
+
+         <pre class="prettyprint"><code class="language-html">
 &lt;figure class="center"&gt;
   &lt;!--This is the canvas for our visualization. --&gt;
   &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
   &lt;figcaption&gt;The electric field from a point charge represented
               as a set of field lines.&lt;/figcaption&gt;
 &lt;/figure&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                Give a place to draw the visualization. The canvas with an id matching
-                the canvas id given in the configuration is the only requirement. Wrapping
-                it with a figure element gives a more polished appearance for the
-                visualization and the caption.
-              </p>
-            </div>
-          </div>
-        </div>
-        <br class="clear">
+         </code></pre>
+
+         <p>
+           The canvas with an id matching the canvas id given in the configuration
+           is the only requirement. Wrapping it with a figure element gives a more
+           polished appearance for the visualization and the caption.
+         </p>
+
         <p>
           Once again this is exactly the markup used to generate the example on this
           page. Our next example shows how to put <a href = "sideBySide.html">multiple
           visualizations on a page</a>.
         </p>
+        <div class="center license">
+          <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource"
+          property="dct:title" rel="dct:type">VField Documentation</span> by <a xmlns:cc="http://creativecommons.org/ns#"
+          href="http://www.vizitsolutions.com/" property="cc:attributionName" rel="cc:attributionURL">Vizit Solutions</a>
+          is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
+          Attribution 4.0 International License</a>.
+        </div>
+      </div>
+      <script src="../../js/vizit.js"></script>
       </div>
     </div>
-    <script type="text/javascript" src="../../js/vizit.js"></script>
   </body>
 </html>

@@ -12,52 +12,37 @@
             href="http://vizit.github.io/lesson/css/Lesson.css">
     <link   rel="prev"                href="interactivity.html">
     <link   rel="next"                href="gaussianSurface.html">
-    <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
+    <link   rel="stylesheet" type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
+    <script async src=https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js></script>
     <script defer src="http://vizit.github.io/lesson/js/Lesson.min.js">
     </script>
     <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
     </script>
-    <script type="text/javascript">
+    <script>
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
           = {
               // The electric field graph displays charges,
               // field lines and gaussian surfaces.
-              type:      "electric field",
+              type:          "electric field",
               // The id of the canvas we draw into
-              canvas:    "chargeCanvas",
-              arrowHeadSize:  1.0,
-              arrowSpacing:  15.0,
+              canvas:        "chargeCanvas",
               scale:         50.0,
+              arrowHeadSize: 1.0,
+              arrowSpacing:  15.0,
               // Position a single charge at the origin
               elements:
                 {
                   type: "charge",  charge:  5.0,
                   x: 0.0, y: 0.0, z: 0.0,
-                  fieldLineDensity: 5.0, name: "charge1"
+                  fieldLineDensity: 5.0,
+                  bind: {set: "charge", from: "q1"}
                 },
-              // Set the charge on charge1 to q1 when it changes.
-              bindings:
-                {
-                  target: "charge1", set: "charge", from: "q1"
-                }
             };
     </script>
   </head>
-  <body>
-<!-- Copyright 2013-2014 Vizit Solutions
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License. -->
+  <body onload="prettyPrint()">
     <div class="wrapper">
     <div id="main">
       <div id="header">
@@ -72,9 +57,6 @@
     <div class="content">
         <h1>Interactive Field Lines</h1>
         <p id="nowebgl" class="error"></p>
-        <p class="abstract">
-          &nbsp;
-        </p>
         
         <p>
           This time we <a href
@@ -103,80 +85,82 @@
         </figure>
 
         <p>
-          The setup for this shoud be starting to look familiar.
+          We repeat our slightly more sophisticated approach.
         </p>
 
-        <div class="steppedExample">
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
+        <ul>
+          <li>Include the VField and Lesson toolkits on your page.</li>
+          <li>Configure the visualization.</li>
+          <li>Give a place to draw the visualization.</li>
+          <li>Define interactions.</li>
+        </ul>
+
+        <h3>Include VField and Lesson toolkits</h3>
+
+        <pre class="prettyprint"><code class="language-js">
 &lt;!-- Lesson.js uses these styles --&gt;
 &lt;link rel="stylesheet" type="text/css" 
       href="http://vizit.github.io/lesson/css/Lesson.css"&gt;
 &lt;script defer src="http://vizit.github.io/lesson/js/Lesson.min.js"&gt;
 &lt;/script&gt;
-&lt;script async src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;script defer src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                Once again we use VField for the electric field, and lesson for
-                interactivity. So far we have only seen a little of what these
-                libraries are capable of.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
-&lt;script type="text/javascript"&gt;
+        </code></pre>
+
+        <p>
+          Once again we use VField for the electric field, and Lesson for
+          interactivity. So far we have only seen a little of what these
+          toolkits are capable of.
+        </p>
+
+        <h3>Configure the visualization</h3>
+
+        <pre class="prettyprint"><code class="language-js">
+&lt;script&gt;
   // This object is loaded by the VizBuilder on the DOMReady event.
   var VISUALIZATION_CONFIG
       = {
           // The electric field graph displays charges,
           // field lines and gaussian surfaces.
-          type:      "electric field",
+          type:          "electric field",
           // The id of the canvas we draw into
-          canvas:    "chargeCanvas",
+          canvas:        "chargeCanvas",
+          scale:         50.0,
           arrowHeadSize: 1.0,
-          arrowSpacing: 15.0,
-          scale:        50.0,
+          arrowSpacing:  15.0,
           // Position a single charge at the origin
           elements:
             {
               type: "charge",  charge:  5.0,
               x: 0.0, y: 0.0, z: 0.0,
-              fieldLineDensity: 5.0, name: "charge1"
-            },
-          // Set the charge on charge1 to q1 when it changes.
-          bindings:
-            {
-              target: "charge1", set: "charge", from: "q1"
+              fieldLineDensity: 5.0,
+              bind: {set: "charge", from: "q1"}
             }
         };
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-               Start with the visualization of the electric field from a point
-               charge at the origin and add a binding, so that changes in
-               <code>q1</code> produce changes in the <code>chagre</code> of
-               <code>charge1</code>. The field then changes to reflect the
-               new charge.
-              </p>
+        </code></pre>
 
-              <p>
-               Interestingly, these last two visualizations both bind
-               <code>q1</code> to their <code>charge</code>. If they are
-               placed on the same page, they will always show matching
-               representations of the same field. One using a vector
-               representation, the other using field lines. This shows
-               how the building block approach fits in well with the
-               concept of multiple representations, while also encouraging
-               you to make the design decisions for the overall content.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-html">
+        <p>
+          Start with the visualization of the electric field from a point
+          charge at the origin and add a binding, so that changes in
+          <code>q1</code> produce changes in the <code>charge</code>.
+          The field then changes to reflect the new charge.
+        </p>
+
+        <p>
+          Interestingly, these last two visualizations both bind
+          <code>q1</code> to their <code>charge</code>. If they are
+          placed on the same page, they will always show matching
+          representations of the same field. One using a vector
+          representation, the other using field lines. This shows
+          how the building block approach fits in well with the
+          concept of multiple representations, while also encouraging
+          you to make the design decisions for the overall content.
+        </p>
+
+        <h3>Give a place to draw and define interactions</h3>
+
+        <pre class="prettyprint"><code class="language-html">
 &lt;figure class="center"&gt;
   &lt;!--This is the canvas for our electric field visualization. --&gt;
   &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
@@ -191,70 +175,74 @@
                     data-step="0.2"&gt;&lt;/span&gt;
               statC&lt;sup&gt;1&lt;/sup&gt; charge .&lt;/figcaption&gt;
 &lt;/figure&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                There is no need to change the caption or the controlling lesson element.
-                We keep the <code>lessonElement</code>, which controls the <code>q1</code>,
-                ranging from -5.0 to 5.0 in steps of 0.2. A full description of the attributes:
-              </p>
-              <table class="explanation">
-                <tr>
-                  <th>attribute</th><th>meaning</th><th>example</th>
-                </tr>
-                <tr>
-                  <td>class</td><td>Identifies a component of a lesson.</td><td><code>lessonElement</code></td>
-                </tr>
-                <tr>
-                  <td>data-type</td><td>The type of component.</td><td><code>data-type="rangedSource"</code></td>
-                </tr>
-                <tr>
-                  <td>data-name</td><td>The name of the variable that this component effects.</td><td><code>data-name="q1"</code></td>
-                </tr>
-                <tr>
-                  <td>data-value</td><td>The initial value.</td><td><code>data-value="5.0"</code></td>
-                </tr>
-                <tr>
-                  <td>data-min</td><td>The min value for the control.</td><td><code>data-min="-5.0"</code></td>
-                </tr>
-                <tr>
-                  <td>data-max</td><td>The max value for the control.</td><td><code>data-max="5.0"</code></td>
-                </tr>
-                <tr>
-                  <td>data-step</td><td>The variable changes by this amount as the control is moved.</td><td><code>data-step="0.2"</code></td>
-                </tr>
-              </table>
-            </div>
-          </div>
-          </div>
-          <br class="clear">
-          <p>
-            This example incorporates the control into the figure caption. It is just an HTML
-            element that you are free to place anywhere in your content according to your design
-            goals.
-          </p>
+        </code></pre>
 
-          <p>
-            Next up, we combine the charge with a <a href = "gaussianSurface.html">Gaussian surface</a>
-            and add some additional controls to create a more sophisticated presentation.
-          </p>
+        <p>
+          There is no need to change the caption or the controlling lesson element.
+          We keep the <code>lessonElement</code>, which controls the <code>q1</code>,
+          ranging from -5.0 to 5.0 in steps of 0.2. A full description of the attributes:
+        </p>
 
-          <div class="footnote">
-            <ol>
-              <li>
-                <a href = "http://en.wikipedia.org/wiki/Gaussian_units#Unit_of_charge">statC,
-                rationalized cgs unit of charge.</a>
+        <table class="explanation">
+          <tr>
+            <th>attribute</th><th>meaning</th><th>example</th>
+          </tr>
+          <tr>
+            <td>class</td><td>Identifies a component of a lesson.</td><td><code>lessonElement</code></td>
+          </tr>
+          <tr>
+            <td>data-type</td><td>The type of component.</td><td><code>data-type="rangedSource"</code></td>
+          </tr>
+          <tr>
+            <td>data-name</td><td>The name of the variable that this component effects.</td><td><code>data-name="q1"</code></td>
+          </tr>
+          <tr>
+            <td>data-value</td><td>The initial value.</td><td><code>data-value="5.0"</code></td>
+          </tr>
+          <tr>
+            <td>data-min</td><td>The min value for the control.</td><td><code>data-min="-5.0"</code></td>
+          </tr>
+          <tr>
+            <td>data-max</td><td>The max value for the control.</td><td><code>data-max="5.0"</code></td>
+          </tr>
+          <tr>
+            <td>data-step</td><td>The variable changes by this amount as the control is moved.</td><td><code>data-step="0.2"</code></td>
+          </tr>
+        </table>
+
+        <p>
+          This example incorporates the control into the figure caption. It is just an HTML
+          element that you are free to place anywhere in your content according to your design
+          goals.
+        </p>
+
+        <p>
+          Next up, we combine the charge with a <a href = "gaussianSurface.html">Gaussian surface</a>
+          and add some additional controls to create a more sophisticated presentation.
+        </p>
+
+        <div class="footnote">
+          <ol>
+            <li>
+              <a href = "http://en.wikipedia.org/wiki/Gaussian_units#Unit_of_charge">statC,
+              rationalized cgs unit of charge.</a>
+            </li>
+            <li>
+              <a href = "https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent">HTML5
+              custom events</a>
               </li>
-              <li>
-                <a href = "https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent">HTML5
-                custom events</a>
-              </li>
-            <br>
-            
-          </div>
-
+          </ol>
+        </div>
+        <div class="center license">
+          <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource"
+          property="dct:title" rel="dct:type">VField Documentation</span> by <a xmlns:cc="http://creativecommons.org/ns#"
+          href="http://www.vizitsolutions.com/" property="cc:attributionName" rel="cc:attributionURL">Vizit Solutions</a>
+          is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
+          Attribution 4.0 International License</a>.
+       </div>
+      </div>
+      <script src="../../js/vizit.js"></script>
       </div>
     </div>
-  <script type="text/javascript" src="../../js/vizit.js"></script>
   </body>
 </html>

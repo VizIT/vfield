@@ -74,10 +74,6 @@ window.vizit.builder = window.vizit.builder || {};
          {
            vectorValuedFunctionConfig = config[property];
          }
-         else if (property.toLowerCase() ==="bindings")
-         {
-           bindingsConfig = config[property];
-         }
        }
 
        if (vectorValuedFunctionConfig)

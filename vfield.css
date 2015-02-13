@@ -64,31 +64,21 @@ table.explanation td
 */
 
 /* Calls out the association between the description and the code. */
-div.step:hover
+/*div.step:hover
 {
   filter:         drop-shadow(4px 4px 2px #bbb);
   -webkit-filter: drop-shadow(4px 4px 2px #bbb);
   -moz-filter:    drop-shadow(4px 4px 2px #bbb);
   -o-filter:      drop-shadow(4px 4px 2px #bbb);
   -ms-filter:     drop-shadow(4px 4px 2px #bbb);
-}
+}*/
 
-/*
-div.explanation p:first-of-type
-{
-  margin-top:    0;
-  margin-bottom: 0;
-}
-*/
-
-/* A Kludge allowing me to put the content on a new line. */
-pre.prettyprint::first-line
-{
-  line-height:   0.0;
-}
-
-/* Turn off border for Google prettyprint */
+/* 
+ * A Kludge allowing me to put the content on a new line.
+ *  Turn off border for Google prettyprint
+ */
 pre.prettyprint
 {
+  margin:        -1.0em auto;
   border:        none !important;
 }

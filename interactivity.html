@@ -12,12 +12,14 @@
             href="http://vizit.github.io/lesson/css/Lesson.css">
     <link   rel="prev"                href="sideBySide.html">
     <link   rel="next"                href="interactiveField.html">
-    <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
+    <link   rel="stylesheet" type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
+    <script async src=https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js></script>
     <script defer src="http://vizit.github.io/lesson/js/Lesson.min.js">
     </script>
     <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
     </script>
-    <script type="text/javascript">
+    <script>
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
           = {
@@ -26,38 +28,22 @@
               type:      "simple vector field",
               // The id of the canvas we draw into
               canvas:    "chargeCanvas",
-              arrowSize: 1.0,
               scale:     5.0,
+              arrowSize: 1.0,
               // f is a vector valued function.
               // In this case the electric field from a single charge.
               f:
                 {
                   type: "charge",  charge:  5.0,
                   x: 0.0, y: 0.0, z: 0.0,
-                  nfieldLines: 25.0, name: "charge1"
-                },
-              // Set the charge on charge1 to q1 when q1 changes.
-              bindings:
-                {
-                  target: "charge1", set: "charge", from: "q1"
+                  nfieldLines: 25.0,
+                  // Set the charge to q1 when it changes.
+                  bind: {set: "charge", from: "q1"}
                 }
             };
     </script>
   </head>
-  <body>
-<!-- Copyright 2013-2014 Vizit Solutions
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License. -->
+  <body onload="prettyPrint()">
     <div class="wrapper">
     <div id="main">
       <div id="header">
@@ -72,9 +58,6 @@
     <div class="content">
         <h1>Deeper Interactivity</h1>
         <p id="nowebgl" class="error"></p>
-        <p class="abstract">
-          &nbsp;
-        </p>
         
         <p>
           Effective use of technology in education invites the learner to explore,
@@ -100,33 +83,48 @@
         </figure>
 
         <p>
-          Let's look at how we did this.
+          This slightly more sophisticated example requires a slightly more
+          sophisticated approach.
         </p>
 
-        <div class="steppedExample">
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
+        <ul>
+          <li>Include the VField and Lesson toolkits on your page.</li>
+          <li>Configure the visualization.</li>
+          <li>Give a place to draw the visualization.</li>
+          <li>Define interactions.</li>
+        </ul>
+
+        <h3>Include VField and Lesson toolkits</h3>
+
+        <pre class="prettyprint"><code class="language-js">
 &lt;!-- Lesson.js uses these styles --&gt;
 &lt;link rel="stylesheet" type="text/css" 
       href="http://vizit.github.io/lesson/css/Lesson.css"&gt;
 &lt;script defer src="http://vizit.github.io/lesson/js/Lesson.min.js"&gt;
 &lt;/script&gt;
-&lt;script async src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;script defer src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                In addition to VField we also include two other files, the lesson
-                JavaScript library and its supporting Lesson.css. The lesson library
-                addresses a more general question of how to write interactive content
-                and so is the home for functionality that we want, but is not
-                specifically associated with vector fields.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
-&lt;script type="text/javascript"&gt;
+        </code></pre>
+
+        <p>
+          In addition to VField we also include two other files, the Lesson
+          JavaScript toolkit and its supporting Lesson.css. The lesson toolkit
+          addresses the more general question of how to write interactive content
+          and so is the home for functionality that we want, but is not
+          specifically associated with vector fields.
+        </p>
+
+        <p>
+          This is where the <samp>defer</samp> attribute comes into play. It
+          loads the scripts asynchronously, but keeps them in order. This is
+          critical because the VField toolkit depends on the Lesson toolkit
+          for interactivity.
+        </p>
+
+        <h3>Configure the visualization</h3>
+
+        <pre class="prettyprint"><code class="language-js">
+&lt;script&gt;
   // This object is loaded by the VizBuilder on the DOMReady event.
   var VISUALIZATION_CONFIG
       = {
@@ -135,108 +133,103 @@
           type:      "simple vector field",
           // The id of the canvas we draw into
           canvas:    "chargeCanvas",
-          arrowSize: 1.0,
           scale:     5.0,
+          arrowSize: 1.0,
           // f is a vector valued function.
           // In this case the electric field from a single charge.
           f:
             {
               type: "charge",  charge:  5.0,
               x: 0.0, y: 0.0, z: 0.0,
-              nfieldLines: 25.0, name: "charge1"
-            },
-          // Set the charge on charge1 to q1 when q1 changes.
-          bindings:
-            {
-              target: "charge1", set: "charge", from: "q1"
+              nfieldLines: 25.0,
+              // Set the charge to q1 when it changes.
+              bind: {set: "charge", from: "q1"}
             }
         };
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                This is the same configuration as the first example, with
-                one exception. Again we draw a simple vector field generated
-                by a point charge at the origin onto the <code>chargeCanvas</code>.
-                But this time we add a binding, that sets the charge on
-                <code>charge1</code> from the variable <code>q1</code>. This
-                means that when a <code>q1Changed</code> event happens, the
-                charge on <code>f</code>, which is named <code>charge1</code>
-                is set to the new value for <code>q1</code>. This does not care
-                how the <code>q1Changed</code> event is generated, or even if
-                is generated at all. This means that the event can be generated
-                by any of several lesson components, or even by your own code.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-html">
+        </code></pre>
+        
+        <p>
+          This is the same configuration as the first example, with
+          one exception. Again we draw a simple vector field generated
+          by a point charge at the origin onto the <code>chargeCanvas</code>.
+          But this time we add a binding that sets the charge from the
+          variable <code>q1</code>. This means that when a <code>q1Changed</code>
+          event happens, the charge on <code>f</code>, is set to the new value
+          for <code>q1</code>. This does not care how the <code>q1Changed</code>
+          event is generated, or even if is generated at all. This means that
+          the event can be generated by any of several Lesson components, or
+          even by your own code.
+        </p>
+        
+        <h3>Give a place to draw and define interactions</h3>
+
+        <pre class="prettyprint"><code class="language-html">
 &lt;figure class="center"&gt;
   &lt;!--This is the canvas for our electric field visualization. --&gt;
   &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
   &lt;!-- This lesson element controls q1 ranging from -5 to 5 in steps of .2 --&gt;
   &lt;figcaption&gt;The electric field from a
               &lt;span class="lessonElement"
-                       data-type="rangedSource"
-                       data-name="q1"
-                       data-value="5.0"
-                       data-min="-5.0"
-                       data-max="5.0"
-                       data-step="0.2"&gt;&lt;/span&gt;
+                    data-type="rangedSource"
+                    data-name="q1"
+                    data-value="5.0"
+                    data-min="-5.0"
+                    data-max="5.0"
+                    data-step="0.2"&gt;&lt;/span&gt;
               statC&lt;sup&gt;1&lt;/sup&gt; charge .&lt;/figcaption&gt;
 &lt;/figure&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                This is where the lesson library comes into play. The lesson library helps build
-                interactive instructions, that is lessons. Elements of a lesson have the html
-                class <code>lessonElement</code>, and their functionality is described by
-                <a href
-                   = "https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes">HTML5
-                data attributes</a>.  The <code>span class="lessonElement"</code> controls the variable
-                <code>q1</code>, which ranges from -5.0 to 5.0 in steps of 0.2 and an initial value of 5.0.
-                A full description of the attributes:
-              </p>
-              <table class="explanation">
-                <tr>
-                  <th>attribute</th><th>meaning</th><th>example</th>
-                </tr>
-                <tr>
-                  <td>class</td><td>Identifies a component of a lesson.</td><td><code>lessonElement</code></td>
-                </tr>
-                <tr>
-                  <td>data-type</td><td>The type of component.</td><td><code>data-type="rangedSource"</code></td>
-                </tr>
-                <tr>
-                  <td>data-name</td><td>The name of the variable that this component effects.</td><td><code>data-name="q1"</code></td>
-                </tr>
-                <tr>
-                  <td>data-value</td><td>The initial value.</td><td><code>data-value="5.0"</code></td>
-                </tr>
-                <tr>
-                  <td>data-min</td><td>The min value for the control.</td><td><code>data-min="-5.0"</code></td>
-                </tr>
-                <tr>
-                  <td>data-max</td><td>The max value for the control.</td><td><code>data-max="5.0"</code></td>
-                </tr>
-                <tr>
-                  <td>data-step</td><td>The variable changes by this amount as the control is moved.</td><td><code>data-step="0.2"</code></td>
-                </tr>
-              </table>
-            </div>
-          </div>
-          </div>
-          <br class="clear">
-          <p>
-            This example incorporates the control into the figure caption. You are free to place it
-            anywhere in your content as it best meets your goals.
-          </p>
+        </code></pre>
 
-          <p>
-            Let's take a look at what happens when we provide this same <a href
-            = "interactiveField.html">interactivity to the second example</a>, the field lines for
-            our point charge.
-          </p>
+        <p>
+          This is where the Lesson toolkit comes into play. The Lesson toolkit
+          helps build interactive instructions, that is lessons. Elements of a
+          lesson have the HTML class <code>lessonElement</code>, and their
+          functionality is described by <a href
+          = "https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes">HTML5
+          data attributes</a>.  The <code>span class="lessonElement"</code>
+          with <code>data-type="rangedSource"</code> controls the <code>q1</code>
+          variable, which ranges from -5.0 to 5.0 in steps of 0.2 and an initial
+          value of 5.0. A full description of the attributes:
+        </p>
+
+        <table class="explanation">
+          <tr>
+            <th>attribute</th><th>meaning</th><th>example</th>
+          </tr>
+          <tr>
+            <td>class</td><td>Identifies a component of a lesson.</td><td><code>lessonElement</code></td>
+          </tr>
+          <tr>
+            <td>data-type</td><td>The type of component.</td><td><code>data-type="rangedSource"</code></td>
+          </tr>
+          <tr>
+            <td>data-name</td><td>The name of the variable that this component effects.</td><td><code>data-name="q1"</code></td>
+          </tr>
+          <tr>
+            <td>data-value</td><td>The initial value.</td><td><code>data-value="5.0"</code></td>
+          </tr>
+          <tr>
+            <td>data-min</td><td>The min value for the control.</td><td><code>data-min="-5.0"</code></td>
+          </tr>
+          <tr>
+            <td>data-max</td><td>The max value for the control.</td><td><code>data-max="5.0"</code></td>
+          </tr>
+          <tr>
+            <td>data-step</td><td>The variable changes by this amount as the control is moved.</td><td><code>data-step="0.2"</code></td>
+          </tr>
+        </table>
+
+        <p>
+          This example incorporates the control into the figure caption. You are free to place it
+          anywhere in your content as it best meets your goals.
+        </p>
+
+        <p>
+          Let's take a look at what happens when we provide this same <a href
+          = "interactiveField.html">interactivity to the second example</a>, the field lines for
+          our point charge.
+        </p>
 
           <div class="footnote">
             <ol>
@@ -248,12 +241,18 @@
                 <a href = "https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent">HTML5
                 custom events</a>
               </li>
-            <br>
-            
+            </ol>
           </div>
-
+          <div class="center license">
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource"
+            property="dct:title" rel="dct:type">VField Documentation</span> by <a xmlns:cc="http://creativecommons.org/ns#"
+            href="http://www.vizitsolutions.com/" property="cc:attributionName" rel="cc:attributionURL">Vizit Solutions</a>
+            is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
+            Attribution 4.0 International License</a>.
+          </div>
+        </div>
+      <script src="../../js/vizit.js"></script>
       </div>
     </div>
-  <script type="text/javascript" src="../../js/vizit.js"></script>
   </body>
 </html>

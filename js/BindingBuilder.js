@@ -37,16 +37,16 @@ window.vizit.builder = window.vizit.builder || {};
       * Build an event handler that bings an element of the visualization
       * the changes in a value from an external source.
       * 
+      * @param {Object} target A JS object that has a setVar method, where Var is named
+      *                        in the config set field.
       * @param {Object} config A JS object whose attributes describe one or more bindings.
       * @param {ElectricField | SimpleVectorField}
       *                 framework A JS container of the field defenitions, with
       *                 which elements are registered by name.
       */
-     this.bindingBuilder       = function (config, framework)
+     this.bindingBuilder       = function (target, config, framework)
      {
        var binding;
-       /** The element of the visualization named as the target. */
-       var element;
        /** The external variable used to make the update. */
        var from;
        /** The function, if any, that transforms the from variable to the set variable. */
@@ -56,18 +56,12 @@ window.vizit.builder = window.vizit.builder || {};
        var property;
        /** The name of the variable on the object to be updated. */
        var set;
-       /** The name of the object to be updated. */
-       var target;
        /** The method on the target to set the variable. */
        var updater;
 
        for (property in config)
        {
-         if (property.toLowerCase() === "target")
-         {
-           target = config[property];
-         }
-         else if (property.toLowerCase() === "set")
+         if (property.toLowerCase() === "set")
          {
            set = config[property];
          }
@@ -92,8 +86,8 @@ window.vizit.builder = window.vizit.builder || {};
          methodName += set.slice(1);
        }
 
-       element = framework.getElementByName(target);
-       updater = element[methodName];
+       updater = target[methodName];
+       updater = updater.bind(target);
 
        if (mapping)
        {
@@ -110,13 +104,15 @@ window.vizit.builder = window.vizit.builder || {};
      /**
       * Build one or more bindings as the config is a single object or an array
       * of objects.
-      * 
+      *
+      * @param {Object} target A JS object that has a setVar method, where Var is named
+      *                        in the config set field.
       * @param {Object} config A JS object whose attributes describe one or more bindings.
       * @param {ElectricField | SimpleVectorField}
       *                 framework A JS container of the field defenitions, with
       *                 which elements are registered by name.
       */
-     this.build      = function (config, framework)
+     this.bind       = function (target, config, framework)
      {
        var binding;
        var nbindings;
@@ -128,12 +124,12 @@ window.vizit.builder = window.vizit.builder || {};
            nbindings = config.length;
            for (var i=0; i<nbindings; ++i)
            {
-             binding = this.bindingBuilder(config[i], framework);
+             binding = this.bindingBuilder(target, config[i], framework);
            }
          }
          else
          {
-           binding = this.bindingBuilder(config, framework);
+           binding = this.bindingBuilder(target, config, framework);
          }
        }
      };
@@ -141,4 +137,7 @@ window.vizit.builder = window.vizit.builder || {};
      errorMessage       = "";
      warningMessage     = "";
    };
+
+   // Create an instance for use as a prototype to other builders
+   ns.bindingBuilder = new ns.BindingBuilder();
  }(window.vizit.builder));

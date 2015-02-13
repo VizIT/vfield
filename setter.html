@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Setting Values</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/setter.html" />
+    <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="vfield.css" type="text/css" />
+    <!-- Lesson.js uses these styles -->
+    <link   rel="stylesheet" type="text/css" 
+            href="http://vizit.github.io/lesson/css/Lesson.css">
+    <link   rel="prev"                href="gaussianSurface.html">
+    <link   rel="stylesheet" type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
+    <script async src=https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js></script>
+    <!--<script defer src="http://vizit.github.io/lesson/js/Lesson.min.js">-->
+    <script defer src="../lesson/js/Lesson.min.js">
+    </script>
+    <!--<script defer src="http://vizit.github.io/vfield/js/VField.min.js">-->
+    <script defer src="js/VField.min.js">
+    </script>
+    <script>
+      // This object is loaded by the VizBuilder on the DOMReady event.
+      var VISUALIZATION_CONFIG
+          = {
+              // The electric field graph displays charges,
+              // field lines and Gaussian surfaces.
+              type:          "electric field",
+              // The id of the canvas we draw into
+              canvas:        "chargeCanvas",
+              scale:         50.0,
+              arrowHeadSize: 2.0,
+              arrowSpacing:  15.0,
+              // Position a single charge at the origin
+              elements:
+                [
+                  {
+                    type: "charge",  charge:  5.0,
+                    x: 0.0, y: 0.0, z: 0.0,
+                    fieldLineDensity: 5.0,
+                    bind: [
+                           {set: "charge", from: "q"},
+                           {set: "x", from: "x"},
+                           {set: "y", from: "y"}
+                          ]
+                  },
+                  {
+                    type: "Gaussian sphere",
+                    x:      0.0, y:   0.0, z: 0.0,
+                    r:     20.0,
+                    bind: [
+                            {set: "r", from: "r"},
+                            {set: "enabled", from: "drawSphere"}
+                          ]
+                  },
+                  {
+                    type: "Gaussian cylinder",
+                    x:      0.0, y:   0.0, z: 0.0,
+                    r:     20.0, h: 20,
+                    // Pi/2
+                    theta:  1.57079632679, phi: 1.57079632679,
+                    // enabled: false => don't show by default
+                    enabled: false,
+                    // But we can turn it on with an event later
+                    bind: {set: "enabled", from: "drawCylinder"}
+                  }
+                ]
+            };
+    </script>
+  </head>
+  <body onload="prettyPrint()">
+    <div class="wrapper">
+    <div id="main">
+      <div id="header">
+        <span class="logo2 Fell drawOnResize"><a href = "http://www.vizitsolutions.com/">Vizit Solutions</a></span>
+        <ul>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/catalog/" title="Catalog">Catalog</a></li>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/" title="Portfolio">Portfolio</a></li>
+          <li class="drawOnResize"><a href="http://blog.vizitsolutions.com/" title="Blog">Blog</a></li>
+          <li class="drawOnResize"><a href="mailto:akluge@vizitsolutions.com?subject=Vector+Fields" title="akluge@vizitsolutions.com">Contact</a></li>
+        </ul>
+      </div>
+    <div class="content">
+        <h1>Setting values</h1>
+        <p id="nowebgl" class="error"></p>
+
+        <p>
+          Setting specific values and scenarios is an essential element of instructional
+          content. With applications ranging from setting initial conditions to running
+          examples and illustrating specific points any toolkit is incomplete without it.
+          Once again, the VField and Lesson libraries team up to build this by binding
+          events to values and providing easy to use HTML elements to generate the events.
+          So that, in this case, clicking on a button sets values in the visualization.
+        </p>
+
+        <p>
+          We build an example that extends the Gaussian surface from last time. We add some
+          additional bindings for the position of the charge, and also the existence
+          of the spherical and a new cylindrical surface. Then we setup controls to set values
+          for them and show how they can be used in instructional design.
+        </p>        
+
+        <div class="exemplar">
+        <figure class="center">
+          <!--This is the canvas for our electric field visualization. -->
+          <canvas id="chargeCanvas" width="300" height="300"></canvas>
+          <!-- This lesson element controls q ranging from -5 to 5 in steps of .2 -->
+          <figcaption>The electric field from a <span class="lessonElement"
+                                                      data-type="rangedSource"
+                                                      data-name="q"
+                                                      data-value="5.0"
+                                                      data-min="-5.0"
+                                                      data-max="5.0"
+                                                      data-step="0.2"></span>
+                      statC charge.</figcaption>
+        </figure>
+
+        <p>
+          We see all the electric field lines pass through the sphere. The field
+          lines are outward bound for a
+          <span class="lessonElement"
+                data-type="setter"
+                data-set="drawSphere=true, drawCylinder=false, x=0, y=0, q=5"
+                data-html="positive charge"></span>,
+          and inward bound for a 
+          <span class="lessonElement"
+                data-type="setter"
+                data-set="drawSphere=true, drawCylinder=false, x=0, y=0, q=-5"
+                data-html="negative charge"></span>.
+            When the charge is at the
+            <span class="lessonElement"
+                  data-type="setter"
+                  data-set="drawSphere=true, drawCylinder=false, x=0, y=0, z=0"
+                  data-html="center"></span>
+            of the sphere, the field lines are perpendicular, or normal, to the
+            surface where they cross it. The field lines are also evenly distributed
+            over the surface, which tells us that the electric field has a constant
+            strength at any point on the sphere. If we move the charge to the
+            <span class="lessonElement"
+                  data-type="setter"
+                  data-set="drawSphere=true, drawCylinder=false, x=10, y=0, r=20"
+                  data-html="right"></span>,
+            to the
+            <span class="lessonElement"
+                  data-type="setter"
+                  data-set="drawSphere=true, drawCylinder=false, x=-10, y=0, r=20"
+                  data-html="left" ></span>,
+            if we move it 
+            <span class="lessonElement"
+                  data-type="setter"
+                  data-set="drawSphere=true, drawCylinder=false, x=0, y=10, r=20"
+                  data-html="up"></span>,
+            or if we move it 
+            <span class="lessonElement"
+                  data-type="setter"
+                  data-set="drawSphere=true, drawCylinder=false, x=0, y=-10, r=20"
+                  data-html="down"></span>,
+            as long as the charge remains within the surface the same fields lines
+            cross the surface in the same direction. Where the field lines cross the
+            surface changes, and the angle between the field lines and the surface
+            changes, but the same field lines cross the surface no matter where the
+            charge is within the surface.
+          </p>
+
+          <p>
+            Take the charge
+            <span class="lessonElement"
+                  data-type="setter"
+                  data-set="drawSphere=true, drawCylinder=false, x=0, y=25, r=20"
+                  data-html="outside"></span>
+             of the surface, and something completely different happens. Look carefully,
+             when the charge is outside of the surface many of the field lines no longer
+             cross the surface at all, and those that do cross the surface pass into and
+             out of the surface. A charge outside of the surface makes no contribution
+             to field lines passing through the surface.
+          </p>
+
+          <p>
+            If we
+            <span class="lessonElement"
+                  data-type="setter"
+                  data-set="drawSphere=true, drawCylinder=false, x=0, y=0, r=30"
+                  data-html="increase"></span>
+          the size of the surface we see that the fields lines are spread further apart
+          where they cross the surface. This corresponds to a weaker field. So the electric
+          field gets weaker the further away from the point charge we get. For a 
+          <span class="lessonElement"
+                data-type="setter"
+                data-set="drawSphere=true, drawCylinder=false, x=0, y=0, r=10"
+                data-html="smaller"></span>
+          surface, we see the opposite effect. The field lines are closer together where
+          they cross the surface, so the field is stronger closer to the point charge.
+        </p>
+
+        <p>
+          If instead we
+          <span class="lessonElement"
+                data-type="setter"
+                data-set="x=0, y=0, drawSphere=false, drawCylinder=true"
+                data-html="draw a cylinder"></span>, we lose the nice features we
+          we saw when we paired a sphere with a spherically symmetric field. The same
+          field lines cross the surface in the same direction, but they intersect the
+          surface at a wide variety of angles, and their density varies significantly
+          across the surface.
+        </p>
+
+        </div>
+
+        <p>
+          We will still follow the general pattern to build this visualization.
+          However, we will have significantly more sophisticated configuration and
+          interactions.
+        </p>
+
+        <ul>
+          <li>Include the VField and Lesson toolkits on your page.</li>
+          <li>Configure the visualization.</li>
+          <li>Give a place to draw the visualization.</li>
+          <li>Define interactions.</li>
+        </ul>
+
+        <h3>Include VField and Lesson toolkits</h3>
+
+        <pre class="prettyprint"><code class="language-js">
+&lt;!-- Lesson.js uses these styles --&gt;
+&lt;link rel="stylesheet" type="text/css" 
+      href="http://vizit.github.io/lesson/css/Lesson.css"&gt;
+&lt;script defer src="http://vizit.github.io/lesson/js/Lesson.min.js"&gt;
+&lt;/script&gt;
+&lt;script defer src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;/script&gt;
+        </code></pre>
+
+        <p>
+          These two toolkits cover general interactivity, and vector field
+          visualizations. We use them together to build effective, engaging
+          content.
+        </p>
+
+        <h3>Configure the visualization</h3>
+
+        <pre class="prettyprint"><code class="language-js">
+&lt;script&gt;
+// This object is loaded by the VizBuilder on the DOMReady event.
+var VISUALIZATION_CONFIG
+    = {
+        // The electric field graph displays charges,
+        // field lines and Gaussian surfaces.
+        type:          "electric field",
+        // The id of the canvas we draw into
+        canvas:        "chargeCanvas",
+        scale:         50.0,
+        arrowHeadSize: 2.0,
+        arrowSpacing:  15.0,
+        // Position a single charge at the origin
+        elements:
+          [
+            {
+              type: "charge",  charge:  5.0,
+              x: 0.0, y: 0.0, z: 0.0,
+              fieldLineDensity: 5.0,
+              bind: [
+                     {set: "charge", from: "q"},
+                     {set: "x", from: "x"},
+                     {set: "y", from: "y"}
+                    ]
+            },
+            {
+              type: "Gaussian sphere",
+              x:      0.0, y:   0.0, z: 0.0,
+              r:     20.0,
+              bind: [
+                      {set: "r", from: "r"},
+                      {set: "enabled", from: "drawSphere"}
+                    ]
+            },
+            {
+              type: "Gaussian cylinder",
+              x:      0.0, y:   0.0, z: 0.0,
+              r:     20.0, h: 20,
+              // Pi/2
+              theta:  1.57079632679, phi: 1.57079632679,
+              // enabled: false => don't show by default
+              enabled: false,
+              // But we can turn it on with an event later
+              bind: {set: "enabled", from: "drawCylinder"}
+            }
+          ]
+      };
+&lt;/script&gt;
+        </code></pre>
+
+        <p>
+          This time the elements contain a Gaussian cylinder as well
+          as a Gaussian sphere. Of course it would be confusing to show
+          them both at the same time, so we set their <samp>enabled</samp>
+          property to show only one at a time.
+        </p>
+
+        <p>
+          Both the elements and some of the bindings are now arrays. Elements and
+          bindings can be single items or arrays. Arrays are required to contain
+          multiple entries. 
+        </p>
+
+        <p>
+          The point charge at the origin is joined by a sphere, also centered
+          at the origin.
+        </p>
+
+        <p>
+          <code>q</code> remains bound to the <code>charge</code>,
+          and <code>r</code> is bound to the radius, <code>r</code>,
+          of the sphere.
+        </p>
+
+        <p>
+          Manipulating the charge shows that the number of field lines crossing
+          the sphere changes in direct proportion to the change in the charge.
+          Manipulating the radius of the sphere illustrates how the space between
+          the field lines increases with r<sup>2</sup>.
+        </p>
+
+        <h3>Give a place to draw</h3>
+
+        <pre class="prettyprint"><code class="language-html">
+&lt;figure class="center"&gt;
+  &lt;!--This is the canvas for our electric field visualization. --&gt;
+  &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
+  &lt;!-- This lesson element controls q ranging from -5 to 5 in steps of .2 --&gt;
+  &lt;figcaption&gt;The electric field from a &lt;span class="lessonElement"
+                                              data-type="rangedSource"
+                                              data-name="q"
+                                              data-value="5.0"
+                                              data-min="-5.0"
+                                              data-max="5.0"
+                                              data-step="0.2"&gt;&lt;/span&gt;
+              statC charge.&lt;/figcaption&gt;
+&lt;/figure&gt;
+        </code></pre>
+
+        <h3>Define interactions</h3>
+
+        <p>
+          This is all of the text and markup that generates the example at
+          the top of the page interspersed with explanations.
+        </p>
+
+        <pre class="prettyprint"><code class="language-html">
+&lt;p&gt;
+We see all the electric field lines pass through the sphere. The field
+lines are outward bound for a
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=0, y=0, q=5"
+      data-html="positive charge"&gt;&lt;/span&gt;,
+and inward bound for a 
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=0, y=0, q=-5"
+      data-html="negative charge"&gt;&lt;/span&gt;.
+        </code></pre>
+
+        <p>
+          Pick out the Lesson elements with <code>class="lessonElement"</code>.
+          We know which lesson element they are from <code>data-type="setter"</code>.
+          But, exactly what does a setter do?
+        </p>
+
+        <p>
+          Data-set,
+          <code>data-set="drawSphere=true, drawCylinder=false, x=0, y=0, q=-5"</code>
+          is a list of variables and the values that are set when the generated button
+          is activated. This is a list to ensure that the entire visualization is set
+          to reflect your narrative. Separate varChanged events are generated for each
+          assignment in the list. This is consistent with the design of Lesson and
+          VField where value changes are signaled by events.
+        </p>
+
+        <table class="explanation">
+          <tr>
+            <th>attribute</th><th>meaning</th><th>example</th>
+          </tr>
+          <tr>
+            <td>class</td><td>Identifies a component of a lesson.</td><td><code>lessonElement</code></td>
+          </tr>
+          <tr>
+            <td>data-type</td><td>The type of component.</td><td><code>data-type="setter"</code></td>
+          </tr>
+          <tr>
+            <td>data-set</td><td>List of variable=value assignments.</td><td><code>data-set="drawSphere=true, drawCylinder=false, <br />
+                                                                             x=0, y=0, q=-5"</code></td>
+          </tr>
+          <tr>
+            <td>data-html</td><td>HTML content that is placed within the button.</td><td><code>data-html="negative charge"</code></td>
+          </tr>
+        </table>
+
+        <p>
+          The next section of the example uses the setter to move the charge
+          around and discuss the patterns of field lines crossing the surface.
+        </p>
+
+        <pre class="prettyprint"><code class="language-html">
+When the charge is at the
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=0, y=0, z=0"
+      data-html="center"&gt;&lt;/span&gt;
+of the sphere, the field lines are perpendicular, or normal, to the
+surface where they cross it. The field lines are also evenly distributed
+over the surface, which tells us that the electric field has a constant
+strength at any point on the sphere. If we move the charge to the
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=10, y=0, r=20"
+      data-html="right"&gt;&lt;/span&gt;,
+to the
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=-10, y=0, r=20"
+      data-html="left" &gt;&lt;/span&gt;,
+if we move it 
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=0, y=10, r=20"
+      data-html="up"&gt;&lt;/span&gt;,
+or if we move it 
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=0, y=-10, r=20"
+      data-html="down"&gt;&lt;/span&gt;,
+as long as the charge remains within the surface the same fields lines
+cross the surface in the same direction. Where the field lines cross the
+surface changes, and the angle between the field lines and the surface
+changes, but the same field lines cross the surface no matter where the
+charge is within the surface.
+&lt;/p&gt;
+
+&lt;p&gt;
+Take the charge
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=0, y=25, r=20"
+      data-html="outside"&gt;&lt;/span&gt;
+of the surface, and something completely different happens. Look carefully,
+when the charge is outside of the surface many of the field lines no longer
+cross the surface at all, and those that do cross the surface pass into and
+out of the surface. A charge outside of the surface makes no contribution
+to field lines passing through the surface.
+&lt;/p&gt;
+
+&lt;p&gt;
+If we
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=0, y=0, r=30"
+      data-html="increase"&gt;&lt;/span&gt;
+
+the size of the surface we see that the fields lines are spread further apart
+where they cross the surface. This corresponds to a weaker field. So the electric
+field gets weaker the further away from the point charge we get. For a 
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="drawSphere=true, drawCylinder=false, x=0, y=0, r=10"
+      data-html="smaller"&gt;&lt;/span&gt;
+surface, we see the opposite effect. The field lines are closer together where
+they cross the surface, so the field is stronger closer to the point charge.
+&lt;/p&gt;
+
+        <p>
+          This last piece of the example we set <samp>drawSphere=false,
+          drawCylinder=true</samp> to show the significance of matching
+          the shape to inherent symmetries of the problem.
+        </p>
+
+&lt;p&gt;
+If instead we
+&lt;span class="lessonElement"
+      data-type="setter"
+      data-set="x=0, y=0, drawSphere=false, drawCylinder=true"
+      data-html="draw a cylinder"&gt;&lt;/span&gt;, we lose the nice features we
+we saw when we paired a sphere with a spherically symmetric field. The same
+field lines cross the surface in the same direction, but they intersect the
+surface at a wide variety of angles, and their density varies significantly
+across the surface.
+&lt;/p&gt;
+        </code></pre>
+
+        <p>
+          This is perhaps a slightly rich example, but it shows the different types of
+          interactions that are available with this simple mechanism to set parameters
+          for a visualization. It demonstrates how far we can go in creating richer
+          interactive content for clearer explanations and more effective teaching.
+        </p>
+
+        <div class="center license">
+          <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource"
+          property="dct:title" rel="dct:type">VField Documentation</span> by <a xmlns:cc="http://creativecommons.org/ns#"
+          href="http://www.vizitsolutions.com/" property="cc:attributionName" rel="cc:attributionURL">Vizit Solutions</a>
+          is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
+          Attribution 4.0 International License</a>.
+        </div>
+      </div>
+      <script src="../../js/vizit.js"></script>
+      </div>
+    </div>
+  </body>
+</html>

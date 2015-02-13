@@ -10,65 +10,47 @@
     <!-- Lesson.js uses these styles -->
     <link   rel="stylesheet" type="text/css" 
             href="http://vizit.github.io/lesson/css/Lesson.css">
-    <link   rel="prev"                href="interactiveField.html">
-    <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
+    <link   rel="prev"                href= "interactiveField.html">
+    <link   rel="next"                href= "setter.html">
+    <link   rel="stylesheet" type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
+    <script async src=https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js></script>
     <script defer src="http://vizit.github.io/lesson/js/Lesson.min.js">
     </script>
     <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
     </script>
-    <script type="text/javascript">
+    <script>
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
           = {
               // The electric field graph displays charges,
-              // field lines and gaussian surfaces.
-              type:      "electric field",
+              // field lines and Gaussian surfaces.
+              type:          "electric field",
               // The id of the canvas we draw into
-              canvas:    "chargeCanvas",
-              arrowHeadSize:  1.0,
-              arrowSpacing:  15.0,
+              canvas:        "chargeCanvas",
               scale:         50.0,
+              arrowHeadSize: 1.0,
+              arrowSpacing:  15.0,
               // Position a single charge at the origin
               elements:
                 [
                   {
                     type: "charge",  charge:  5.0,
                     x: 0.0, y: 0.0, z: 0.0,
-                    fieldLineDensity: 5.0, name: "charge1"
+                    fieldLineDensity: 5.0,
+                    bind: {set: "charge", from: "q1"}
                   },
                   {
-                    type: "gaussian sphere",
+                    type: "Gaussian sphere",
                     x:      0.0, y:   0.0, z: 0.0,
-                    r:     20.0, name: "sphere"
-                  }
-                ],
-              // Set the charge on charge1 to q1 when it changes.
-              bindings:
-                [
-                  {
-                    target: "charge1", set: "charge", from: "q1"
-                  },
-                  {
-                    target: "sphere", set: "r", from: "r"
+                    r:     20.0,
+                    bind: {set: "r", from: "r"}
                   }
                 ]
             };
     </script>
   </head>
-  <body>
-<!-- Copyright 2013-2014 Vizit Solutions
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License. -->
+  <body onload="prettyPrint()">
     <div class="wrapper">
     <div id="main">
       <div id="header">
@@ -83,18 +65,16 @@
     <div class="content">
         <h1>Gaussian Surface and a Point Charge</h1>
         <p id="nowebgl" class="error"></p>
-        <p class="abstract">
-          &nbsp;
-        </p>
 
         <p>
          Examining field lines passing through a surface is a <a href
          = "http://www.vizitsolutions.com/portfolio/gausslaw/">powerful tool</a> for understanding
          the electric field. This is an application where VField's electric field visualization
-         excels. We create a point charge surrounded by a spherical surface, and setup controls
-         for both the charge and the radius of the surface. There will be two controls for the
-         charge, automatically bound to the same events that they generate, so they remain in sync.
-         What other variables might it be interesting to make interactive<sup>1</sup>?
+         excels. We create a point charge surrounded by a spherical surface, then setup controls
+         for the charge and the radius of the surface. In a later example we even change the shape
+         of the surface. There will be two controls for the charge, automatically bound to the
+         same events that they generate, so they remain in sync. What other variables might it be
+         interesting to make interactive<sup><a href = "#1">1</a></sup>?
         </p>        
 
         <figure class="center">
@@ -129,97 +109,105 @@
         </p>
 
         <p>
-          This should definitely be familiar. Perhaps lesson and VField will merge into a
-          single file eventually, but for now they remain separate.
+          Let's refresh our memory of the overall process. Perhaps we will simplify
+          this by merging Lesson and VField into a single file eventually, but for
+          now they remain separate.
         </p>
 
-        <div class="steppedExample">
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
+        <ul>
+          <li>Include the VField and Lesson toolkits on your page.</li>
+          <li>Configure the visualization.</li>
+          <li>Give a place to draw the visualization.</li>
+          <li>Define interactions.</li>
+        </ul>
+
+        <h3>Include VField and Lesson toolkits</h3>
+
+        <pre class="prettyprint"><code class="language-js">
 &lt;!-- Lesson.js uses these styles --&gt;
 &lt;link rel="stylesheet" type="text/css" 
       href="http://vizit.github.io/lesson/css/Lesson.css"&gt;
 &lt;script defer src="http://vizit.github.io/lesson/js/Lesson.min.js"&gt;
 &lt;/script&gt;
-&lt;script async src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;script defer src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                We demonstrate a little more of what the combination of VField
-                and lesson are capable of.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
-&lt;script type="text/javascript"&gt;
+        </code></pre>
+
+        <p>
+          We demonstrate a little more of what the combination of VField
+          and lesson are capable of.
+        </p>
+
+        <h3>Configure the visualization</h3>
+
+        <pre class="prettyprint"><code class="language-js">
+&lt;script&gt;
   // This object is loaded by the VizBuilder on the DOMReady event.
   var VISUALIZATION_CONFIG
       = {
           // The electric field graph displays charges,
-          // field lines and gaussian surfaces.
-          type:      "electric field",
+          // field lines and Gaussian surfaces.
+          type:          "electric field",
           // The id of the canvas we draw into
-          canvas:    "chargeCanvas",
-          arrowHeadSize:  1.0,
-          arrowSpacing:  15.0,
+          canvas:        "chargeCanvas",
           scale:         50.0,
+          arrowHeadSize: 1.0,
+          arrowSpacing:  15.0,
           // Position a single charge at the origin
           elements:
             [
               {
                 type: "charge",  charge:  5.0,
                 x: 0.0, y: 0.0, z: 0.0,
-                fieldLineDensity: 5.0, name: "charge1"
+                fieldLineDensity: 5.0,
+                bind: {set: "charge", from: "q1"}
               },
               {
-                type: "gaussian sphere",
+                type: "Gaussian sphere",
                 x:      0.0, y:   0.0, z: 0.0,
-                r:     20.0, name: "sphere"
-              }
-            ],
-          // Set the charge on charge1 to q1 when it changes.
-          bindings:
-            [
-              {
-                target: "charge1", set: "charge", from: "q1"
-              },
-              {
-                target: "sphere", set: "r", from: "r"
+                r:     20.0,
+                bind: {set: "r", from: "r"}
               }
             ]
         };
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                Both the elements and the bindings are now arrays. They can be single
-                items or arrays, with the use of arrays required to contain multiple
-                entries. 
-              </p>
+        </code></pre>
 
-              <p>
-                The point charge at the origin is joined by a sphere, also centered
-                at the origin.
-              </p>
+        <p>
+          The <code>elements</code> are now an array containing two entries.
+          <code>Elements</code> can be a single item or an array, with an array
+          required to contain multiple entries. 
+        </p>
 
-              <p>
-                <code>q1</code> remains bound to the <code>chagre</code>
-                of <code>charge1</code>, and <code>r</code> is bound to
-                <code>r</code> of the sphere.
-              </p>
+        <p>
+          The first entry in the <code>elements</code> array is the familiar
+          point charge at the origin.  It is joined by a second element, of
+          <code>type</code> <samp>Gaussian sphere</samp>. A Gaussian sphere
+          is drawn as a gray translucent sphere. We see that the Gaussian sphere
+          also has coordinates <code>x</code>, <code>y</code> and <code>z</code>
+          equal to zero, that is the sphere is centered around the charge, which
+          is also at <code>x</code>, <code>y</code> and <code>z</code> equal zero.
+          The sphere has a radius, <code>r</code> of 20cm.
+        </p>
 
-              <p>
-                Manipulating the charge shows that the number of field lines crossing
-                the sphere changes in direct proportion to the change in the charge.
-                Manipulating the radius of the sphere illustrates how the space between
-                the field lines increases with r<sup>2</sup>.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-html">
+        
+
+        <p>
+          <code>q1</code> remains bound to the <code>charge</code>,
+          and <code>r</code> is bound to the radius, <code>r</code>,
+          of the sphere.
+        </p>
+
+        <p>
+          Manipulating the charge shows that the number of field lines crossing
+          the sphere changes in direct proportion to the change in the charge.
+          Manipulating the radius of the sphere illustrates how the space between
+          the field lines is proportional to r<sup>2</sup>.
+        </p>
+
+        <h3>Give a place to draw and define interactions</h3>
+
+        <pre class="prettyprint"><code class="language-html">
 &lt;figure class="center"&gt;
   &lt;!--This is the canvas for our electric field visualization. --&gt;
   &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
@@ -250,26 +238,37 @@
                               data-max="30.0"
                               data-step="1.0"&gt;&lt;/span&gt;cm.
 &lt;/p&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-               There are three lesson elements, one for the radius of the sphere, and two for
-               charge. The lesson elements are also HTML elements, and so fit into the flow of
-               the page, and can be styled by CSS.
-              </p>
-            </div>
-          </div>
-        </div>
+        </code></pre>
+
+        <p>
+          This time there are three lesson elements, one for the radius of the sphere,
+          and two for the charge. The lesson elements are also HTML elements, and so
+          fit into the flow of the page, and can be styled by CSS.
+        </p>
+
+        <p>
+          Another powerful instructional technique is <a href = "setter.html">setting
+          specific scenarios</a>.
+        </p>
+
         <div class="footnote">
           <ol>
-            <li>
+            <li id="1">
               What about the position of the charge, or of the sphere, so that the charge
               moves within the sphere, perhaps even moving outside of the sphere?
             </li>
-          <br>
+          </ol>
         </div>
+        <div class="center license">
+          <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource"
+          property="dct:title" rel="dct:type">VField Documentation</span> by <a xmlns:cc="http://creativecommons.org/ns#"
+          href="http://www.vizitsolutions.com/" property="cc:attributionName" rel="cc:attributionURL">Vizit Solutions</a>
+          is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
+          Attribution 4.0 International License</a>.
+        </div>
+        </div>
+        <script src="../../js/vizit.js"></script>
       </div>
     </div>
-  <script type="text/javascript" src="../../js/vizit.js"></script>
   </body>
 </html>

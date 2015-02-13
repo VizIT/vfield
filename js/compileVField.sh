@@ -13,7 +13,7 @@ $JAVA -jar $CLOSURE_HOME/compiler.jar --js current_license.js \
   FieldLineVBO.js FieldLine.js FieldLineGenerator.js FieldLineRenderer.js Cylinder.js \
   GaussianCylinder.js GaussianSphere.js ChargedCylinder.js ChargedLine.js ChargedPlane.js \
   ChargedSphere.js Charges.js ElectricField.js VectorFieldGenerator.js FieldRenderer.js \
-  CombinedVectorValuedFunctionBuilder.js SurfaceBuilder.js VectorValuedFunctionBuilder.js \
-  DistributionBuilder.js ChargesBuilder.js BindingBuilder.js ElectricFieldElementBuilder.js \
+  BindingBuilder.js CombinedVectorValuedFunctionBuilder.js SurfaceBuilder.js VectorValuedFunctionBuilder.js \
+  DistributionBuilder.js ChargesBuilder.js ElectricFieldElementBuilder.js \
   ElectricFieldBuilder.js SimpleVectorFieldBuilder.js VizBuilder.js \
   --js_output_file VField.min.js

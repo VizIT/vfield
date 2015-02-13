@@ -47,8 +47,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
                               chargeDensity_, fieldLineDensity_, nfieldLines_, name_)
    {
      var chargeDensity;
-     /** Container for r,g,b,a color values. */
-     var color;
      /** The density of field line per unit charge. */
      var fieldLineDensity;
      var height;
@@ -79,6 +77,43 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      /** |(x1,y1,z1) - (x0, y0, z0)| used to find the normal */
      var mag10;
 
+
+     /** 
+      * Compute r,g,b,a color values from charge
+      * density.
+      */
+     this.computeColor  = function(chargeDensity)
+     {
+       var color;
+
+       if (chargeDensity > 0)
+       {
+         color = new vizit.utility.Color(0.05, 0.05, 0.8, 0.80);
+       }
+       else if (chargeDensity < 0)
+       {
+         color = new vizit.utility.Color(0.8, 0.05, 0.05, 0.80);
+       }
+       else
+       {
+         // Neutral surfaces are grey
+         color = new vizit.utility.Color(0.5, 0.5, 0.5, 0.80);
+       }
+
+       return color;
+     }
+
+     this.setChargeDensity    = function (density)
+     {
+       chargeDensity = density;
+       modified      = true;
+       this.setColor(this.computeColor(chargeDensity));
+     };
+
+     this.getChargeDensity    = function ()
+     {
+       return chargeDensity;
+     };
 
      this.setHeight           = function (height_)
      {
@@ -385,21 +420,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
      chargeDensity = typeof chargeDensity_ === 'undefined' ? 0 : chargeDensity_;
 
-     if (chargeDensity > 0)
-     {
-       color = new vizit.utility.Color(0.05, 0.05, 0.8, 0.80);
-     }
-     else if (chargeDensity < 0)
-     {
-       color = new vizit.utility.Color(0.8, 0.05, 0.05, 0.80);
-     }
-     else
-     {
-       // Neutral surfaces are grey
-       color = new vizit.utility.Color(0.5, 0.5, 0.5, 0.80);
-     }
-
-     this.setColor(color);
+     this.setColor(this.computeColor(chargeDensity));
 
      modified         = true;
      name             = name_;

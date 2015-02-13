@@ -8,10 +8,12 @@
     <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
     <link   rel="stylesheet"          href="vfield.css" type="text/css" />
     <link   rel="next"                href="pointChargeField.html">
-    <script async src=https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js></script>
+    <link   rel="stylesheet" type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
+    <script async src=https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js></script>
     <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
     </script>
-    <script type="text/javascript">
+    <script>
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
           = {
@@ -20,32 +22,19 @@
               type:      "simple vector field",
               // The id of the canvas we draw into
               canvas:    "chargeCanvas",
-              arrowSize: 1.0,
               scale:     5.0,
+              arrowSize: 1.0,
               // f is a vector valued function.
               // In this case the electric field from a single charge.
               f:  {
                     type: "charge",  charge:  5.0,
                     x: 0.0, y: 0.0, z: 0.0,
-                    nfieldLines: 25.0, name: "charge1"
+                    nfieldLines: 25.0
                   }
             };
     </script>
   </head>
-  <body>
-<!-- Copyright 2013-2014 Vizit Solutions
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License. -->
+  <body onload="prettyPrint()">
     <div class="wrapper">
     <div id="main">
       <div id="header">
@@ -60,9 +49,6 @@
     <div class="content">
         <h1>Vector Field Visualization</h1>
         <p id="nowebgl" class="error"></p>
-        <p class="abstract">
-          &nbsp;
-        </p>
         
         <!--<p>
           Progress in mathematics, physics or engineering at the college level requires a strong
@@ -72,10 +58,10 @@
         <p>
           VField produces powerful interactive visualizations from simple configurations.
           These visualizations and their interactions are designed to integrate seamlessly
-          with your content, and not pull the student out of the flow of the content. This
+          with your content and not pull the student out of the flow your presentation. This
           contrasts sharply with most other interactive toolkits that provide self contained
           pieces, interactives, that may not match the content or style of your presentation,
-          and fail to provide integrated interactivity for the content as a whole.
+          and fail to provide integrated interactivity with the content as a whole.
         </p>
 
         <p>
@@ -85,8 +71,9 @@
         </p>
 
         <p> 
-          The following pages describe how to build several examples and show how to add
-          additional interactivity.
+          The following pages describe how to build several examples and how to add
+          additional interactivity. For the first example we draw vectors for the electric
+          field around a point charge.
         </p>
 
         <figure class="center">
@@ -100,21 +87,36 @@
           We produce this with three simple steps.
         </p>
 
-        <div class="steppedExample">
-          <div class="step">
-            <pre class="prettyprint"><code class="language-js">
+        <ul>
+          <li>Include VField on your page.</li>
+          <li>Configure the visualization.</li>
+          <li>Give a place to draw the visualization.</li>
+        </ul>
+
+        <h3>Include VField</h3>
+
+          <pre class="prettyprint"><code class="language-js">
 &lt;script defer src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
 &lt;/script&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                Include VField on your page.
-              </p>
-            </div>
-          </div>
-          <div class="step">
+          </code></pre>
+
+          <p>
+            The <samp>script</samp> tag includes VField on your page. The
+            <samp>defer</samp> attribute loads the script asynchronously, and
+            preserves order when multiple scripts are loaded. This will be
+            important later.
+          </p>
+          <p>
+            VField is an open source project hosted on <a href
+            = "https://github.com/VizIT/vfield">github</a>. Feel free to
+            examine the source, clone the repository, or make feature requests
+            by creating an issue. And please help everyone out by raising any
+            problems you have as an issue.
+          </p>
+
+          <h3>Configure the visualization</h3>
             <pre class="prettyprint"><code class="language-js">
-&lt;script type="text/javascript"&gt;
+&lt;script&gt;
   // This object is loaded by the VizBuilder on the DOMReady event.
   var VISUALIZATION_CONFIG
       = {
@@ -123,59 +125,122 @@
           type:      "simple vector field",
           // The id of the canvas we draw into
           canvas:    "chargeCanvas",
-          arrowSize: 1.0,
           scale:     5.0,
+          arrowSize: 1.0,
           // f is a vector valued function.
           // In this case the electric field from a single charge.
           f:  {
                 type: "charge",  charge:  5.0,
                 x: 0.0, y: 0.0, z: 0.0,
-                nfieldLines: 25.0, name: "charge1"
+                nfieldLines: 25.0
               }
         };
 &lt;/script&gt;
             </code></pre>
-            <div class="explanation">
-              <p>
-                Configure the visualization. A simple vector field traces field
-                lines and draws vectors at several points along the field lines.
-                The function defining the vector field, f, is a point charge at
-                the origin. The visualization is drawn on a canvas with the
-                given id <code>chargeCanvas</code>.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <pre class="prettyprint"><code class="language-html">
+
+            <p>
+              <code>VISUALIZATION_CONFIG</code> holds the visualization configuration
+              as a JavaScript object. This configuration starts out with some general
+              properties of the visualization, then sets up the vector field.
+            </p>
+
+            <p>
+              The <code>type</code> property defines, as you might expect, the type of graph
+              that is drawn. A <samp>simple vector field</samp> traces field lines and
+              draws vectors at several points along the field lines.
+            </p>
+
+            <p>
+              The <code>canvas</code> is the id of the canvas we will draw on. In this case,
+              <samp>chargeCanvas</samp>. As with any HTML id, it must be unique on the page.
+            </p>
+
+            <p>
+              The <code>scale</code> controls how much of the graph is drawn on the screen. A
+              scale of 1.0 means that the region where x, y and z each vary from  -1.0 to +1.0
+              is drawn to the screen, or a scale of 50 means that the region where x, y, and
+              z range from -50 to +50 is drawn to the screen. This can also be thought of as
+              zooming in with smaller numbers, and zooming out with larger numbers. Of course
+              the user can always zoom in and out manually, the scale is just the initial zoom.
+            </p>
+
+            <p>
+              The <code>arrowSize</code> controls the size of the arrows as drawn on the screen.
+              Specifically it is the scale of the vector field units to the spatial units drawn
+              on the screen.
+            </p>
+
+            <p>
+              The vector field is defined by a vector valued function, <code>f</code>. In this example,
+              <code>f</code> is the electric field from a point charge at the origin.
+            </p>
+
+            <p>
+              The <code>type</code> of <code>f</code> is <samp>charge</samp>, which corresponds to a
+              point charge, whose electric field is used as the vector valued function.
+            </p>
+
+            <p>
+              The magnitude of the charge is given by <code>charge</code>. The charge units are
+              <a href = "http://en.wikipedia.org/wiki/Statcoulomb">statC</a>. However, we draw
+              no axes, and allow you to control the size of the vectors, so you could consider
+              the charge to be any units you choose. The actual units are only clear on examination
+              of the code.
+            </p>
+
+            <p>
+              The position of the charge is pretty straightforward. There is a property for each
+              coordinate <code>x</code>, <code>y</code> and <code>z</code>. The units are treated
+              as cm in the code, but as with the charge you can chose any that are consistent with
+              your content. In this case, <code>x</code>, <code>y</code> and <code>z</code> are
+              all <samp>0.0</samp>.
+            </p>
+
+            <p>
+              We mentioned earlier that the simple vector field traces field lines and draws
+              field vectors spaced out along the field lines. The number of field lines traced
+              is controlled by the <code>nfieldLines</code> property. Changes in the magnitude
+              of the field produce proportional changes in the size of the vectors.
+            </p>
+
+          <h3>Give a place to draw</h3>
+
+          <pre class="prettyprint"><code class="language-html">
 &lt;figure class="center"&gt;
   &lt;!--This is the canvas for our visualization. --&gt;
   &lt;canvas id="chargeCanvas" width="300" height="300"&gt;&lt;/canvas&gt;
   &lt;figcaption&gt;The electric field from a point charge represented
               as a vector field.&lt;/figcaption&gt;
 &lt;/figure&gt;
-            </code></pre>
-            <div class="explanation">
-              <p>
-                Give a place to draw the visualization. The canvas with an id matching
-                the canvas id given in the visualization configuration is the only
-                requirement. Wrapping it with a figure element gives a more polished
-                appearance for the visualization and the caption.
-              </p>
-            </div>
-          </div>
-          </div>
-          <br class="clear">
+          </code></pre>
+
+          <p>
+            The canvas with an id matching the canvas id given in the visualization
+            configuration is the only requirement. Wrapping it with a figure element
+            gives a more polished appearance for the visualization and the caption.
+          </p>
+
           <p>
            These are exactly the steps used to create the example at the top of the page,
            as I encourage you to verify with <samp>view source</samp>.
            They can be included in any order on any web page to produce the same result.
           </p>
+
           <p>
             As an alternative, we can display the field lines. This uses a different type
             of graph, which we show <a href = "pointChargeField.html">next</a>.
           </p>
+
+          <div class="center license">
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource"
+            property="dct:title" rel="dct:type">VField Documentation</span> by <a xmlns:cc="http://creativecommons.org/ns#"
+            href="http://www.vizitsolutions.com/" property="cc:attributionName" rel="cc:attributionURL">Vizit Solutions</a>
+            is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
+            Attribution 4.0 International License</a>.
+          </div>
+        </div>
+      <script src="../../js/vizit.js"></script>
       </div>
     </div>
-  <script type="text/javascript" src="../../js/vizit.js"></script>
   </body>
 </html>

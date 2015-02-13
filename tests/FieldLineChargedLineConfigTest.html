@@ -14,15 +14,33 @@
                                                 type:"charged line",
                                                 chargeDensity: 0.3, fieldLineDensity:  0.1,
                                                 x0: -50.0,  y0:    0.0, z0: 0.0,
-                                                x1:  50.0,  y1:    0.0, z1: 0.0
+                                                x1:  50.0,  y1:    0.0, z1: 0.0,
+                                                bind: {set: "chargeDensity", from: "density"}
                                               }
                                   }
                                  ];
     </script>
     <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
-    <script type="text/javascript"    src="../../lesson/js/DirectEventHandler.js"></script>
-    <script type="text/javascript"    src="../../lesson/js/MappingEventHandler.js"></script>
-    <script type="text/javascript"    src="../../lesson/js/Lesson.js"></script>
+    <!-- Lesson css and scripts -->
+    <link   rel="stylesheet" type="text/css" href="../../lesson/css/Lesson.css">
+    <script defer type="text/javascript"     src="../../lesson/js/IdRegistry.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/DirectEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/DotRAdapter.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/GaussianSurfaceRChangedEventListiner.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonContentEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonContentEventSource.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonControlEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/MappingEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/ModelImageEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/RadialDependencyAdaptor.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/RangedSource.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/Setter.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/SurfaceExtensionEventListiner.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/ToExpression.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/XvsYController.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonBuilder.js"></script>
+    <!-- VField Scripts -->
+    <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
     <script type="text/javascript"    src="../js/EnsureNumber.js"></script>
     <script type="text/javascript"    src="../js/toBoolean.js"></script>
     <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
@@ -54,10 +72,11 @@
     <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
     <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
     <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <!-- Used in prototype for otherbuilders, must be loaded first. -->
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
     <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
     <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
     <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
-    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
     <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
     <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
     <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>
@@ -66,7 +85,20 @@
     <script type="text/javascript"    src="../js/VizBuilder.js"></script>
   </head>
   <body>
+    <h1>Field Line Charged Line Config Test</h1>
     <!--This is the target for our point charge rendering. -->
     <canvas id="chargeCanvas" width="300" height="300"></canvas>
+
+    <!-- This allows manipulation of charge density, -->
+    <!-- ranging from -1 to 1 with an initial value of 0.3 -->
+    <!-- This density matches the density in the binding in VISUALIZATION_CONFIG. -->
+    <!-- bind: {set: "chargeDensity", from: "density"} -->
+    <span class="lessonElement"
+          data-type="rangedSource"
+          data-name="density"
+          data-value="0.3"
+          data-min="-1.0"
+          data-max="1.0"
+          data-step="0.1"></span>
   </body>
 </html>

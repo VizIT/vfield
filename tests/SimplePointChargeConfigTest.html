@@ -17,9 +17,8 @@
                                     // f is a vector valued function. In this case the electric field from a single charge.
                                     f:  {type: "charge",  charge:  2.0,
                                          x: 0.0, y: 0.0, z: 0.0,
-                                         nfieldLines: 20.0, name: "charge1"},
-                                    // The charge of the target named charge1 is set to the value q1 when it changes.
-                                    bindings: {target: "charge1", set: "charge", from: "q1"}
+                                         nfieldLines: 20.0,
+                                         bind: {set: "charge", from: "q1"}}
                                   }
                                  ];
     </script>
@@ -60,10 +59,10 @@
     <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
     <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
     <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
     <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
     <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
     <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
-    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
     <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
     <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
     <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>
@@ -73,6 +72,7 @@
     
   </head>
   <body>
+    <h1>Simple Point Charge Config Test</h1>
     <!--This is the canvas for our electric field visualization. -->
     <canvas id="chargeCanvas" width="300" height="300"></canvas>
 

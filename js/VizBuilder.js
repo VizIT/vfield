@@ -42,7 +42,6 @@ window.vizit.builder = window.vizit.builder || {};
       */
      this.processConfig = function (config)
      {
-       var bindingsConfig;
        var builder;
        var drawingSurface, drawingSurfaceID;
        /** Case insensitive match of "electric field" with or without spaces. */
@@ -71,10 +70,6 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.toLowerCase() === "type")
          {
            type = config[property];
-         }
-         else if (property.toLowerCase() ==="bindings")
-         {
-           bindingsConfig = config[property];
          }
        }
 
@@ -111,14 +106,6 @@ window.vizit.builder = window.vizit.builder || {};
 
            if (renderer)
            {
-             if (bindingsConfig)
-             {
-               // This builder will lookup elements of the visualization by name
-               // from the framework.
-               builder = new vizit.builder.BindingBuilder();
-               builder.build(bindingsConfig, framework);
-             }
-
              framework.setRenderer(renderer);
 
              if (typeof scale !== "undefined")
