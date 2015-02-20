@@ -72,5 +72,6 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
      };
 
      this.getField = new Function(args, body);
+     modified      = true;
    };
 }(window.vizit.vectorfield));

@@ -30,6 +30,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
    {
        var functions;
        var nfunctions;
+       var startPoints;
 
        /**
         * Add a function to the collection.
@@ -80,25 +81,19 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        };
 
        /**
-        * Get start points using, for now, preset values of phi0 and r
+        *
+        */
+       this.setStartPoints = function(points)
+       {
+         startPoints = points;
+       }
+
+       /**
+        * Get start points, which are presumed provided in the configuration.
         */
        this.getStartPoints = function ()
        {
-         var i;
-         var r0     = 6.0;
-         var phi    = 0.0;
-         var dphi   = 1.57079632679/(ncharges+1);
-         var f;
-         var points = new Array();
-
-         for(i=0; i<nfunctions; i++)
-         {
-           f      = functions[i];
-           points = points.concat(f.getStartPoints(phi, r0));
-           phi   += dphi;
-         }
-
-         return points;
+         return startPoints;
        };
 
        /**
