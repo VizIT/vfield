@@ -153,24 +153,24 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        // n is perp to the field line, so n dot f = 0
        if (field[2] !== 0)
        {
-	 // Start with nx, ny = 1, then E dot n = 0 gives
-	 nx     = 1;
-	 ny     = 1;
-	 nz     = -(field[0]+field[1])/field[2];
+         // Start with nx, ny = 1, then E dot n = 0 gives
+         nx     = 1;
+         ny     = 1;
+         nz     = -(field[0]+field[1])/field[2];
        }
        else if (field[1] !== 0)
        {
-	 // Start with nx, nz = 1, then f dot n = 0 gives
-	 nx     = 1;
-	 ny     = -(field[0]+field[2])/field[1];
-	 nz     = 1;
+         // Start with nx, nz = 1, then f dot n = 0 gives
+         nx     = 1;
+         ny     = -(field[0]+field[2])/field[1];
+         nz     = 1;
        }
        else
        {
-	 // Start with ny, nz = 1, then f dot n = 0 gives
-	 nx     = -(field[1]+field[2])/field[0];
-	 ny     = 1;
-	 nz     = 1;
+         // Start with ny, nz = 1, then f dot n = 0 gives
+         nx     = -(field[1]+field[2])/field[0];
+         ny     = 1;
+         nz     = 1;
        }
 
        // Normalize and multiply by the arrow size
@@ -292,31 +292,31 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
 
        while (nvectors < maxVectors && !shouldStop)
        {
-	 field            = f.getField(x, y, z);
-	 fMagnitude       = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
-	 if (fMagnitude === 0)
-	 {
-	   // No field here - no possible field line
-	   break;
-	 }
+         field            = f.getField(x, y, z);
+         fMagnitude       = Math.sqrt(field[0] * field[0] + field[1] * field[1] + field[2] * field[2]);
+         if (fMagnitude === 0)
+         {
+           // No field here - no possible field line
+           break;
+         }
 
-	 if (S >= nextVector)
-	 {
-	   this.generateVector(x,               y,                       z,                      
-			       field,           fMagnitude,              arrowHeadSize,
-			       arrowHeadWidth,  priorVectors + nvectors, arrowSize,
-			       indexedVertices);
-	   nextVector = S + Math.max(fMagnitude * 1.2 * arrowSize, 1);
-	   nvectors++;
-	 }
+         if (S >= nextVector)
+         {
+           this.generateVector(x,               y,                       z,                      
+                               field,           fMagnitude,              arrowHeadSize,
+                               arrowHeadWidth,  priorVectors + nvectors, arrowSize,
+                               indexedVertices);
+           nextVector = S + Math.max(fMagnitude * 1.2 * arrowSize, 1);
+           nvectors++;
+         }
 
-	 x += sign * field[0]/fMagnitude * ds;
-	 y += sign * field[1]/fMagnitude * ds;
-	 z += sign * field[2]/fMagnitude * ds;
-	 S += ds;
-	 shouldStop = f.shouldStop(sign, x, y, z);
+         x += sign * field[0]/fMagnitude * ds;
+         y += sign * field[1]/fMagnitude * ds;
+         z += sign * field[2]/fMagnitude * ds;
+         S += ds;
+         shouldStop = f.shouldStop(sign, x, y, z);
 
-	 // console.log("S: " + S + " Next: " + nextVector + " fx: " + field[0] + " fy: " + field[1] + " fz: " + field[2] + " stop: " + shouldStop);
+         // console.log("S: " + S + " Next: " + nextVector + " fx: " + field[0] + " fy: " + field[1] + " fz: " + field[2] + " stop: " + shouldStop);
        }
        return nvectors;
      };
@@ -335,11 +335,11 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
 
        for(i=0; i<nstartPoints; i++)
        {
-	 startPoint    = startPoints[i];
-	 startPoint[4] = nvectors;
-	 // Compute the vectors from this field line, and load them into indexedVertices
-	 nvectors += this.trace(f,          startPoint[0], startPoint[1], startPoint[2],   startPoint[3],
-				maxVectors, nvectors,      arrowSize,     indexedVertices);
+         startPoint    = startPoints[i];
+         startPoint[4] = nvectors;
+         // Compute the vectors from this field line, and load them into indexedVertices
+         nvectors += this.trace(f,          startPoint[0], startPoint[1], startPoint[2],   startPoint[3],
+                                maxVectors, nvectors,      arrowSize,     indexedVertices);
        }
 
        return indexedVertices;
