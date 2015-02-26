@@ -7,8 +7,9 @@
                                    // representing the field along the field lines.
                                    type:   "simple vector field",
                                    canvas: "vectorCanvas",
-                                   arrowSize: 2.0,
-                                   scale:     7.0,
+                                   startpoints: [[3.0, 0.0, 0.0, 1.0]],
+                                   arrowSize: 1.0,
+                                   scale:     10.0,
                                    // f is a vector valued function. 
                                    f:
                                      {
@@ -17,9 +18,9 @@
                                         body: "var vx, vy, vz, vmag, vnorm;\n"
                                              + " vmag = 3;\n"
                                              + " vnorm = Math.sqrt(x*x + y*y);\n"
-                                             + " vx = vmag*x/vnorm;\n"
-                                             + " vy = vmag*y/vnorm;\n"
-                                             + " vz = 0;\n"
+                                             + " vx = -vmag*y/vnorm;\n"
+                                             + " vy =  vmag*x/vnorm;\n"
+                                             + " vz =  0;\n"
                                              + " return [vx, vy, vz];"
                                      }
                                  }

@@ -135,9 +135,9 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
 
          should = false;
 
-         for(var i=0; i<ncharges & !should; i++)
+         for(var i=0; i<nfunctions & !should; i++)
          {
-           should = functions[i].shouldStop(sgn, x, y, z);
+	     //should = functions[i].shouldStop(sgn, x, y, z);
          }
          return should;
        };

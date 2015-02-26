@@ -142,6 +142,7 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
 
      this.setupVectorField    = function ()
      {
+       var candidates;
        var indexedBuffer;
        var indexedVertices;
        var startPoints;
@@ -149,7 +150,15 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        // Include start points defined implicitly in vector function, if any.
        if (typeof f.getStartPoints === "function")
        {
-         startPoints = explicitStartPoints.concat(f.getStartPoints(0, 2.0));
+         candidates  = f.getStartPoints(0, 2.0);
+         if (typeof candidates !== "undefined")
+         {
+           startPoints = explicitStartPoints.concat(candidates);
+         }
+         else
+         {
+           startPoints = explicitStartPoints;
+         }
        }
        else
        {

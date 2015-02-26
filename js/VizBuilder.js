@@ -50,12 +50,16 @@ window.vizit.builder = window.vizit.builder || {};
        var property;
        var renderer;
        var scale;
-       /** Case insnesitive match of "simple vector field" with or without spaces. */
+       /** Case insensitive match of "simple vector field" with or without spaces. */
        var simpleVectorFieldRE;
+       var startPoints;
+       /** Case insensitive match of "start points" with or without spaces. */
+       var startPointsRE;
        var type;
 
        electricFieldRE     = /\s*electric\s*field\s*/i;
        simpleVectorFieldRE = /\s*simple\s*vector\s*field\s*/i;
+       startPointsRE       = /\s*start\s*points\s*/i;
 
        for(var property in config)
        {
@@ -70,6 +74,10 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.toLowerCase() === "type")
          {
            type = config[property];
+         }
+         else if (property.match(startPointsRE))
+         {
+           startPoints = config[property];
          }
        }
 
@@ -111,6 +119,10 @@ window.vizit.builder = window.vizit.builder || {};
              if (typeof scale !== "undefined")
              {
                framework.setScale(scale);
+             }
+             if (typeof startPoints !== "undefined")
+             {
+               renderer.addStartPoints(startPoints);
              }
 
              framework.start();
