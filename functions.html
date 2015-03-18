@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Visualizing Functions</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="canonical"           href="http://www.vizitsolutions.com/portfolio/vfield/functions.html" />
+    <link   rel="stylesheet"          href="nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="vfield.css" type="text/css" />
+    <!-- Lesson.js uses these styles -->
+    <link   rel="prev"                href="setter.html">
+    <link   rel="stylesheet" type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
+    <script src=http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML></script>
+    <script async src=https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js></script>
+    <script defer src="http://vizit.github.io/vfield/js/VField.min.js">
+    </script>
+    <script>
+      // This object is loaded by the VizBuilder on the DOMReady event.
+      var VISUALIZATION_CONFIG
+          = {
+              // This is a simple vector field, so we draw vectors
+              // representing the field along the field lines.
+              type:   "simple vector field",
+              canvas: "vectorCanvas",
+              arrowSize: 0.25,
+              scale:     25.0,
+              // f is a vector valued function. 
+              f: {
+                type: "function", 
+                args: "x, y, z",
+                body: "var vx, vy, vz;"
+                      + "vx = x;"
+                      + "vy = -y;"
+                      + "vz = z;"
+                      + "return [vx, vy, vz];"
+              },
+              // The start points are the beginnings of the field lines.
+              startpoints: [
+                // x>0, y=10, z=0
+                [ 1.0,  10.0,  0.0, 1.0], [ 2.0,  10.0,  0.0, 1.0], [ 3.0,  10.0,  0.0, 1.0], [ 4.0,  10.0,  0.0, 1.0], [ 5.0,  10.0,  0.0, 1.0],
+                // x>0, y=-10, z=0
+                [ 1.0, -10.0,  0.0, 1.0], [ 2.0, -10.0,  0.0, 1.0], [ 3.0, -10.0,  0.0, 1.0], [ 4.0, -10.0,  0.0, 1.0], [ 5.0, -10.0,  0.0, 1.0],
+                // x<0, y=10, z=0
+                [-1.0,  10.0,  0.0, 1.0], [-2.0,  10.0,  0.0, 1.0], [-3.0,  10.0,  0.0, 1.0], [-4.0,  10.0,  0.0, 1.0], [-5.0,  10.0,  0.0, 1.0],
+                // x<0, y=-10, z=0
+                [-1.0, -10.0,  0.0, 1.0], [-2.0, -10.0,  0.0, 1.0], [-3.0, -10.0,  0.0, 1.0], [-4.0, -10.0,  0.0, 1.0], [-5.0, -10.0,  0.0, 1.0],
+                // x>0, y=10, z=1
+                [ 1.0,  10.0,  1.0, 1.0], [ 2.0,  10.0,  1.0, 1.0], [ 3.0,  10.0,  1.0, 1.0], [ 4.0,  10.0,  1.0, 1.0], [ 5.0,  10.0,  1.0, 1.0],
+                // x>0, y=-10, z=1
+                [ 1.0, -10.0,  1.0, 1.0], [ 2.0, -10.0,  1.0, 1.0], [ 3.0, -10.0,  1.0, 1.0], [ 4.0, -10.0,  1.0, 1.0], [ 5.0, -10.0,  1.0, 1.0],
+                // x<0, y=10, z=1
+                [-1.0,  10.0,  1.0, 1.0], [-2.0,  10.0,  1.0, 1.0], [-3.0,  10.0,  1.0, 1.0], [-4.0,  10.0,  1.0, 1.0], [-5.0,  10.0,  1.0, 1.0],
+                // x<0, y=-10, z=1
+                [-1.0, -10.0,  1.0, 1.0], [-2.0, -10.0,  1.0, 1.0], [-3.0, -10.0,  1.0, 1.0], [-4.0, -10.0,  1.0, 1.0], [-5.0, -10.0,  1.0, 1.0],
+                // // x>0, y=10, z=-1
+                [ 1.0,  10.0, -1.0, 1.0], [ 2.0,  10.0, -1.0, 1.0], [ 3.0,  10.0, -1.0, 1.0], [ 4.0,  10.0, -1.0, 1.0], [ 5.0,  10.0, -1.0, 1.0],
+                // x>0, y=-10, z=-1
+                [ 1.0, -10.0, -1.0, 1.0], [ 2.0, -10.0, -1.0, 1.0], [ 3.0, -10.0, -1.0, 1.0], [ 4.0, -10.0, -1.0, 1.0], [ 5.0, -10.0, -1.0, 1.0],
+                // x<0, y=10, z=-1
+                [-1.0,  10.0, -1.0, 1.0], [-2.0,  10.0, -1.0, 1.0], [-3.0,  10.0, -1.0, 1.0], [-4.0,  10.0, -1.0, 1.0], [-5.0,  10.0, -1.0, 1.0],
+                // x<0, y=-10, z=-1
+                [-1.0, -10.0, -1.0, 1.0], [-2.0, -10.0, -1.0, 1.0], [-3.0, -10.0, -1.0, 1.0], [-4.0, -10.0, -1.0, 1.0], [-5.0, -10.0, -1.0, 1.0]
+              ]
+            }
+    </script>
+  </head>
+  <body onload="prettyPrint()">
+    <div class="wrapper">
+    <div id="main">
+      <div id="header">
+        <span class="logo2 Fell drawOnResize"><a href = "http://www.vizitsolutions.com/">Vizit Solutions</a></span>
+        <ul>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/catalog/" title="Catalog">Catalog</a></li>
+          <li class="drawOnResize"><a href="http://www.vizitsolutions.com/portfolio/" title="Portfolio">Portfolio</a></li>
+          <li class="drawOnResize"><a href="http://blog.vizitsolutions.com/" title="Blog">Blog</a></li>
+          <li class="drawOnResize"><a href="mailto:akluge@vizitsolutions.com?subject=Vector+Fields" title="akluge@vizitsolutions.com">Contact</a></li>
+        </ul>
+      </div>
+    <div class="content">
+        <h1>Visualizing Functions</h1>
+        <p id="nowebgl" class="error"></p>
+
+        <p>
+          Vector fields and vector functions arise frequently outside of electromagnetism.
+          They are a mainstay of mathematics, science and engineering. This example
+          visualizes a arbitrary vector valued function. Previously we implicitly defined
+          a vector field as the electric field from configured charges. This time we
+          explicitly define the vector field.
+        </p>
+
+        <math display="block">
+          <mi mathvariant='bold'>f</mi>
+            <mo>=</mo> <mi>x</mi><mover><!-- i-hat --><mi mathvariant="bold">&imath;</mi><mo>^</mo></mover>
+                       <mo>-</mo><mi>y</mi><mover><!-- j-hat --><mi mathvariant="bold">&jmath;</mi><mo>^</mo></mover>
+                       <mo>+</mo><mi>z</mi><mover><!-- k-hat --><mi mathvariant="bold">k</mi><mo>^</mo></mover>
+        </math>
+
+        <p>
+          In addition to the vector field, we also define a list of start points. Start points
+          are where the framework begins tracing a field line. Each start point contains <i>x</i>,
+          <i>y</i> and <i>z</i> coordinates and a direction indicator. If the direction indicator
+          is positive, the start point marks the beginning of the field line and the the field line
+          is traced forward, along the direction of the vector, from that point. If the direction
+          indicator is negative, the point marks the end of the field line and the field is traced
+          backwards from that point.
+        </p>
+
+        <p>
+          This is something that immediately calls out for an improvement in the framework.
+          Indeed, working with vector functions is the area of greatest progress right now.
+        </p>
+
+        <div class="exemplar">
+          <figure class="center">
+            <!--This is the canvas for our vector field visualization. -->
+            <canvas id="vectorCanvas" width="350" height="350"></canvas>
+            <figcaption>The vector field <math>
+                                           <mi mathvariant='bold'>f</mi>
+                                             <mo>=</mo> <mi>x</mi><mover><!-- i-hat --><mi mathvariant="bold">&imath;</mi><mo>^</mo></mover>
+                                                        <mo>-</mo><mi>y</mi><mover><!-- j-hat --><mi mathvariant="bold">&jmath;</mi><mo>^</mo></mover>
+                                                        <mo>+</mo><mi>z</mi><mover><!-- k-hat --><mi mathvariant="bold">k</mi><mo>^</mo></mover>
+                                         </math>.
+          </figure>
+        </div>
+
+        <p>
+          The steps to visualize a vector valued function are similar to what we are familiar
+          with from the electric field examples.
+        </p>
+
+        <ul>
+          <li>Include the VField toolkit on your page.</li>
+          <li>Configure the visualization.</li>
+          <ul>
+            <li>Define the function.</li>
+            <li>List the start points.</li>
+          </ul>
+          <li>Give a place to draw the visualization.</li>
+        </ul>
+
+        <h3>Include VField</h3>
+
+        <pre class="prettyprint"><code class="language-js">
+&lt;script defer src="http://vizit.github.io/vfield/js/VField.min.js"&gt;
+&lt;/script&gt;
+        </code></pre>
+
+        <p>
+          We don't setup any advanced interactions, so we don't need the Lesson toolkit.
+        </p>
+
+        <h3>Configure the visualization</h3>
+
+        <p>
+          This configures a <code>simple vector field</code>, which generates a visualization
+          by tracing field lines and drawing vectors along those field lines. This time we
+          explicitly define a vector function, <code>f</code>. The function definition, <code>f</code>
+          is easily modified to provide different vector components.
+        </p>
+
+        <pre class="prettyprint"><code class="language-js">
+&lt;script&gt;
+// This object is loaded by the VizBuilder on the DOMReady event.
+var VISUALIZATION_CONFIG
+    = {
+        // This is a simple vector field, so we draw vectors
+        // representing the field along the field lines.
+        type:   "simple vector field",
+        canvas: "vectorCanvas",
+        arrowSize: 0.25,
+        scale:     25.0,
+        // f is a vector valued function. 
+        f: {
+          type: "function", 
+          args: "x, y, z",
+          body: "var vx, vy, vz;"
+                + "vx = x;"
+                + "vy = -y;"
+                + "vz = z;"
+                + "return [vx, vy, vz];"
+        },
+        // The start points are the beginnings of the field lines.
+        startpoints: [
+          // x>0, y=10, z=0
+          [ 1.0,  10.0,  0.0, 1.0], [ 2.0,  10.0,  0.0, 1.0], [ 3.0,  10.0,  0.0, 1.0], [ 4.0,  10.0,  0.0, 1.0], [ 5.0,  10.0,  0.0, 1.0],
+          // x>0, y=-10, z=0
+          [ 1.0, -10.0,  0.0, 1.0], [ 2.0, -10.0,  0.0, 1.0], [ 3.0, -10.0,  0.0, 1.0], [ 4.0, -10.0,  0.0, 1.0], [ 5.0, -10.0,  0.0, 1.0],
+          // x<0, y=10, z=0
+          [-1.0,  10.0,  0.0, 1.0], [-2.0,  10.0,  0.0, 1.0], [-3.0,  10.0,  0.0, 1.0], [-4.0,  10.0,  0.0, 1.0], [-5.0,  10.0,  0.0, 1.0],
+          // x<0, y=-10, z=0
+          [-1.0, -10.0,  0.0, 1.0], [-2.0, -10.0,  0.0, 1.0], [-3.0, -10.0,  0.0, 1.0], [-4.0, -10.0,  0.0, 1.0], [-5.0, -10.0,  0.0, 1.0],
+          // x>0, y=10, z=1
+          [ 1.0,  10.0,  1.0, 1.0], [ 2.0,  10.0,  1.0, 1.0], [ 3.0,  10.0,  1.0, 1.0], [ 4.0,  10.0,  1.0, 1.0], [ 5.0,  10.0,  1.0, 1.0],
+          // x>0, y=-10, z=1
+          [ 1.0, -10.0,  1.0, 1.0], [ 2.0, -10.0,  1.0, 1.0], [ 3.0, -10.0,  1.0, 1.0], [ 4.0, -10.0,  1.0, 1.0], [ 5.0, -10.0,  1.0, 1.0],
+          // x<0, y=10, z=1
+          [-1.0,  10.0,  1.0, 1.0], [-2.0,  10.0,  1.0, 1.0], [-3.0,  10.0,  1.0, 1.0], [-4.0,  10.0,  1.0, 1.0], [-5.0,  10.0,  1.0, 1.0],
+          // x<0, y=-10, z=1
+          [-1.0, -10.0,  1.0, 1.0], [-2.0, -10.0,  1.0, 1.0], [-3.0, -10.0,  1.0, 1.0], [-4.0, -10.0,  1.0, 1.0], [-5.0, -10.0,  1.0, 1.0],
+          // // x>0, y=10, z=-1
+          [ 1.0,  10.0, -1.0, 1.0], [ 2.0,  10.0, -1.0, 1.0], [ 3.0,  10.0, -1.0, 1.0], [ 4.0,  10.0, -1.0, 1.0], [ 5.0,  10.0, -1.0, 1.0],
+          // x>0, y=-10, z=-1
+          [ 1.0, -10.0, -1.0, 1.0], [ 2.0, -10.0, -1.0, 1.0], [ 3.0, -10.0, -1.0, 1.0], [ 4.0, -10.0, -1.0, 1.0], [ 5.0, -10.0, -1.0, 1.0],
+          // x<0, y=10, z=-1
+          [-1.0,  10.0, -1.0, 1.0], [-2.0,  10.0, -1.0, 1.0], [-3.0,  10.0, -1.0, 1.0], [-4.0,  10.0, -1.0, 1.0], [-5.0,  10.0, -1.0, 1.0],
+          // x<0, y=-10, z=-1
+          [-1.0, -10.0, -1.0, 1.0], [-2.0, -10.0, -1.0, 1.0], [-3.0, -10.0, -1.0, 1.0], [-4.0, -10.0, -1.0, 1.0], [-5.0, -10.0, -1.0, 1.0]
+        ]
+      }
+&lt;/script&gt;
+        </code></pre>
+
+        <p>
+          This configuration draws onto the <code>vectorCanvas</code> canvas. We set an
+          <code>arrowSize</code> of 0.25 to scale down the size of the arrows and make a
+          clearer representation of the field.
+        </p>
+
+        <p>
+          This time <code>f</code> is an explicit <samp>function</samp>. Contrast this
+          with the <a href = "index.html">first example</a>, which setup a charge
+          configuration.
+        </p>
+
+        <p>
+          The <code>args</code> are the parameters, or arguments, passed into the function.
+          They are always the <i>x</i>, <i>y</i> and <i>z</i> coordinates, but setting the
+          <code>args</code> provides an easy way to establish more meaningful names. For
+          example, we might set <code>args</code> of <i>width</i>, <i>height</i>, and
+          <i>length</i> then use these more meaningful variables in the function rather than
+          the generic <i>x</i>, <i>y</i> and <i>z</i> if they match the specific problem.
+        </p>
+
+        <p>
+          The function is specified by giving the body of a JavaScript function, which
+          returns a three element vector. The vector contains the x, y and z components
+          of the vector.
+        </p>
+
+        <p>
+          The last piece of the configuration is the <code>startpoints</code>. There are many
+          <code>startpoints</code> so they are contained in an array [ ... ]. Each point contains
+          four numbers, so each point is also an array and the <code>startpoints</code> are an
+          array of arrays.
+        </p>
+
+        <p>
+         The first start point [ 1.0,  10.0,  0.0, 1.0] contains <i>x</i>, <i>y</i> and <i>z</i>
+         coordinates (1.0,  10.0,  0.0) and the direction indicator 1.0. The coordinates are where
+         we start tracing the field line. This point generates a vector just to the right of center
+         at the top of the graph. The positive direction indicator indicates we trace the field
+         line along the direction of the vector.
+        </p>
+
+        <h3>Give a place to draw</h3>
+
+        <pre class="prettyprint"><code class="language-html">
+&lt;figure class="center"&gt;
+  &lt;!--This is the canvas for our vector field visualization. --&gt;
+  &lt;canvas id="vectorCanvas" width="350" height="350"&gt;&lt;/canvas&gt;
+  &lt;figcaption&gt;The vector field &lt;math&gt;
+                                 &lt;mi mathvariant='bold'&gt;f&lt;/mi&gt;
+                                   &lt;mo&gt;=&lt;/mo&gt; &lt;mi&gt;x&lt;/mi&gt;&lt;mover&gt;&lt;!-- i-hat --&gt;&lt;mi mathvariant="bold"&gt;&imath;&lt;/mi&gt;&lt;mo&gt;^&lt;/mo&gt;&lt;/mover&gt;
+                                              &lt;mo&gt;-&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mover&gt;&lt;!-- j-hat --&gt;&lt;mi mathvariant="bold"&gt;&jmath;&lt;/mi&gt;&lt;mo&gt;^&lt;/mo&gt;&lt;/mover&gt;
+                                              &lt;mo&gt;+&lt;/mo&gt;&lt;mi&gt;z&lt;/mi&gt;&lt;mover&gt;&lt;!-- k-hat --&gt;&lt;mi mathvariant="bold"&gt;k&lt;/mi&gt;&lt;mo&gt;^&lt;/mo&gt;&lt;/mover&gt;
+                               &lt;/math&gt;.
+&lt;/figure&gt;
+        </code></pre>
+
+        <p>
+          Perhaps the most interesting point here is the use of <a href = "http://www.w3.org/Math/">MathML</a>, with
+          <a href = "https://www.mathjax.org/">MathJax</a> to provide rendering on browsers that do not support
+          MathML yet.
+        </p>
+
+        <p>
+          This is a 350x350 canvas, slightly larger than the 300x300 used in <a href = "index.html">earlier
+          examples</a>. The graphics automatically scale cleanly with the canvas's size with no pixelization
+          or other artifacts. A WebGL canvas can also be scaled by setting the width or height CSS attributes.
+          The WebGL is always rendered into the canvas's explicit height and width. That image will then be
+          scaled according to the CSS height and width. This has the advantage of allowing you to render to
+          a smaller image and scale it to a large presentation. The disadvantage is that the scaled image
+          will not be as clear or clean as an unscaled image.
+        </p>
+
+        <div class="center license">
+          <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource"
+          property="dct:title" rel="dct:type">VField Documentation</span> by <a xmlns:cc="http://creativecommons.org/ns#"
+          href="http://www.vizitsolutions.com/" property="cc:attributionName" rel="cc:attributionURL">Vizit Solutions</a>
+          is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
+          Attribution 4.0 International License</a>.
+        </div>
+      </div>
+      <script src="../../js/vizit.js"></script>
+      </div>
+    </div>
+  </body>
+</html>
