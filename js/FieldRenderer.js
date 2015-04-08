@@ -63,6 +63,11 @@ window.vizit.field = window.vizit.field || {};
        renderer.setProjectionMatrix(projectionMatrix);
      };
 
+     this.getRenderer        = function()
+     {
+       return renderer;
+     };
+
      this.setModelViewMatrix = function (modelViewMatrix_)
      {
        modelViewMatrix = modelViewMatrix_;
@@ -78,8 +83,8 @@ window.vizit.field = window.vizit.field || {};
      {
        if (!rendering)
        {
-	 rendering = true;
-	 requestAnimationFrame(this.render);
+         rendering = true;
+         requestAnimationFrame(this.render);
        }
      };
 
@@ -99,7 +104,7 @@ window.vizit.field = window.vizit.field || {};
        scale = scale_;
        if (scale < 1)
        {
-	 scale = 1;
+         scale = 1;
        }
        // We project a scale x scale x scale cube into normalized device space.
        projectionMatrix     = glUtility.generateOrthographicMatrix(scale, scale, -scale, scale);
@@ -123,7 +128,7 @@ window.vizit.field = window.vizit.field || {};
 
        if (elementNames.hasOwnProperty(name))
        {
-	   element=elementNames[name];
+           element=elementNames[name];
        }
 
        return element;
@@ -136,13 +141,13 @@ window.vizit.field = window.vizit.field || {};
 
      // Initially an identity matrix, modified by movementEventHandler.
      modelViewMatrix  = new Float32Array([1, 0, 0, 0,
-					  0, 1, 0, 0,
-					  0, 0, 1, 0,
-					  0, 0, 0, 1]);
+                                          0, 1, 0, 0,
+                                          0, 0, 1, 0,
+                                          0, 0, 0, 1]);
 
      normalMatrix     = new Float32Array([1, 0, 0,
-					  0, 1, 0,
-					  0, 0, 1]);
+                                          0, 1, 0,
+                                          0, 0, 1]);
 
      projectionMatrix = glUtility.generateOrthographicMatrix(scale, scale, -scale, scale);
 
