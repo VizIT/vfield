@@ -70,6 +70,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          fieldLineGenerator.setArrowSpacing(spacing);
        }
+       return this;
      };
 
      this.getArrowSpacing       = function ()
@@ -84,6 +85,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        {
          fieldLineGenerator.setArrowHeadSize(size);
        }
+       return this;
      };
 
      this.getArrowHeadSize    = function ()
@@ -94,6 +96,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setColor            = function (color_)
      {
        color = color_;
+       return this;
      };
 
      this.getColor            = function ()
@@ -108,6 +111,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setCharges          = function (charges_)
      {
        charges = charges_;
+       return this;
      };
 
      this.getCharges          = function ()
@@ -118,6 +122,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.addGaussianSurface  = function (surface)
      {
        gaussianSurfaces.push(surface);
+       return this;
      };
 
      /**
@@ -132,6 +137,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setGlUtility        = function (glUtility_)
      {
        glUtility = glUtility_;
+       return this;
      };
 
      this.getGlUtility        = function ()
@@ -142,6 +148,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setMaxVectors       = function (max)
      {
        maxVectors = max;
+       return this;
      };
 
      this.getMaxVectors       = function ()
@@ -158,6 +165,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        // or non-uniform scaling would require the use of (M^-1)^T.
        // See gl-matrix's mat3.normalFromMat4
        normalMatrix    = glUtility.extractRotationPart(modelViewMatrix, normalMatrix);
+       return this;
      };
 
      this.getModelViewMatrix  = function ()
@@ -168,6 +176,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setProjectionMatrix = function (projectionMatrix_)
      {
        projectionMatrix = projectionMatrix_;
+       return this;
      };
 
      this.addStartPoint  = function (x_, y_, z_, sgn_)
