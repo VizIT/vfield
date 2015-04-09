@@ -47,6 +47,7 @@ window.vizit.builder = window.vizit.builder || {};
        /** Case insensitive match of "electric field" with or without spaces. */
        var electricFieldRE;
        var framework;
+       var name;
        var property;
        var renderer;
        var scale;
@@ -75,6 +76,10 @@ window.vizit.builder = window.vizit.builder || {};
          {
            type = config[property];
          }
+         else if (property.toLowerCase() === "name")
+         {
+           name = config[property];
+         }
          else if (property.match(startPointsRE))
          {
            startPoints = config[property];
@@ -85,7 +90,7 @@ window.vizit.builder = window.vizit.builder || {};
        {
          alert("Missing type for visualization configuration.");
        }
-       else if (drawingSurfaceID === "undefined")
+       else if (typeof drawingSurfaceID === "undefined")
        {
          alert("No canvas specified, please provide the id of a canvas.");
        }
@@ -119,6 +124,10 @@ window.vizit.builder = window.vizit.builder || {};
              if (typeof scale !== "undefined")
              {
                framework.setScale(scale);
+             }
+             if (typeof name !== "undefined")
+             {
+               vizit.visualizations.register(name, framework);
              }
              if (typeof startPoints !== "undefined")
              {

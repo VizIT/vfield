@@ -15,5 +15,5 @@ $JAVA -jar $CLOSURE_HOME/compiler.jar --js current_license.js \
   ChargedSphere.js Charges.js ElectricField.js VectorFieldGenerator.js FieldRenderer.js \
   BindingBuilder.js CombinedVectorValuedFunctionBuilder.js SurfaceBuilder.js VectorValuedFunctionBuilder.js \
   DistributionBuilder.js ChargesBuilder.js ElectricFieldElementBuilder.js \
-  ElectricFieldBuilder.js SimpleVectorFieldBuilder.js VizBuilder.js \
+  Visualizations.js ElectricFieldBuilder.js SimpleVectorFieldBuilder.js VizBuilder.js \
   --js_output_file VField.min.js
