@@ -111,6 +111,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
      glUtility            = glUtility_;
      gl                   = glUtility.getGLContext();
-     program              = this.createProgram();
+     program              = this.createProgram(gl);
    };
  }(window.vizit.electricfield));
