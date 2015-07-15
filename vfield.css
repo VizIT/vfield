@@ -52,15 +52,6 @@ table.explanation td
   border-color:     #666666;
 }
 
-@media (max-width: 400px)
-{
-  figure
-  {
-    margin-left:  10px;
-    margin-right: 10px;
-  }
-}
-
 figure canvas
 {
   max-width: 100%;
@@ -96,5 +87,24 @@ pre.prettyprint
 {
   margin:        -1.0em auto;
   border:        none !important;
-  overflow-y:    scroll;
 }
+
+@media (max-width: 400px)
+{
+  figure
+  {
+    margin-left:  10px;
+    margin-right: 10px;
+  }
+
+  .optional
+  {
+    display: none;
+  }
+
+  pre.prettyprint
+  {
+    overflow-x:    scroll;
+  }
+}
+
