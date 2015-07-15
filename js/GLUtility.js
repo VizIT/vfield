@@ -174,7 +174,7 @@ window.vizit.utility = window.vizit.utility || {};
        attributeLocation    = gl.getAttribLocation(program, name);
        if(attributeLocation === -1)
        {
-         alert('Can not find attribute' + name + '.');
+         alert('Can not find attribute ' + name + '.');
        }
 
        return attributeLocation;
