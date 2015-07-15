@@ -42,6 +42,7 @@ table.explanation th
   border-color:     #666666;
   background-color: #dedede;
 }
+
 table.explanation td
 {
   text-align:       left;
@@ -49,6 +50,20 @@ table.explanation td
   padding:          8px;
   border-style:     solid;
   border-color:     #666666;
+}
+
+@media (max-width: 400px)
+{
+  figure
+  {
+    margin-left:  10px;
+    margin-right: 10px;
+  }
+}
+
+figure canvas
+{
+  max-width: 100%;
 }
 
 /*
@@ -81,4 +96,5 @@ pre.prettyprint
 {
   margin:        -1.0em auto;
   border:        none !important;
+  overflow-y:    scroll;
 }
