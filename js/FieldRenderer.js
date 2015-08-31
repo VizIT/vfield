@@ -153,12 +153,13 @@ window.vizit.field = window.vizit.field || {};
 
      // motionEventHandler(target_, utility_, mouseScale_, pinchScale_)
      eventHandler     = new vizit.utility.MotionEventHandler(this, glUtility, 75, 4);
-     drawingSurface.addEventListener("mousewheel", eventHandler.handleMouseWheel.bind(eventHandler), false);
-     drawingSurface.addEventListener("mousedown",  eventHandler.handleMouseDown.bind(eventHandler),  false);
-     document.addEventListener("mouseup",          eventHandler.handleMouseUp.bind(eventHandler),    false);
-     document.addEventListener("mousemove",        eventHandler.handleMouseMove.bind(eventHandler),  false);
-     drawingSurface.addEventListener("touchstart", eventHandler.handleTouchStart.bind(eventHandler), false);
-     drawingSurface.addEventListener("touchmove",  eventHandler.handleTouchMove.bind(eventHandler),  false);
-     drawingSurface.addEventListener("touchend",   eventHandler.handleTouchEnd.bind(eventHandler),   false);
+     drawingSurface.addEventListener("mousewheel",     eventHandler.handleMouseWheel.bind(eventHandler), false);
+     drawingSurface.addEventListener("DOMMouseScroll", eventHandler.handleMouseWheel.bind(eventHandler), false);
+     drawingSurface.addEventListener("mousedown",      eventHandler.handleMouseDown.bind(eventHandler),  false);
+     document.addEventListener("mouseup",              eventHandler.handleMouseUp.bind(eventHandler),    false);
+     document.addEventListener("mousemove",            eventHandler.handleMouseMove.bind(eventHandler),  false);
+     drawingSurface.addEventListener("touchstart",     eventHandler.handleTouchStart.bind(eventHandler), false);
+     drawingSurface.addEventListener("touchmove",      eventHandler.handleTouchMove.bind(eventHandler),  false);
+     drawingSurface.addEventListener("touchend",       eventHandler.handleTouchEnd.bind(eventHandler),   false);
    };
  }(window.vizit.field));

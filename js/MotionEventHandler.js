@@ -292,11 +292,15 @@ window.vizit.utility = window.vizit.utility || {};
      this.handleMouseWheel = function (event_)
      {
        var event;
+       var factor;
 
        //equalize event object
        event=window.event || event_;
 
-       target.zoomBy(event.wheelDeltaY/mouseScale);
+       // event.detail for FireFox, event.deltaY for firefox and i.e., wheelDeltaY for chrome.
+       factor = event.detail*20 | event.deltaY | -event.wheelDeltaY;
+
+       target.zoomBy(factor/mouseScale);
 
        // Indicate we have done all needed processing on this event
        if (event.preventDefault)
