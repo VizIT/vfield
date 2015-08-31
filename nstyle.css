@@ -1,7 +1,9 @@
- html
+@import url('https://fonts.googleapis.com/css?family=Raleway:100,700,300');
+html
  {
    height:             100%;
-   background:         ivory;
+   color:              #333;
+   line-height:        1.42857;
  }
  body
  {
@@ -13,6 +15,7 @@
    padding-right:      0px;
    padding-top:        0px;
    padding-bottom:     0px;
+   background-color:   ivory;
  }
  h1, h2, h3, h4, h5, h6
  {
@@ -169,15 +172,19 @@ div#header li:hover
 
 div.content
 {
-  margin-top:         0;
-  padding-top:        0;
-  padding-bottom:    2em;
-  padding-left:       5%;
-  padding-right:      5%;
   min-height:         7in;
-  overflow:           visible;
-  font-size:          larger;
-  font-family:        verdana, arial, sans-serif;
+  max-width:          1024px;
+  margin-top:         0;
+  margin-right:       auto;
+  margin-left:        auto;
+  padding-top:        0;
+  padding-bottom:     2em;
+  padding-left:       15px;
+  padding-right:      15px;
+  position:           relative;
+  font-family:        "Raleway","HelveticaNeue","Helvetica Neue",Helvetica,sans-serif;
+  font-weight:        300;
+  font-size:          18px;
  /*HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; */
 }
 
@@ -212,8 +219,7 @@ div.footnote
    font-style:        italic; 
 }
 
-p,
-.content ul li
+p, li
 {
   color:          #000066;
   text-rendering: optimizeLegibility;
@@ -234,9 +240,16 @@ div.project
 {
   display:        inline-block;
   vertical-align: top;
-  width:          48%;
-  min-width:      450px;
+  width:          100%;
   box-sizing:     border-box;
+}
+
+@media (min-width: 850px)
+{
+  div.project
+  {
+    width:          48%;
+  }
 }
 
 .floatleft
@@ -253,6 +266,12 @@ div.project
   padding:       1% 1% 1% 1%;
   margin-left:   2%;
   display:       inline;
+}
+
+div.halfWidth
+{
+  margin: 0;
+  width:  50%;
 }
 
 .example
@@ -363,12 +382,62 @@ details
   padding-left: 2em;
 }
 
+.clearfix:after
+{
+  content:                  "";
+  display:               block;
+  clear:                  both;
+}
+
 summary.faqElement
 {
    font-family: Tahoma, Arial, sans-serif;
    font-weight: normal;
    color:       #0050B2;
    background:  transparent;
+}
+
+ul.navigation
+{
+   list-style-type: none;
+   font-size:       medium;
+   position:        absolute;
+   right:           5%;
+   width:           90%;
+   margin:          0;
+   padding:         0;
+}
+
+ul.navigation .right
+{
+   position:        absolute;
+   right:           1%;
+}
+
+ul.navigation .left
+{
+   position:        absolute;
+   left:            1%;
+}
+
+ul.navigation li a
+{
+   display:               block;
+   width:                 5em;
+   color:                 #FFF;
+   background-color:      #036;
+   padding:               .2em 0;
+   text-align:            center;
+   text-decoration:       none;
+   border-radius:         15px;
+   -moz-border-radius:    15px;
+   -webkit-border-radius: 15px;
+}
+
+ul.navigation li a:hover
+{
+   color:            #FFF;
+   background-color: #69C;
 }
 
 .license
