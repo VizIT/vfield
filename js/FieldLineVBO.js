@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 // Define the global namespaces iff not already defined.
 window.vizit               = window.vizit               || {};
@@ -40,20 +40,28 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
      /**
       * Load vector data onto GPU memory, recycling the existing VBO.
+      * TODO: Can bufferSubData be used to reload field lines?
+      * https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/bufferSubData
       */
      this.reload = function (glUtility, fieldLine)
      {
        glUtility.loadData(this.fieldLineBufferHandle, fieldLine.getPoints());
        this.npoints                    = fieldLine.getNpoints();
-       glUtility.loadData(this.fieldDirectionBufferHandle, fieldLine.getArrows());
-       this.narrows                    = fieldLine.getNarrows();
+
+       const arrows                    = fieldLine.getArrows();
+       glUtility.loadData(this.fieldDirectionBufferHandle, arrows.vertices);
+       glUtility.loadIndices(this.fieldDirectionIndices, arrows.indices);
+       this.narrows                    = arrows.narrows;
        this.enabled                    = true;
      };
 
      this.fieldLineBufferHandle      = glUtility.createBuffer(fieldLine.getPoints());
      this.npoints                    = fieldLine.getNpoints();
-     this.fieldDirectionBufferHandle = glUtility.createBuffer(fieldLine.getArrows());
-     this.narrows                    = fieldLine.getNarrows();
+
+     const arrows                    = fieldLine.getArrows();
+     this.fieldDirectionBufferHandle = glUtility.createBuffer(arrows.vertices);
+     this.narrows                    = arrows.narrows;
+     this.fieldDirectionIndices      = glUtility.createIndexBuffer(arrows.indices);
      this.enabled                    = true;
    };
  }(window.vizit.electricfield));

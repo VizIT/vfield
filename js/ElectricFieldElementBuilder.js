@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 // Define the global namespace root iff not already defined.
 window.vizit         = window.vizit         || {};
@@ -34,42 +34,30 @@ window.vizit.builder = window.vizit.builder || {};
      var framework;
      var renderer;
      var warningMessage;
-     // Extent of the scene, used to compute default scale, arrowSpacing and arrowHeadSize.
-     var xMin, xMax;
-     var yMin, yMax;
-     var zMin, zMax;
 
      this.buildELement = function (config, charges)
      {
        var builder;
-       var chargedCylinderRE;
-       var chargedLineRE;
-       var chargedPlaneRE;
-       var chargedSphereRE;
-       var elementsConfig;
-       var gaussianCylinderRE;
-       var gaussianSphereRE;
-       var startPointsConfig;
-       // Name of properties on the config object.
-       var property;
        var type;
 
-       chargedCylinderRE    = /\s*charged\s*cylinder\s*/i;
-       chargedLineRE        = /\s*charged\s*line\s*/i;
-       chargedPlaneRE       = /\s*charged\s*plane\s*/i;
-       chargedSphereRE      = /\s*charged\s*sphere\s*/i;
-       gaussianCylinderRE   = /\s*gaussian\s*cylinder\s*/i;
-       gaussianSphereRE     = /\s*gaussian\s*sphere\s*/i;
+       const chargeRE             = /\s*charges?\s*$/i;
+       const chargedCylinderRE    = /\s*charged\s*cylinder\s*/i;
+       const chargedLineRE        = /\s*charged\s*line\s*/i;
+       const chargedPlaneRE       = /\s*charged\s*plane\s*/i;
+       const chargedSphereRE      = /\s*charged\s*sphere\s*/i;
+       const gaussianCylinderRE   = /\s*gaussian\s*cylinder\s*/i;
+       const gaussianSphereRE     = /\s*gaussian\s*sphere\s*/i;
 
        for(var property in config)
        {
          if (property.toLowerCase() === "type")
          {
            type = config[property];
+           break;
          }
        }
 
-       if (type.toLowerCase() === "charge")
+       if (type.match(chargeRE))
        {
          builder = new vizit.builder.ChargesBuilder();
          charges = builder.build(config, charges, framework);
@@ -125,12 +113,6 @@ window.vizit.builder = window.vizit.builder || {};
      errorMessage   = "";
      framework      = framework_;
      renderer       = renderer_;
-     xMin           = Number.POSITIVE_INFINITY;
-     xMax           = Number.NEGATIVE_INFINITY;
-     yMin           = Number.POSITIVE_INFINITY;
-     yMax           = Number.NEGATIVE_INFINITY;
-     zMin           = Number.POSITIVE_INFINITY;
-     zMax           = Number.NEGATIVE_INFINITY;
      warningMessage = "";
    };
  }(window.vizit.builder));

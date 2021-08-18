@@ -1,7 +1,5 @@
-"use strict";
-
 /**
- * Copyright 2013-2014 Vizit Solutions
+ * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@
  *    limitations under the License.
  */
 
+"use strict";
+
 window.vizit         = window.vizit         || {};
 window.vizit.utility = window.vizit.utility || {};
 
@@ -24,67 +24,33 @@ window.vizit.utility = window.vizit.utility || {};
    /**
     * Javascript object to wrap Float32Arrays for vertices and the indices into the vertex array.
     *
-    * @param {Integer} maxVertices_ The maximum number of verticies that can be stored.
-    * @param {Integer} maxIndices_  The maximum number of indices that can be stored.
+    * @param {number} maxData_     The maximum number of vertex data elements that can be stored.
+    * @param {number} maxIndices_  The maximum number of indices that can be stored.
     * @constructor
     */
-   ns.IndexedVertices = function (maxVertices_, maxIndices_)
+   ns.IndexedVertices = function (maxData_, maxIndices_)
    {
-     var indices;
-     var maxIndices;
-     var maxVertices;
-     var nindices;
-     var nvertices;
-     var vertices;
-
-     this.setNindices        = function (n)
-     {
-       nindices = n;
-     };
+     let nindices;
+     let ndatum;
 
      this.getNindices        = function ()
      {
        return nindices;
      };
 
-     this.setNvertices       = function (n)
-     {
-       nvertices = n;
-     };
-
      this.getNvertices       = function ()
      {
-       return nvertices;
-     };
-
-     this.setVerticies = function (geometry)
-     {
-       vertices = geometry;
+       return ndatum;
      };
 
      this.getVertices = function ()
      {
-       return vertices;
+       return data;
      };
 
-     this.setVerticies = function (geometry)
+     this.push = function (datum)
      {
-       vertices = geometry;
-     };
-
-     this.getVertices = function ()
-     {
-       return vertices;
-     };
-
-     this.pushVertex  = function (vertex)
-     {
-       vertices[nvertices++] = vertex;
-     };
-
-     this.setIndices  = function (indices_)
-     {
-       indices = indices_;
+       data[ndatum++] = datum;
      };
 
      this.getIndices = function ()
@@ -100,12 +66,18 @@ window.vizit.utility = window.vizit.utility || {};
        indices[nindices++] = index;
      };
 
-     maxIndices  = maxIndices_;
-     maxVertices = maxVertices_;
-     nindices    = 0;
-     nvertices   = 0;
+     /**
+      * Reset the accumulated indices and vertices to their initial state.
+      * Zero vertices and indices.
+      */
+     this.reset = function()
+     {
+       nindices = 0;
+       ndatum   = 0;
+     }
 
-     vertices    = new Float32Array(3*maxVertices);
-     indices     = new Uint16Array(maxIndices);
+     const data       = new Float32Array(maxData_);
+     const indices    = new Uint16Array(maxIndices_);
+     this.reset();
    };
 }(window.vizit.utility));

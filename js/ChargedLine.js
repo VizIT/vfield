@@ -333,27 +333,25 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        sinpi4      = 0.707106781;
        startPoints = new Array();
 
-       if (fieldLineDensity + nfieldLines !== 0)
-       {
-	 sgn         = this.sign(chargeDensity);
+       if (fieldLineDensity + nfieldLines !== 0) {
+         sgn = this.sign(chargeDensity);
 
-	 npoints     = Math.max(2, Math.round(Math.abs(chargeDensity*fieldLineDensity*height)))
-		      + nfieldLines;
-	 s           = -0.5;
-	 ds          = 1/(npoints-1);
+         npoints = Math.max(2, Math.round(Math.abs(chargeDensity * fieldLineDensity * height)))
+             + nfieldLines;
+         s = -0.5;
+         ds = 1 / (npoints - 1);
 
-	 for (var i=0; i<npoints; i++)
-	 {
-	   startPoints.push(new Array(    1.0,     0.0, s, sgn));
-	   startPoints.push(new Array(   -1.0,     0.0, s, sgn));
-	   startPoints.push(new Array(    0.0,     1.0, s, sgn));
-	   startPoints.push(new Array(    0.0,    -1.0, s, sgn));
-	   startPoints.push(new Array( sinpi4,  sinpi4, s, sgn));
-	   startPoints.push(new Array( sinpi4, -sinpi4, s, sgn));
-	   startPoints.push(new Array(-sinpi4, -sinpi4, s, sgn));
-	   startPoints.push(new Array(-sinpi4,  sinpi4, s, sgn));
-	   s += ds;
-	 }
+         for (var i = 0; i < npoints; i++) {
+           startPoints.push(new Array(1.0, 0.0, s, sgn));
+           startPoints.push(new Array(-1.0, 0.0, s, sgn));
+           startPoints.push(new Array(0.0, 1.0, s, sgn));
+           startPoints.push(new Array(0.0, -1.0, s, sgn));
+           startPoints.push(new Array(sinpi4, sinpi4, s, sgn));
+           startPoints.push(new Array(sinpi4, -sinpi4, s, sgn));
+           startPoints.push(new Array(-sinpi4, -sinpi4, s, sgn));
+           startPoints.push(new Array(-sinpi4, sinpi4, s, sgn));
+           s += ds;
+         }
        }
 
        return this.transformPoints(modelViewMatrix,             height/this.getBaseHeight(),

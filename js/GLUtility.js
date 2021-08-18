@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 window.vizit         = window.vizit         || {};
 window.vizit.utility = window.vizit.utility || {};
@@ -47,8 +47,7 @@ window.vizit.utility = window.vizit.utility || {};
        if(!gl)
        {
          // The antialiased true option gives smoother lines, sometimes.
-         gl             = drawingSurface.getContext("webgl",{antialias: true})
-                          || drawingSurface.getContext('experimental-webgl',{antialias: true});
+         gl             = drawingSurface.getContext("webgl",{antialias: true});
          if (gl)
          {
            // Enable depth testing
@@ -94,22 +93,29 @@ window.vizit.utility = window.vizit.utility || {};
 
      /**
       * Create a program from the shader sources
+      *
+      * @param {string} vertexShaderSource GLSL source for the vertex shader
+      * @param {string} fragmentShaderSource GLSL source for the fragment shader
+      * @param {string[]} [feedbackVaryings] Optional list of varyings to be captured - must be paired with a webgl2 context
+      *
+      * @returns {WebGLProgram} The compiled webgl program
       */
-     this.createProgram     = function (vertexShaderSource, fragmentShaderSource)
+     this.createProgram     = function (vertexShaderSource, fragmentShaderSource, feedbackVaryings)
      {
-       var fragmentShader;
-       var program;
-       var vertexShader;
-
-       program        = gl.createProgram();
+       const program        = gl.createProgram();
 
        // This will compile the shader into code for your specific graphics card.
-       vertexShader   = this.compileShader(vertexShaderSource, gl.VERTEX_SHADER);
-       fragmentShader = this.compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
+       const vertexShader   = this.compileShader(vertexShaderSource, gl.VERTEX_SHADER);
+       const fragmentShader = this.compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
 
        // The program consists of our shaders
        gl.attachShader(program, vertexShader);
        gl.attachShader(program, fragmentShader);
+
+       if (feedbackVaryings)
+       {
+         gl.transformFeedbackVaryings(program, feedbackVaryings, gl.SEPARATE_ATTRIBS);
+       }
 
        // Create a runnable program for our graphics hardware.
        // Allocates and assigns memory for attributes and uniforms (explained later)
@@ -143,18 +149,29 @@ window.vizit.utility = window.vizit.utility || {};
      };
 
      /**
-      * Generate a buffer for a vertex array index from a Uint16Array
+      * Load data into a a buffer for drawing
+      * @param {WebGLBuffer} indexBuffer A buffer to bind and load with data.
+      * @param {Uint16Array} indices Data copied into the indexBuffer
+      * @see @link{https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL|Creating 3D objects using WebGL}
       */
-     this.createIndexBuffer = function (UintArray)
+     this.loadIndices = function(indexBuffer, indices)
+     {
+       // Binding an object in Open GL creates it, and makes it the target of subsequent manipulations.
+       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+       // loads the current buffer, the indexBuffer above, with the index data.
+       // The gl buffer is strongly typed with 16 bit integer data.
+       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+     }
+
+     /**
+      * Generate a buffer for a vertex array index from a Uint16Array
+      * @param {Uint16Array} indices The indices of entries into the data buffer
+      */
+     this.createIndexBuffer = function (indices)
      {
        // This is a handle to what will be a buffer
        var indexBuffer = gl.createBuffer();
-       // Binding an object in Open GL creates it, and makes it the target of subsequent manipulations.
-       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-       // loads the current buffer, the vertexBuffer found above, with the vertex data.
-       // The gl bufer is strongly types with 16 bit integer data.
-       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, UintArray, gl.STATIC_DRAW);
-
+       this.loadIndices(indexBuffer, indices);
        return indexBuffer;
      };
 
@@ -183,14 +200,14 @@ window.vizit.utility = window.vizit.utility || {};
      /**
       * Bind a buffer to a vertex shader attribute,
       *
-      * @param vertexBuffer {WebGLBuffer}             A buffer containing data to be applied to the attribute.
-      * @param attribute    {WebGLHandlesContextLoss} A handle to the attribute in the given program.
-      * @param program      {WebGLProgram}            The WebGL program that will consume the data.
-      * @param size         {Integer}                 There are size elements from the buffer in each attribute.
-      * @param type         {GLenum (DataType)}       The type of each element in the buffer.
-      * @param stride       {Integer}                 There are stride bytes separating the beginning of each element.
-      *                                               Note that zero stride indicates also indicates values are adjacent.
-      * @param offset       {integer}                 Data begins offset bytes into the array.
+      * @param vertexBuffer {WebGLBuffer}       A buffer containing data to be applied to the attribute.
+      * @param attribute    {GLuint}            A handle to the attribute in the given program.
+      * @param program      {WebGLProgram}      The WebGL program that will consume the data.
+      * @param size         {Integer}           There are size elements from the buffer in each attribute.
+      * @param type         {GLenum (DataType)} The type of each element in the buffer.
+      * @param stride       {Integer}           There are stride bytes separating the beginning of each element.
+      *                                         Note that zero stride indicates also indicates values are adjacent.
+      * @param offset       {integer}           Data begins offset bytes into the array.
       */
      this.bindBuffer        = function (vertexBuffer, attribute, size, type, stride, offset)
      {
@@ -366,15 +383,15 @@ window.vizit.utility = window.vizit.utility || {};
       */
      this.getXYRotationMatrix = function (phi, theta)
      {
-       var cosPhi   = Math.cos(phi);
-       var cosTheta = Math.cos(theta);
-       var sinPhi   = Math.sin(phi);
-       var sinTheta = Math.sin(theta);
+       const cosPhi   = Math.cos(phi);
+       const cosTheta = Math.cos(theta);
+       const sinPhi   = Math.sin(phi);
+       const sinTheta = Math.sin(theta);
 
-       var matrix   = new Array( cosTheta,       sinPhi*sinTheta   -cosPhi*sinTheta,   0,
-                                        0,                cosPhi,            sinPhi,   0,
-                                 sinTheta,      -cosTheta*sinPhi,   cosPhi*cosTheta,   0,
-                                        0,                     0,                 0,   1);
+       return new Array( cosTheta,       sinPhi*sinTheta   -cosPhi*sinTheta,   0,
+                                0,                cosPhi,            sinPhi,   0,
+                         sinTheta,      -cosTheta*sinPhi,   cosPhi*cosTheta,   0,
+                                0,                     0,                 0,   1);
      };
 
      /**

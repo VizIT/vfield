@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -16,6 +14,8 @@
  *    limitations under the License.
  */
 
+"use strict";
+
 // Define the global namespace root iff not already defined.
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
@@ -30,10 +30,10 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.SimpleVectorFieldBuilder = function (framework_)
+   ns.SimpleVectorFieldBuilder = function (stage_)
    {
      var errorMessage;
-     var framework;
+     var stage;
      var warningMessage;
 
      this.build = function (config)
@@ -41,7 +41,6 @@ window.vizit.builder = window.vizit.builder || {};
        var arrowHeadSize;
        var arrowHeadWidth;
        var arrowSize;
-       var bindingsConfig;
        var builder;
        var maxVectors;
        // An optional vector valued function.
@@ -78,15 +77,19 @@ window.vizit.builder = window.vizit.builder || {};
 
        if (vectorValuedFunctionConfig)
        {
-         builder              = new vizit.builder.VectorValuedFunctionBuilder(framework);
+         builder              = new vizit.builder.VectorValuedFunctionBuilder(stage);
          vectorValuedFunction = builder.build(vectorValuedFunctionConfig);
        }
         
-       renderer = new vizit.vectorfield.SimpleVectorField(vectorValuedFunction, arrowSize);
+       renderer = new vizit.vectorfield.SimpleVectorField(stage, vectorValuedFunction);
 
        if(typeof maxVectors !== "undefined")
        {
          renderer.setMaxVectors(maxVectors);
+       }
+       if (typeof arrowSize !== "undefined")
+       {
+         renderer.setArrowSize(arrowSize)
        }
        if (typeof arrowHeadSize !== "undefined")
        {
@@ -101,7 +104,7 @@ window.vizit.builder = window.vizit.builder || {};
      };
 
      errorMessage   = "";
-     framework      = framework_;
+     stage      = stage_;
      warningMessage = "";
    };
  }(window.vizit.builder));

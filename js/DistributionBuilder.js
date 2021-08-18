@@ -364,7 +364,7 @@ window.vizit.builder = window.vizit.builder || {};
        // The inner and outer radius.
        var a, b;
 
-       for (property in config)
+       for (let property in config)
        {
          if (property.toLowerCase() === "charge")
          {
