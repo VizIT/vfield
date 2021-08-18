@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 window.vizit               = window.vizit               || {};
 window.vizit.electricfield = window.vizit.electricfield || {};
@@ -84,7 +84,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
                           + "  float directionalLightWeighting = max(dot(transformedNormal, directionalLighting), 0.0);"
                           + "  lighting                        = ambientLighting + directionalColor * directionalLightWeighting;"
                           + "}";
-
 
        fragmentShaderSource = "precision mediump float;"
                             + ""

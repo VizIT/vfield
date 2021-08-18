@@ -1,7 +1,5 @@
-"use strict";
-
-/**
- * Copyright 2013-2014 Vizit Solutions
+/*
+ * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,20 +14,23 @@
  *    limitations under the License.
  */
 
+"use strict";
+
 window.vizit       = window.vizit       || {};
 window.vizit.field = window.vizit.field || {};
 
 (function (ns)
  {
    /**
-    * Common functionality for the various representations of a vector field.
+    * Common functionality for the various representations of a vector field. Or indeed,
+    * arbitrary WebGL based interactions.
     *
-    * @param {HTMLCanvasElement} drawingSurface_ An HTML canvas onto which
+    * @param {HTMLElement} drawingSurface_ An HTML canvas onto which
     *                                            we render the model.
     *
     * @class
     */
-   ns.FieldRenderer = function (drawingSurface_)
+   ns.Stage = function (drawingSurface_)
    {
      /* Global variables within this field renderer. */
      /** HTML Canvas element we render on */
@@ -55,12 +56,14 @@ window.vizit.field = window.vizit.field || {};
        return glUtility.getGLContext();
      };
 
-     this.setRenderer         = function (renderer_)
+     /**
+      * Register a listener for projection and model view matrix changes.
+      * @param {object} renderer_ Expected to have setModelViewMatrix and setProjectionMatrix methods
+      */
+     this.registerRenderer         = function (renderer_)
      {
        renderer = renderer_;
-       renderer.setGlUtility(glUtility);
-       renderer.setModelViewMatrix(modelViewMatrix);
-       renderer.setProjectionMatrix(projectionMatrix);
+       return this;
      };
 
      this.getRenderer        = function()
@@ -72,6 +75,7 @@ window.vizit.field = window.vizit.field || {};
      {
        modelViewMatrix = modelViewMatrix_;
        renderer.setModelViewMatrix(modelViewMatrix);
+       return this;
      };
 
      this.getModelViewMatrix = function ()
@@ -108,18 +112,29 @@ window.vizit.field = window.vizit.field || {};
        }
        // We project a scale x scale x scale cube into normalized device space.
        projectionMatrix     = glUtility.generateOrthographicMatrix(scale, scale, -scale, scale);
-       renderer.setProjectionMatrix(projectionMatrix);
-       this.render();
+       if (renderer)
+       {
+         renderer.setProjectionMatrix(projectionMatrix);
+         this.render();
+       }
+       return this;
      };
+
+     this.getProjectionMartix = function()
+     {
+       return projectionMatrix;
+     }
 
      this.zoomBy = function (delta)
      {
        this.setScale(scale+delta);
+       return this;
      };
 
      this.setElementName     = function (element, name)
      {
        elementNames[name] = element;
+       return this;
      };
 
      this.getElementByName   = function (name)
@@ -133,6 +148,11 @@ window.vizit.field = window.vizit.field || {};
 
        return element;
      };
+
+     this.getGlUtility = function()
+     {
+       return glUtility;
+     }
 
      drawingSurface   = drawingSurface_;
      elementNames     = new Object();

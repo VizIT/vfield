@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 // Define the global namespace root iff not already defined.
 window.vizit         = window.vizit         || {};
@@ -41,7 +41,7 @@ window.vizit.builder = window.vizit.builder || {};
       *                        in the config set field.
       * @param {Object} config A JS object whose attributes describe one or more bindings.
       * @param {ElectricField | SimpleVectorField}
-      *                 framework A JS container of the field defenitions, with
+      *                 framework A JS container of the field definitions, with
       *                 which elements are registered by name.
       */
      this.bindingBuilder       = function (target, config, framework)

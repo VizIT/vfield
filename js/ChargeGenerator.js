@@ -47,7 +47,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      {
        charges      = charges_;
        // iff we need a larger array to hold the charge vertices, build it
-       if (bytesPerVertex * charges.getCharges().length > chargesArray.byteLength)
+       if (!chargesArray || bytesPerVertex * charges.getCharges().length > chargesArray.byteLength)
        {
          chargesArray = new ArrayBuffer(bytesPerVertex * charges.getCharges().length);
        }
@@ -135,13 +135,9 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        return chargesArray;
      };
 
-     charges        = charges_;
-
      bytesPerVertex =  3*Float32Array.BYTES_PER_ELEMENT // Vertex position
                      +   Float32Array.BYTES_PER_ELEMENT // Point Size
                      + 4*Uint8Array.BYTES_PER_ELEMENT;  // Point color
-     chargesArray   = new ArrayBuffer(bytesPerVertex * charges.getCharges().length);
-
      pointSize      = 16;
 
      // TODO Set standard colors on the color utility

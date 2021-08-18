@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 window.vizit               = window.vizit               || {};
 window.vizit.electricfield = window.vizit.electricfield || {};
@@ -159,12 +159,19 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        gl       = glUtility.getGLContext();
        glUtility.bindBuffer(surfaceGeometryBuffer, program.getPositionHandle(), 3, gl.FLOAT, 0, 0);
        glUtility.bindBuffer(surfaceNormalBuffer,   program.getNormalHandle(),   3, gl.FLOAT, 0, 0);
-       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
 
+       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
        gl.drawElements(gl.TRIANGLES, nindices, gl.UNSIGNED_SHORT, 0);
      };
 
-     this.render      = function (glUtility, program)
+     /**
+      * Render this gaussian sphere
+      *
+      * @param {vizit.utility.GLUtility} glUtility General utility and container for the WebGL context
+      * @param {vizit.electricfield.SurfaceRenderer} surfaceRenderer Class for rendering a general surface,
+      *                                                              of which this is one case.
+      */
+     this.render      = function (glUtility, surfaceRenderer)
      {
        if (enabled)
        {
@@ -173,20 +180,20 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          var vertices;
 
          gl              = glUtility.getGLContext();
-        intrinsicRadius = this.getIntrinsicRadius();
+         intrinsicRadius = this.getIntrinsicRadius();
          vertices        = this.getVertexBuffers(glUtility);
 
-         gl.uniformMatrix4fv(program.getModelViewMatrixHandle(), false, this.getModelView(radius/intrinsicRadius));
+         gl.uniformMatrix4fv(surfaceRenderer.getModelViewMatrixHandle(), false, this.getModelView(radius/intrinsicRadius));
 
-         gl.uniform4f(program.getSurfaceColorHandle(), color.getRed(),
+         gl.uniform4f(surfaceRenderer.getSurfaceColorHandle(), color.getRed(),
                       color.getGreen(),                color.getBlue(), color.getAlpha());
 
          gl.cullFace(gl.FRONT);
-         this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
+         this.drawFullSurface(glUtility,        surfaceRenderer,            vertices.vertices, vertices.normals,
                               vertices.indices, this.getNindices());
 
          gl.cullFace(gl.BACK);
-         this.drawFullSurface(glUtility,        program,            vertices.vertices, vertices.normals,
+         this.drawFullSurface(glUtility,        surfaceRenderer,            vertices.vertices, vertices.normals,
                               vertices.indices, this.getNindices());
        }
      };

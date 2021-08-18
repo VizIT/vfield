@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -16,6 +14,8 @@
  *    limitations under the License.
  */
 
+"use strict";
+
 window.vizit          = window.vizit          || {};
 window.vizit.geometry = window.vizit.geometry || {};
 
@@ -30,7 +30,6 @@ window.vizit.geometry = window.vizit.geometry || {};
    ns.Surface = function (nvertices_, nindices_)
    {
      var indices;
-     var nMax;
      var nindices;
      var normals;
      var nvertices;
@@ -95,18 +94,15 @@ window.vizit.geometry = window.vizit.geometry || {};
    };
 
    /**
-    * An enum cataloging the known shapes.
-    * SPHERE
-    * RECTANGLE, which may be folded into a cube eventually,
-    * and CYLINDER.
+    * An enum cataloging the known shapes. SPHERE, RECTANGLE, which may be folded
+    * into a cube eventually, CYLINDER, and LINE_SEGMENT.
     */
    ns.Shapes = {
                  SPHERE         : {value: "sphere"},
                  SQUARE         : {value: "square"},
-                 CYLINDER       : {value: "cylinder"}
+                 CYLINDER       : {value: "cylinder"},
+                 LINE_SEGMENT   : {value: "line segment"}
                };
-
-
 
    /**
     * A Registry for vertex buffer objects - the general goal is to have
@@ -159,7 +155,7 @@ window.vizit.geometry = window.vizit.geometry || {};
      var bottom;
      /**
       * Vertices that define the edges of the area of the plane shown to
-      * the user the plane itself is infinite,
+      * the user, the plane itself is infinite,
       */
      var boundingBox;
      var left;
@@ -233,7 +229,7 @@ window.vizit.geometry = window.vizit.geometry || {};
        }
        else
        {
-         // TODO look for more effecient ways to allocate the storage
+         // TODO look for more efficient ways to allocate the storage
          // possibly generating each array then the vbo individually.
          // Three coordinates for each of four vertices that define a square.
          geometry  = new ns.Surface(4, 6);
@@ -250,6 +246,35 @@ window.vizit.geometry = window.vizit.geometry || {};
    };
 
    ns.Square.prototype = ns.vertexRegistry;
+
+   /**
+    * A line segment designed to be repeated, or instanced, into a full line.
+    * Oriented along the x-axis to provide an easy path to project this onto
+    * screen space.
+    */
+   ns.LineSegment      = function ()
+   {
+     /** x ranges from 0 to height */
+     const baseHeight     = 1.0;
+     /** y ranges from -halfWidth to + halfWidth */
+     const baseHalfWidth  = 0.5;
+     const shape          = ns.Shapes.LINE_SEGMENT;
+
+     this.getBaseHeight = function ()
+     {
+       return baseHeight;
+     };
+
+     this.getBaseHalfWidth = function()
+     {
+       return baseHalfWidth;
+     }
+
+     this.getShape = function()
+     {
+       return shape;
+     }
+   }
 
    /**
     * A unit cylinder centered about the origin, and oriented along the z-axis.
@@ -282,7 +307,7 @@ window.vizit.geometry = window.vizit.geometry || {};
 
      this.getShape  = function ()
      {
-       return shape;;
+       return shape;
      };
 
      this.getNindices = function ()
@@ -445,7 +470,7 @@ window.vizit.geometry = window.vizit.geometry || {};
 
      this.getShape  = function ()
      {
-       return shape;;
+       return shape;
      };
 
      this.getNindices = function ()
@@ -549,7 +574,7 @@ window.vizit.geometry = window.vizit.geometry || {};
        }
        else
        {
-         // TODO look for more effecient ways to allocate the storage
+         // TODO look for more efficient ways to allocate the storage
          // possibly generating each array then the vbo individually.
          geometry  = new ns.Surface((nlongitude+1)*(nlatitude+1), 6*nlongitude*nlatitude);
          vertices = {};

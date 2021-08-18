@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -16,6 +14,8 @@
  *    limitations under the License.
  */
 
+"use strict";
+
 window.vizit             = window.vizit             || {};
 window.vizit.vectorfield = window.vizit.vectorfield || {};
 
@@ -24,60 +24,52 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
    /**
     * Wrapper for a simple vector field, rendered in the simplest way possible.
     *
-    * @param {VectorFunction} f_         A vector function. It must impliment getField(x, y, z)
-    * @param {Double}         arrowSize_ The length of the vector is scaled b y this factor before
-    *                                    drawing to the screen. It represents the comparative scale
-    *                                    of the vector field to physical coordinates as drawn on
-    *                                    the screen.
+    * @param {vizit.field.Stage} stage_
+    * @param {VectorFunction}    f_         A vector function. It must implement
+    *                                       [fx, fy, fz] = getField(x, y, z).
     *
     * @class
     */
-   ns.SimpleVectorField = function (f_, arrowSize_)
+   ns.SimpleVectorField = function (stage_, f_)
    {
-     /** General size parameter for the arrowheads. */
-     var arrowHeadSize;
-     /** How the normal to the arrow shaft scales with the length of the vector. */
-     var arrowHeadWidth;
-     var color;
-     var explicitStartPoints;
-     /** The vector field */
-     var f;
-     var generator;
-     /** A wrapper around the WebGL context, gl. */
-     var glUtility;
-     var indexedBuffers;
-     /** The maximum number of vectors to be drawn per field line. */
-     var maxVectors;
-     var modelViewMatrix;
-     /** Actually draws the vector field */
-     var renderer;
-     // Model-View matrix for use in all programs.
-     var projectionMatrix;
-     var arrowSize;
-     // Has this renderer started - do not render in response to events if not.
-     var started;
-
      this.setArrowHeadWidth   = function (width)
      {
-       arrowHeadWidth = width;
+       generator.setArrowHeadWidth(width);
        return this;
      };
 
      this.getArrowHeadWidth   = function ()
      {
-       return arrowHeadWidth;
+       return generator.getArrowHeadWidth();
      };
 
      this.setArrowHeadSize    = function (size)
      {
-       arrowHeadSize = size;
+       generator.setArrowHeadSize(size);
        return this;
      };
 
      this.getArrowHeadSize    = function ()
      {
-       return arrowHeadSize;
+       return generator.getArrowHeadSize();
      };
+
+     /**
+      * @param {number}            arrowSize_ The length of the vector is scaled by this factor before
+      *                                       drawing to the screen. It represents the comparative scale
+      *                                       of the vector field to physical coordinates as drawn on
+      *                                       the screen.
+      */
+     this.setArrowSize = function(size)
+     {
+       generator.setArrowSize(size);
+       return this;
+     }
+
+     this.getArrowSize = function()
+     {
+       return generator.getArrowSize();
+     }
 
      this.setColor            = function (color_)
      {
@@ -90,12 +82,6 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        return color;
      };
 
-     this.setGlUtility        = function (glUtility_)
-     {
-       glUtility = glUtility_;
-       return this;
-     };
-
      this.getGlUtility        = function ()
      {
        return glUtility;
@@ -103,13 +89,13 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
 
      this.setMaxVectors       = function (max)
      {
-       maxVectors = max;
+       generator.setMaxVectors(max);
        return this;
      };
 
      this.getMaxVectors       = function ()
      {
-       return maxVectors;
+       return generator.getMaxVectors();
      };
 
      this.setModelViewMatrix  = function (modelViewMatrix_)
@@ -129,45 +115,41 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
        return this;
      };
 
-     this.addStartPoints = function (startPoints_)
+     this.setStartPoints = function(points)
      {
-       explicitStartPoints = explicitStartPoints.concat(startPoints_);
+       generator.setStartPoints(points);
+       return this;
+     }
+
+     this.addStartPoints = function (points)
+     {
+       generator.addStartPoints(points);
        return this;
      };
 
      this.getStartPoints = function ()
      {
-       return explicitStartPoints;
+       return generator.getStartPoints();
      };
 
      this.setupVectorField    = function ()
      {
-       var candidates;
-       var indexedBuffer;
-       var indexedVertices;
-       var startPoints;
+
+       let indexedBuffer;
+       let indexedBuffers = [];
+       let indexedVertices;
+
+       indexedBuffer          = new Object();
 
        // Include start points defined implicitly in vector function, if any.
        if (typeof f.getStartPoints === "function")
        {
-         candidates  = f.getStartPoints(0, 2.0);
-         if (typeof candidates !== "undefined")
+         const candidates  = f.getStartPoints(0, 2.0);
+         if (typeof candidates !== "undefined" && candidates.length > 0)
          {
-           startPoints = explicitStartPoints.concat(candidates);
-         }
-         else
-         {
-           startPoints = explicitStartPoints;
+           generator.addStartPoints(candidates);
          }
        }
-       else
-       {
-         startPoints = explicitStartPoints;
-       }
-
-       generator.setStartPoints(startPoints);
-
-       indexedBuffer          = new Object();
 
        // TODO IndexedBuffer here?
        indexedVertices        = generator.generateField();
@@ -198,28 +180,32 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
 
      this.start               = function ()
      {
-       var indexedBuffer;
-       var indexedVertices;
-
-       renderer       = new vizit.vectorfield.LineRenderer(glUtility);
-       // Introduce variables and defaults for maxVectors and arrowHeadSize.
-       generator      = new vizit.vectorfield.VectorFieldGenerator(f, maxVectors, arrowHeadSize,
-                                                                   arrowHeadWidth, arrowSize);
-
        started        = true;
-
        this.render();
      };
 
-     arrowHeadWidth      = 0.5;
-     arrowHeadSize       = 0.3;
-     f                   = f_;
-     indexedBuffers      = new Array();
+
      /* Default color */
-     color               = new Float32Array([0.8, 0.3, 0.3, 1]);
-     maxVectors          = 5;
-     arrowSize           = typeof arrowSize_ === "undefined" ? 1.0 : arrowSize_;
-     explicitStartPoints = new Array();
-     started             = false;
+     let color               = new Float32Array([0.8, 0.3, 0.3, 1]);
+
+     /** Has this renderer started - do not render in response to events if not. */
+     let started             = false;
+
+     /** The vector field */
+     const f                 = f_;
+     const stage             = stage_;
+     let   indexedBuffers;
+     /** A wrapper around the WebGL context, gl. */
+     const glUtility         = stage.getGlUtility();
+     /** Puts field line vertices in indexedBuffers */
+     const generator         = new vizit.vectorfield.VectorFieldGenerator(f);
+     /** Actually draws the vector field */
+     const renderer          = new vizit.vectorfield.LineRenderer(glUtility);
+     glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
+     // Model-View matrix for use in all programs.
+     let modelViewMatrix     = stage.getModelViewMatrix();
+     let projectionMatrix    = stage.getProjectionMartix();
+     // Register to listen for changes to these matrices
+     stage.registerRenderer(this);
    };
 }(window.vizit.vectorfield));

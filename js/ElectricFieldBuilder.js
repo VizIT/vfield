@@ -1,7 +1,5 @@
-"use strict";
-
 /**
- * Copyright 2013-2014 Vizit Solutions
+ * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@
  *    limitations under the License.
  */
 
+"use strict";
+
 // Define the global namespace root iff not already defined.
 window.vizit         = window.vizit         || {};
 window.vizit.builder = window.vizit.builder || {};
@@ -28,14 +28,10 @@ window.vizit.builder = window.vizit.builder || {};
     *
     * @class
     */
-   ns.ElectricFieldBuilder = function (framework_)
+   ns.ElectricFieldBuilder = function (stage_)
    {
      var errorMessage;
-     var framework;
-     // Extent of the scene, used to compute default scale, arrowSpacing and arrowHeadSize.
-     var xMin, xMax;
-     var yMin, yMax;
-     var zMin, zMax;
+     var stage;
      var warningMessage;
 
      this.build = function (config)
@@ -49,7 +45,6 @@ window.vizit.builder = window.vizit.builder || {};
        // Name of properties on the config object.
        var property;
        var renderer;
-       var startPointsConfig;
 
        for(property in config)
        {
@@ -71,7 +66,7 @@ window.vizit.builder = window.vizit.builder || {};
          }
        }
 
-       renderer = new vizit.electricfield.ElectricField();
+       renderer = new vizit.electricfield.ElectricField(stage);
 
        if(typeof maxVectors !== "undefined")
        {
@@ -87,7 +82,7 @@ window.vizit.builder = window.vizit.builder || {};
        }
 
        // Potentially can modify framework, charges and renderer.
-       builder = new vizit.builder.ElectricFieldElementBuilder(framework, renderer);
+       builder = new vizit.builder.ElectricFieldElementBuilder(stage, renderer);
        charges = builder.build(elementsConfig, charges);
        if (!!charges)
        {
@@ -97,13 +92,7 @@ window.vizit.builder = window.vizit.builder || {};
      };
 
      errorMessage   = "";
-     framework      = framework_;
-     xMin           = Number.POSITIVE_INFINITY;
-     xMax           = Number.NEGATIVE_INFINITY;
-     yMin           = Number.POSITIVE_INFINITY;
-     yMax           = Number.NEGATIVE_INFINITY;
-     zMin           = Number.POSITIVE_INFINITY;
-     zMax           = Number.NEGATIVE_INFINITY;
+     stage          = stage_;
      warningMessage = "";
    };
  }(window.vizit.builder));

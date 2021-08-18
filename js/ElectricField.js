@@ -1,7 +1,5 @@
-"use strict";
-
-/**
- * Copyright 2013-2014 Vizit Solutions
+/*
+ * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,6 +14,8 @@
  *    limitations under the License.
  */
 
+"use strict";
+
 // Define the global namespaces iff not already defined.
 window.vizit               = window.vizit               || {};
 window.vizit.electricfield = window.vizit.electricfield || {};
@@ -25,17 +25,13 @@ window.vizit.electricfield = window.vizit.electricfield || {};
    /**
     * Representation of charges and their associated field lines. Given a set of charges
     * draw the field lines along with directional arrows from the given start points.
+    *
+    * @param {vizit.field.Stage} stage
     * @class
     */
-   ns.ElectricField = function()
+   ns.ElectricField = function(stage)
    {
-     /** General size parameter for the arrowheads. */
-     var arrowHeadSize;
-     /** The sum of ds along the path increments by this much between arrows. */
-     var arrowSpacing;
      var chargeBuffer;
-     var chargeGenerator;
-     var chargeRenderer;
      /** The charges generate the field. */
      var charges;
      var color;
@@ -44,53 +40,64 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      // Probably not have multiple Gaussian surfaces, but allow the rendering
      // method to take arrays of surfaces.
      var gaussianSurfaces;
-     /** A wrapper around the WebGL context, gl. */
-     var glUtility;
      /** The max number of points while tracing out a field line. */
      var maxPoints;
      /** The maximum number of vectors to be drawn per field line. */
      var maxVectors;
      var normalMatrix;
-     /** Given a charge configuration, draws field lines. */
-     var fieldLineGenerator;
-     /** Actually draws the electric field */
-     var fieldLineRenderer;
-     // Model-View matrix for use in all programs.
-     var modelViewMatrix;
-     var projectionMatrix;
      var explicitStartPoints;
      // Has this renderer started - do not render in response to events if not.
      var started;
-     var surfaceRenderer;
+
+     /**
+      * Set the approximate screen width for field lines
+      * @param {number} width Floating point representing the electric field line width
+      *
+      * @returns {vizit.electricfield.ElectricField}
+      */
+     this.setLineWidth      = function (width)
+     {
+       fieldLineRenderer.setLineWidth(width);
+       return this;
+     };
+
+     this.getLineWidth    = function ()
+     {
+       return fieldLineRenderer.getLineWidth();
+     };
 
      this.setArrowSpacing       = function (spacing)
      {
-       arrowSpacing = spacing;
-       if (typeof fieldLineGenerator !== "undefined")
-       {
-         fieldLineGenerator.setArrowSpacing(spacing);
-       }
+       fieldLineGenerator.setArrowSpacing(spacing);
        return this;
      };
 
      this.getArrowSpacing       = function ()
      {
-       return arrowSpacing;
+       return fieldLineGenerator.getArrowSpacing();
      };
 
+     // TODO rename to setArrowLength
      this.setArrowHeadSize      = function (size)
      {
-       arrowHeadSize = size;
-       if (typeof fieldLineGenerator !== "undefined")
-       {
-         fieldLineGenerator.setArrowHeadSize(size);
-       }
+       fieldLineGenerator.setArrowLength(size);
        return this;
      };
 
      this.getArrowHeadSize    = function ()
      {
-       return arrowHeadSize;
+       return fieldLineGenerator.getArrowLength();
+     };
+
+     this.setArrowWidth      = function (width)
+     {
+       fieldLineRenderer.setArrowWidth(width);
+       return this;
+     };
+
+     this.getArrowWidth    = function ()
+     {
+       return fieldLineRenderer.getArrowWidth();
      };
 
      this.setColor            = function (color_)
@@ -111,6 +118,8 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.setCharges          = function (charges_)
      {
        charges = charges_;
+       chargeGenerator.setCharges(charges);
+       fieldLineGenerator.setCharges(charges);
        return this;
      };
 
@@ -132,12 +141,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      this.getGaussianSurfaces = function ()
      {
        return gaussianSurfaces;
-     };
-
-     this.setGlUtility        = function (glUtility_)
-     {
-       glUtility = glUtility_;
-       return this;
      };
 
      this.getGlUtility        = function ()
@@ -293,22 +296,10 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
      this.start               = function ()
      {
-       glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
-       fieldLineRenderer  = new vizit.electricfield.FieldLineRenderer(glUtility);
-       chargeGenerator    = new vizit.electricfield.ChargeGenerator(charges);
-       fieldLineGenerator = new vizit.electricfield.FieldLineGenerator(charges, maxPoints, ds,
-                                                                       arrowHeadSize, arrowSpacing);
-       this.setupFieldLines(charges, maxPoints, ds, arrowHeadSize, arrowSpacing);
-       chargeRenderer     = new vizit.electricfield.ChargeRenderer(glUtility);
-       this.setupCharges(charges);
-       surfaceRenderer    = new vizit.electricfield.SurfaceRenderer(glUtility);
-
-       started           = true;
+       started = true;
        this.render();
      };
-  
-     arrowHeadSize       = 0.3;
-     arrowSpacing        = 1.2;
+
      /* Default color */
      color               = new Float32Array([0.8, 0.3, 0.3, 1]);
      ds                  = 0.6;
@@ -321,5 +312,22 @@ window.vizit.electricfield = window.vizit.electricfield || {};
                                              0, 0, 1]);
      explicitStartPoints = new Array();
      started             = false;
+
+     /** A wrapper around the WebGL context, gl. */
+     const glUtility          = stage.getGlUtility();
+     glUtility.clearColor(0.0, 0.0, 0.0, 0.0);
+     // Model-View matrix for use in all programs.
+     let modelViewMatrix      = stage.getModelViewMatrix();
+     let projectionMatrix     = stage.getProjectionMartix();
+     // Register to listen for changes to these matrices
+     stage.registerRenderer(this);
+
+     const chargeGenerator    = new vizit.electricfield.ChargeGenerator();
+     /** Given a charge configuration, generates field lines. */
+     const fieldLineGenerator = new vizit.electricfield.FieldLineGenerator(maxPoints, ds);
+     /** Draw the generated field lines */
+     const fieldLineRenderer  = new vizit.electricfield.FieldLineRenderer(glUtility);
+     const chargeRenderer     = new vizit.electricfield.ChargeRenderer(glUtility);
+     const surfaceRenderer    = new vizit.electricfield.SurfaceRenderer(glUtility);
    };
  }(window.vizit.electricfield));

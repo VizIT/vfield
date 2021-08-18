@@ -1,7 +1,5 @@
-"use strict";
-
 /**
- * Copyright 2013-2014 Vizit Solutions
+ * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 // Define the global namespace root iff not already defined.
 window.vizit         = window.vizit         || {};
@@ -44,23 +44,18 @@ window.vizit.builder = window.vizit.builder || {};
      {
        var builder;
        var drawingSurface, drawingSurfaceID;
-       /** Case insensitive match of "electric field" with or without spaces. */
-       var electricFieldRE;
-       var framework;
        var name;
-       var property;
        var renderer;
        var scale;
-       /** Case insensitive match of "simple vector field" with or without spaces. */
-       var simpleVectorFieldRE;
        var startPoints;
-       /** Case insensitive match of "start points" with or without spaces. */
-       var startPointsRE;
        var type;
 
-       electricFieldRE     = /\s*electric\s*field\s*/i;
-       simpleVectorFieldRE = /\s*simple\s*vector\s*field\s*/i;
-       startPointsRE       = /\s*start\s*points\s*/i;
+       /** Case insensitive match of "electric field" with or without spaces. */
+       const electricFieldRE     = /\s*electric\s*field\s*/i;
+       /** Case insensitive match of "simple vector field" with or without spaces. */
+       const simpleVectorFieldRE = /\s*simple\s*vector\s*field\s*/i;
+       /** Case insensitive match of "start points" with or without spaces. */
+       const startPointsRE       = /\s*start\s*points\s*/i;
 
        for(var property in config)
        {
@@ -100,16 +95,16 @@ window.vizit.builder = window.vizit.builder || {};
          
          if (drawingSurface)
          {
-           framework = new vizit.field.FieldRenderer(drawingSurface);
+           const stage = new vizit.field.Stage(drawingSurface);
 
            if (type.match(electricFieldRE))
            {
-             builder  = new vizit.builder.ElectricFieldBuilder(framework);
+             builder  = new vizit.builder.ElectricFieldBuilder(stage);
              renderer = builder.build(config);
            }
            else if (type.match(simpleVectorFieldRE))
            {
-             builder  = new vizit.builder.SimpleVectorFieldBuilder(framework);
+             builder  = new vizit.builder.SimpleVectorFieldBuilder(stage);
              renderer = builder.build(config);
            }
            else
@@ -119,23 +114,21 @@ window.vizit.builder = window.vizit.builder || {};
 
            if (renderer)
            {
-             framework.setRenderer(renderer);
-
              if (typeof scale !== "undefined")
              {
-               framework.setScale(scale);
+               stage.setScale(scale);
              }
              if (typeof name !== "undefined")
              {
-               vizit.visualizations.register(name, framework);
+               vizit.visualizations.register(name, stage);
              }
              if (typeof startPoints !== "undefined")
              {
                renderer.addStartPoints(startPoints);
              }
 
-             framework.start();
-	   }
+             stage.start();
+	       }
          }
          else
          {
