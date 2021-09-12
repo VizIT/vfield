@@ -32,7 +32,18 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
     */
    ns.SimpleVectorField = function (stage_, f_)
    {
-     this.setArrowHeadWidth   = function (width)
+     this.setLineWidth        = function(width)
+     {
+       generator.setLineWidth(width);
+       return this;
+     };
+
+     this.getLineWidth        = function()
+     {
+       generator.getLineWidth();
+     };
+
+     this.setArrowHeadWidth   = function(width)
      {
        generator.setArrowHeadWidth(width);
        return this;

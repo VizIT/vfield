@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Copyright 2013-2014 Vizit Solutions
  *
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 window.vizit = window.vizit || {};
 window.vizit.utility = window.vizit.utility || {};
@@ -206,7 +206,7 @@ window.vizit.utility = window.vizit.utility || {};
             this.setupBuffers(glUtility, surfaceProgram, vertices.vertices,
                 vertices.normals, vertices.indices);
 
-            // These components are independant of scale, just copy once.
+            // These components are independent of scale, just copy once.
             modelViewWorking[3] = modelView[3];
             modelViewWorking[7] = modelView[7];
             modelViewWorking[8] = modelView[8] * h;

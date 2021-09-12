@@ -87,18 +87,19 @@ window.vizit.builder = window.vizit.builder || {};
        }
 
        updater = target[methodName];
-       updater = updater.bind(target);
+       if (updater) {
+         updater = updater.bind(target);
 
-       if (mapping)
-       {
-         binding = new window.vizit.lesson.MappingEventHandler(updater, from, mapping, framework);
+         if (mapping) {
+           binding = new window.vizit.lesson.MappingEventHandler(updater, from, mapping, framework);
+         } else {
+           binding = new window.vizit.lesson.DirectEventHandler(updater, framework);
+         }
+         // By convention in the lesson framework changes in var are named varChanged.
+         document.addEventListener(from + "Changed", binding.handleUpdate.bind(binding), false);
+       } else {
+         console.warn(`No method ${methodName} found to bind ${set}.`)
        }
-       else
-       {
-         binding = new window.vizit.lesson.DirectEventHandler(updater, framework);
-       }
-       // By convention in the lesson framework changes in var are named varChanged.
-       document.addEventListener(from + "Changed", binding.handleUpdate.bind(binding),   false);
      };
 
      /**

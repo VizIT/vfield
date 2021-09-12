@@ -1,7 +1,5 @@
-"use strict";
-
 /**
- * Copyright 2013-2014 Vizit Solutions
+ * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+"use strict";
 
 // Define the global namespace root iff not already defined.
 window.vizit         = window.vizit         || {};
@@ -145,7 +145,6 @@ window.vizit.builder = window.vizit.builder || {};
        return gaussianCylinder;
      };
 
-
      this.gaussianSphereBuilder = function (config)
      {
        var gaussianSphere;
@@ -202,7 +201,6 @@ window.vizit.builder = window.vizit.builder || {};
          gaussianSphere.setEnabled(enabled);
        }
 
-
        return gaussianSphere;
      };
 
@@ -257,8 +255,7 @@ window.vizit.builder = window.vizit.builder || {};
       * array or a single object. The renderer must have an addGaussianSurface
       * method.
       *
-      * @param   {object|Array} Configuraction object fo a single surface or
-      *                         array of surfaces.
+      * @param   {object|Array} config object for a single surface or array of surfaces.
       */
      this.build      = function (config, renderer, framework)
      {

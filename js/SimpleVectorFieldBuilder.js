@@ -42,6 +42,7 @@ window.vizit.builder = window.vizit.builder || {};
        var arrowHeadWidth;
        var arrowSize;
        var builder;
+       var lineWidth;
        var maxVectors;
        // An optional vector valued function.
        var vectorValuedFunction, vectorValuedFunctionConfig;
@@ -63,6 +64,10 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.toLowerCase() === "arrowsize")
          {
            arrowSize = config[property];
+         }
+         else if (property.toLowerCase() === "linewidth")
+         {
+           lineWidth = config[property];
          }
          else if (property.toLowerCase() === "maxvectors")
          {
@@ -98,6 +103,10 @@ window.vizit.builder = window.vizit.builder || {};
        if (typeof arrowHeadWidth !== "undefined")
        {
          renderer.setArrowHeadWidth(arrowHeadWidth);
+       }
+       if (typeof lineWidth !== "undefined")
+       {
+         renderer.setLineWidth(lineWidth);
        }
 
        return renderer;

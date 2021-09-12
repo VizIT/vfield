@@ -37,10 +37,12 @@ window.vizit.builder = window.vizit.builder || {};
      this.build = function (config)
      {
        var arrowHeadSize;
+       var arrowWidth;
        var arrowSpacing;
        var builder;
        var charges;
        var elementsConfig;
+       var lineWidth;
        var maxVectors;
        // Name of properties on the config object.
        var property;
@@ -52,6 +54,10 @@ window.vizit.builder = window.vizit.builder || {};
          {
            arrowHeadSize = config[property];
          }
+         else if (property.toLowerCase() === "arrowwidth")
+         {
+           arrowWidth = config[property];
+         }
          else if (property.toLowerCase() === "arrowspacing")
          {
            arrowSpacing = config[property];
@@ -59,6 +65,10 @@ window.vizit.builder = window.vizit.builder || {};
          else if (property.toLowerCase() === "maxvectors")
          {
            maxVectors = config[property];
+         }
+         else if (property.toLowerCase() === "linewidth")
+         {
+           lineWidth = config[property];
          }
          else if (property.toLowerCase() === "elements")
          {
@@ -76,9 +86,17 @@ window.vizit.builder = window.vizit.builder || {};
        {
          renderer.setArrowHeadSize(arrowHeadSize);
        }
+       if (typeof arrowWidth !== "undefined")
+       {
+         renderer.setArrowWidth(arrowWidth);
+       }
        if (typeof arrowSpacing !== "undefined")
        {
          renderer.setArrowSpacing(arrowSpacing);
+       }
+       if (typeof lineWidth !== "undefined")
+       {
+         renderer.setLineWidth(lineWidth);
        }
 
        // Potentially can modify framework, charges and renderer.
