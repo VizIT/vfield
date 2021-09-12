@@ -530,7 +530,7 @@ window.vizit.builder = window.vizit.builder || {};
        return charges;
      };
 
-     // Common RE's acros multiple methods.
+     // Common RE's across multiple methods.
      chargeDensityRE    = /\s*charge\s*density\s*/i;
      fieldLineDensityRE = /\s*field\s*line\s*density\s*/i;
    };

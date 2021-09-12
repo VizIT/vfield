@@ -253,7 +253,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          gl.uniformMatrix4fv(lineProgram.modelViewMatrixHandle,       false, modelViewMatrix);
          gl.uniformMatrix4fv(lineProgram.projectionMatrixHandle,      false, projectionMatrix);
          gl.uniform1f(lineProgram.aspectHandle,    aspect);
-         gl.uniform1f(lineProgram.halfWidthHandle, (lineWidth/2.0)/gl.drawingBufferHeight);
+         gl.uniform1f(lineProgram.halfWidthHandle, lineWidth/gl.drawingBufferHeight);
 
          for(var i=0; i<nlines; i++)
          {

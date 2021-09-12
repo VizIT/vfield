@@ -182,7 +182,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          * @param {number} x0 x coordinate of the start of the field line
          * @param {number} y0 y coordinate of the start of the field line
          * @param {number} z0 z coordinate of the start of the field line
-         * @param {double} sgn  Whether to trace the line along (+1.0) or
+         * @param {number} sgn  Whether to trace the line along (+1.0) or
          *                      in opposition to (-1.0) the electric field.
          */
         this.generate = function (x0, y0, z0, sgn) {
