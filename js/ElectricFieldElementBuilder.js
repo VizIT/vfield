@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Vizit Solutions
+ * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,12 +26,15 @@ window.vizit.builder = window.vizit.builder || {};
     * Build an electric field and accompanying visualization according to the
     * values in the passed configuration object.
     *
+    * @param {vizit.field.Stage} stage_ General support for WebGL scenes.
+    * @param {vizit.electricfield.ElectricField} renderer_ Specific functionality to render electric fields
+    *
     * @class
     */
-   ns.ElectricFieldElementBuilder = function (framework_, renderer_)
+   ns.ElectricFieldElementBuilder = function (stage_, renderer_)
    {
      var errorMessage;
-     var framework;
+     var stage;
      var renderer;
      var warningMessage;
 
@@ -60,7 +63,7 @@ window.vizit.builder = window.vizit.builder || {};
        if (type.match(chargeRE))
        {
          builder = new vizit.builder.ChargesBuilder();
-         charges = builder.build(config, charges, framework);
+         charges = builder.build(config, charges, stage);
        }
        else if (type.match(chargedCylinderRE)
                 || type.match(chargedLineRE)
@@ -68,13 +71,13 @@ window.vizit.builder = window.vizit.builder || {};
                 || type.match(chargedSphereRE))
        {
          builder = new vizit.builder.DistributionBuilder();
-         charges = builder.build(config, charges, framework);
+         charges = builder.build(config, charges, stage);
        }
        else if (type.match(gaussianCylinderRE)
                 || type.match(gaussianSphereRE))
        {
          builder = new vizit.builder.SurfaceBuilder();
-         renderer = builder.build(config, renderer, framework);
+         renderer = builder.build(config, renderer, stage);
        }
 
        return charges;
@@ -111,7 +114,7 @@ window.vizit.builder = window.vizit.builder || {};
 
 
      errorMessage   = "";
-     framework      = framework_;
+     stage      = stage_;
      renderer       = renderer_;
      warningMessage = "";
    };
