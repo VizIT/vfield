@@ -36,8 +36,8 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
             const vertexShaderSource
                                = "attribute vec3  current;"
                                + "attribute vec3  other;"
-                               + "attribute float normalOffset;"
-                               + "attribute float parallelOffset;"
+                               + "attribute float normalDisplacement;"
+                               + "attribute float parallelDisplacement;"
                                + ""
                                + "uniform   vec2  resolution;"
                                + "uniform   mat4  modelViewMatrix;"
@@ -50,19 +50,16 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
                                + "  vec4 currentProjected = projModelView * vec4(current, 1.0);"
                                + "  vec4 otherProjected   = projModelView * vec4(other, 1.0);"
                                + ""
-                               + "  vec2 currentScreen       = currentProjected.xy / currentProjected.w;"
-                               + "  vec2 otherScreen        = otherProjected.xy / otherProjected.w;"
+                               + "  vec2 currentScreen    = currentProjected.xy / currentProjected.w;"
+                               + "  vec2 otherScreen      = otherProjected.xy / otherProjected.w;"
                                + ""
                                + "  vec2 dir              = otherScreen - currentScreen;"
-                               + "  vec2 normal           = (dir == vec2(0.0, 0.0) ? vec2(0.0, 0.0) : normalize(vec2(-dir.y, dir.x)));"
+                               + "  dir                   = (dir == vec2(0.0, 0.0) ? dir : normalize(dir));"
+                               + "  vec2 normal           = vec2(-dir.y, dir.x);"
                                + ""
-                               + "  float originalLength  = distance(current, other);"
-                               + "  float screenLength    = length(dir);" // TODO: Can we really get rid of this?
-                               + ""
-                               + "  vec4 offset = vec4(normal*normalOffset, 0.0, 0.0);" // Adjustments perpendicular to the arrow
-                               + "  offset     += screenLength == 0.0 ? vec4(0.0, 0.0, 0.0, 0.0)"
-                               + "                                    : vec4(dir * parallelOffset / screenLength, 0.0, 0.0);" // Adjustments along the arrow
-                               + "  offset.xy            /= resolution * currentProjected.w;"
+                               + "  vec4 offset = vec4(normal*normalDisplacement, 0.0, 0.0);"   // Adjustments perpendicular to the arrow
+                               + "  offset     +=  vec4(dir * parallelDisplacement, 0.0, 0.0);" // Adjustments along the arrow
+                               + "  offset.xy  /= resolution * currentProjected.w;"
                                + ""
                                + "  gl_Position = currentProjected + offset;"
                                + "}";
@@ -78,33 +75,33 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
                 + "}";
 
             // Compile and link the shader program
-            const program                = glUtility.createProgram(vertexShaderSource, fragmentShaderSource);
+            const program                    = glUtility.createProgram(vertexShaderSource, fragmentShaderSource);
 
             // Fetch handles for the attributes and uniforms - reuse on each rendering.
             /** WebGL GLint handle on the base of the arrow */
-            const currentHandle          = glUtility.getAttribLocation(program, "current");
-            const otherHandle            = glUtility.getAttribLocation(program, "other");
-            const normalOffsetHandle     = glUtility.getAttribLocation(program, "normalOffset");
-            const parallelOffsetHandle   = glUtility.getAttribLocation(program, "parallelOffset");
+            const currentHandle              = glUtility.getAttribLocation(program, "current");
+            const otherHandle                = glUtility.getAttribLocation(program, "other");
+            const normalDisplacementHandle   = glUtility.getAttribLocation(program, "normalDisplacement");
+            const parallelDisplacementHandle = glUtility.getAttribLocation(program, "parallelDisplacement");
 
-            const resolutionHandle       = glUtility.getUniformLocation(program, "resolution");
+            const resolutionHandle           = glUtility.getUniformLocation(program, "resolution");
             /** WebGL GLint handle on the color attribute */
-            const colorHandle            = glUtility.getUniformLocation(program, "color");
+            const colorHandle                = glUtility.getUniformLocation(program, "color");
             /** WebGL GLint handle on the modelViewMatrix uniform */
-            const modelViewMatrixHandle  = glUtility.getUniformLocation(program, "modelViewMatrix");
+            const modelViewMatrixHandle      = glUtility.getUniformLocation(program, "modelViewMatrix");
             /** WebGL GLint handle on the projectionMatrix uniform */
-            const projectionMatrixHandle = glUtility.getUniformLocation(program, "projectionMatrix");
+            const projectionMatrixHandle     = glUtility.getUniformLocation(program, "projectionMatrix");
 
             return {
-                program:                program,
-                currentHandle:          currentHandle,
-                otherHandle:            otherHandle,
-                normalOffsetHandle:     normalOffsetHandle,
-                parallelOffsetHandle:   parallelOffsetHandle,
-                resolutionHandle:       resolutionHandle,
-                colorHandle:            colorHandle,
-                modelViewMatrixHandle:  modelViewMatrixHandle,
-                projectionMatrixHandle: projectionMatrixHandle
+                program:                    program,
+                currentHandle:              currentHandle,
+                otherHandle:                otherHandle,
+                normalDisplacementHandle:   normalDisplacementHandle,
+                parallelDisplacementHandle: parallelDisplacementHandle,
+                resolutionHandle:           resolutionHandle,
+                colorHandle:                colorHandle,
+                modelViewMatrixHandle:      modelViewMatrixHandle,
+                projectionMatrixHandle:     projectionMatrixHandle
             }
         };
 
@@ -142,10 +139,14 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
                 indexedBuffer = indexedBuffers[i];
 
                 // Bind the buffer to the position attribute
-                glUtility.bindBuffer(indexedBuffer.vertices, program.currentHandle,        floatsPerLocation, gl.FLOAT, stride, 0);
-                glUtility.bindBuffer(indexedBuffer.vertices, program.otherHandle,          floatsPerLocation, gl.FLOAT, stride, floatsPerLocation*Float32Array.BYTES_PER_ELEMENT);
-                glUtility.bindBuffer(indexedBuffer.vertices, program.normalOffsetHandle,   floatsPerOffset,   gl.FLOAT, stride, 2*floatsPerLocation*Float32Array.BYTES_PER_ELEMENT);
-                glUtility.bindBuffer(indexedBuffer.vertices, program.parallelOffsetHandle, floatsPerOffset,   gl.FLOAT, stride, 2*floatsPerLocation*Float32Array.BYTES_PER_ELEMENT + floatsPerOffset*Float32Array.BYTES_PER_ELEMENT);
+                glUtility.bindBuffer(indexedBuffer.vertices, program.currentHandle,              floatsPerLocation,
+                                     gl.FLOAT, stride, 0);
+                glUtility.bindBuffer(indexedBuffer.vertices, program.otherHandle,                floatsPerLocation,
+                                     gl.FLOAT, stride, floatsPerLocation*Float32Array.BYTES_PER_ELEMENT);
+                glUtility.bindBuffer(indexedBuffer.vertices, program.normalDisplacementHandle,   floatsPerOffset,
+                                     gl.FLOAT, stride, 2*floatsPerLocation*Float32Array.BYTES_PER_ELEMENT);
+                glUtility.bindBuffer(indexedBuffer.vertices, program.parallelDisplacementHandle, floatsPerOffset,
+                                     gl.FLOAT, stride, 2*floatsPerLocation*Float32Array.BYTES_PER_ELEMENT + floatsPerOffset*Float32Array.BYTES_PER_ELEMENT);
 
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexedBuffer.indices);
                 gl.drawElements(gl.TRIANGLES, indexedBuffer.nindices, gl.UNSIGNED_SHORT, 0);

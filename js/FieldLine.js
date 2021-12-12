@@ -184,8 +184,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
                 vertices: arrowVertices.slice(0, vizit.electricfield.FieldLine.VERTICES_PER_ARROW
                                                  *vizit.electricfield.FieldLine.FLOATS_PER_VERTEX
                                                  *narrows),
-                indices: arrowIndices.slice(0, vizit.electricfield.FieldLine.LOCATIONS_PER_VERTEX
-                                               *vizit.electricfield.FieldLine.FLOATS_PER_LOCATION
+                indices: arrowIndices.slice(0, vizit.electricfield.FieldLine.INDICES_PER_ARROW
                                                *narrows),
                 narrows: narrows
             }
@@ -219,5 +218,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
     ns.FieldLine.FLOATS_PER_SEGMENT   = ns.FieldLine.VERTICES_PER_SEGMENT*(ns.FieldLine.FLOATS_PER_VERTEX);
 
     ns.FieldLine.VERTICES_PER_ARROW   = 4;
+    ns.FieldLine.INDICES_PER_ARROW    = 6;
 
 }(window.vizit.electricfield));

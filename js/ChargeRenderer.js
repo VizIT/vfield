@@ -60,7 +60,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
        // We are actually rendering a square point, however
        // We trim pixels further than a given distance from the center, yielding a circle
        // We shade and light each point as it it were on a sphere, giving a bit of a 3D illusion
-       const fragmentShaderSource  = "precision lowp float;"
+       const fragmentShaderSource  = "precision mediump float;"
 			                       + "varying vec4 vColor;"
 			                       + ""
                                    + "uniform   vec3 ambientLighting;"
