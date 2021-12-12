@@ -145,17 +145,16 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          * direction of the electric field. The arrowhead is constructed in the
          * vertex shader.
          *
-         * @param {number} x0 x coordinate for the tip of the arrow
-         * @param {number} y0 y coordinate for the tip of the arrow
-         * @param {number} z0 z coordinate for the tip of the arrow
+         * @param {number} x0 x coordinate for the tip
+         * @param {number} y0 y coordinate for the tip
+         * @param {number} z0 z coordinate for the tip
          * @param {number[]} field Components of the field at the tip
          * @param {number} f Magnitude of the field at the tip
-         * @param {number} arrowLength The base to tip distance for the arrow
-         * @param {FieldLine} fieldLine The object representing the current field
-         * @param {number} sgn Whether to trace the line along (+1.0) or
-         *                      in opposition to (-1.0) the electric field.
+         * @param {number} arrowLength The base to tip distance
+         * @param {FieldLine} fieldLine The current field line
          */
-        this.drawArrow = function (x0, y0, z0, field, f, arrowLength, fieldLine, sgn) {
+        this.drawArrow = function (x0, y0, z0,
+                                   field, f, arrowLength, fieldLine) {
             // You might be tempted to use Float32Array here, but many small typed arrays
             // are counter productive.
             const tip = {
@@ -222,7 +221,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
 
                 if (deltaS > arrowSpacing) {
                     deltaS = 0;
-                    this.drawArrow(x, y, z, field, f, arrowLength, fieldLine, sgn);
+                    this.drawArrow(x, y, z, field, f, arrowLength, fieldLine);
                 }
 
                 shouldStop = charges.shouldStop(sgn, x, y, z);

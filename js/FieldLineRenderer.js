@@ -164,8 +164,6 @@ window.vizit.electricfield = window.vizit.electricfield || {};
                                   + "uniform   mat4  modelViewMatrix;"
                                   + "uniform   mat4  projectionMatrix;"
                                   + ""
-                                  + "varying vec3 vCurrent;"
-                                  + ""
                                   + "void main()"
                                   + "{"
                                   + "  mat4 projModelView    = projectionMatrix * modelViewMatrix;"
