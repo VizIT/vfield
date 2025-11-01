@@ -24,7 +24,7 @@ window.vizit.builder = window.vizit.builder || {};
  {
    /**
     * Build an electric field and accompanying visualization according to the
-    * values in the passed configuration object.
+    * values passed in the configuration object.
     *
     * @param {vizit.field.Stage} stage_ General support for WebGL scenes.
     * @param {vizit.electricfield.ElectricField} renderer_ Specific functionality to render electric fields

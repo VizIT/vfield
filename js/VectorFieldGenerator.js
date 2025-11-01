@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,6 +32,25 @@ window.vizit.vectorfield = window.vizit.vectorfield || {};
    ns.VectorFieldGenerator = function (f_)
    {
      let nvectors;
+
+     /**
+      * Set or replace the function generating the vectors we render.
+      *
+      * @param {VectorFunction} f_      A vector valued function. Must implement an
+      *                                 [fx, fy, fz] = getField(x,y,z) method.
+      * @returns {vizit.vectorfield.VectorFieldGenerator}
+      */
+     this.setVectorFunction = function(f_)
+     {
+       f = f_;
+       f.setModified(true)
+       return this;
+     }
+
+     this.getVectorFunction = function()
+     {
+       return f;
+     }
 
 
      /**

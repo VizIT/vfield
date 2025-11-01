@@ -1,6 +1,4 @@
-"use strict";
-
-/**
+/*
  * Copyright 2013-2014 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,36 +14,38 @@
  *    limitations under the License.
  */
 
-window.vizit       = window.vizit       || {};
+"use strict";
+
+window.vizit = window.vizit || {};
 
 (function (ns)
 {
-  /**
-   * Common repository for registration and retreival of visualizations
-   * by name. This allows configured visualizations to be accessed by
-   * other components.
-   */
-  ns.Visualizations = function ()
-  {
-    var visualizations;
-
-    this.register   = function (name, visualization)
+    /**
+     * Common repository for registration and retreival of visualizations
+     * by name. This allows configured visualizations to be accessed by
+     * other components.
+     */
+    ns.Visualizations = function ()
     {
-      visualizations[name] = visualization;
+        var visualizations;
+
+        this.register = function (name, visualization)
+        {
+            visualizations[name] = visualization;
+        };
+
+        this.lookup = function (name)
+        {
+            var visualization;
+
+            if (visualizations.hasOwnProperty(name))
+            {
+                visualization = visualizations[name];
+            }
+
+            return visualization;
+        };
     };
-
-    this.lookup     = function (name)
-    {
-       var visualization;
-
-       if (visualizations.hasOwnProperty(name))
-       {
-	   visualization=visualizations[name];
-       }
-
-       return visualization;
-    };
-  };
 }(window.vizit));
 
 vizit.visualizations = new vizit.Visualizations();

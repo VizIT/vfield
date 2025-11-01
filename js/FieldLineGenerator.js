@@ -1,4 +1,5 @@
-/*
+/**
+ * @license Apache-2.0
  * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -156,7 +157,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
         this.drawArrow = function (x0, y0, z0,
                                    field, f, arrowLength, fieldLine) {
             // You might be tempted to use Float32Array here, but many small typed arrays
-            // are counter productive.
+            // are counterproductive.
             const tip = {
                 x: x0,
                 y: y0,

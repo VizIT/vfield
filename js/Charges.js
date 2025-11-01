@@ -350,7 +350,7 @@ window.vizit.electricfield = window.vizit.electricfield || {};
         };
 
         /**
-         * Comnpute the field at x, y, z resulting from our charge
+         * Compute the field at x, y, z resulting from our charge
          * configuration.
          */
         this.getField = function (x, y, z) {

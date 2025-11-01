@@ -30,81 +30,65 @@
                   {
                     type: "charge",  charge:  5.0,
                     x: 0.0, y: 0.0, z: 0.0,
-                    fieldLineDensity: 5.0, name: "charge1"
+                    fieldLineDensity: 5.0, name: "charge1",
+                    bind: {set: "charge", from: "q1"}
+		      
                   },
                   {
                     type:"gaussian sphere",
                     x:      0.0, y:   0.0, z: 0.0,
-                    r:     20.0, name: "sphere"
-                  }
-                ],
-              // Set the charge on charge1 to q1 when it changes.
-              bindings:
-                [
-                  {
-                    target: "charge1", set: "charge", from: "q1"
-                  },
-                  {
-                    target: "sphere", set: "r", from: "r"
+                    r:     20.0, name: "sphere",
+                    bind: {set: "r", from: "r"}
                   }
                 ]
             };
     </script>
-    <!-- Lesson css and scripts -->
-    <link   rel="stylesheet" type="text/css" href="../../lesson/css/Lesson.css">
-    <script defer type="text/javascript"     src="../../lesson/js/IdRegistry.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/DirectEventHandler.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/DotRAdapter.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/GaussianSurfaceRChangedEventListiner.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/LessonContentEventHandler.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/LessonContentEventSource.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/LessonControlEventHandler.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/MappingEventHandler.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/ModelImageEventHandler.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/RadialDependencyAdaptor.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/RangedSource.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/Setter.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/SurfaceExtensionEventListiner.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/ToExpression.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/XvsYController.js"></script>
-    <script defer type="text/javascript"     src="../../lesson/js/LessonBuilder.js"></script>
-    <!-- VField Scripts -->
     <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
+    <!-- Lesson scripts -->
+    <script type="text/javascript"    src="../../lesson/js/DirectEventHandler.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/MappingEventHandler.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/IdRegistry.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/RangedSource.js"></script>
+    <script type="text/javascript"    src="../../lesson/js/LessonBuilder.js"></script>
+    <!-- VField Scripts -->
     <script type="text/javascript"    src="../js/EnsureNumber.js"></script>
     <script type="text/javascript"    src="../js/toBoolean.js"></script>
-    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
-    <script type="text/javascript"    src="../js/GLUtility.js"></script>
-    <script type="text/javascript"    src="../js/Color.js"></script>
     <script type="text/javascript"    src="../js/Geometry.js"></script>
-    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
-    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
-    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
-    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
-    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
-    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
-    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
-    <script type="text/javascript"    src="../js/FieldLine.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/Stage.js"></script>
     <script type="text/javascript"    src="../js/Cylinder.js"></script>
-    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
-    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
     <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
     <script type="text/javascript"    src="../js/ChargedLine.js"></script>
     <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
     <script type="text/javascript"    src="../js/ChargedSphere.js"></script>
-    <script type="text/javascript"    src="../js/Charges.js"></script>
-    <script type="text/javascript"    src="../js/ElectricField.js"></script>
-    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
+    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
     <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
+    <script type="text/javascript"    src="../js/FieldLine.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
+    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/IllegalArgumentException.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineFeedbackRenderer.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
     <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
-    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/Visualizations.js"></script>
+    <!-- Used in prototype for other builders, must be loaded first. -->
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
     <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
     <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
     <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
-    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
     <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
     <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
     <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>

@@ -107,12 +107,12 @@ window.vizit.electricfield = window.vizit.electricfield || {};
         this.pushPoint = function (x, y, z) {
             if (npoints > 0) {
                 // The first edge of the rectangle
-                pushVertex(lastPoint.x, lastPoint.y, lastPoint.z, // vec3 for the current point
-                    x, y, z,                                      // vec3 for the other point
+                pushVertex(lastPoint.x, lastPoint.y, lastPoint.z, // The current point
+                           x, y, z,                               // The other point
                     +1.0);                                // Displacement direction
 
-                pushVertex(lastPoint.x, lastPoint.y, lastPoint.z, // vec3 for the current point
-                    x, y, z,                                      // vec3 for the other point
+                pushVertex(lastPoint.x, lastPoint.y, lastPoint.z, // The current point
+                    x, y, z,                                      // The other point
                     -1.0);                                // The opposite displacement direction
 
                 // The second edge of the rectangle
@@ -141,10 +141,17 @@ window.vizit.electricfield = window.vizit.electricfield || {};
             return npoints;
         };
 
-        function makeArrowVertex(vertex, tip, direction) {
-            arrowVertices[arrowVertexPtr++] = vertex.x;
-            arrowVertices[arrowVertexPtr++] = vertex.y;
-            arrowVertices[arrowVertexPtr++] = vertex.z;
+        /**
+         * Package the data needed to create a vertex as part of an arrow.
+         *
+         * @param point The current point, which is displaced according to the direction parameter.
+         * @param tip The tip of the arrow.
+         * @param direction The direction to displace the point to form the vertex.
+         */
+        function makeArrowVertex(point, tip, direction) {
+            arrowVertices[arrowVertexPtr++] = point.x;
+            arrowVertices[arrowVertexPtr++] = point.y;
+            arrowVertices[arrowVertexPtr++] = point.z;
             arrowVertices[arrowVertexPtr++] = tip.x;
             arrowVertices[arrowVertexPtr++] = tip.y;
             arrowVertices[arrowVertexPtr++] = tip.z;
@@ -158,8 +165,8 @@ window.vizit.electricfield = window.vizit.electricfield || {};
          */
         this.pushArrow = function (base, tip) {
             makeArrowVertex(base, tip, +1.0);
-            makeArrowVertex(base, tip,  0.0);
-            makeArrowVertex(tip,  tip,  0.0);
+            makeArrowVertex(base, tip, 0.0);
+            makeArrowVertex(tip, tip, 0.0);
             makeArrowVertex(base, tip, -1.0);
 
             const baseIndex = narrows * ns.FieldLine.VERTICES_PER_ARROW;

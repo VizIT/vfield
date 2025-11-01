@@ -327,6 +327,13 @@ window.vizit.electricfield = window.vizit.electricfield || {};
      const fieldLineGenerator = new vizit.electricfield.FieldLineGenerator(maxPoints, ds);
      /** Draw the generated field lines */
      const fieldLineRenderer  = new vizit.electricfield.FieldLineRenderer(glUtility);
+     // Vector field, f, and scale factor.
+     /*const vectorRenderer = new vizit.vectorfield.SimpleVectorField(stage, f)
+         .setArrowSize(4.0)
+         .setArrowHeadSize(8.0)
+         .setArrowHeadWidth(8.0)
+         .setMaxVectors(10)
+         .addStartPoints(f.getStartPoints(0, 2.0));*/
      const chargeRenderer     = new vizit.electricfield.ChargeRenderer(glUtility);
      const surfaceRenderer    = new vizit.electricfield.SurfaceRenderer(glUtility);
    };

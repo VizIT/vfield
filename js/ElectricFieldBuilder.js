@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2013-2021 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ window.vizit.builder = window.vizit.builder || {};
  {
    /**
     * Build an electric field and accompanying visualization according to the
-    * values in the passed configuration object.
+    * values in the configuration object.
     *
     * @class
     */

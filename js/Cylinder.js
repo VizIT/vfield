@@ -1,5 +1,5 @@
-/**
- * Copyright 2013-2014 Vizit Solutions
+/*
+ * Copyright 2013-2023 Vizit Solutions
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,12 +14,10 @@
  *    limitations under the License.
  */
 
-"use strict";
-
 window.vizit = window.vizit || {};
 window.vizit.utility = window.vizit.utility || {};
 
-(function (ns) {
+(ns => {
     /**
      * Prototype for charged line and charged cylinder. Render an arbitrary cylinderical
      * charge with arbitrary inner and outer radai. For a charged line the inner radius will
@@ -31,17 +29,15 @@ window.vizit.utility = window.vizit.utility || {};
      */
     ns.Cylinder = function () {
         /** Working copy of the MV matrix, used to incorporate scale w/o altering the original. */
-        var modelViewWorking;
+        let modelViewWorking;
         /** Color object with red, green, blue, and alpha. */
-        var color;
+        let color;
 
-        this.setColor = function (color_) {
+        this.setColor = color_ => {
             color = color_;
         };
 
-        this.getColor = function () {
-            return color;
-        };
+        this.getColor = () => color;
 
         /**
          * Generate a model view matrix to place the standard unit cylinder model
@@ -56,19 +52,15 @@ window.vizit.utility = window.vizit.utility || {};
          * @param {Double} phi    The angle of rotation about the y axis.
          * @param {Double} theta  The angle of rotation about the z axis.
          */
-        this.getCylinderModelView = function (tx, ty, tz, height, r, phi, theta) {
-            var cphi;
-            var ctheta;
-            var modelViewMatrix;
-            var sphi;
-            var stheta;
+        this.getCylinderModelView = (tx, ty, tz, height, r, phi, theta) =>
+        {
+            const stheta = Math.sin(theta);
+            const ctheta = Math.cos(theta);
+            const sphi = Math.sin(phi);
+            const cphi = Math.cos(phi);
 
-            stheta = Math.sin(theta);
-            ctheta = Math.cos(theta);
-            sphi = Math.sin(phi);
-            cphi = Math.cos(phi);
+            const modelViewMatrix = new Float32Array(16);
 
-            modelViewMatrix = new Float32Array(16);
             // Column 1:
             modelViewMatrix[0] = r * cphi * ctheta;
             modelViewMatrix[1] = r * ctheta * sphi;
@@ -97,16 +89,16 @@ window.vizit.utility = window.vizit.utility || {};
          * Transform a set of points by the same ModelView matrix as used by the cylinder.
          * Great for transforming automatically generated field start points.
          */
-        this.transformPoints = function (modelView, h, r, points) {
-            var npoints;
-            var i;
-            var point;
-            var x;
-            var y;
-            var z;
+        this.transformPoints = (modelView, h, r, points) => {
+            let npoints;
+            let i;
+            let point;
+            let x;
+            let y;
+            let z;
 
-            // Most of the fields we just copy, those with r dependancies
-            // are multipleied by the scale factor.
+            // Most of the fields we just copy, those with r dependencies
+            // are multiplied by the scale factor.
             modelViewWorking[0] = modelView[0] * r;
             modelViewWorking[1] = modelView[1] * r;
             modelViewWorking[2] = modelView[2] * r;
@@ -138,30 +130,31 @@ window.vizit.utility = window.vizit.utility || {};
             return points;
         };
 
-        this.setupBuffers = function (glUtility, surfaceProgram, surfaceGeometryBuffer,
-                                      surfaceNormalBuffer, surfaceIndicesBuffer) {
-            var gl;
-
-            gl = glUtility.getGLContext();
+        this.setupBuffers = (
+            glUtility,
+            surfaceProgram,
+            surfaceGeometryBuffer,
+            surfaceNormalBuffer,
+            surfaceIndicesBuffer
+        ) => {
+            const gl = glUtility.getGLContext();
             glUtility.bindBuffer(surfaceGeometryBuffer, surfaceProgram.getPositionHandle(), 3, gl.FLOAT, 0, 0);
             glUtility.bindBuffer(surfaceNormalBuffer, surfaceProgram.getNormalHandle(), 3, gl.FLOAT, 0, 0);
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, surfaceIndicesBuffer);
         };
 
-        this.drawCap = function (gl, nindices, offset) {
+        this.drawCap = (gl, nindices, offset) => {
             gl.drawElements(gl.TRIANGLE_FAN, nindices, gl.UNSIGNED_SHORT, offset * 2);
         };
 
-        this.drawSide = function (gl, nindices, offset) {
+        this.drawSide = (gl, nindices, offset) => {
             gl.drawElements(gl.TRIANGLE_STRIP, nindices, gl.UNSIGNED_SHORT, offset * 2);
 
         };
 
         this.drawCylinder = function (glUtility, surfaceProgram, modelView,
                                       nsegments, drawCaps) {
-            var gl;
-
-            gl = glUtility.getGLContext();
+            const gl = glUtility.getGLContext();
 
             gl.uniformMatrix4fv(surfaceProgram.getModelViewMatrixHandle(), false, modelView);
 
@@ -184,24 +177,17 @@ window.vizit.utility = window.vizit.utility || {};
          * multiple radii, and optionally end caps.
          */
         this.fullRender = function (glUtility, surfaceProgram, modelView, h, r0, r1, drawCaps) {
-            var gl;
-            var nindices;
-            var nsegments;
-            var r;
-            var rBase;
-            var scale;
-            var vertices;
+            let r;
+            let scale;
 
-            gl = glUtility.getGLContext();
-            rBase = this.getBaseRadius();
-            vertices = this.getVertexBuffers(glUtility);
+            const gl = glUtility.getGLContext();
+            const rBase = this.getBaseRadius();
+            const vertices = this.getVertexBuffers(glUtility);
+            // For an n segmented cylinder, nindices=4n+6
+            const nsegments = (this.getNindices() - 6) / 4;
 
             gl.uniform4f(surfaceProgram.getSurfaceColorHandle(), color.getRed(),
                 color.getGreen(), color.getBlue(), color.getAlpha());
-
-            // For an n segmented cylinder, nindices=4n+6
-            nindices = this.getNindices();
-            nsegments = (nindices - 6) / 4;
 
             this.setupBuffers(glUtility, surfaceProgram, vertices.vertices,
                 vertices.normals, vertices.indices);
@@ -250,9 +236,9 @@ window.vizit.utility = window.vizit.utility || {};
         /**
          * Translates a cylinder to be centered at the origin.
          */
-        this.translateBounds = function (cylinder, x0, y0, z0, x1, y1, z1) {
+        this.translateBounds = (cylinder, x0, y0, z0, x1, y1, z1) => {
 
-            var tx, ty, tz;
+            let tx, ty, tz;
 
             tx = (x0 + x1) / 2;
             ty = (y0 + y1) / 2;
@@ -276,18 +262,16 @@ window.vizit.utility = window.vizit.utility || {};
                 .setZ1(z1);
         };
 
-        this.sign = function (x) {
-            return x < 0 ? -1 : 1;
-        };
+        this.sign = x => x < 0 ? -1 : 1;
 
         /**
          * Find phi, the rotation about the z-axis.
          */
         this.zAxisRotation = function (cylinder, x0, y0, x1, y1) {
-            var deltax;
-            var deltay;
-            var phi;
-            var sgn;
+            let deltax;
+            let deltay;
+            let phi;
+            let sgn;
 
             deltay = y1 - y0;
             deltax = x1 - x0;
@@ -311,9 +295,9 @@ window.vizit.utility = window.vizit.utility || {};
          * centered at the origin;
          */
         this.yAxisRotation = function (cylinder, x0, y0, z0, x1, y1, z1) {
-            var r;
-            var sgn;
-            var theta;
+            let r;
+            let sgn;
+            let theta;
 
             r = Math.sqrt(x0 * x0 + y0 * y0 + z0 * z0);
             theta = Math.acos(z1 / r);
@@ -335,8 +319,8 @@ window.vizit.utility = window.vizit.utility || {};
          * Height scale - we already have the radius.
          */
         this.scale = function (cylinder, z0, z1) {
-            var height;
-            var sgn;
+            let height;
+            let sgn;
 
             sgn = this.sign(z1);
             height = z1 - z0;
@@ -354,4 +338,4 @@ window.vizit.utility = window.vizit.utility || {};
      */
     ns.Cylinder.prototype = new vizit.geometry.Cylinder();
 
-}(window.vizit.utility));
+})(window.vizit.utility);
