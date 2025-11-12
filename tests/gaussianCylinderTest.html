@@ -2,32 +2,71 @@
 <html>
   <head>
     <title>Gaussian Cylinder Test</title>
-    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
-    <script type="text/javascript"    src="../js/GLUtility.js"></script>
-    <script type="text/javascript"    src="../js/Color.js"></script>
+    <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
+    <!-- Lesson css and scripts -->
+    <link   rel="stylesheet" type="text/css" href="../../lesson/css/Lesson.css">
+    <script defer type="text/javascript"     src="../../lesson/js/IdRegistry.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/DirectEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/DotRAdapter.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/GaussianSurfaceRChangedEventListiner.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonContentEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonContentEventSource.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonControlEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/MappingEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/ModelImageEventHandler.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/RadialDependencyAdaptor.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/RangedSource.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/Setter.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/SurfaceExtensionEventListiner.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/ToExpression.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/XvsYController.js"></script>
+    <script defer type="text/javascript"     src="../../lesson/js/LessonBuilder.js"></script>
+    <!-- VField Scripts -->
+    <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
+    <script type="text/javascript"    src="../js/EnsureNumber.js"></script>
+    <script type="text/javascript"    src="../js/toBoolean.js"></script>
     <script type="text/javascript"    src="../js/Geometry.js"></script>
+    <script type="text/javascript"    src="../js/Cylinder.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
+    <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
+    <script type="text/javascript"    src="../js/ChargedLine.js"></script>
     <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
-    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
-    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
-    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
-    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
-    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ChargedSphere.js"></script>
     <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
     <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
     <script type="text/javascript"    src="../js/FieldLine.js"></script>
     <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
     <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
-    <script type="text/javascript"    src="../js/Cylinder.js"></script>
-    <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
     <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
-    <script type="text/javascript"    src="../js/ChargedLine.js"></script>
-    <script type="text/javascript"    src="../js/ElectricField.js"></script>
-    <script type="text/javascript"    src="../js/VectorField.js"></script>
-    <script type="text/javascript"    src="../js/Charges.js"></script>
-    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
-    <link rel="canonical"   href="http://www.vizitsolutions.com/portfolio/efield/gaussianCylinderTest.html" />
+    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/IllegalArgumentException.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineFeedbackRenderer.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/Stage.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
+    <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
+    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/Visualizations.js"></script>
+    <!-- Used in prototype for otherbuilders, must be loaded first. -->
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
+    <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
+    <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VectorValuedFunctionBuilder.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorFieldBuilder.js"></script>
+    <script type="text/javascript"    src="../js/VizBuilder.js"></script>
   </head>
   <body>
     <h1>Gaussian Cylinder Test</h2>
@@ -38,50 +77,43 @@
         </figure>
 
     <script type="text/javascript">
-      var charges;
-      var drawingSurface;
-      var framework;
-      var renderer;
-      var surface;
-
       /*
        * Create the charges and package them into a charges collection. Edit this
        * to change the charge configuration modeled in this illustration.
        */
       function placeCharges()
       {
-        var charge;
-        var chargedPlane;
+        const chargedPlane = new vizit.electricfield.ChargedPlane( 
+                                                                  -49.5006781186547524,    5.71067811865475232, -105.710678118654753,
+                                                                   91.9206781186547524,  105.710678118654752,     -5.71067811865475249,
+                                                                   91.9206781186547524,  -35.7106781186547523,   135.710678118654753,
+                                                                  -49.5006781186547524, -135.710678118654752,     35.7106781186547525,
+                                                                  .01, .03
+                                                                 );
 
-        chargedPlane = new ChargedPlane( .01, .03,
-                                         -49.5006781186547524,    5.71067811865475232, -105.710678118654753,
-                                          91.9206781186547524,  105.710678118654752,     -5.71067811865475249,
-                                          91.9206781186547524,  -35.7106781186547523,   135.710678118654753,
-                                         -49.5006781186547524, -135.710678118654752,     35.7106781186547525);
 
-
-        charges = new Charges();
+        const charges = new vizit.electricfield.Charges();
         charges.addDistribution(chargedPlane);
 
         return charges;
       }
 
-      drawingSurface = document.getElementById('drawingSurfaceI');
+      const drawingSurface = document.getElementById('drawingSurfaceI');
+      const stage          = new vizit.field.Stage(drawingSurface)
+                                             .setScale(120.0);
 
-      charges        = placeCharges();
-      surface        = new GaussianCylinder(21.21, -15.0, 15.0, 30, 55, 2.5307806170144, 1.0485904877995598);
+      const charges        = placeCharges();
+      const surface        = new vizit.electricfield.GaussianCylinder(21.21, -15.0, 15.0, 30, 55, 2.5307806170144, 1.0485904877995598);
 
-      renderer       = new ElectricField(charges);
+      const renderer       = new vizit.electricfield.ElectricField(stage);
+      renderer.setCharges(charges);
       renderer.setMaxVectors(30);
-      renderer.setArrowSize(3.0);
+      renderer.setArrowHeadSize(3.0);
       renderer.setArrowSpacing(30.0);
       renderer.addStartPoints(charges.getStartPoints(0.0, 2.0));
       renderer.addGaussianSurface(surface);
 
-      framework      = new vizit.field.FieldRenderer(drawingSurface, renderer);
-      framework.setScale(120.0);
-
-      framework.start();
+      stage.start();
     </script>
   </body>
 </html>

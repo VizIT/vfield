@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Field Line Gaussian Sphere Charge Move Config Test</title>
+    <title>Multiple surface show/hide test</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="stylesheet"          href="../nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="../vfield.css" type="text/css" />
+
     <script type="text/javascript">
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
@@ -41,7 +46,7 @@
                     type: "gaussian cylinder",
                     x:      0.0, y:   0.0, z: 0.0,
                     r:     20.0, h: 20, 
-                    theta:  0.0, phi: 0.0,
+                    theta:  1.5, phi: 0.0,
                     enabled: false, name: "cylinder",
                     bind: {set: "enabled", from: "drawCylinder"}
                   }
@@ -115,7 +120,7 @@
     <script type="text/javascript"    src="../js/VizBuilder.js"></script>
   </head>
   <body>
-    <h1 class="center">Field Line Gaussian Sphere Charge Move Config Test</h2>
+    <h1 class="center">Multiple surface show/hide test</h2>
 
    <figure class="center">
      <!--This is the canvas for our electric field visualization. -->
@@ -136,6 +141,10 @@
             data-type="setter"
             data-set="drawSphere=true, drawCylinder=false"
             data-html="draw a sphere"></span>
+      <span class="lessonElement"
+            data-type="setter"
+            data-set="drawSphere=false, drawCylinder=true"
+            data-html="draw a cylinder"></span>
     </p>
     <p>
       We see the electric field lines from the charge passing through the surface.

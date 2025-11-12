@@ -1,6 +1,11 @@
 <html>
   <head>
-    <title>Field Line Gaussian Cylinder Config Test</title>
+    <title>Gaussian Cylinder Config Test</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="stylesheet"          href="../nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="../vfield.css" type="text/css" />
+
     <script type="text/javascript">
       var VISUALIZATION_CONFIG =  {
                                     type:   "electric field",
@@ -82,19 +87,22 @@
     <script type="text/javascript"    src="../js/VizBuilder.js"></script>
   </head>
   <body>
+    <h1>Gaussian Cylinder Config Test</h1>
     <!--This is the target for our point charge rendering. -->
     <canvas id="chargeCanvas" width="300" height="300"></canvas>
 
-    <!-- This allows manipulation of charge density, -->
-    <!-- ranging from -1 to 1 with an initial value of 0.3 -->
-    <!-- This density matches the density in the binding in VISUALIZATION_CONFIG. -->
-    <!-- bind: {set: "chargeDensity", from: "density"} -->
-    <span class="lessonElement"
-          data-type="rangedSource"
-          data-name="r"
-          data-value="10.0"
-          data-min="1.0"
-          data-max="20.0"
-          data-step="1.0"></span>
+    <p>
+      <!-- This allows manipulation of charge density, -->
+      <!-- ranging from -1 to 1 with an initial value of 0.3 -->
+      <!-- This density matches the density in the binding in VISUALIZATION_CONFIG. -->
+      <!-- bind: {set: "chargeDensity", from: "density"} -->
+      Hover here to see the cyliner radius control <span class="lessonElement"
+            data-type="rangedSource"
+            data-name="r"
+            data-value="10.0"
+            data-min="1.0"
+            data-max="20.0"
+            data-step="1.0"></span>.
+    </p>
   </body>
 </html>

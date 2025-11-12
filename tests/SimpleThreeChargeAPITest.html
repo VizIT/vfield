@@ -2,6 +2,9 @@
 <html>
   <head>
     <title>Simple Triple Point Charge API Test</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="stylesheet"          href="../nstyle.css" type="text/css" />
     <link   rel="stylesheet"          href="../vfield.css" type="text/css" />
 
     <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
@@ -122,13 +125,8 @@
     const stage          = new vizit.field.Stage(drawingSurface)
                                                     .setScale(85.0);
     const f              = placeCharges();
-    // Vector field, f, and scale factor.
     const renderer = new vizit.vectorfield.SimpleVectorField(stage, f);
     renderer.setMaxVectors(70);
-
-    //framework      = new vizit.field.FieldRenderer(drawingSurface);
-    //framework.setRenderer(renderer);
-    //framework.setScale(70.0);
 
     stage.start();
   </script>

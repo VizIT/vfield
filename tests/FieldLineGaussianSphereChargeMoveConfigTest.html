@@ -5,7 +5,9 @@
     <meta   http-equiv="Content-Type"        content="text/html;charset=utf-8" >
     <meta   name="viewport"                  content="width=device-width, initial-scale=1.0">
     <link   rel="next"                       href="pointCharge.html">
-    <link   rel="stylesheet" type="text/css" href="../../../nstyle.css">
+    <link   rel="stylesheet" type="text/css" href="../nstyle.css">
+
+    <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
     <!-- Lesson css and scripts -->
     <link   rel="stylesheet" type="text/css" href="../../lesson/css/Lesson.css">
     <script defer type="text/javascript"     src="../../lesson/js/IdRegistry.js"></script>
@@ -25,68 +27,52 @@
     <script defer type="text/javascript"     src="../../lesson/js/XvsYController.js"></script>
     <script defer type="text/javascript"     src="../../lesson/js/LessonBuilder.js"></script>
     <!-- VField Scripts -->
+    <!-- Tests load each script individually to allow easier debugging and issue tracking. -->
     <script type="text/javascript"    src="../js/EnsureNumber.js"></script>
     <script type="text/javascript"    src="../js/toBoolean.js"></script>
-    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
-    <script type="text/javascript"    src="../js/GLUtility.js"></script>
-    <script type="text/javascript"    src="../js/Color.js"></script>
     <script type="text/javascript"    src="../js/Geometry.js"></script>
-    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
-    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
-    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
-    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
-    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
-    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
-    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
-    <script type="text/javascript"    src="../js/FieldLine.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
-    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
     <script type="text/javascript"    src="../js/Cylinder.js"></script>
-    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
-    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/Color.js"></script>
+    <script type="text/javascript"    src="../js/Charges.js"></script>
     <script type="text/javascript"    src="../js/ChargedCylinder.js"></script>
     <script type="text/javascript"    src="../js/ChargedLine.js"></script>
     <script type="text/javascript"    src="../js/ChargedPlane.js"></script>
     <script type="text/javascript"    src="../js/ChargedSphere.js"></script>
-    <script type="text/javascript"    src="../js/Charges.js"></script>
-    <script type="text/javascript"    src="../js/ElectricField.js"></script>
-    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/ChargeGenerator.js"></script>
+    <script type="text/javascript"    src="../js/ChargeRenderer.js"></script>
     <script type="text/javascript"    src="../js/CombinedVectorFunctions.js"></script>
+    <script type="text/javascript"    src="../js/CountdownLatch.js"></script>
+    <script type="text/javascript"    src="../js/ElectricField.js"></script>
+    <script type="text/javascript"    src="../js/FieldLine.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineGenerator.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/FieldLineVBO.js"></script>
+    <script type="text/javascript"    src="../js/GaussianCylinder.js"></script>
+    <script type="text/javascript"    src="../js/GaussianSphere.js"></script>
+    <script type="text/javascript"    src="../js/GLUtility.js"></script>
+    <script type="text/javascript"    src="../js/IllegalArgumentException.js"></script>
+    <script type="text/javascript"    src="../js/IndexedVertices.js"></script>
+    <script type="text/javascript"    src="../js/LineFeedbackRenderer.js"></script>
+    <script type="text/javascript"    src="../js/LineRenderer.js"></script>
+    <script type="text/javascript"    src="../js/MotionEventHandler.js"></script>
+    <script type="text/javascript"    src="../js/SimpleVectorField.js"></script>
+    <script type="text/javascript"    src="../js/Stage.js"></script>
+    <script type="text/javascript"    src="../js/SurfaceRenderer.js"></script>
     <script type="text/javascript"    src="../js/VectorFieldGenerator.js"></script>
-    <script type="text/javascript"    src="../js/FieldRenderer.js"></script>
+    <script type="text/javascript"    src="../js/VectorFunction.js"></script>
+    <script type="text/javascript"    src="../js/Visualizations.js"></script>
+    <!-- Used in prototype for otherbuilders, must be loaded first. -->
+    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
     <script type="text/javascript"    src="../js/SurfaceBuilder.js"></script>
     <script type="text/javascript"    src="../js/DistributionBuilder.js"></script>
     <script type="text/javascript"    src="../js/ChargesBuilder.js"></script>
-    <script type="text/javascript"    src="../js/BindingBuilder.js"></script>
     <script type="text/javascript"    src="../js/ElectricFieldElementBuilder.js"></script>
     <script type="text/javascript"    src="../js/ElectricFieldBuilder.js"></script>
     <script type="text/javascript"    src="../js/CombinedVectorValuedFunctionBuilder.js"></script>
     <script type="text/javascript"    src="../js/VectorValuedFunctionBuilder.js"></script>
     <script type="text/javascript"    src="../js/SimpleVectorFieldBuilder.js"></script>
     <script type="text/javascript"    src="../js/VizBuilder.js"></script>
-    <link   href='http://fonts.googleapis.com/css?family=IM+Fell+French+Canon:400italic' rel='stylesheet' type='text/css'>
-    <script type="text/x-mathjax-config">
-      /**
-       * MathJax custom configuration. Faster inline like this than as a config=... file
-       */
-      MathJax.Hub.Config({
-        displayAlign: "left",
-        "HTML-CSS": {
-          styles: {
-            ".MathJax_Display": {
-              "text-align": "left",
-              margin:       "0em 0em 0em 3em"
-            }
-          }
-        },
-        imageFont: null
-      }); 
-    </script>
-    <script type="text/javascript"
-            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML">
-    </script>
+
     <script type="text/javascript">
       // This object is loaded by the VizBuilder on the DOMReady event.
       var VISUALIZATION_CONFIG
@@ -105,46 +91,25 @@
                   {
                     type: "charge",  charge:  5.0,
                     x: 0.0, y: 0.0, z: 0.0,
-                    fieldLineDensity: 5.0, name: "charge"
+                    fieldLineDensity: 5.0, name: "charge",
+                    bind: [
+                        {set: "charge", from: "q"},
+                        {set: "x", from: "x"},
+                        {set: "y", from: "y"},
+                        {set: "z", from: "z"}
+                    ]
                   },
                   {
                     type: "gaussian sphere",
                     x:      0.0, y:   0.0, z: 0.0,
-                    r:     20.0, name: "sphere"
-                  }
-                ],
-              // Set the charge on charge1 to q1 when it changes.
-              bindings:
-                [
-                  {
-                    target: "charge", set: "charge", from: "q"
-                  },
-                  {
-                    target: "sphere", set: "r", from: "r"
-                  },
-                  {
-                    target: "charge", set: "x", from: "x"
-                  },
-                  {
-                    target: "charge", set: "y", from: "y"
+                    r:     20.0, name: "sphere",
+                    bind: {set: "r", from: "r"}
                   }
                 ]
             };
     </script>
   </head>
   <body>
-    <!-- Copyright 2013 VizIT Solutions -->
-    <div class="wrapper">
-      <div id="main">
-        <div id="header">
-          <span class="logo2 Fell drawOnResize"><a href = "http://www.vizitsolutions.com/">Vizit Solutions</a></span>
-          <ul>
-            <li class="drawOnResize"><a href="../catalog/" title="Catalog">Catalog</a></li>
-            <li class="drawOnResize"><a href="../" title="Portfolio">Portfolio</a></li>
-            <li class="drawOnResize"><a href="http://blog.vizitsolutions.com/" title="Blog">Blog</a></li>
-            <li class="drawOnResize"><a href="mailto:akluge@vizitsolutions.com?subject=Visualization" title="akluge@vizitsolutions.com">Contact</a></li>
-          </ul>
-        </div>
       <div class="content">
         <h2 class="center">Field Line Gaussian Sphere Charge Move Config Test</h2>
 
@@ -164,17 +129,14 @@
         <section>
           <p>
             We see the electric field lines from the charge passing through the surface.
-            The is called the electric flux, <math><mi>&Phi;</mi></math>, through the surface.
-            How does the flux change when the charge moves?  <span class="lessonElement"
+            The is called the electric flux, &Phi;, through the surface.  How does the
+            flux change when the charge moves?  <span class="lessonElement"
                                                                    data-type="setter"
                                                                    data-set="x=10"
                                                                    data-html="x=10"
                                                                    data-desc="Set x=10."></span>
           </p>
         </section>
-      </div>
-      </div>
     </div>
-    <script type="text/javascript"         src="../../../js/vizit.js"></script>
   </body>
 </html>

@@ -1,6 +1,10 @@
 <html >
   <head>
     <title>Simple Point Charge Config Test</title>
+    <meta   http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta   name="viewport"           content="width=device-width, initial-scale=1.0">
+    <link   rel="stylesheet"          href="../nstyle.css" type="text/css" />
+    <link   rel="stylesheet"          href="../vfield.css" type="text/css" />
     <!-- Lesson.js uses these styles -->
     <link   rel="stylesheet" type="text/css" href="../../lesson/css/Lesson.css">
     <script type="text/javascript">
@@ -92,15 +96,17 @@
     <!--This is the canvas for our electric field visualization. -->
     <canvas id="chargeCanvas" width="300" height="300"></canvas>
 
-    <!-- This will allow manipulation of q1, ranging from -2 to 2 with an initial value of 2 -->
-    <!-- This q1 matches the q1 in the binding in VISUALIZATION_CONFIG. -->
-    <!-- bind: {set: "q", from: "q1"} -->
-    <span class="lessonElement"
-          data-type="rangedSource"
-          data-name="q1"
-          data-value="2.0"
-          data-min="-2.0"
+    <p>
+      <!-- This will allow manipulation of q1, ranging from -2 to 2 with an initial value of 2 -->
+      <!-- This q1 matches the q1 in the binding in VISUALIZATION_CONFIG. -->
+      <!-- bind: {set: "q", from: "q1"} -->
+      Hover here to see the draggable charge control q=<span class="lessonElement"
+                  data-type="rangedSource"
+                  data-name="q1"
+                  data-value="2.0"
+                 data-min="-2.0"
           data-max="2.0"
-          data-step="0.2"></span>
+          data-step="0.2"></span>.
+    </p>
   </body>
 </html>
